@@ -1,0 +1,98 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Access Key",
+            "name": "access_key",
+            "desc": "The access key for aws access",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Secret Key",
+            "name": "secret_key",
+            "desc": "The secret key for the provided access key",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Region",
+            "name": "region",
+            "desc": "The region for the aws connection.",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "The action to block IP on waf",
+            "label": "Block IP",
+            "name": "update_ip_set",
+            "type": "Firewall",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "A unique identifier for the set.",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "The name of the IP set. You cannot change the name of an IPSet after you create it.",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Scope",
+                    "name": "scope",
+                    "desc": "Specifies whether this is for an Amazon CloudFront distribution or for a regional application. Possible values are 'CLOUDFRONT'/'REGIONAL'",
+                    "type": "String",
+                    "values": ["CLOUDFRONT","REGIONAL"],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Addresses",
+                    "name": "addresses",
+                    "desc": "Contains an array of strings that specifies zero or more IP addresses or blocks of IP addresses that you want AWS WAF to inspect for in incoming requests. AWS WAF supports all IPv4 and IPv6 CIDR ranges except for /0.",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action.",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}

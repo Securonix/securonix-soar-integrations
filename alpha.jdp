@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Trigger soar-integration-execution-py-service Pipeline') {
+            steps {
+                script {
+                    build job: '/SOAR/MS-MULTIBRANCH/soar-integration-execution-py-service/develop'
+                }
+            }
+        }
+    }
+}

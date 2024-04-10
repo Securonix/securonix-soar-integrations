@@ -1,0 +1,58 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Server URL",
+            "name": "server_url",
+            "desc": "Server URL of the Shodan Instance",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "API Token",
+            "name": "api_token",
+            "desc": "Token for Authetication",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Returns all services that have been found on the given host IP",
+            "label": "Get Host of IP",
+            "name": "ip_address",
+            "type": "Get Host from IP",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Ip Address",
+                    "name": "ip_addr",
+                    "desc": "Provide IP address ",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "hosts",
+                    "name": "hosts",
+                    "desc": "Response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}

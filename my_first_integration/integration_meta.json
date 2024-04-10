@@ -1,0 +1,15 @@
+{
+    "name": "my_first_integration",
+    "type": "python",
+    "clazz": "",
+    "label": "my first integration",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false
+}

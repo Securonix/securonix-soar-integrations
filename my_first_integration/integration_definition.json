@@ -1,0 +1,171 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Username",
+            "name": "username",
+            "desc": "Username about this parameter",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Password",
+            "name": "password",
+            "desc": "password for establishing connection",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "ServerURL",
+            "name": "serverurl",
+            "desc": "description about this parameter",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Domain",
+            "name": "domain",
+            "desc": "Domain about this parameter",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "ORG",
+            "name": "ORG",
+            "desc": "Domain about this parameter",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Add to Watchlist",
+            "label": "addtowatchlist",
+            "name": "addtowatchlist",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Add Watchlistname",
+                    "name": "addwatchlistname",
+                    "desc": "Provide Watchlistname",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "containerdata",
+                    "name": "containerdata",
+                    "desc": "Provide Value",
+                    "type": "Map",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "expiry",
+                    "name": "expiry",
+                    "desc": "Provide Value",
+                    "type": "Integer",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "Status",
+                    "desc": "Added to Watchlist",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+
+        {
+            "desc": "Create Watchlist",
+            "label": "Create Watchlist",
+            "name": "createwatchlist",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Watchlist Name",
+                    "name": "createwatchlistname",
+                    "desc": "Provide Watchlist name for creation",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "Status",
+                    "desc": "Creation of Watchlist Completed",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Remove from watchlist",
+            "label": "Remove entity from  Watchlist",
+            "name": "RemoveWatchlist",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Watchlist Name",
+                    "name": "createwatchlistname",
+                    "desc": "Provide Watchlist name for removal",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "Status",
+                    "desc": "Removal of Watchlist Completed",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}
