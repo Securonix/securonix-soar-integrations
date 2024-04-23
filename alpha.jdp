@@ -5,7 +5,7 @@ pipeline {
         stage('Trigger soar-integration-execution-py-service Pipeline') {
             steps {
                 script {
-                    build job: '/SOAR/MS-MULTIBRANCH/soar-integration-execution-py-service/develop'
+                    build job: '/SOAR/MS-MULTIBRANCH/soar-integration-execution-py-service/master'
                 }
             }
         }
