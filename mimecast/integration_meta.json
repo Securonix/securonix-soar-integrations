@@ -1,0 +1,16 @@
+{
+    "name": "mimecast",
+    "type": "python",
+    "clazz": "",
+    "label": "Mimecast",
+    "native": false,
+    "testUrl": "",
+    "category": "Email Security and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Mimecast Threat Management provides advanced email security capabilities including threat detection, malicious URL analysis, impersonation protection, and response actions such as blocking senders, removing malicious messages, and investigating email-borne threats. This integration enables automated detection and response workflows within SOAR for email-based threats."
+}

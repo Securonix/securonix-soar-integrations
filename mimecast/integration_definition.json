@@ -1,0 +1,180 @@
+{
+  "connectionParameters": [
+      {
+          "label": "Base URL",
+          "name": "base_url",
+          "desc": "Mimecast API base URL (example: https://us-api.mimecast.com)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+      },
+      {
+          "label": "Access Key",
+          "name": "access_key",
+          "desc": "Mimecast access key",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+      },
+      {
+          "label": "Secret Key",
+          "name": "secret_key",
+          "desc": "Mimecast secret key",
+          "type": "String",
+          "values": [],
+          "isSecret": true,
+          "optional": false,
+          "encrypted": false
+      },
+      {
+          "label": "Application ID",
+          "name": "app_id",
+          "desc": "Mimecast application ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+      },
+      {
+          "label": "Application Key",
+          "name": "app_key",
+          "desc": "Mimecast application key",
+          "type": "String",
+          "values": [],
+          "isSecret": true,
+          "optional": false,
+          "encrypted": false
+      }
+  ],
+  "functions": [
+      {
+          "label": "Get Threats",
+          "name": "get_threats",
+          "type": "ThreatIntel",
+          "desc": "Fetch recent email threats detected by Mimecast",
+          "sampleOutput": "",
+          "inParameters": [
+              {
+                  "label": "Limit",
+                  "name": "limit",
+                  "desc": "Number of threats to fetch",
+                  "type": "Number",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": true,
+                  "encrypted": false
+              }
+          ],
+          "outParameters": [
+              {
+                  "label": "Threats",
+                  "name": "threats",
+                  "desc": "List of detected threats",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      },
+      {
+          "label": "Block Sender",
+          "name": "block_sender",
+          "type": "EmailSecurity",
+          "desc": "Block a malicious sender in Mimecast",
+          "sampleOutput": "",
+          "inParameters": [
+              {
+                  "label": "Sender Email",
+                  "name": "sender_email",
+                  "desc": "Email address of the sender to block",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ],
+          "outParameters": [
+              {
+                  "label": "Status",
+                  "name": "status",
+                  "desc": "Status of the action",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      },
+      {
+          "label": "Remove Message",
+          "name": "remove_message",
+          "type": "EmailSecurity",
+          "desc": "Remove a malicious email message from user mailboxes",
+          "sampleOutput": "",
+          "inParameters": [
+              {
+                  "label": "Message ID",
+                  "name": "message_id",
+                  "desc": "Mimecast message ID to remove",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ],
+          "outParameters": [
+              {
+                  "label": "Status",
+                  "name": "status",
+                  "desc": "Status of the action",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      },
+      {
+          "label": "Get URL Reputation",
+          "name": "get_url_reputation",
+          "type": "ThreatIntel",
+          "desc": "Check reputation of a URL using Mimecast Threat Intelligence",
+          "sampleOutput": "",
+          "inParameters": [
+              {
+                  "label": "URL",
+                  "name": "url",
+                  "desc": "URL to check reputation for",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ],
+          "outParameters": [
+              {
+                  "label": "Result",
+                  "name": "result",
+                  "desc": "URL reputation details",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      }
+  ]
+}

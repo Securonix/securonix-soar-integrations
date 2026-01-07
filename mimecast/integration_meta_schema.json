@@ -1,0 +1,270 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://securonix.com/connectorinfo.schema.json",
+    "title": "ConnectorInfo",
+    "description": "A ConnectorInfo from securonix integrations",
+    "type": "object",
+    "required": [
+        "name",
+        "label",
+        "type",
+        "native",
+        "testUrl",
+        "isLicensed",
+        "pathToLogo"
+    ],
+    "properties": {
+        "desc": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "name": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "type": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "clazz": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "label": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "native": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        },
+        "testUrl": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "category": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "isLicensed": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        },
+        "pathToLogo": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "encodedLogo": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "isMultiAuthentication": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        },
+        "connectionParameters": {
+            "description": "The unique identifier for a product",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "type",
+                    "label",
+                    "nested",
+                    "isSecret",
+                    "encrypted"
+                ],
+                "properties": {
+                    "desc": {
+                        "description": "The unique identifier for a product",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "The unique identifier for a product",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "The unique identifier for a product",
+                        "type": "string"
+                    },
+                    "label": {
+                        "description": "The unique identifier for a product",
+                        "type": "string"
+                    },
+                    "nested": {
+                        "description": "The unique identifier for a product",
+                        "type": "boolean"
+                    },
+                    "values": {
+                        "description": "The unique identifier for a product",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "isSecret": {
+                        "description": "The unique identifier for a product",
+                        "type": "boolean"
+                    },
+                    "optional": {
+                        "description": "The unique identifier for a product",
+                        "type": "boolean"
+                    },
+                    "encrypted": {
+                        "description": "The unique identifier for a product",
+                        "type": "boolean"
+                    },
+                    "contextEnrichment": {
+                        "description": "The unique identifier for a product",
+                        "type": "boolean"
+                    }
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "functions": {
+                "description": "The unique identifier for a product",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "name",
+                        "type",
+                        "label"
+                    ],
+                    "properties": {
+                        "desc": {
+                            "description": "The unique identifier for a product",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "The unique identifier for a product",
+                            "type": "string"
+                        },
+                        "type": {
+                            "description": "The unique identifier for a product",
+                            "type": "string"
+                        },
+                        "label": {
+                            "description": "The unique identifier for a product",
+                            "type": "string"
+                        },
+                        "inParameters": {
+                            "description": "The unique identifier for a product",
+                            "type": "array",
+                            "items": {
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "type": "object",
+                                "properties": {
+                                    "desc": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "label": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "nested": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "values": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "isSecret": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "optional": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "encrypted": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "contextEnrichment": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        },
+                        "sampleOutput": {
+                            "description": "The unique identifier for a product",
+                            "type": "string"
+                        },
+                        "outParameters": {
+                            "description": "The unique identifier for a product",
+                            "type": "array",
+                            "items": {
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "type": "object",
+                                "properties": {
+                                    "desc": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "label": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "string"
+                                    },
+                                    "nested": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "values": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "isSecret": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "optional": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "encrypted": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    },
+                                    "contextEnrichment": {
+                                        "description": "The unique identifier for a product",
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            }
+        }
+    }
+}
