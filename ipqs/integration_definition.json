@@ -1,0 +1,225 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Base URL",
+        "name": "base_url",
+        "desc": "Threat intelligence API base URL",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Key",
+        "name": "api_key",
+        "desc": "API key or token for the threat intelligence service",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "Timeout",
+        "name": "timeout",
+        "desc": "HTTP request timeout in seconds",
+        "type": "Number",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "IP Threat Intelligence integration allows you to identify IP addresses associated with residential proxies, private VPNs, TOR nodes, anonymous proxies, botnets, and other malicious/risky activity. This helps automate threat blocking, alert enrichment, and incident response workflows.",
+    "functions": [
+      {
+        "label": "Detect Residential Proxies",
+        "name": "detect_residential_proxies",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses associated with residential proxy networks",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Residential proxy detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Detect Private VPN Networks",
+        "name": "detect_private_vpn",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses associated with private VPN services",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Private VPN detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Detect Tor Nodes",
+        "name": "detect_tor_nodes",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses that are Tor exit nodes",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Tor node detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Detect Anonymous Proxies",
+        "name": "detect_anonymous_proxies",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses associated with anonymous proxy services",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Anonymous proxy detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Detect Botnet IPs",
+        "name": "detect_botnets",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses associated with botnet activity",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Botnet detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Detect Malicious or Risky IPs",
+        "name": "detect_malicious_ips",
+        "type": "ThreatIntel",
+        "desc": "Identify IP addresses or IP ranges associated with malicious or high-risk activity",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses or CIDR ranges",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Malicious IP detection results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }
+  

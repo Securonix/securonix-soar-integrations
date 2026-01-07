@@ -1,0 +1,17 @@
+{
+    "name": "ipqs",
+    "type": "python",
+    "clazz": "app.ipqs",
+    "label": "IPQS",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "IP Threat Intelligence integration allows you to identify IP addresses associated with residential proxies, private VPNs, TOR nodes, anonymous proxies, botnets, and other malicious/risky activity. This helps automate threat blocking, alert enrichment, and incident response workflows."
+  }
+  
