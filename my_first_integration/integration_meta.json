@@ -2,7 +2,7 @@
     "name": "my_first_integration",
     "type": "python",
     "clazz": "",
-    "label": "my first integration",
+    "label": "Securonix Snypr Response",
     "native": false,
     "testUrl": "",
     "category": "Data Enrichment and Threat Intelligence",
