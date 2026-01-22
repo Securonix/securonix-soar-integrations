@@ -8,16 +8,19 @@ from app.model.response_body import ResponseBody
 class Ipqs:
     def __init__(self):
         self.logger = logging.getLogger()
+        self.base_url = None
+        self.api_key = None
+        self.timeout = 30
 
     # Initialize connection parameters
-    def _init_client(self, connectionParameters: dict):
-        self.base_url = connectionParameters["base_url"]
+    def init_client(self, connectionParameters: dict):
+        self.base_url = connectionParameters["base_url"].rstrip("/")
         self.api_key = connectionParameters["api_key"]
         self.timeout = connectionParameters.get("timeout", 30)
 
     # Test connection to IPQS API
     def test_connection(self, connectionParameters: dict):
-        self._init_client(connectionParameters)
+        self.init_client(connectionParameters)
         try:
             test_ip = "8.8.8.8"
             url = f"{self.base_url}/api/json/ip/{self.api_key}/{test_ip}"
@@ -30,15 +33,18 @@ class Ipqs:
 
             if data.get("success", False):
                 return {
-                    'status': 'success',
-                    'message': 'Connection Successful.'
+                    "status": "success",
+                    "message": "Connection Successful."
                 }
             else:
                 raise Exception(f"IPQS API returned error: {data}")
 
         except Exception as e:
             self.logger.error("Exception while testing IPQS connection parameters", exc_info=e)
-            raise Exception(str(e))
+            return {
+                "status": "error",
+                "message": str(e)
+            }
 
     # Normalize IPs input
     def _normalize_ips(self, ips):
@@ -51,20 +57,17 @@ class Ipqs:
 
     # Internal method to lookup IP info from IPQS
     def _lookup_ip(self, ip: str):
-        url = f"{self.base_url}/ip/{ip}"
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Accept": "application/json"
-        }
+        url = f"{self.base_url}/api/json/ip/{self.api_key}/{ip}"
+        resp = requests.get(url, timeout=self.timeout)
 
-        resp = requests.get(url, headers=headers, timeout=self.timeout)
         if resp.status_code != 200:
             raise Exception(f"API error: {resp.text}")
+
         return resp.json()
 
     # Detect residential proxies
     def detect_residential_proxies(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -77,7 +80,7 @@ class Ipqs:
 
     # Detect private VPNs
     def detect_private_vpn(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -90,7 +93,7 @@ class Ipqs:
 
     # Detect Tor nodes
     def detect_tor_nodes(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -103,7 +106,7 @@ class Ipqs:
 
     # Detect anonymous proxies
     def detect_anonymous_proxies(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -116,7 +119,7 @@ class Ipqs:
 
     # Detect botnets
     def detect_botnets(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -129,7 +132,7 @@ class Ipqs:
 
     # Detect malicious IPs
     def detect_malicious_ips(self, request: RequestBody) -> ResponseBody:
-        self._init_client(request.connectionParameters)
+        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
@@ -143,4 +146,3 @@ class Ipqs:
                 })
 
         return {"status": "success", "results": results}
-
