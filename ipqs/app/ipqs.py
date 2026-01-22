@@ -17,6 +17,10 @@ class Ipqs():
         base_url = connectionParameters['base_url'].rstrip('/')
         api_key = connectionParameters['api_key']
         timeout = connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         try:
             test_ip = "8.8.8.8"
@@ -61,6 +65,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
@@ -76,6 +84,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
@@ -91,6 +103,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
@@ -106,6 +122,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
@@ -121,6 +141,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
@@ -136,6 +160,10 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = request.connectionParameters.get('timeout', 30)
+        if timeout in [None, "None", "", "null"]:
+            timeout = 30
+        else:
+            timeout = int(timeout)
 
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
