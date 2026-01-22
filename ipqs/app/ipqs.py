@@ -12,18 +12,14 @@ class Ipqs:
         self.api_key = None
         self.timeout = 30
 
-    # This method is automatically called by SOAR (with and without params)
-    def init_client(self, connectionParameters=None):
-        if not connectionParameters:
-            return
-
+    # SOAR automatically calls this with connection params
+    def init_client(self, connectionParameters):
         self.base_url = connectionParameters["base_url"].rstrip("/")
         self.api_key = connectionParameters["api_key"]
         self.timeout = connectionParameters.get("timeout", 30)
 
-    # Test connection to IPQS API
-    def test_connection(self, connectionParameters: dict):
-        self.init_client(connectionParameters)
+    # SOAR calls this with NO arguments
+    def test_connection(self):
         try:
             test_ip = "8.8.8.8"
             url = f"{self.base_url}/api/json/ip/{self.api_key}/{test_ip}"
@@ -32,97 +28,91 @@ class Ipqs:
             resp.raise_for_status()
             data = resp.json()
 
-            self.logger.debug("IPQS response to test_connection is %s", json.dumps(data))
-
             if data.get("success", False):
                 return {
-                    'status': 'success',
-                    'message': 'Connection Successful.'
+                    "status": "success",
+                    "message": "Connection Successful."
                 }
             else:
-                raise Exception(f"IPQS API returned error: {data}")
+                return {
+                    "status": "error",
+                    "message": f"IPQS error: {data}"
+                }
 
         except Exception as e:
-            self.logger.error("Exception while testing IPQS connection parameters", exc_info=e)
-            raise Exception(str(e))
+            self.logger.error("IPQS connection test failed", exc_info=True)
+            return {
+                "status": "error",
+                "message": str(e)
+            }
 
     def _normalize_ips(self, ips):
         if isinstance(ips, str):
             return [ip.strip() for ip in ips.split(",")]
-        elif isinstance(ips, list):
-            return ips
-        else:
-            raise Exception("Invalid IP format")
+        return ips
 
-    def _lookup_ip(self, ip: str):
+    def _lookup_ip(self, ip):
         url = f"{self.base_url}/api/json/ip/{self.api_key}/{ip}"
         resp = requests.get(url, timeout=self.timeout)
-        if resp.status_code != 200:
-            raise Exception(f"API error: {resp.text}")
+        resp.raise_for_status()
         return resp.json()
 
     def detect_residential_proxies(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
         for ip in ips:
             data = self._lookup_ip(ip)
-            if data.get("is_residential_proxy", False):
+            if data.get("is_residential_proxy"):
                 results.append({"ip": ip, "category": "Residential Proxy"})
 
         return {"status": "success", "results": results}
 
     def detect_private_vpn(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
         for ip in ips:
             data = self._lookup_ip(ip)
-            if data.get("vpn", False):
+            if data.get("vpn"):
                 results.append({"ip": ip, "category": "Private VPN"})
 
         return {"status": "success", "results": results}
 
     def detect_tor_nodes(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
         for ip in ips:
             data = self._lookup_ip(ip)
-            if data.get("tor", False):
+            if data.get("tor"):
                 results.append({"ip": ip, "category": "Tor Node"})
 
         return {"status": "success", "results": results}
 
     def detect_anonymous_proxies(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
         for ip in ips:
             data = self._lookup_ip(ip)
-            if data.get("proxy", False):
+            if data.get("proxy"):
                 results.append({"ip": ip, "category": "Anonymous Proxy"})
 
         return {"status": "success", "results": results}
 
     def detect_botnets(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
         for ip in ips:
             data = self._lookup_ip(ip)
-            if data.get("bot_status", False):
+            if data.get("bot_status"):
                 results.append({"ip": ip, "category": "Botnet"})
 
         return {"status": "success", "results": results}
 
     def detect_malicious_ips(self, request: RequestBody) -> ResponseBody:
-        self.init_client(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["ips"])
         results = []
 
