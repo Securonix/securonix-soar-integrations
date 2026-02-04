@@ -1,0 +1,603 @@
+{
+    "connectionParameters": [
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "Cisco Meraki Dashboard API Key",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "List networks the user has privileges on in a given organization",
+            "label": "Get Networks",
+            "name": "meraki_get_networks",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Organization ID",
+                    "name": "organizationId",
+                    "desc": "Organization ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Config Template ID",
+                    "name": "configTemplateId",
+                    "desc": "Filter: return all networks bound to that template",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Is Bound To Config Template",
+                    "name": "isBoundToConfigTemplate",
+                    "desc": "Filter config template bound networks",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags",
+                    "name": "tags",
+                    "desc": "Filter networks by tags (case-sensitive)",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags Filter Type",
+                    "name": "tagsFilterType",
+                    "desc": "One of: withAnyTags, withAllTags",
+                    "type": "String",
+                    "values": ["withAnyTags", "withAllTags"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Product Types",
+                    "name": "productTypes",
+                    "desc": "Filter networks by product type",
+                    "type": "List",
+                    "values": ["appliance", "camera", "campusGateway", "cellularGateway", "secureConnect", "sensor", "switch", "systemsManager", "wireless", "wirelessController"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "perPage",
+                    "desc": "Number of results per page (3-100000, default 1000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Starting After",
+                    "name": "startingAfter",
+                    "desc": "Pagination token from Link header",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ending Before",
+                    "name": "endingBefore",
+                    "desc": "Pagination token from Link header",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Networks",
+                    "name": "networks",
+                    "desc": "List of networks",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of networks returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "List devices in an organization using non-deprecated API",
+            "label": "Get Devices",
+            "name": "meraki_get_devices",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Organization ID",
+                    "name": "organizationId",
+                    "desc": "Organization ID (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Network ID",
+                    "name": "networkId",
+                    "desc": "Filter devices by network ID (client-side filter)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Product Type",
+                    "name": "productType",
+                    "desc": "Filter devices by product type (e.g. appliance, switch, wireless)",
+                    "type": "String",
+                    "values": ["appliance", "camera", "switch", "wireless", "sensor"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "perPage",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Starting After",
+                    "name": "startingAfter",
+                    "desc": "Pagination token from Link header",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ending Before",
+                    "name": "endingBefore",
+                    "desc": "Pagination token from Link header",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Devices",
+                    "name": "devices",
+                    "desc": "List of devices",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of devices returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get WAN uplink status for Meraki MX appliances",
+            "label": "Get Device Uplink",
+            "name": "meraki_get_device_uplink",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Organization ID",
+                    "name": "organizationId",
+                    "desc": "Organization ID (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number (MX appliance)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Network IDs",
+                    "name": "networkIds",
+                    "desc": "Filter by network IDs",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "perPage",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Starting After",
+                    "name": "startingAfter",
+                    "desc": "Pagination token",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ending Before",
+                    "name": "endingBefore",
+                    "desc": "Pagination token",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Uplink",
+                    "name": "uplink",
+                    "desc": "Uplink status object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "List clients that have used a network in a specified time window (max 31 days lookback)",
+            "label": "Get Clients",
+            "name": "meraki_get_clients",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Network ID",
+                    "name": "networkId",
+                    "desc": "Network ID (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Timespan",
+                    "name": "timespan",
+                    "desc": "Time range in seconds (max 31 days = 2678400 seconds)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "T0",
+                    "name": "t0",
+                    "desc": "Beginning of timespan (timestamp or date string)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "T1",
+                    "name": "t1",
+                    "desc": "End of timespan (timestamp or date string)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "perPage",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Starting After",
+                    "name": "startingAfter",
+                    "desc": "Pagination token",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ending Before",
+                    "name": "endingBefore",
+                    "desc": "Pagination token",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Clients",
+                    "name": "clients",
+                    "desc": "List of clients",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of clients returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Remove a device from a Meraki network (destructive action)",
+            "label": "Remove Device",
+            "name": "meraki_remove_device",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Network ID",
+                    "name": "networkId",
+                    "desc": "Network ID (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number to remove",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Network ID",
+                    "name": "networkId",
+                    "desc": "Network ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Meraki device attributes (name/tags/notes/location)",
+            "label": "Update Device",
+            "name": "meraki_update_device",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Device name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags",
+                    "name": "tags",
+                    "desc": "Device tags",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Latitude",
+                    "name": "lat",
+                    "desc": "Latitude",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Longitude",
+                    "name": "lng",
+                    "desc": "Longitude",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Address",
+                    "name": "address",
+                    "desc": "Physical address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Notes",
+                    "name": "notes",
+                    "desc": "Device notes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Move Map Marker",
+                    "name": "moveMapMarker",
+                    "desc": "Move map marker when updating location",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Switch Profile ID",
+                    "name": "switchProfileId",
+                    "desc": "Switch profile ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Floor Plan ID",
+                    "name": "floorPlanId",
+                    "desc": "Floor plan ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Serial",
+                    "name": "serial",
+                    "desc": "Device serial number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Device",
+                    "name": "device",
+                    "desc": "Updated device object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}
