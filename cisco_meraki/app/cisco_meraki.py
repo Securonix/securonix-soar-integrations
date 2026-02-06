@@ -27,6 +27,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_get_networks(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             org_id = request.parameters.get('organizationId')
@@ -78,6 +83,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_get_devices(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             org_id = request.parameters.get('organizationId')
@@ -119,6 +129,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_get_device_uplink(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             org_id = request.parameters.get('organizationId')
@@ -162,6 +177,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_get_clients(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             network_id = request.parameters.get('networkId')
@@ -202,6 +222,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_remove_device(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             network_id = request.parameters.get('networkId')
@@ -237,6 +262,11 @@ class Cisco_Meraki:
     # ---------------------------------------------------------------------
     def meraki_update_device(self, request: RequestBody) -> dict:
         try:
+            if not request or not request.connectionParameters:
+                raise Exception("request and connectionParameters are required")
+            if not request.parameters:
+                raise Exception("parameters are required")
+            
             self._init_client(request.connectionParameters)
             
             serial = request.parameters.get('serial')
@@ -277,8 +307,15 @@ class Cisco_Meraki:
     # =========================
 
     def _init_client(self, connectionParameters):
+        if not connectionParameters:
+            raise Exception("connectionParameters is required")
+        
+        api_key = connectionParameters.get('api_key')
+        if not api_key:
+            raise Exception("api_key is required in connectionParameters")
+        
         self.base_url = "https://api.meraki.com/api/v1"
-        self.api_key = connectionParameters['api_key']
+        self.api_key = api_key
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Accept": "application/json",
