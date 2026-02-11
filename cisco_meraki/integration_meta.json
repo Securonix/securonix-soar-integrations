@@ -1,0 +1,16 @@
+{
+    "name": "cisco_meraki",
+    "type": "python",
+    "clazz": "",
+    "label": "Cisco Meraki",
+    "native": false,
+    "testUrl": "",
+    "category": "Network Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Cisco Meraki Dashboard API integration for managing networks, devices, clients, and uplink status. Supports network discovery, device management, client monitoring, and configuration updates."
+}
