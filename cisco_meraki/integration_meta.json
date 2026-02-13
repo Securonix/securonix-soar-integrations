@@ -1,7 +1,7 @@
 {
     "name": "cisco_meraki",
     "type": "python",
-    "clazz": "",
+    "clazz": "app.cisco_meraki",
     "label": "Cisco Meraki",
     "native": false,
     "testUrl": "",
