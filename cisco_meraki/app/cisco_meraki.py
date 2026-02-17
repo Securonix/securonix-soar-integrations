@@ -3,7 +3,7 @@ import logging
 import requests
 import time
 
-class Cisco_Meraki:
+class CiscoMeraki():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
