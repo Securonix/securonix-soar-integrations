@@ -1,11 +1,11 @@
-from app.cisco_meraki import Cisco_Meraki
+from app.cisco_meraki import CiscoMeraki
 from app.model.request_body import RequestBody
 from pykson import Pykson
 from unittest.mock import patch, Mock
 import json
 
 pykson = Pykson()
-integration_class = Cisco_Meraki()
+integration_class = CiscoMeraki()
 
 
 @patch('requests.get')
