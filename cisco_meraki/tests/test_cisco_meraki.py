@@ -16,7 +16,8 @@ def test_cisco_meraki_test_connection(mock_get):
     mock_get.return_value = mock_response
 
     conn_params = {
-        "api_key": "sample_api_key"
+        "base_url": "https://api.meraki.com/api/v1",
+            "api_key": "sample_api_key"
     }
 
     resp = integration_class.test_connection(conn_params)
@@ -56,6 +57,7 @@ def test_meraki_get_networks(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -112,6 +114,7 @@ def test_meraki_get_devices(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -160,6 +163,7 @@ def test_meraki_get_devices_with_filters(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -213,6 +217,7 @@ def test_meraki_get_device_uplink(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -247,6 +252,7 @@ def test_meraki_get_device_uplink_not_found(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -296,6 +302,7 @@ def test_meraki_get_clients(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -335,6 +342,7 @@ def test_meraki_get_clients_with_t0_t1(mock_get):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -363,6 +371,7 @@ def test_meraki_remove_device(mock_post):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {
@@ -408,6 +417,7 @@ def test_meraki_update_device(mock_put):
     req = """
     {
         "connectionParameters": {
+            "base_url": "https://api.meraki.com/api/v1",
             "api_key": "sample_api_key"
         },
         "parameters": {

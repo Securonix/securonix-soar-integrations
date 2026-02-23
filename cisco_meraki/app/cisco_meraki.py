@@ -310,11 +310,15 @@ class CiscoMeraki():
         if not connectionParameters:
             raise Exception("connectionParameters is required")
         
+        base_url = connectionParameters.get('base_url')
         api_key = connectionParameters.get('api_key')
+        
+        if not base_url:
+            raise Exception("base_url is required in connectionParameters")
         if not api_key:
             raise Exception("api_key is required in connectionParameters")
         
-        self.base_url = "https://api.meraki.com/api/v1"
+        self.base_url = base_url.rstrip('/')
         self.api_key = api_key
         self.headers = {
             "Authorization": f"Bearer {self.api_key}",

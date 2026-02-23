@@ -1,6 +1,16 @@
 {
     "connectionParameters": [
         {
+            "label": "Base URL",
+            "name": "base_url",
+            "desc": "Cisco Meraki Dashboard API base URL",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
             "label": "API Key",
             "name": "api_key",
             "desc": "Cisco Meraki Dashboard API Key",
