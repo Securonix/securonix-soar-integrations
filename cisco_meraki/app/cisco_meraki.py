@@ -12,9 +12,17 @@ class CiscoMeraki():
     # Test Connection
     # ---------------------------------------------------------------------
     def test_connection(self, connectionParameters: dict):
+        base_url = connectionParameters['base_url'].rstrip('/')
+        api_key = connectionParameters['api_key']
+        
         try:
-            self._init_client(connectionParameters)
-            resp = requests.get(f"{self.base_url}/organizations", headers=self.headers, timeout=30)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+            
+            resp = requests.get(f"{base_url}/organizations", headers=headers, timeout=30)
             if resp.status_code >= 300:
                 raise Exception(resp.text)
             return {'status': 'success', 'message': 'Connected to Cisco Meraki successfully.'}
@@ -27,16 +35,16 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_get_networks(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            org_id = request.parameters.get('organizationId')
-            if not org_id:
-                raise Exception("organizationId is required")
+            org_id = request.parameters['organizationId']
 
             params = {}
             if request.parameters.get('configTemplateId'):
@@ -56,7 +64,7 @@ class CiscoMeraki():
             if request.parameters.get('endingBefore'):
                 params['endingBefore'] = request.parameters['endingBefore']
 
-            resp = self._get_with_retry(f"{self.base_url}/organizations/{org_id}/networks", params)
+            resp = self._get_with_retry(f"{base_url}/organizations/{org_id}/networks", params, headers)
             networks = resp.json()
             
             result = {
@@ -83,16 +91,16 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_get_devices(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            org_id = request.parameters.get('organizationId')
-            if not org_id:
-                raise Exception("organizationId is required")
+            org_id = request.parameters['organizationId']
 
             params = {}
             if request.parameters.get('perPage'):
@@ -102,7 +110,7 @@ class CiscoMeraki():
             if request.parameters.get('endingBefore'):
                 params['endingBefore'] = request.parameters['endingBefore']
 
-            resp = self._get_with_retry(f"{self.base_url}/organizations/{org_id}/devices", params)
+            resp = self._get_with_retry(f"{base_url}/organizations/{org_id}/devices", params, headers)
             devices = resp.json()
             
             network_id = request.parameters.get('networkId')
@@ -129,20 +137,17 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_get_device_uplink(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            org_id = request.parameters.get('organizationId')
-            serial = request.parameters.get('serial')
-            
-            if not org_id:
-                raise Exception("organizationId is required")
-            if not serial:
-                raise Exception("serial is required")
+            org_id = request.parameters['organizationId']
+            serial = request.parameters['serial']
 
             params = {'serials[]': serial}
             
@@ -155,7 +160,7 @@ class CiscoMeraki():
             if request.parameters.get('endingBefore'):
                 params['endingBefore'] = request.parameters['endingBefore']
 
-            resp = self._get_with_retry(f"{self.base_url}/organizations/{org_id}/appliance/uplink/statuses", params)
+            resp = self._get_with_retry(f"{base_url}/organizations/{org_id}/appliance/uplink/statuses", params, headers)
             uplinks = resp.json()
             
             uplink = uplinks[0] if uplinks else None
@@ -177,16 +182,16 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_get_clients(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            network_id = request.parameters.get('networkId')
-            if not network_id:
-                raise Exception("networkId is required")
+            network_id = request.parameters['networkId']
 
             params = {}
             
@@ -203,7 +208,7 @@ class CiscoMeraki():
             if request.parameters.get('endingBefore'):
                 params['endingBefore'] = request.parameters['endingBefore']
 
-            resp = self._get_with_retry(f"{self.base_url}/networks/{network_id}/clients", params)
+            resp = self._get_with_retry(f"{base_url}/networks/{network_id}/clients", params, headers)
             clients = resp.json()
 
             return {
@@ -222,26 +227,23 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_remove_device(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            network_id = request.parameters.get('networkId')
-            serial = request.parameters.get('serial')
-            
-            if not network_id:
-                raise Exception("networkId is required")
-            if not serial:
-                raise Exception("serial is required")
+            network_id = request.parameters['networkId']
+            serial = request.parameters['serial']
 
             payload = {"serial": serial}
 
             resp = self._post_with_retry(
-                f"{self.base_url}/networks/{network_id}/devices/remove",
-                self.headers,
+                f"{base_url}/networks/{network_id}/devices/remove",
+                headers,
                 payload
             )
 
@@ -262,16 +264,16 @@ class CiscoMeraki():
     # ---------------------------------------------------------------------
     def meraki_update_device(self, request: RequestBody) -> dict:
         try:
-            if not request or not request.connectionParameters:
-                raise Exception("request and connectionParameters are required")
-            if not request.parameters:
-                raise Exception("parameters are required")
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_key = request.connectionParameters['api_key']
             
-            self._init_client(request.connectionParameters)
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             
-            serial = request.parameters.get('serial')
-            if not serial:
-                raise Exception("serial is required")
+            serial = request.parameters['serial']
 
             payload = {}
             allowed_fields = ['name', 'tags', 'lat', 'lng', 'address', 'notes', 'moveMapMarker', 'switchProfileId', 'floorPlanId']
@@ -279,13 +281,10 @@ class CiscoMeraki():
             for field in allowed_fields:
                 if field in request.parameters and request.parameters[field] is not None:
                     payload[field] = request.parameters[field]
-            
-            if not payload:
-                raise Exception("No update fields provided")
 
             resp = self._put_with_retry(
-                f"{self.base_url}/devices/{serial}",
-                self.headers,
+                f"{base_url}/devices/{serial}",
+                headers,
                 payload
             )
 
@@ -306,29 +305,9 @@ class CiscoMeraki():
     # Internal helper methods
     # =========================
 
-    def _init_client(self, connectionParameters):
-        if not connectionParameters:
-            raise Exception("connectionParameters is required")
-        
-        base_url = connectionParameters.get('base_url')
-        api_key = connectionParameters.get('api_key')
-        
-        if not base_url:
-            raise Exception("base_url is required in connectionParameters")
-        if not api_key:
-            raise Exception("api_key is required in connectionParameters")
-        
-        self.base_url = base_url.rstrip('/')
-        self.api_key = api_key
-        self.headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
-
-    def _get_with_retry(self, url, params, max_retries=3):
+    def _get_with_retry(self, url, params, headers, max_retries=3):
         for attempt in range(max_retries):
-            resp = requests.get(url, headers=self.headers, params=params, timeout=30)
+            resp = requests.get(url, headers=headers, params=params, timeout=30)
             if resp.status_code == 429:
                 retry_after = int(resp.headers.get('Retry-After', 2))
                 if attempt < max_retries - 1:
