@@ -17,7 +17,7 @@ class CiscoMeraki():
         
         try:
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -39,7 +39,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -95,7 +95,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -141,7 +141,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -186,7 +186,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -231,7 +231,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
@@ -268,7 +268,7 @@ class CiscoMeraki():
             api_key = request.connectionParameters['api_key']
             
             headers = {
-                "Authorization": f"Bearer {api_key}",
+                "X-Cisco-Meraki-API-Key": api_key,
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             }
