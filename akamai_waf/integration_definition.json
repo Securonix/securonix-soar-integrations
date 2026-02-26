@@ -1,0 +1,290 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Host",
+            "name": "host",
+            "desc": "Akmai server host",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Client Token",
+            "name": "client_token",
+            "desc": "The client's token",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Client Secret",
+            "name": "client_secret",
+            "desc": "The secret for provided token",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Access Token",
+            "name": "access_token",
+            "desc": "The access token for provided client",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Adds one or more IP addresses or CIDR ranges to a designated Network List used in a deny rule.",
+            "label": "Block IP",
+            "name": "block_ip",
+            "type": "Firewall",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Network List Id",
+                    "name": "network_list_id",
+                    "desc": "The Id of network list",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP Addresses",
+                    "name": "ip_addresses",
+                    "desc": "The Id of network list",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action execution",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Message for the action execution status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Network List Id",
+                    "name": "network_list_id",
+                    "desc": "The Id of network list",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total IPs",
+                    "name": "total_ips",
+                    "desc": "Count of total IPs",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Adds one or more IP addresses or CIDR ranges to a designated Network List used in a deny rule.",
+            "label": "Unblock IP",
+            "name": "unblock_ip",
+            "type": "Firewall",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Network List Id",
+                    "name": "network_list_id",
+                    "desc": "The Id of network list",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP Addresses",
+                    "name": "ip_addresses",
+                    "desc": "The Id of network list",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action execution",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Message for the action execution status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Network List Id",
+                    "name": "network_list_id",
+                    "desc": "The Id of network list",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total IPs",
+                    "name": "total_ips",
+                    "desc": "Count of total IPs",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Adds one or more IP addresses or CIDR ranges to a designated Network List used in a deny rule.",
+            "label": "Get Security Events",
+            "name": "get_security_events",
+            "type": "Firewall",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Start Time",
+                    "name": "start_time",
+                    "desc": "ISO8601 string (e.g., 2024-01-01T00:00:00Z)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "End Time",
+                    "name": "end_time",
+                    "desc": "ISO8601 string (e.g., 2024-01-01T00:00:00Z)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Policy Id",
+                    "name": "policy_id",
+                    "desc": "Optional policy filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Attack Type",
+                    "name": "attack_type",
+                    "desc": "Optional attack group filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP Address",
+                    "name": "ip_address",
+                    "desc": "Optional IP filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Max records to return, default is 100",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action execution",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "event_count",
+                    "desc": "The total count of security events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Network List Id",
+                    "name": "events",
+                    "desc": "The security events",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}
