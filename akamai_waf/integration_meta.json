@@ -1,0 +1,16 @@
+{
+    "name": "akamai_waf",
+    "type": "python",
+    "clazz": "",
+    "label": "Akamai WAF",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": ""
+}
