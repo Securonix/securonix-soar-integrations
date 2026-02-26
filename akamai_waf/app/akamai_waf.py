@@ -22,7 +22,7 @@ class AkamaiWaf():
         access_token = request.connectionParameters['access_token']
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
-
+        self.logger.info("executing block_ip action")
         session = self.get_session(client_token, client_secret, access_token)
         data, error = self._get_network_list(network_list_id, host, session)
         if error:
@@ -64,7 +64,7 @@ class AkamaiWaf():
         access_token = request.connectionParameters['access_token']
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
-
+        self.logger.info("executing unblock_ip action")
         session = self.get_session(client_token, client_secret, access_token)
         data, error = self._get_network_list(network_list_id, host, session)
         if error:
@@ -109,6 +109,7 @@ class AkamaiWaf():
         :param ip_address: Optional IP filter
         :param limit: Max records to return
         """
+        self.logger.info("executing get_security_events action")
         host = request.connectionParameters['host']
         client_token = request.connectionParameters['client_token']
         client_secret = request.connectionParameters['client_secret']
