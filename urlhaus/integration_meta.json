@@ -1,0 +1,16 @@
+{
+  "name": "urlhaus",
+  "type": "python",
+  "clazz": "app.urlhaus",
+  "label": "URLhaus",
+  "native": false,
+  "testUrl": "",
+  "category": "Data Enrichment and Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "URLhaus Threat Intelligence integration enables reputation checks for URLs, domains, hosts, and file hashes using the Abuse.ch URLhaus database. This integration helps identify known malware distribution points, malicious infrastructure, and suspicious payloads for alert enrichment, threat hunting, and automated response workflows."
+}
