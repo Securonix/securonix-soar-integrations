@@ -10,7 +10,6 @@ class AkamaiWaf():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
-        pass
 
     # ---------------------------
     # P1 ACTION: Block IP
