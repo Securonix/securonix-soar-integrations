@@ -1,0 +1,152 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "URLhaus Threat Intelligence API base URL",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "Optional API key if required by the deployment or proxy layer",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "URLhaus Threat Intelligence integration enables reputation checks for URLs, domains, hosts, and file hashes using the Abuse.ch URLhaus database. This helps identify known malware distribution points, malicious infrastructure, and suspicious payloads for alert enrichment and automated response workflows.",
+  "functions": [
+    {
+      "label": "URL Reputation",
+      "name": "url_reputation",
+      "type": "ThreatIntel",
+      "desc": "Check whether a URL is known to host or distribute malware",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "URLs",
+          "name": "urls",
+          "desc": "Comma-separated list or array of URLs to evaluate",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "URL reputation lookup results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Host Reputation",
+      "name": "host_reputation",
+      "type": "ThreatIntel",
+      "desc": "Check whether a host (IP or hostname) is associated with malicious activity",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Hosts",
+          "name": "hosts",
+          "desc": "Comma-separated list or array of IP addresses or hostnames",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Host reputation lookup results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Domain Reputation",
+      "name": "domain_reputation",
+      "type": "ThreatIntel",
+      "desc": "Check whether a domain is linked to malware distribution or malicious URLs",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domains",
+          "name": "domains",
+          "desc": "Comma-separated list or array of domain names",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Domain reputation lookup results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "File Reputation",
+      "name": "file_reputation",
+      "type": "ThreatIntel",
+      "desc": "Check whether a file hash is known as a malicious payload",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "SHA256 Hashes",
+          "name": "sha256_hashes",
+          "desc": "Comma-separated list or array of SHA256 file hashes",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "File reputation lookup results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
