@@ -1,7 +1,7 @@
 {
     "name": "akamai_waf",
     "type": "python",
-    "clazz": "",
+    "clazz": "app.akamai_waf",
     "label": "Akamai WAF",
     "native": false,
     "testUrl": "",
