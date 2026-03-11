@@ -1,0 +1,498 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Skybox Security server base URL (e.g., https://skybox.example.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Username",
+      "name": "username",
+      "desc": "Skybox Security username for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Password",
+      "name": "password",
+      "desc": "Skybox Security password for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Skybox Security Threat Management integration allows you to retrieve threat alerts, vulnerabilities, exposed assets, network access rules, and security policy violations. It also supports attack simulations, asset risk scoring, threat intelligence lookups, firewall IP blocking, and change request management to automate threat response and network security workflows.",
+  "functions": [
+    {
+      "label": "Get Threat Alerts",
+      "name": "get_threat_alerts",
+      "type": "ThreatIntel",
+      "desc": "Retrieve threat alerts from Skybox Security filtered by severity and limit",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Filter alerts by severity level (e.g., HIGH, MEDIUM, LOW)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of alerts to retrieve (default: 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of threat alerts returned from Skybox Security",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Vulnerabilities",
+      "name": "get_vulnerabilities",
+      "type": "VulnerabilityManagement",
+      "desc": "Retrieve vulnerability details from Skybox Security optionally filtered by asset IP and severity",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Asset IP",
+          "name": "asset_ip",
+          "desc": "IP address of the asset to filter vulnerabilities for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Filter vulnerabilities by severity level (e.g., CRITICAL, HIGH, MEDIUM, LOW)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of vulnerabilities to retrieve (default: 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of vulnerabilities returned from Skybox Security",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Exposed Vulnerabilities",
+      "name": "get_exposed_vulnerabilities",
+      "type": "VulnerabilityManagement",
+      "desc": "Retrieve vulnerabilities that are exposed or exploitable based on network access for a specific asset",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Asset IP",
+          "name": "asset_ip",
+          "desc": "IP address of the asset to check for exposed vulnerabilities",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of exposed vulnerabilities to retrieve (default: 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of exposed vulnerabilities for the specified asset",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Network Access Rules",
+      "name": "get_network_access_rules",
+      "type": "NetworkSecurity",
+      "desc": "Retrieve firewall and network access rules from Skybox Security filtered by firewall name, source IP, or destination IP",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Firewall Name",
+          "name": "firewall_name",
+          "desc": "Name of the firewall to retrieve rules for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Source IP",
+          "name": "source_ip",
+          "desc": "Source IP address to filter network access rules",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination IP",
+          "name": "destination_ip",
+          "desc": "Destination IP address to filter network access rules",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of network access rules matching the specified filters",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Run Attack Simulation",
+      "name": "run_attack_simulation",
+      "type": "NetworkSecurity",
+      "desc": "Simulate an attack path to determine if a source IP can reach a destination IP through the network",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Source IP",
+          "name": "source_ip",
+          "desc": "Source IP address for the attack simulation",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination IP",
+          "name": "destination_ip",
+          "desc": "Destination IP address for the attack simulation",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Port",
+          "name": "port",
+          "desc": "Target port number for the simulation",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Protocol",
+          "name": "protocol",
+          "desc": "Network protocol for the simulation (default: TCP)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Attack simulation results including reachability and attack path details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Security Policy Violations",
+      "name": "get_security_policy_violations",
+      "type": "PolicyManagement",
+      "desc": "Retrieve security policy violations from Skybox Security filtered by policy name and severity",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the security policy to filter violations for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Filter violations by severity level (e.g., HIGH, MEDIUM, LOW)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of violations to retrieve (default: 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of security policy violations returned from Skybox Security",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Asset Risk Score",
+      "name": "get_asset_risk_score",
+      "type": "VulnerabilityManagement",
+      "desc": "Retrieve the risk score for a specific asset based on its IP address",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Asset IP",
+          "name": "asset_ip",
+          "desc": "IP address of the asset to retrieve the risk score for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Risk score and risk level details for the specified asset",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Threat Intelligence",
+      "name": "get_threat_intelligence",
+      "type": "ThreatIntel",
+      "desc": "Retrieve threat intelligence data for a specific indicator such as an IP address, CVE, or hostname",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "The threat indicator to look up (e.g., IP address, CVE ID, or hostname)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator Type",
+          "name": "indicator_type",
+          "desc": "Type of the indicator: ip, cve, or hostname",
+          "type": "String",
+          "values": ["ip", "cve", "hostname"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Threat intelligence details for the specified indicator",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Block IP on Firewall",
+      "name": "block_ip_on_firewall",
+      "type": "Remediation",
+      "desc": "Block a specific IP address on a target firewall via Skybox Security change management",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Firewall Name",
+          "name": "firewall_name",
+          "desc": "Name of the firewall on which the IP should be blocked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IP to Block",
+          "name": "ip_to_block",
+          "desc": "IP address to block on the specified firewall",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Reason",
+          "name": "reason",
+          "desc": "Reason for blocking the IP address (default: Blocked via Securonix SOAR)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Confirmation and details of the IP block action",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Change Requests",
+      "name": "get_change_requests",
+      "type": "PolicyManagement",
+      "desc": "Retrieve firewall change requests from Skybox Security filtered by status",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Filter change requests by status (e.g., open, closed, pending)",
+          "type": "String",
+          "values": ["open", "closed", "pending"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of change requests to retrieve (default: 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of firewall change requests matching the specified filters",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
