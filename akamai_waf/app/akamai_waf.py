@@ -159,7 +159,7 @@ class AkamaiWaf():
             raise ValueError("Missing required connection parameters.")
     
         try:
-            session = self.get_session(client_token, client_secret, access_token)
+            session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
             data, error = self._get_network_list(network_list_id="", host=host, session=session)
             if error:
                 raise Exception("Connection failed: " + str(error))
