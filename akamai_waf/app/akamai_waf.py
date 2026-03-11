@@ -45,7 +45,7 @@ class AkamaiWaf():
             "list": updated_ips,
             "description": data.get("description", "")
         }
-        update_response, error = self._update_network_list(network_list_id, payload)
+        update_response, error = self._update_network_list(host, network_list_id, payload, session)
         if error:
             return error
 
@@ -86,7 +86,7 @@ class AkamaiWaf():
             "list": updated_ips,
             "description": data.get("description", "")
         }
-        update_response, error = self._update_network_list(network_list_id, payload)
+        update_response, error = self._update_network_list(host, network_list_id, payload, session)
         if error:
             return error
 
@@ -155,12 +155,16 @@ class AkamaiWaf():
         client_token = connection_parameters['client_token']
         client_secret = connection_parameters['client_secret']
         access_token = connection_parameters['access_token']
+        if not all([host, client_token, client_secret, access_token]):
+            raise ValueError("Missing required connection parameters.")
+    
         try:
             session = self.get_session(client_token, client_secret, access_token)
-            if self._get_network_list("", host, session):
-                return 'Connection Successful'
-            else :
-                raise Exception("Connection failed.")
+            data, error = self._get_network_list(network_list_id="", host=host, session=session)
+            if error:
+                raise Exception("Connection failed: " + str(error))
+            
+            return "Connection Successful"
         except Exception as e:
             self.logger.error("Exception while testing connection parameters", exc_info=e)
             raise Exception(str(e))
@@ -185,9 +189,9 @@ class AkamaiWaf():
             return None, self._handle_error(response)
         return response.json(), None
     
-    def _update_network_list(self, network_list_id, payload):
-        url = f"{self.base_url}/network-list/v2/network-lists/{network_list_id}"
-        response = self.session.put(url, data=json.dumps(payload))
+    def _update_network_list(self, host, network_list_id, payload, session):
+        url = f"{host}/network-list/v2/network-lists/{network_list_id}"
+        response = session.put(url, data=json.dumps(payload))
 
         if response.status_code not in [200, 201]:
             return None, self._handle_error(response)
