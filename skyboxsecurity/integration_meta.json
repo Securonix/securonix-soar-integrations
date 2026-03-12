@@ -1,0 +1,16 @@
+{
+  "name": "skyboxsecurity",
+  "type": "python",
+  "clazz": "app.skyboxsecurity",
+  "label": "Skybox Security",
+  "native": false,
+  "testUrl": "",
+  "category": "Vulnerability and Risk Management",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Skybox Security Threat Management integration allows you to retrieve threat alerts, vulnerabilities, exposed assets, network access rules, and security policy violations. It also supports attack simulations, asset risk scoring, threat intelligence lookups, firewall IP blocking, and change request management to automate threat response and network security workflows."
+}
