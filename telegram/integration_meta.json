@@ -1,0 +1,16 @@
+{
+    "name": "telegram",
+    "type": "python",
+    "clazz": "app.telegram",
+    "label": "Telegram",
+    "native": false,
+    "testUrl": "",
+    "category": "Notification",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Telegram Bot integration allows you to send messages and retrieve chat information via the Telegram Bot API. Use this connector to send automated notifications, alerts, and updates to Telegram chats as part of SOAR playbook workflows."
+}
