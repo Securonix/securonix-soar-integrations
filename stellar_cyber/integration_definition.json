@@ -1,0 +1,707 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Stellar Cyber server base URL (e.g., https://stellarcyber.example.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "API Token",
+      "name": "api_token",
+      "desc": "Stellar Cyber API refresh token / API key for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Whether to verify SSL certificates (default: true)",
+      "type": "Boolean",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Stellar Cyber Open XDR Case Management integration.",
+  "functions": [
+    {
+      "label": "Create Case",
+      "name": "create_case",
+      "type": "CaseManagement",
+      "desc": "Create a new case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Name",
+          "name": "name",
+          "desc": "Case name or title",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "Case description",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Case severity level",
+          "type": "String",
+          "values": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Initial case status",
+          "type": "String",
+          "values": [
+            "New",
+            "In Progress",
+            "Resolved",
+            "Cancelled"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee",
+          "name": "assignee",
+          "desc": "User to assign the case to",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Comma-separated list of tags",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the created case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "The severity of the created case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Case",
+      "name": "update_case",
+      "type": "CaseManagement",
+      "desc": "Update an existing case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case to update",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "New case status",
+          "type": "String",
+          "values": [
+            "New",
+            "In Progress",
+            "Resolved",
+            "Cancelled"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "New case severity level",
+          "type": "String",
+          "values": [
+            "Critical",
+            "High",
+            "Medium",
+            "Low"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee",
+          "name": "assignee",
+          "desc": "New assignee for the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags to Add",
+          "name": "tags_to_add",
+          "desc": "Tags to add to the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags to Remove",
+          "name": "tags_to_remove",
+          "desc": "Tags to remove from the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "Updated case description",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the updated case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Updated Fields",
+          "name": "updated_fields",
+          "desc": "List of fields that were updated",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add Case Comment",
+      "name": "add_case_comment",
+      "type": "CaseManagement",
+      "desc": "Add a comment to an existing case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case to comment on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "Comment text to add to the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comment ID",
+          "name": "comment_id",
+          "desc": "The unique identifier of the created comment",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Case Summary",
+      "name": "get_case_summary",
+      "type": "CaseManagement",
+      "desc": "Retrieve the summary for a specific case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Summary",
+          "name": "summary",
+          "desc": "Case summary details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Case Scores",
+      "name": "get_case_scores",
+      "type": "CaseManagement",
+      "desc": "Retrieve the scores for a specific case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Score Details",
+          "name": "score_details",
+          "desc": "Case score details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Case Alerts",
+      "name": "get_case_alerts",
+      "type": "CaseManagement",
+      "desc": "Retrieve alerts associated with a specific case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Alerts",
+          "name": "alerts",
+          "desc": "List of alerts associated with the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of alerts",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Case Observables",
+      "name": "get_case_observables",
+      "type": "CaseManagement",
+      "desc": "Retrieve observables associated with a specific case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Observables",
+          "name": "observables",
+          "desc": "List of observables associated with the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of observables",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "List Cases",
+      "name": "list_cases",
+      "type": "CaseManagement",
+      "desc": "Retrieve a list of cases from Stellar Cyber with optional filters",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Filter by case status",
+          "type": "String",
+          "values": ["New", "In Progress", "Resolved", "Cancelled"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Filter by case severity",
+          "type": "String",
+          "values": ["Critical", "High", "Medium", "Low"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee",
+          "name": "assignee",
+          "desc": "Filter by assigned user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Comma-separated list of tags to filter by",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page",
+          "name": "page",
+          "desc": "Page number for pagination",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Size",
+          "name": "size",
+          "desc": "Number of results per page",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Cases",
+          "name": "cases",
+          "desc": "List of cases matching the filters",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of cases returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Case Details",
+      "name": "get_case_details",
+      "type": "CaseManagement",
+      "desc": "Retrieve full details for a specific case in Stellar Cyber",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Case ID",
+          "name": "case_id",
+          "desc": "The unique identifier of the case",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Case Details",
+          "name": "case_details",
+          "desc": "Full case details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full API response from Stellar Cyber",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
