@@ -1,0 +1,16 @@
+{
+  "name": "stellar_cyber",
+  "type": "python",
+  "clazz": "app.stellar_cyber",
+  "label": "Stellar Cyber",
+  "native": false,
+  "testUrl": "",
+  "category": "XDR",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Stellar Cyber Open XDR Case Management integration for creating, updating, and querying cases, comments, alerts, scores, and observables."
+}
