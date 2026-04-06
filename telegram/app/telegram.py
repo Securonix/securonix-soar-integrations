@@ -22,7 +22,12 @@ class Telegram():
 
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url = self._get_base_url(connectionParameters)
+            server_url = connectionParameters.get('server_url', self.DEFAULT_SERVER_URL)
+            if not server_url:
+                server_url = self.DEFAULT_SERVER_URL
+            server_url = server_url.rstrip('/')
+            bot_token = connectionParameters['bot_token']
+            base_url = f"{server_url}/bot{bot_token}"
             resp = requests.get(f"{base_url}/getMe", timeout=30)
             resp.raise_for_status()
             data = resp.json()
