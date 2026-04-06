@@ -31,6 +31,8 @@
             "encrypted": false
         }
     ],
+    "isMultiAuthentication": false,
+    "desc": "Telegram Bot integration allows you to send messages and retrieve updates via the Telegram Bot API for automated notifications and alert workflows.",
     "functions": [
         {
             "desc": "Send a text message to the configured Telegram chat",
