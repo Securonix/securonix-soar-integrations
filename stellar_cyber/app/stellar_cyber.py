@@ -12,7 +12,6 @@ class StellarCyber():
         self._jwt_token = None
         self._base_url = None
         self._api_token = None
-        self._verify_ssl = True
 
     # -------------------------------
     # Internal helpers
@@ -20,13 +19,12 @@ class StellarCyber():
     def _init_connection(self, connectionParameters: dict):
         self._base_url = connectionParameters['base_url'].rstrip('/')
         self._api_token = connectionParameters['api_token']
-        self._verify_ssl = connectionParameters.get('verify_ssl', True)
         self._get_access_token()
 
     def _get_access_token(self):
         url = f"{self._base_url}/connect/api/v1/access_token"
         headers = {"Authorization": f"Bearer {self._api_token}"}
-        resp = requests.post(url, headers=headers, verify=self._verify_ssl)
+        resp = requests.post(url, headers=headers)
         resp.raise_for_status()
         data = resp.json()
         self._jwt_token = data.get("access_token")
@@ -54,7 +52,6 @@ class StellarCyber():
                 headers=self._get_headers(),
                 params=params,
                 json=json_data,
-                verify=self._verify_ssl,
                 timeout=30
             )
 
@@ -67,7 +64,6 @@ class StellarCyber():
                     headers=self._get_headers(),
                     params=params,
                     json=json_data,
-                    verify=self._verify_ssl,
                     timeout=30
                 )
                 if resp.status_code == 401:
