@@ -19,16 +19,6 @@
       "isSecret": true,
       "optional": false,
       "encrypted": true
-    },
-    {
-      "label": "Verify SSL",
-      "name": "verify_ssl",
-      "desc": "Whether to verify SSL certificates (default: true)",
-      "type": "Boolean",
-      "values": [],
-      "isSecret": false,
-      "optional": true,
-      "encrypted": false
     }
   ],
   "isMultiAuthentication": false,

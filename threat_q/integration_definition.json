@@ -1,0 +1,471 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "ThreatQ server URL (e.g., https://threatq.example.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "ThreatQ OAuth2 client ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Email",
+      "name": "email",
+      "desc": "ThreatQ user email for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Password",
+      "name": "password",
+      "desc": "ThreatQ user password",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "ThreatQ Threat Intelligence Platform integration.",
+  "functions": [
+    {
+      "label": "Search by Name",
+      "name": "search_by_name",
+      "type": "Investigate",
+      "desc": "Search for objects by name in ThreatQ",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Name", "name": "name", "desc": "Name to search for", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Max results to return", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Search by ID",
+      "name": "search_by_id",
+      "type": "Investigate",
+      "desc": "Search for an object by type and ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Object details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "IP Reputation",
+      "name": "ip_reputation",
+      "type": "Investigate",
+      "desc": "Check the reputation of an IP address",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "IP Address", "name": "ip", "desc": "IP address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "URL Reputation",
+      "name": "url_reputation",
+      "type": "Investigate",
+      "desc": "Check the reputation of a URL",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "URL", "name": "url", "desc": "URL to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Domain Reputation",
+      "name": "domain_reputation",
+      "type": "Investigate",
+      "desc": "Check the reputation of a domain",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Domain", "name": "domain", "desc": "Domain to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "File Reputation",
+      "name": "file_reputation",
+      "type": "Investigate",
+      "desc": "Check the reputation of a file hash (MD5, SHA-1, SHA-256)",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "File Hash", "name": "file", "desc": "MD5, SHA-1, or SHA-256 hash", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Email Reputation",
+      "name": "email_reputation",
+      "type": "Investigate",
+      "desc": "Check the reputation of an email address",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Email", "name": "email", "desc": "Email address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Create Indicator",
+      "name": "create_indicator",
+      "type": "Enrichment",
+      "desc": "Create a new indicator in ThreatQ",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Type", "name": "type", "desc": "Indicator type (e.g., IP Address, Email Address)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Status", "name": "status", "desc": "Indicator status (Active, Expired, Indirect, Review, Whitelisted)", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Names", "name": "attributes_names", "desc": "Comma-separated attribute names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Values", "name": "attributes_values", "desc": "Comma-separated attribute values", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Indicator", "name": "indicator", "desc": "Created indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Edit Indicator",
+      "name": "edit_indicator",
+      "type": "Enrichment",
+      "desc": "Update an existing indicator",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "New indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "New indicator type", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Description", "name": "description", "desc": "Indicator description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Indicator", "name": "indicator", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Update Indicator Status",
+      "name": "update_status",
+      "type": "Enrichment",
+      "desc": "Update an indicator's status",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Status", "name": "status", "desc": "New status", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Update Indicator Score",
+      "name": "update_score",
+      "type": "Enrichment",
+      "desc": "Update an indicator's manual score",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Manual score (Generated Score or 1-10)", "type": "String", "values": ["Generated Score", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get All Indicators",
+      "name": "get_all_indicators",
+      "type": "Investigate",
+      "desc": "Retrieve all indicators with pagination",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Page", "name": "page", "desc": "Page number (default 0)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Max results (default 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Indicators", "name": "indicators", "desc": "List of indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Create Adversary",
+      "name": "create_adversary",
+      "type": "Enrichment",
+      "desc": "Create a new adversary",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Adversary", "name": "adversary", "desc": "Created adversary", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Edit Adversary",
+      "name": "edit_adversary",
+      "type": "Enrichment",
+      "desc": "Update an adversary name",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "ID", "name": "id", "desc": "Adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "New adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Adversary", "name": "adversary", "desc": "Updated adversary", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get All Adversaries",
+      "name": "get_all_adversaries",
+      "type": "Investigate",
+      "desc": "Retrieve all adversaries with pagination",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Max results (max 200)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Adversaries", "name": "adversaries", "desc": "List of adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Create Event",
+      "name": "create_event",
+      "type": "Enrichment",
+      "desc": "Create a new event",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Event type (e.g., Malware, Watchlist)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Date", "name": "date", "desc": "Event date (YYYY-mm-dd HH:MM:SS)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Event", "name": "event", "desc": "Created event", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Edit Event",
+      "name": "edit_event",
+      "type": "Enrichment",
+      "desc": "Update an existing event",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "ID", "name": "id", "desc": "Event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "New title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Date", "name": "date", "desc": "New date", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "New type", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Description", "name": "description", "desc": "New description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Event", "name": "event", "desc": "Updated event", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get All Events",
+      "name": "get_all_events",
+      "type": "Investigate",
+      "desc": "Retrieve all events with pagination",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Max results", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Events", "name": "events", "desc": "List of events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Add Attribute",
+      "name": "add_attribute",
+      "type": "Enrichment",
+      "desc": "Add an attribute to an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute Name", "name": "name", "desc": "Attribute name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute Value", "name": "value", "desc": "Attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Modify Attribute",
+      "name": "modify_attribute",
+      "type": "Enrichment",
+      "desc": "Modify an attribute on an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute ID", "name": "attribute_id", "desc": "Attribute ID to modify", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute Value", "name": "attribute_value", "desc": "New attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Delete Attribute",
+      "name": "delete_attribute",
+      "type": "Enrichment",
+      "desc": "Delete an attribute from an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute ID", "name": "attribute_id", "desc": "Attribute ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Add Source",
+      "name": "add_source",
+      "type": "Enrichment",
+      "desc": "Add a source to an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Source Name", "name": "source", "desc": "Source name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Delete Source",
+      "name": "delete_source",
+      "type": "Enrichment",
+      "desc": "Delete a source from an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Source ID", "name": "source_id", "desc": "Source ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Link Objects",
+      "name": "link_objects",
+      "type": "Enrichment",
+      "desc": "Link two objects together",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 2 Type", "name": "obj2_type", "desc": "Second object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Unlink Objects",
+      "name": "unlink_objects",
+      "type": "Enrichment",
+      "desc": "Unlink two objects",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 2 Type", "name": "obj2_type", "desc": "Second object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Delete Object",
+      "name": "delete_object",
+      "type": "Enrichment",
+      "desc": "Delete an object from ThreatQ",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get Related Indicators",
+      "name": "get_related_indicators",
+      "type": "Investigate",
+      "desc": "Get related indicators for an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary)", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Indicators", "name": "indicators", "desc": "Related indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get Related Events",
+      "name": "get_related_events",
+      "type": "Investigate",
+      "desc": "Get related events for an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Events", "name": "events", "desc": "Related events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get Related Adversaries",
+      "name": "get_related_adversaries",
+      "type": "Investigate",
+      "desc": "Get related adversaries for an object",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Adversaries", "name": "adversaries", "desc": "Related adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "threat_q",
+  "type": "python",
+  "clazz": "app.threat_q",
+  "label": "ThreatQ",
+  "native": false,
+  "testUrl": "",
+  "category": "Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "ThreatQ Threat Intelligence Platform integration for managing indicators, adversaries, events, attributes, sources, and object relationships."
+}
