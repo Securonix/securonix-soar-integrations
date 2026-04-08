@@ -98,7 +98,7 @@ class StellarCyber():
             base_url = connectionParameters['base_url'].rstrip('/')
             api_token = connectionParameters['api_token']
             email = connectionParameters.get('email')
-            
+            self.logger.info("base_url & api_token",base_url,api_token)
             self._get_access_token(base_url, api_token, email)
             return {'status': 'success', 'message': 'Connected to Stellar Cyber successfully.'}
         except Exception as e:
