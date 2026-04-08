@@ -40,9 +40,9 @@ class ThreatQ():
             raise Exception("Failed to obtain access token from ThreatQ")
         return token
 
-    def _connect(self, cp):
-        base_url = cp['base_url'].rstrip('/')
-        access_token = self._authenticate(base_url, cp)
+    def _connect(self, connectionParameters):
+        base_url = connectionParameters['base_url'].rstrip('/')
+        access_token = self._authenticate(base_url, connectionParameters)
         return base_url, access_token
 
     def _headers(self, access_token):
@@ -106,8 +106,7 @@ class ThreatQ():
 
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url = connectionParameters['base_url'].rstrip('/')
-            self._authenticate(base_url, connectionParameters)
+            self._connect(connectionParameters)
             return {'status': 'success', 'message': 'Connected to ThreatQ successfully.'}
         except Exception as e:
             self.logger.error("ThreatQ connection test failed", exc_info=e)

@@ -93,10 +93,7 @@ class StellarCyber():
     # -------------------------------
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url = connectionParameters['base_url'].rstrip('/')
-            api_token = connectionParameters['api_token']
-            email = connectionParameters.get('email')
-            self._get_access_token(base_url, api_token, email)
+            self._connect(connectionParameters)
             return {'status': 'success', 'message': 'Connected to Stellar Cyber successfully.'}
         except Exception as e:
             self.logger.error("Exception while testing Stellar Cyber connection", exc_info=e)
