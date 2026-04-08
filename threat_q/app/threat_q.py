@@ -106,7 +106,19 @@ class ThreatQ():
 
     def test_connection(self, connectionParameters: dict):
         try:
-            self._connect(connectionParameters)
+            base_url = connectionParameters['base_url'].rstrip('/')
+            url = f"{base_url}/api/token"
+            payload = {
+                "email": connectionParameters['email'],
+                "password": connectionParameters['password'],
+                "grant_type": "password",
+                "client_id": connectionParameters['client_id']
+            }
+            resp = requests.post(url, json=payload, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            if not data.get("access_token"):
+                raise Exception("Failed to obtain access token from ThreatQ")
             return {'status': 'success', 'message': 'Connected to ThreatQ successfully.'}
         except Exception as e:
             self.logger.error("ThreatQ connection test failed", exc_info=e)
