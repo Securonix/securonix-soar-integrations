@@ -71,21 +71,21 @@ class TestThreatQRequest(unittest.TestCase):
             "email": "[email]",
             "password": "[password]"
         }
-        self.tq._base_url = "https://threatq.example.com"
-        self.tq._access_token = "test_token"
+        self.base_url = "https://threatq.example.com"
+        self.access_token = "test_token"
 
     @patch('app.threat_q.requests.request')
     def test_request_401_error(self, mock_request):
         mock_request.return_value = mock_api_response({}, 401)
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("GET", "/indicators")
+            self.tq._request(self.base_url, self.access_token, "GET", "/indicators")
         self.assertIn("Authentication failed", str(ctx.exception))
 
     @patch('app.threat_q.requests.request')
     def test_request_404_error(self, mock_request):
         mock_request.return_value = mock_api_response({}, 404)
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("GET", "/indicators/999")
+            self.tq._request(self.base_url, self.access_token, "GET", "/indicators/999")
         self.assertIn("Object not found", str(ctx.exception))
 
     @patch('app.threat_q.requests.request')
@@ -94,20 +94,20 @@ class TestThreatQRequest(unittest.TestCase):
         mock_resp.text = "Bad request details"
         mock_request.return_value = mock_resp
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("POST", "/indicators")
+            self.tq._request(self.base_url, self.access_token, "POST", "/indicators")
         self.assertIn("Bad request", str(ctx.exception))
 
     @patch('app.threat_q.requests.request')
     def test_request_500_error(self, mock_request):
         mock_request.return_value = mock_api_response({}, 500)
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("GET", "/indicators")
+            self.tq._request(self.base_url, self.access_token, "GET", "/indicators")
         self.assertIn("server error", str(ctx.exception))
 
     @patch('app.threat_q.requests.request')
     def test_request_204_returns_empty(self, mock_request):
         mock_request.return_value = mock_api_response({}, 204)
-        result = self.tq._request("DELETE", "/indicators/1")
+        result = self.tq._request(self.base_url, self.access_token, "DELETE", "/indicators/1")
         self.assertEqual(result, {})
 
     @patch('app.threat_q.requests.request')
@@ -115,7 +115,7 @@ class TestThreatQRequest(unittest.TestCase):
         import requests
         mock_request.side_effect = requests.exceptions.Timeout()
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("GET", "/indicators")
+            self.tq._request(self.base_url, self.access_token, "GET", "/indicators")
         self.assertIn("timed out", str(ctx.exception))
 
     @patch('app.threat_q.requests.request')
@@ -123,7 +123,7 @@ class TestThreatQRequest(unittest.TestCase):
         import requests
         mock_request.side_effect = requests.exceptions.ConnectionError()
         with self.assertRaises(Exception) as ctx:
-            self.tq._request("GET", "/indicators")
+            self.tq._request(self.base_url, self.access_token, "GET", "/indicators")
         self.assertIn("Failed to connect", str(ctx.exception))
 
     def test_get_obj_endpoint_valid(self):
