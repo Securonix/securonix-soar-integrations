@@ -13,11 +13,12 @@ class StellarCyber():
     # -------------------------------
     # Internal helpers
     # -------------------------------
-    def _get_access_token(self, base_url, api_token, email=None):
-        self.logger.info("_get_access_token base url: %s",base_url)
-
+    @staticmethod
+    def _get_access_token(base_url, api_token, email=None):
+        logger = logging.getLogger()
+        logger.info("_get_access_token base url: %s", base_url)
         url = f"{base_url}/connect/api/v1/access_token"
-        self.logger.info("Retrieving JWT token from %s", url)
+        logger.info("Retrieving JWT token from %s", url)
         if email:
             resp = requests.post(url, auth=(email, api_token), timeout=30)
         else:
