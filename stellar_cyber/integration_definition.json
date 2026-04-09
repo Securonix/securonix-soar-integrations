@@ -11,6 +11,16 @@
       "encrypted": false
     },
     {
+      "label": "Email",
+      "name": "email",
+      "desc": "Email address for Basic auth (required for All-Access Token flow, omit for Scoped Key flow)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
       "label": "API Token",
       "name": "api_token",
       "desc": "Stellar Cyber API refresh token / API key for authentication",

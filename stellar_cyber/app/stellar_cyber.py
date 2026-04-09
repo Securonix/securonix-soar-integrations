@@ -158,8 +158,12 @@ class StellarCyber():
             if tags_add or tags_remove:
                 payload['tags'] = {}
                 if tags_add:
+                    if isinstance(tags_add, str):
+                        tags_add = [t.strip() for t in tags_add.split(',')]
                     payload['tags']['add'] = tags_add
                 if tags_remove:
+                    if isinstance(tags_remove, str):
+                        tags_remove = [t.strip() for t in tags_remove.split(',')]
                     payload['tags']['delete'] = tags_remove
                 updated_fields.append('tags')
 
