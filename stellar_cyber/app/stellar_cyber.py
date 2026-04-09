@@ -15,6 +15,7 @@ class StellarCyber():
     # -------------------------------
     def _get_access_token(self, base_url, api_token, email=None):
         self.logger.info("_get_access_token base url: %s",base_url)
+
         url = f"{base_url}/connect/api/v1/access_token"
         self.logger.info("Retrieving JWT token from %s", url)
         if email:
@@ -101,7 +102,7 @@ class StellarCyber():
             api_token = connectionParameters['api_token']
             email = connectionParameters.get('email')
             self.logger.info("base_url: %s & api_token: %s ",base_url,api_token)
-            self._get_access_token(base_url, api_token, email)
+            self._get_access_token(base_url=base_url, api_token=api_token, email=email)
             return {'status': 'success', 'message': 'Connected to Stellar Cyber successfully.'}
         except Exception as e:
             self.logger.error("Exception while testing Stellar Cyber connection", exc_info=e)
