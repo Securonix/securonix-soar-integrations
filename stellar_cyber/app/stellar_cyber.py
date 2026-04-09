@@ -14,8 +14,8 @@ class StellarCyber():
     # Internal helpers
     # -------------------------------
     def _get_access_token(self, base_url, api_token, email=None):
-        # self.logger.info("_get_access_token base url: %s",base_url)
-        self.logger.info("`ram aam khata hai")
+        self.logger.info("_get_access_token base url: %s",base_url)
+
         url = f"{base_url}/connect/api/v1/access_token"
         self.logger.info("Retrieving JWT token from %s", url)
         if email:
