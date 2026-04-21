@@ -1,0 +1,281 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Server URL",
+            "name": "server_url",
+            "desc": "Forcepoint SWG API base URL",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "Forcepoint SWG API Key for Bearer token authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Retrieve all custom categories for the account",
+            "label": "Get All Custom Categories",
+            "name": "get_all_custom_categories",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Cursor",
+                    "name": "cursor",
+                    "desc": "Cursor for pagination",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Categories",
+                    "name": "categories",
+                    "desc": "List of custom categories",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of categories returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a new custom category for the account",
+            "label": "Create Category",
+            "name": "create_category",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Category name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Category description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Sites",
+                    "name": "sites",
+                    "desc": "List of website URLs and IP addresses (max 30000)",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Policy Name",
+                    "name": "policyName",
+                    "desc": "Policy level custom category name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Comment",
+                    "name": "comment",
+                    "desc": "Comment field",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Created category details",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve details of a specific custom category by ID",
+            "label": "Get Category By ID",
+            "name": "get_category_by_id",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "categoryId",
+                    "desc": "ID of category to return",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Cursor",
+                    "name": "cursor",
+                    "desc": "Cursor for pagination",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Category details",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add or remove sites from a custom category",
+            "label": "Add or Remove Category Sites",
+            "name": "add_or_remove_category_sites",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "categoryId",
+                    "desc": "ID of category",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Action",
+                    "name": "action",
+                    "desc": "Action identifying whether sites are being added or removed",
+                    "type": "String",
+                    "values": ["add", "remove"],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Sites",
+                    "name": "sites",
+                    "desc": "List of website URLs and IP addresses (max 30000)",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Comment",
+                    "name": "comment",
+                    "desc": "Comment field",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "categoryId",
+                    "desc": "Category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Action",
+                    "name": "action",
+                    "desc": "Action performed",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a custom category for the account",
+            "label": "Delete Category",
+            "name": "delete_category",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "categoryId",
+                    "desc": "ID of category to delete",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "categoryId",
+                    "desc": "Deleted category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}

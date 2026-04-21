@@ -1,0 +1,66 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://securonix.com/connectorinfo.schema.json",
+    "title": "ConnectorInfo",
+    "description": "A ConnectorInfo from securonix integrations",
+    "type": "object",
+    "required": [
+        "name",
+        "label",
+        "type",
+        "native",
+        "testUrl",
+        "isLicensed",
+        "pathToLogo"
+    ],
+    "properties": {
+        "desc": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "name": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "type": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "clazz": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "label": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "native": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        },
+        "testUrl": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "category": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "isLicensed": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        },
+        "pathToLogo": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "encodedLogo": {
+            "description": "The unique identifier for a product",
+            "type": "string"
+        },
+        "isMultiAuthentication": {
+            "description": "The unique identifier for a product",
+            "type": "boolean"
+        }
+    }
+}
