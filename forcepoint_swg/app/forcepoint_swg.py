@@ -24,8 +24,9 @@ class ForcepointSwg():
     # Test Connection
     # -------------------------------------------------------------------------
     def test_connection(self, connectionParameters: dict):
-        base_url, api_key = self._get_connection(connectionParameters)
         try:
+            base_url = connectionParameters['server_url'].rstrip('/')
+            api_key = connectionParameters['api_key']
             headers = self._get_headers(api_key)
             resp = requests.get(f"{base_url}/customcategories", headers=headers, timeout=30)
             if resp.status_code >= 300:
