@@ -1,0 +1,206 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Workday environment base URL (e.g., https://wd2-impl-services1.workday.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Tenant Name",
+      "name": "tenant",
+      "desc": "Workday tenant name (e.g., acme_impl)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "OAuth2 client ID configured in Workday",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "OAuth2 client secret from Workday",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Refresh Token",
+      "name": "refresh_token",
+      "desc": "OAuth2 refresh token used to generate access tokens",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Token URL",
+      "name": "token_url",
+      "desc": "OAuth2 token endpoint (e.g., https://<host>/ccx/oauth2/<tenant>/token)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Timeout",
+      "name": "timeout",
+      "desc": "HTTP request timeout in seconds",
+      "type": "Number",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Workday integration enables retrieval and synchronization of employee and organizational data for identity enrichment, access governance, and workflow automation. It allows fetching employee details, syncing workforce data, triggering onboarding processes, and enriching alerts with HR context to support identity-driven security operations.",
+  "functions": [
+    {
+      "label": "Get Employee Details",
+      "name": "get_employee_details",
+      "type": "DataEnrichment",
+      "desc": "Retrieve employee details from Workday using employee ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Employee ID",
+          "name": "employee_id",
+          "desc": "Unique identifier of the employee in Workday",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Employee Details",
+          "name": "employee",
+          "desc": "Employee profile information",
+          "type": "Object",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Fetch User Risk Profile",
+      "name": "get_user_risk_profile",
+      "type": "DataEnrichment",
+      "desc": "Fetch user risk profile from integrated systems or custom Workday reports",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Employee ID",
+          "name": "employee_id",
+          "desc": "Employee identifier",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Risk Profile",
+          "name": "risk_profile",
+          "desc": "Risk score or behavioral insights",
+          "type": "Object",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Trigger Onboarding Workflow",
+      "name": "trigger_onboarding",
+      "type": "Action",
+      "desc": "Trigger onboarding process for a new employee",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Employee ID",
+          "name": "employee_id",
+          "type": "String",
+          "optional": false
+        },
+        {
+          "label": "Name",
+          "name": "name",
+          "type": "String",
+          "optional": false
+        },
+        {
+          "label": "Department",
+          "name": "department",
+          "type": "String",
+          "optional": false
+        },
+        {
+          "label": "Start Date",
+          "name": "start_date",
+          "type": "String",
+          "optional": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Response",
+          "name": "response",
+          "desc": "Onboarding workflow response",
+          "type": "Object",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "label": "Sync Employee Data",
+      "name": "sync_employee_data",
+      "type": "DataEnrichment",
+      "desc": "Retrieve and synchronize employee data from Workday",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Employees",
+          "name": "employees",
+          "desc": "List of employees",
+          "type": "List",
+          "optional": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of employees retrieved",
+          "type": "Number",
+          "optional": false
+        }
+      ]
+    }
+  ]
+}

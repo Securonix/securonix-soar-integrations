@@ -1,0 +1,16 @@
+{
+  "name": "workday",
+  "type": "python",
+  "clazz": "app.workday",
+  "label": "Workday",
+  "native": false,
+  "testUrl": "",
+  "category": "HR Systems and Identity Enrichment",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Workday integration enables retrieval and synchronization of employee and organizational data for identity enrichment, access governance, and automated workflows. It allows fetching employee details, syncing workforce data, triggering onboarding processes, and enriching security alerts with HR context. This integration helps automate identity-based decisions, improve incident response, and streamline HR-driven workflows within SOAR platforms."
+}
