@@ -33,9 +33,15 @@ class ForcepointSwg():
                 "Content-Type": "application/json"
             }
             resp = requests.get(f"{base_url}/customcategories", headers=headers, timeout=30)
-            if resp.status_code >= 300:
-                raise Exception(resp.text)
+            if resp.status_code in (401, 403):
+                raise Exception(f"Authentication failed: {resp.status_code} {resp.text}")
+            if resp.status_code >= 500:
+                raise Exception(f"Server error: {resp.status_code} {resp.text}")
             return {'status': 'success', 'message': 'Connected to Forcepoint SWG successfully.'}
+        except requests.exceptions.ConnectionError:
+            raise Exception('Unable to connect to Forcepoint SWG. Please verify the Server URL.')
+        except requests.exceptions.Timeout:
+            raise Exception('Connection to Forcepoint SWG timed out.')
         except Exception as e:
             self.logger.error("Exception while testing connection", exc_info=e)
             raise Exception(str(e))
