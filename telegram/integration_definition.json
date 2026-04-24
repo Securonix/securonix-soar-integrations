@@ -1,0 +1,150 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Bot Token",
+            "name": "bot_token",
+            "desc": "The Telegram Bot API token obtained from BotFather",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Server URL",
+            "name": "server_url",
+            "desc": "Custom Telegram Bot API server URL. Defaults to https://api.telegram.org if not provided.",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Chat ID",
+            "name": "chat_id",
+            "desc": "The default chat ID to send messages to and retrieve chat info from",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "Telegram Bot integration allows you to send messages and retrieve updates via the Telegram Bot API for automated notifications and alert workflows.",
+    "functions": [
+        {
+            "desc": "Send a text message to the configured Telegram chat",
+            "label": "Send Message",
+            "name": "send_message",
+            "type": "Notification",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "The text message to send",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Parse Mode",
+                    "name": "parse_mode",
+                    "desc": "Message formatting mode. Supported values: Markdown, HTML. Leave empty for plain text.",
+                    "type": "String",
+                    "values": ["Markdown", "HTML"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message ID",
+                    "name": "message_id",
+                    "desc": "The ID of the sent message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve recent messages and updates received by the bot",
+            "label": "Get Updates",
+            "name": "get_updates",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Maximum number of updates to retrieve (1-100). Defaults to 10.",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "Identifier of the first update to be returned. Use the update_id of the last received update + 1 to fetch only newer updates.",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of messages retrieved",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Messages",
+                    "name": "messages",
+                    "desc": "List of messages with update_id, message_id, from, chat_id, date, and text",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name": "forcepoint_swg",
+    "type": "python",
+    "clazz": "app.forcepoint_swg",
+    "label": "Forcepoint SWG",
+    "native": false,
+    "testUrl": "",
+    "category": "Network Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Forcepoint Secure Web Gateway integration for managing custom URL categories. Supports creating, retrieving, updating, and deleting custom categories and their associated sites."
+}
