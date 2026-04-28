@@ -1,0 +1,131 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Base URL",
+        "name": "base_url",
+        "desc": "IBM X-Force Exchange API base URL",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Key",
+        "name": "api_key",
+        "desc": "IBM X-Force Exchange API key",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Password",
+        "name": "api_password",
+        "desc": "IBM X-Force Exchange API password",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "IBM X-Force Exchange integration for threat intelligence lookups. Supports IP reputation, domain reputation, and URL reputation queries using the X-Force Exchange API.",
+    "functions": [
+      {
+        "label": "Lookup IP",
+        "name": "lookup_ip",
+        "type": "ThreatIntel",
+        "desc": "Look up IP address reputation from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "IP Addresses",
+            "name": "ips",
+            "desc": "Comma-separated list or array of IP addresses",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "IP reputation lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Lookup Domain",
+        "name": "lookup_domain",
+        "type": "ThreatIntel",
+        "desc": "Look up domain reputation from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Domains",
+            "name": "domains",
+            "desc": "Comma-separated list or array of domain names",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Domain reputation lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Lookup URL",
+        "name": "lookup_url",
+        "type": "ThreatIntel",
+        "desc": "Look up URL reputation from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "URLs",
+            "name": "urls",
+            "desc": "Comma-separated list or array of URLs",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "URL reputation lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }
