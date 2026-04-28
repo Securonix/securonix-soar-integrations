@@ -13,10 +13,14 @@ class IbmXforce():
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
-    def _build_auth_header(self, api_key, api_password):
-        credentials = base64.b64encode(
-            f"{api_key}:{api_password}".encode()
-        ).decode()
+    def _get_connection(self, connection_params):
+        base_url = connection_params['base_url'].rstrip('/')
+        api_key = connection_params['api_key']
+        api_password = connection_params['api_password']
+        return base_url, api_key, api_password
+
+    def _get_headers(self, api_key, api_password):
+        credentials = base64.b64encode(f"{api_key}:{api_password}".encode()).decode()
         return {"Authorization": f"Basic {credentials}", "Accept": "application/json"}
 
     def _normalize_indicators(self, indicators):
@@ -50,10 +54,9 @@ class IbmXforce():
             raise Exception(str(e))
 
     def lookup_ip(self, request: RequestBody) -> ResponseBody:
-        base_url = request.connectionParameters['base_url'].rstrip('/')
-        api_key = request.connectionParameters['api_key']
-        api_password = request.connectionParameters['api_password']
-        headers = self._build_auth_header(api_key, api_password)
+        base_url, api_key, api_password = self._get_connection(request.connectionParameters)
+        credentials = base64.b64encode(f"{api_key}:{api_password}".encode()).decode()
+        headers = {"Authorization": f"Basic {credentials}", "Accept": "application/json"}
         ips = self._normalize_indicators(request.parameters["ips"])
         results = []
 
@@ -71,10 +74,9 @@ class IbmXforce():
         return {"status": "success", "results": results}
 
     def lookup_domain(self, request: RequestBody) -> ResponseBody:
-        base_url = request.connectionParameters['base_url'].rstrip('/')
-        api_key = request.connectionParameters['api_key']
-        api_password = request.connectionParameters['api_password']
-        headers = self._build_auth_header(api_key, api_password)
+        base_url, api_key, api_password = self._get_connection(request.connectionParameters)
+        credentials = base64.b64encode(f"{api_key}:{api_password}".encode()).decode()
+        headers = {"Authorization": f"Basic {credentials}", "Accept": "application/json"}
         domains = self._normalize_indicators(request.parameters["domains"])
         results = []
 
@@ -92,10 +94,9 @@ class IbmXforce():
         return {"status": "success", "results": results}
 
     def lookup_url(self, request: RequestBody) -> ResponseBody:
-        base_url = request.connectionParameters['base_url'].rstrip('/')
-        api_key = request.connectionParameters['api_key']
-        api_password = request.connectionParameters['api_password']
-        headers = self._build_auth_header(api_key, api_password)
+        base_url, api_key, api_password = self._get_connection(request.connectionParameters)
+        credentials = base64.b64encode(f"{api_key}:{api_password}".encode()).decode()
+        headers = {"Authorization": f"Basic {credentials}", "Accept": "application/json"}
         urls = self._normalize_indicators(request.parameters["urls"])
         results = []
 
