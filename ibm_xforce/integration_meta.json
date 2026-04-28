@@ -1,0 +1,16 @@
+{
+    "name": "ibm_xforce",
+    "type": "python",
+    "clazz": "app.ibm_xforce",
+    "label": "IBM X-Force Exchange",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "IBM X-Force Exchange integration for threat intelligence lookups. Supports IP reputation, domain reputation, and URL reputation queries using the X-Force Exchange API."
+  }
