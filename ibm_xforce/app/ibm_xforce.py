@@ -32,7 +32,8 @@ class IbmXforce():
             base_url = connectionParameters['base_url'].rstrip('/')
             api_key = connectionParameters['api_key']
             api_password = connectionParameters['api_password']
-            headers = self._build_auth_header(api_key, api_password)
+            credentials = base64.b64encode(f"{api_key}:{api_password}".encode()).decode()
+            headers = {"Authorization": f"Basic {credentials}", "Accept": "application/json"}
 
             resp = requests.get(f"{base_url}/ipr/8.8.8.8", headers=headers, timeout=self.TIMEOUT)
             if resp.status_code in (401, 403):
