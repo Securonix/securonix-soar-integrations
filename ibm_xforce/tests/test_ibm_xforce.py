@@ -155,8 +155,8 @@ def test_lookup_url(mock_get):
 @patch("requests.get", side_effect=Exception("API Error"))
 def test_lookup_ip_error_handling(mock_get):
     req = create_request_body({"ips": ["1.1.1.1"]})
-    resp = integration_class.lookup_ip(req)
-
-    assert resp["status"] == "success"
-    assert len(resp["results"]) == 1
-    assert "error" in resp["results"][0]
+    try:
+        integration_class.lookup_ip(req)
+        assert False, "Should have raised exception"
+    except Exception as e:
+        assert "API Error" in str(e)
