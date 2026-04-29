@@ -46,10 +46,13 @@ class IbmXforce():
 
             results = []
             for ip in ips:
-                resp = requests.get(f"{base_url}/ipr/{ip}", headers=headers, timeout=30)
-                if resp.status_code >= 300:
-                    raise Exception(resp.text)
-                results.append({"ip": ip, "reputation": resp.json()})
+                try:
+                    resp = requests.get(f"{base_url}/ipr/{ip}", headers=headers, timeout=30)
+                    resp.raise_for_status()
+                    results.append({"ip": ip, "reputation": resp.json()})
+                except Exception as e:
+                    self.logger.error("Error looking up IP %s", ip, exc_info=e)
+                    results.append({"ip": ip, "error": str(e)})
 
             return {"status": "success", "results": results}
         except Exception as e:
@@ -70,10 +73,13 @@ class IbmXforce():
 
             results = []
             for domain in domains:
-                resp = requests.get(f"{base_url}/url/{domain}", headers=headers, timeout=30)
-                if resp.status_code >= 300:
-                    raise Exception(resp.text)
-                results.append({"domain": domain, "reputation": resp.json()})
+                try:
+                    resp = requests.get(f"{base_url}/url/{domain}", headers=headers, timeout=30)
+                    resp.raise_for_status()
+                    results.append({"domain": domain, "reputation": resp.json()})
+                except Exception as e:
+                    self.logger.error("Error looking up domain %s", domain, exc_info=e)
+                    results.append({"domain": domain, "error": str(e)})
 
             return {"status": "success", "results": results}
         except Exception as e:
@@ -94,10 +100,13 @@ class IbmXforce():
 
             results = []
             for target_url in urls:
-                resp = requests.get(f"{base_url}/url/{target_url}", headers=headers, timeout=30)
-                if resp.status_code >= 300:
-                    raise Exception(resp.text)
-                results.append({"url": target_url, "reputation": resp.json()})
+                try:
+                    resp = requests.get(f"{base_url}/url/{target_url}", headers=headers, timeout=30)
+                    resp.raise_for_status()
+                    results.append({"url": target_url, "reputation": resp.json()})
+                except Exception as e:
+                    self.logger.error("Error looking up URL %s", target_url, exc_info=e)
+                    results.append({"url": target_url, "error": str(e)})
 
             return {"status": "success", "results": results}
         except Exception as e:
