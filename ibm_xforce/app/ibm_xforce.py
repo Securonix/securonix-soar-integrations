@@ -3,6 +3,7 @@ from app.model.response_body import ResponseBody
 import logging
 import requests
 import base64
+import re
 
 
 class IbmXforce():
@@ -44,17 +45,29 @@ class IbmXforce():
             if isinstance(ips, str):
                 ips = [i.strip() for i in ips.split(",") if i.strip()]
 
+            invalid_ips = [ip for ip in ips if not re.match(r'^\d{1,3}(\.\d{1,3}){3}$', ip)]
+            if invalid_ips:
+                raise Exception(f"Invalid IP address format: {', '.join(invalid_ips)}. Expected format: x.x.x.x (e.g., 1.1.1.1)")
+
             results = []
             for ip in ips:
+                resp = requests.get(f"{base_url}/ipr/{ip}", headers=headers, timeout=30)
+                if resp.status_code in (401, 403):
+                    raise Exception("Authentication failed. Please verify your API Key and API Password are correct.")
+                if resp.status_code == 404:
+                    raise Exception(f"No threat data found for IP: {ip}")
+                if resp.status_code >= 300:
+                    raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
                 try:
-                    resp = requests.get(f"{base_url}/ipr/{ip}", headers=headers, timeout=30)
-                    resp.raise_for_status()
                     results.append({"ip": ip, "reputation": resp.json()})
-                except Exception as e:
-                    self.logger.error("Error looking up IP %s", ip, exc_info=e)
-                    results.append({"ip": ip, "error": str(e)})
+                except ValueError:
+                    raise Exception("Invalid response from API. Please verify your API Key and API Password are correct.")
 
             return {"status": "success", "results": results}
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to IBM X-Force Exchange. Please verify the Base URL.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to IBM X-Force Exchange timed out.")
         except Exception as e:
             self.logger.error("error while running action 'lookup_ip'", exc_info=e)
             raise Exception(str(e))
@@ -73,15 +86,23 @@ class IbmXforce():
 
             results = []
             for domain in domains:
+                resp = requests.get(f"{base_url}/url/{domain}", headers=headers, timeout=30)
+                if resp.status_code in (401, 403):
+                    raise Exception("Authentication failed. Please verify your API Key and API Password are correct.")
+                if resp.status_code == 404:
+                    raise Exception(f"No threat data found for domain: {domain}")
+                if resp.status_code >= 300:
+                    raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
                 try:
-                    resp = requests.get(f"{base_url}/url/{domain}", headers=headers, timeout=30)
-                    resp.raise_for_status()
                     results.append({"domain": domain, "reputation": resp.json()})
-                except Exception as e:
-                    self.logger.error("Error looking up domain %s", domain, exc_info=e)
-                    results.append({"domain": domain, "error": str(e)})
+                except ValueError:
+                    raise Exception("Invalid response from API. Please verify your API Key and API Password are correct.")
 
             return {"status": "success", "results": results}
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to IBM X-Force Exchange. Please verify the Base URL.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to IBM X-Force Exchange timed out.")
         except Exception as e:
             self.logger.error("error while running action 'lookup_domain'", exc_info=e)
             raise Exception(str(e))
@@ -100,15 +121,23 @@ class IbmXforce():
 
             results = []
             for target_url in urls:
+                resp = requests.get(f"{base_url}/url/{target_url}", headers=headers, timeout=30)
+                if resp.status_code in (401, 403):
+                    raise Exception("Authentication failed. Please verify your API Key and API Password are correct.")
+                if resp.status_code == 404:
+                    raise Exception(f"No threat data found for URL: {target_url}")
+                if resp.status_code >= 300:
+                    raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
                 try:
-                    resp = requests.get(f"{base_url}/url/{target_url}", headers=headers, timeout=30)
-                    resp.raise_for_status()
                     results.append({"url": target_url, "reputation": resp.json()})
-                except Exception as e:
-                    self.logger.error("Error looking up URL %s", target_url, exc_info=e)
-                    results.append({"url": target_url, "error": str(e)})
+                except ValueError:
+                    raise Exception("Invalid response from API. Please verify your API Key and API Password are correct.")
 
             return {"status": "success", "results": results}
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to IBM X-Force Exchange. Please verify the Base URL.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to IBM X-Force Exchange timed out.")
         except Exception as e:
             self.logger.error("error while running action 'lookup_url'", exc_info=e)
             raise Exception(str(e))
