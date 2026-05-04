@@ -1,0 +1,16 @@
+{
+  "name": "misp",
+  "type": "python",
+  "clazz": "app.misp",
+  "label": "MISP",
+  "native": false,
+  "testUrl": "",
+  "category": "Data Enrichment and Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "MISP (Malware Information Sharing Platform) integration for threat intelligence sharing, IOC management, event creation, attribute search, tag management, sighting tracking, feed management, and warninglist lookups."
+}

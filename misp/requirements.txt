@@ -1,0 +1,5 @@
+pytest==7.4.0
+coverage==7.2.7
+hypothesis==6.92.2
+pykson
+requests==2.31.0

@@ -4,3 +4,5 @@ __pycache__/
 
 # Testing
 .pytest_cache/
+.amazonq/
+aidlc-docs/
