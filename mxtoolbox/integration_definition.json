@@ -1,0 +1,466 @@
+{
+    "connectionParameters": [
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "MXToolbox API key for authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Base URL",
+            "name": "base_url",
+            "desc": "MXToolbox API base URL. Defaults to https://mxtoolbox.com/api/v1 if not provided.",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Timeout",
+            "name": "timeout",
+            "desc": "HTTP request timeout in seconds. Defaults to 30.",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Max Retries",
+            "name": "max_retries",
+            "desc": "Maximum number of retry attempts for failed requests. Defaults to 3.",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "MXToolbox integration for threat intelligence indicator enrichment including blacklist checks, DNS lookups, and email security validation (SPF, DKIM, DMARC).",
+    "functions": [
+        {
+            "label": "IP Blacklist Check",
+            "name": "blacklist_ip_check",
+            "type": "ThreatIntel",
+            "desc": "Check if an IP address is listed on any blacklists",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "IP Address",
+                    "name": "ip_address",
+                    "desc": "The IP address to check against blacklists",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Blacklisted Count",
+                    "name": "blacklisted_count",
+                    "desc": "Number of blacklists the IP appears on",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Blacklisted On",
+                    "name": "blacklisted_on",
+                    "desc": "List of blacklists the IP is listed on",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain Blacklist Check",
+            "name": "blacklist_domain_check",
+            "type": "ThreatIntel",
+            "desc": "Check if a domain is listed on any blacklists",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to check against blacklists",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Blacklisted Count",
+                    "name": "blacklisted_count",
+                    "desc": "Number of blacklists the domain appears on",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Blacklisted On",
+                    "name": "blacklisted_on",
+                    "desc": "List of blacklists the domain is listed on",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "MX Record Lookup",
+            "name": "mx_lookup",
+            "type": "ThreatIntel",
+            "desc": "Retrieve MX (mail exchange) records for a domain",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to look up MX records for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "MX Records",
+                    "name": "mx_records",
+                    "desc": "List of MX records for the domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Record Count",
+                    "name": "record_count",
+                    "desc": "Number of MX records found",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "DNS Lookup",
+            "name": "dns_lookup",
+            "type": "ThreatIntel",
+            "desc": "Perform general DNS resolution for a domain",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to resolve DNS records for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "DNS Records",
+                    "name": "dns_records",
+                    "desc": "List of DNS records for the domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Record Count",
+                    "name": "record_count",
+                    "desc": "Number of DNS records found",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Reverse DNS Lookup",
+            "name": "reverse_dns_lookup",
+            "type": "ThreatIntel",
+            "desc": "Get hostname for an IP address via PTR record lookup",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "IP Address",
+                    "name": "ip_address",
+                    "desc": "The IP address to perform reverse DNS lookup on",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "PTR Records",
+                    "name": "ptr_records",
+                    "desc": "List of PTR records for the IP",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Record Count",
+                    "name": "record_count",
+                    "desc": "Number of PTR records found",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "SPF Check",
+            "name": "spf_check",
+            "type": "ThreatIntel",
+            "desc": "Validate SPF record configuration for a domain to detect email spoofing",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to validate SPF record for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "SPF Valid",
+                    "name": "spf_valid",
+                    "desc": "Whether the SPF record is valid (true/false)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Failures",
+                    "name": "failures",
+                    "desc": "List of SPF validation failures",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "DKIM Check",
+            "name": "dkim_check",
+            "type": "ThreatIntel",
+            "desc": "Validate DKIM record configuration for a domain to verify email authentication",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to validate DKIM record for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Selector",
+                    "name": "selector",
+                    "desc": "DKIM selector to check. Leave empty to auto-detect (tries google, selector1, s1). Provide a specific selector if you know it for faster results.",
+                    "type": "String",
+                    "values": ["google", "selector1", "selector2", "s1", "s2", "k1", "default"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "DKIM Valid",
+                    "name": "dkim_valid",
+                    "desc": "Whether the DKIM record is valid (true/false)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Failures",
+                    "name": "failures",
+                    "desc": "List of DKIM validation failures",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "DMARC Check",
+            "name": "dmarc_check",
+            "type": "ThreatIntel",
+            "desc": "Validate DMARC policy configuration for a domain to assess email security posture",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The domain to validate DMARC policy for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status of the action",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "DMARC Valid",
+                    "name": "dmarc_valid",
+                    "desc": "Whether the DMARC policy is valid (true/false)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Failures",
+                    "name": "failures",
+                    "desc": "List of DMARC validation failures",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}
