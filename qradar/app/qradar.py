@@ -15,7 +15,7 @@ class Qradar():
         if not base_url:
             raise Exception("base_url is required for QRadar connection")
         base_url = base_url.rstrip('/')
-        api_token = connection_params['api_token']
+        api_token = connection_params.get('api_token', '')
         if not api_token:
             raise Exception("api_token is required for QRadar connection")
         timeout = connection_params.get('timeout', 30)
@@ -33,7 +33,7 @@ class Qradar():
             api_version = '14.0'
         return base_url, api_token, timeout, max_retries, api_version
 
-    def _get_headers(self, api_token: str, api_version: str, range_header: str = None) -> dict:
+    def _get_headers(self, api_token: str = '', api_version: str = '14.0', range_header: str = None) -> dict:
         headers = {
             "SEC": api_token,
             "Version": api_version,
@@ -140,7 +140,7 @@ class Qradar():
             if not base_url:
                 raise Exception("base_url is required for QRadar connection")
             base_url = base_url.rstrip('/')
-            api_token = connectionParameters['api_token']
+            api_token = connectionParameters.get('api_token', '')
             if not api_token:
                 raise Exception("api_token is required for QRadar connection")
             timeout = connectionParameters.get('timeout', 30)

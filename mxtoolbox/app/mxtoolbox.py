@@ -34,7 +34,7 @@ class Mxtoolbox():
             max_retries = int(max_retries)
         return base_url, api_key, timeout, max_retries
 
-    def _get_headers(self, api_key: str) -> dict:
+    def _get_headers(self, api_key: str = '') -> dict:
         return {
             "Authorization": api_key,
             "Accept": "application/json",
@@ -162,7 +162,7 @@ class Mxtoolbox():
             if not base_url:
                 base_url = self.DEFAULT_BASE_URL
             base_url = base_url.rstrip('/')
-            api_key = connectionParameters['api_key']
+            api_key = connectionParameters.get('api_key', '')
             timeout = connectionParameters.get('timeout', 30)
             if timeout in [None, "None", "", "null"]:
                 timeout = 30
@@ -170,7 +170,11 @@ class Mxtoolbox():
                 timeout = int(timeout)
 
             url = f"{base_url}/lookup/dns/"
-            headers = self._get_headers(api_key)
+            headers = {
+                "Authorization": api_key,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
             params = {"argument": "example.com"}
             resp = requests.get(url, headers=headers, params=params, timeout=timeout)
             if resp.status_code == 401:
