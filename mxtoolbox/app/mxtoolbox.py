@@ -7,6 +7,9 @@ import re
 import requests
 
 
+logger = logging.getLogger(__name__)
+
+
 class Mxtoolbox():
 
     DEFAULT_BASE_URL = "https://mxtoolbox.com/api/v1"
@@ -14,12 +17,13 @@ class Mxtoolbox():
     COMMON_DKIM_SELECTORS = ["google", "selector1", "s1"]
 
     def __init__(self) -> None:
-        self.logger = logging.getLogger()
+        pass
 
-    def _get_connection(self, connection_params: dict) -> tuple:
-        base_url = connection_params.get('base_url', self.DEFAULT_BASE_URL)
+    @staticmethod
+    def _get_connection(connection_params: dict) -> tuple:
+        base_url = connection_params.get('base_url', Mxtoolbox.DEFAULT_BASE_URL)
         if not base_url:
-            base_url = self.DEFAULT_BASE_URL
+            base_url = Mxtoolbox.DEFAULT_BASE_URL
         base_url = base_url.rstrip('/')
         api_key = connection_params['api_key']
         timeout = connection_params.get('timeout', 30)
@@ -34,15 +38,18 @@ class Mxtoolbox():
             max_retries = int(max_retries)
         return base_url, api_key, timeout, max_retries
 
-    def _get_headers(self, api_key: str = '') -> dict:
+    @staticmethod
+    def _get_headers(api_key: str = '') -> dict:
         return {
             "Authorization": api_key,
             "Accept": "application/json",
             "Content-Type": "application/json"
         }
 
-    def _request_with_retry(self, url: str, headers: dict, params: dict,
+    @staticmethod
+    def _request_with_retry(url: str, headers: dict, params: dict,
                             timeout: int, max_retries: int) -> dict:
+        
         last_exception = None
         for attempt in range(max_retries):
             try:
@@ -50,7 +57,7 @@ class Mxtoolbox():
                 if resp.status_code == 429:
                     backoff = min(2 ** attempt, 16)
                     if attempt < max_retries - 1:
-                        self.logger.warning(
+                        logger.warning(
                             "Rate limited (429), retrying in %ds (attempt %d/%d)",
                             backoff, attempt + 1, max_retries
                         )
@@ -75,7 +82,7 @@ class Mxtoolbox():
                 last_exception = Exception("Request timed out")
                 if attempt < max_retries - 1:
                     backoff = min(2 ** attempt, 16)
-                    self.logger.warning(
+                    logger.warning(
                         "Timeout, retrying in %ds (attempt %d/%d)",
                         backoff, attempt + 1, max_retries
                     )
@@ -85,7 +92,7 @@ class Mxtoolbox():
                 last_exception = Exception("Failed to connect to MXToolbox")
                 if attempt < max_retries - 1:
                     backoff = min(2 ** attempt, 16)
-                    self.logger.warning(
+                    logger.warning(
                         "Connection error, retrying in %ds (attempt %d/%d)",
                         backoff, attempt + 1, max_retries
                     )
@@ -125,14 +132,16 @@ class Mxtoolbox():
             raise Exception(f"Invalid domain format: {domain}")
         return domain
 
-    def _lookup(self, base_url: str, api_key: str, timeout: int, max_retries: int,
+    @staticmethod
+    def _lookup(base_url: str, api_key: str, timeout: int, max_retries: int,
                 command: str, argument: str) -> dict:
         url = f"{base_url}/lookup/{command}/"
-        headers = self._get_headers(api_key)
+        headers = Mxtoolbox._get_headers(api_key)
         params = {"argument": argument}
-        self.logger.debug("MXToolbox lookup: %s ?argument=%s", command, argument)
-        data = self._request_with_retry(url, headers, params, timeout, max_retries)
-        self.logger.debug("MXToolbox response received for %s", command)
+        
+        logger.debug("MXToolbox lookup: %s ?argument=%s", command, argument)
+        data = Mxtoolbox._request_with_retry(url, headers, params, timeout, max_retries)
+        logger.debug("MXToolbox response received for %s", command)
         return data
 
     @staticmethod
@@ -148,7 +157,8 @@ class Mxtoolbox():
             return "medium"
         return "low"
 
-    def _classify_results(self, results: list) -> tuple:
+    @staticmethod
+    def _classify_results(results: list) -> tuple:
         listed = [r for r in results if r.get("Status") == "Failed"]
         clean = [r for r in results if r.get("Status") != "Failed"]
         return listed, clean
@@ -158,9 +168,9 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url = connectionParameters.get('base_url', self.DEFAULT_BASE_URL)
+            base_url = connectionParameters.get('base_url', Mxtoolbox.DEFAULT_BASE_URL)
             if not base_url:
-                base_url = self.DEFAULT_BASE_URL
+                base_url = Mxtoolbox.DEFAULT_BASE_URL
             base_url = base_url.rstrip('/')
             api_key = connectionParameters.get('api_key', '')
             timeout = connectionParameters.get('timeout', 30)
@@ -185,7 +195,7 @@ class Mxtoolbox():
                 raise Exception(f"MXToolbox server error: {resp.status_code}")
             return {'status': 'success', 'message': 'Connected to MXToolbox successfully.'}
         except Exception as e:
-            self.logger.error("Exception while testing MXToolbox connection", exc_info=e)
+            logger.error("Exception while testing MXToolbox connection", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -193,11 +203,14 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def blacklist_ip_check(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            ip_address = self._validate_ip(request.parameters.get('ip_address', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "blacklist", ip_address)
+            logger.info("blacklist_ip_check called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            ip_address = Mxtoolbox._validate_ip(request.parameters.get('ip_address', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "blacklist", ip_address)
             results = data.get("Result", [])
-            listed, clean = self._classify_results(results)
+            listed, clean = Mxtoolbox._classify_results(results)
             verdict = "listed" if listed else "clean"
             return {
                 "success": True,
@@ -206,7 +219,7 @@ class Mxtoolbox():
                 "lookup_type": "blacklist",
                 "summary": {
                     "verdict": verdict,
-                    "risk_level": self._assess_risk(len(listed), len(results))
+                    "risk_level": Mxtoolbox._assess_risk(len(listed), len(results))
                 },
                 "data": {
                     "listed_count": len(listed),
@@ -217,7 +230,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in blacklist_ip_check", exc_info=e)
+            logger.error("Error in blacklist_ip_check", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -225,11 +238,14 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def blacklist_domain_check(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "blacklist", domain)
+            logger.info("blacklist_domain_check called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "blacklist", domain)
             results = data.get("Result", [])
-            listed, clean = self._classify_results(results)
+            listed, clean = Mxtoolbox._classify_results(results)
             verdict = "listed" if listed else "clean"
             return {
                 "success": True,
@@ -238,7 +254,7 @@ class Mxtoolbox():
                 "lookup_type": "blacklist",
                 "summary": {
                     "verdict": verdict,
-                    "risk_level": self._assess_risk(len(listed), len(results))
+                    "risk_level": Mxtoolbox._assess_risk(len(listed), len(results))
                 },
                 "data": {
                     "listed_count": len(listed),
@@ -249,7 +265,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in blacklist_domain_check", exc_info=e)
+            logger.error("Error in blacklist_domain_check", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -257,9 +273,12 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def mx_lookup(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "mx", domain)
+            logger.info("mx_lookup called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "mx", domain)
             results = data.get("Result", [])
             return {
                 "success": True,
@@ -277,7 +296,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in mx_lookup", exc_info=e)
+            logger.error("Error in mx_lookup", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -285,9 +304,12 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def dns_lookup(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "dns", domain)
+            logger.info("dns_lookup called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "dns", domain)
             results = data.get("Result", [])
             return {
                 "success": True,
@@ -305,7 +327,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in dns_lookup", exc_info=e)
+            logger.error("Error in dns_lookup", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -313,9 +335,12 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def reverse_dns_lookup(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            ip_address = self._validate_ip(request.parameters.get('ip_address', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "ptr", ip_address)
+            logger.info("reverse_dns_lookup called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            ip_address = Mxtoolbox._validate_ip(request.parameters.get('ip_address', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "ptr", ip_address)
             results = data.get("Result", [])
             return {
                 "success": True,
@@ -333,7 +358,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in reverse_dns_lookup", exc_info=e)
+            logger.error("Error in reverse_dns_lookup", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -341,11 +366,14 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def spf_check(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "spf", domain)
+            logger.info("spf_check called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "spf", domain)
             results = data.get("Result", [])
-            failed, passed = self._classify_results(results)
+            failed, passed = Mxtoolbox._classify_results(results)
             return {
                 "success": True,
                 "indicator": domain,
@@ -353,7 +381,7 @@ class Mxtoolbox():
                 "lookup_type": "spf",
                 "summary": {
                     "verdict": "invalid" if failed else "valid",
-                    "risk_level": self._assess_risk(len(failed), len(results))
+                    "risk_level": Mxtoolbox._assess_risk(len(failed), len(results))
                 },
                 "data": {
                     "spf_valid": len(failed) == 0,
@@ -364,7 +392,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in spf_check", exc_info=e)
+            logger.error("Error in spf_check", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -372,21 +400,24 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def dkim_check(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
+            logger.info("dkim_check called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
             selector = request.parameters.get('selector')
             if selector:
                 lookup_arg = f"{selector}._domainkey.{domain}"
-                data = self._lookup(base_url, api_key, timeout, max_retries, "dkim", lookup_arg)
+                data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "dkim", lookup_arg)
                 results = data.get("Result", [])
-                failed, passed = self._classify_results(results)
+                failed, passed = Mxtoolbox._classify_results(results)
             else:
                 failed, passed, results = [], [], []
-                for sel in self.COMMON_DKIM_SELECTORS:
+                for sel in Mxtoolbox.COMMON_DKIM_SELECTORS:
                     lookup_arg = f"{sel}._domainkey.{domain}"
-                    data = self._lookup(base_url, api_key, timeout, max_retries, "dkim", lookup_arg)
+                    data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "dkim", lookup_arg)
                     results = data.get("Result", [])
-                    failed, passed = self._classify_results(results)
+                    failed, passed = Mxtoolbox._classify_results(results)
                     if passed:
                         selector = sel
                         break
@@ -410,7 +441,7 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in dkim_check", exc_info=e)
+            logger.error("Error in dkim_check", exc_info=e)
             raise Exception(str(e))
 
     # -------------------------------------------------------------------------
@@ -418,11 +449,14 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def dmarc_check(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(request.connectionParameters)
-            domain = self._validate_domain(request.parameters.get('domain', ''))
-            data = self._lookup(base_url, api_key, timeout, max_retries, "dmarc", domain)
+            logger.info("dmarc_check called with connectionParameters keys=%s, parameters=%s",
+                        list(request.connectionParameters.keys()) if request.connectionParameters else None,
+                        request.parameters)
+            base_url, api_key, timeout, max_retries = Mxtoolbox._get_connection(request.connectionParameters)
+            domain = Mxtoolbox._validate_domain(request.parameters.get('domain', ''))
+            data = Mxtoolbox._lookup(base_url, api_key, timeout, max_retries, "dmarc", domain)
             results = data.get("Result", [])
-            failed, passed = self._classify_results(results)
+            failed, passed = Mxtoolbox._classify_results(results)
             return {
                 "success": True,
                 "indicator": domain,
@@ -430,7 +464,7 @@ class Mxtoolbox():
                 "lookup_type": "dmarc",
                 "summary": {
                     "verdict": "invalid" if failed else "valid",
-                    "risk_level": self._assess_risk(len(failed), len(results))
+                    "risk_level": Mxtoolbox._assess_risk(len(failed), len(results))
                 },
                 "data": {
                     "dmarc_valid": len(failed) == 0,
@@ -441,5 +475,5 @@ class Mxtoolbox():
                 "raw_response": data
             }
         except Exception as e:
-            self.logger.error("Error in dmarc_check", exc_info=e)
+            logger.error("Error in dmarc_check", exc_info=e)
             raise Exception(str(e))
