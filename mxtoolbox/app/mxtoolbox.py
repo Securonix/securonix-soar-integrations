@@ -158,7 +158,17 @@ class Mxtoolbox():
     # -------------------------------------------------------------------------
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url, api_key, timeout, max_retries = self._get_connection(connectionParameters)
+            base_url = connectionParameters.get('base_url', self.DEFAULT_BASE_URL)
+            if not base_url:
+                base_url = self.DEFAULT_BASE_URL
+            base_url = base_url.rstrip('/')
+            api_key = connectionParameters['api_key']
+            timeout = connectionParameters.get('timeout', 30)
+            if timeout in [None, "None", "", "null"]:
+                timeout = 30
+            else:
+                timeout = int(timeout)
+
             url = f"{base_url}/lookup/dns/"
             headers = self._get_headers(api_key)
             params = {"argument": "example.com"}

@@ -1,0 +1,16 @@
+{
+    "name": "qradar",
+    "type": "python",
+    "clazz": "app.qradar",
+    "label": "IBM QRadar SIEM",
+    "native": false,
+    "testUrl": "",
+    "category": "SIEM",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "IBM QRadar SIEM integration for offense investigation, Ariel event/flow search, and offense lifecycle management. Enables SOC analysts to investigate offenses, search events using AQL, manage notes, and update offense status."
+}
