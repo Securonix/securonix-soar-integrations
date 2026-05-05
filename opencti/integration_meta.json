@@ -1,0 +1,16 @@
+{
+    "name": "opencti",
+    "type": "python",
+    "clazz": "app.opencti",
+    "label": "OpenCTI",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "OpenCTI integration for IOC and observable enrichment. Supports observable lookups, indicator details retrieval, and entity search using the OpenCTI GraphQL API."
+  }
