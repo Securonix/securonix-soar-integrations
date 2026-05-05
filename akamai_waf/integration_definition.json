@@ -16,9 +16,9 @@
             "desc": "The client's token",
             "type": "String",
             "values": [],
-            "isSecret": false,
+            "isSecret": true,
             "optional": false,
-            "encrypted": false
+            "encrypted": true
         },
         {
             "label": "Client Secret",
@@ -26,9 +26,9 @@
             "desc": "The secret for provided token",
             "type": "String",
             "values": [],
-            "isSecret": false,
+            "isSecret": true,
             "optional": false,
-            "encrypted": false
+            "encrypted": true
         },
         {
             "label": "Access Token",
@@ -36,9 +36,9 @@
             "desc": "The access token for provided client",
             "type": "String",
             "values": [],
-            "isSecret": false,
+            "isSecret": true,
             "optional": false,
-            "encrypted": false
+            "encrypted": true
         }
     ],
     "functions": [
@@ -114,7 +114,7 @@
             ]
         },
         {
-            "desc": "Adds one or more IP addresses or CIDR ranges to a designated Network List used in a deny rule.",
+            "desc": "Removes a previously enforced block on an IP address, allowing its traffic to pass through the Akamai Technologies WAF for normal inspection again.",
             "label": "Unblock IP",
             "name": "unblock_ip",
             "type": "Firewall",
@@ -185,7 +185,7 @@
             ]
         },
         {
-            "desc": "Adds one or more IP addresses or CIDR ranges to a designated Network List used in a deny rule.",
+            "desc": "Retrieves logged security events (e.g., attacks, rule triggers, mitigations) from the Akamai Technologies WAF for monitoring, analysis, and investigation.",
             "label": "Get Security Events",
             "name": "get_security_events",
             "type": "Firewall",

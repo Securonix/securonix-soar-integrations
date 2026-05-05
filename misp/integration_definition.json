@@ -1,0 +1,226 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Server URL",
+      "name": "server_url",
+      "desc": "MISP instance base URL (e.g., https://misp.example.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "MISP API authentication key",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "MISP (Malware Information Sharing Platform) integration for threat intelligence sharing, IOC management, event creation, attribute search, tag management, sighting tracking, feed management, and warninglist lookups.",
+  "functions": [
+    {
+      "label": "Search Events",
+      "name": "search_events",
+      "type": "ThreatIntel",
+      "desc": "Search MISP events by attribute value, event ID, date range, tags, type, or category",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Value", "name": "value", "desc": "IOC value to search for", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Event ID", "name": "eventid", "desc": "Specific event ID to search", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Date From", "name": "date_from", "desc": "Start date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Date To", "name": "date_to", "desc": "End date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Tags", "name": "tags", "desc": "Tags to filter by", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Attribute type filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Category", "name": "category", "desc": "Attribute category filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Maximum number of results (default: 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Create Event",
+      "name": "create_event",
+      "type": "ThreatIntel",
+      "desc": "Create a new MISP event",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Info", "name": "info", "desc": "Event description (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Distribution", "name": "distribution", "desc": "Distribution level 0-4 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Threat Level ID", "name": "threat_level_id", "desc": "Threat level 1-4 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Analysis", "name": "analysis", "desc": "Analysis level 0-2 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Date", "name": "date", "desc": "Event date (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Tags", "name": "tags", "desc": "Comma-separated tags to add", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Published", "name": "published", "desc": "Whether to publish the event", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Created event details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get Event",
+      "name": "get_event",
+      "type": "ThreatIntel",
+      "desc": "Retrieve full event details by event ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Event ID", "name": "event_id", "desc": "MISP event ID (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Event details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Add Attribute",
+      "name": "add_attribute",
+      "type": "ThreatIntel",
+      "desc": "Add an attribute (IOC) to an existing MISP event",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Event ID", "name": "event_id", "desc": "Target event ID (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Attribute type e.g. ip-src, domain, md5 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Attribute value (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Category", "name": "category", "desc": "Attribute category", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "To IDS", "name": "to_ids", "desc": "Flag for IDS export", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Comment", "name": "comment", "desc": "Attribute comment", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Created attribute details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Search Attributes",
+      "name": "search_attributes",
+      "type": "ThreatIntel",
+      "desc": "Search MISP attributes across all events",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Value", "name": "value", "desc": "IOC value(s) to search, comma-separated for multiple", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Attribute type filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Category", "name": "category", "desc": "Attribute category filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Tags", "name": "tags", "desc": "Tags to filter by", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Date From", "name": "date_from", "desc": "Start date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Date To", "name": "date_to", "desc": "End date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Maximum number of results (default: 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Attribute search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Add Tag",
+      "name": "add_tag",
+      "type": "ThreatIntel",
+      "desc": "Add a tag to a MISP event or attribute",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Target Type", "name": "target_type", "desc": "Target type: 'event' or 'attribute' (required)", "type": "String", "values": ["event", "attribute"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Target ID", "name": "target_id", "desc": "ID of the target event or attribute (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Tag Name", "name": "tag_name", "desc": "Name of the tag to add (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Tag operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Remove Tag",
+      "name": "remove_tag",
+      "type": "ThreatIntel",
+      "desc": "Remove a tag from a MISP event or attribute",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Target Type", "name": "target_type", "desc": "Target type: 'event' or 'attribute' (required)", "type": "String", "values": ["event", "attribute"], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Target ID", "name": "target_id", "desc": "ID of the target event or attribute (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Tag Name", "name": "tag_name", "desc": "Name of the tag to remove (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Tag operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Add Sighting",
+      "name": "add_sighting",
+      "type": "ThreatIntel",
+      "desc": "Record a sighting for a MISP attribute",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Attribute ID", "name": "attribute_id", "desc": "ID of the attribute to sight", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Value", "name": "attribute_value", "desc": "Value of the attribute to sight", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Sighting type: 0=sighting, 1=false positive, 2=expiration (default: 0)", "type": "String", "values": ["0", "1", "2"], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source", "name": "source", "desc": "Source of the sighting", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Sighting creation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Get Feeds",
+      "name": "get_feeds",
+      "type": "ThreatIntel",
+      "desc": "List all configured MISP feeds",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Feed list", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Enable Feed",
+      "name": "enable_feed",
+      "type": "ThreatIntel",
+      "desc": "Enable a MISP feed by ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to enable (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Feed operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Disable Feed",
+      "name": "disable_feed",
+      "type": "ThreatIntel",
+      "desc": "Disable a MISP feed by ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to disable (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Feed operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Fetch Feed",
+      "name": "fetch_feed",
+      "type": "ThreatIntel",
+      "desc": "Trigger a fetch for a MISP feed by ID (fire-and-forget)",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to fetch (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Feed fetch trigger result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    },
+    {
+      "label": "Check Warninglists",
+      "name": "check_warninglists",
+      "type": "ThreatIntel",
+      "desc": "Check if a value appears in any enabled MISP warninglist",
+      "sampleOutput": "",
+      "inParameters": [
+        {"label": "Value", "name": "value", "desc": "IOC value to check (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ],
+      "outParameters": [
+        {"label": "Results", "name": "results", "desc": "Warninglist match results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+      ]
+    }
+  ]
+}
