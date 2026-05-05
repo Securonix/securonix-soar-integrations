@@ -1,0 +1,16 @@
+{
+    "name": "mxtoolbox",
+    "type": "python",
+    "clazz": "app.mxtoolbox",
+    "label": "MXToolbox",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "MXToolbox integration for threat intelligence indicator enrichment including IP and domain blacklist checks, DNS lookups (MX, A, PTR), and email security validation (SPF, DKIM, DMARC). Enables SOC analysts to enrich indicators during incident investigation and triage."
+}
