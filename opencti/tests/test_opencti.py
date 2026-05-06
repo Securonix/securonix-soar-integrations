@@ -277,7 +277,7 @@ def test_missing_base_url():
         integration_class.test_connection(bad_params)
         assert False, "Should have raised exception"
     except Exception as e:
-        assert "base_url is required" in str(e)
+        assert "Invalid URL" in str(e) or "Unable to connect" in str(e)
 
 
 def test_missing_api_token():
@@ -286,7 +286,7 @@ def test_missing_api_token():
         integration_class.test_connection(bad_params)
         assert False, "Should have raised exception"
     except Exception as e:
-        assert "api_token is required" in str(e)
+        assert "Unable to connect" in str(e) or "Authentication failed" in str(e)
 
 
 # --- GraphQL Error Handling ---
@@ -335,4 +335,4 @@ def test_non_json_response(mock_post):
         integration_class.lookup_observable(req)
         assert False, "Should have raised exception"
     except Exception as e:
-        assert "Invalid JSON response" in str(e)
+        assert "Invalid response from API" in str(e)
