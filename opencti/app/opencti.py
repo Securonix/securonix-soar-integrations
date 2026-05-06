@@ -68,15 +68,9 @@ class Opencti():
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
-    def _get_headers(self, connection_params: dict) -> dict:
-        return {
-            "Authorization": f"Bearer {connection_params['api_token']}",
-            "Content-Type": "application/json"
-        }
-
     def _graphql_request(self, base_url: str, headers: dict, query: str, variables: dict) -> dict:
         resp = requests.post(
-            f"{base_url.rstrip('/')}/graphql",
+            f"{base_url}/graphql",
             json={"query": query, "variables": variables},
             headers=headers,
             timeout=30
@@ -84,47 +78,45 @@ class Opencti():
         if resp.status_code in (401, 403):
             raise Exception("Authentication failed. Please verify your API Token is correct.")
         if resp.status_code >= 300:
-            raise Exception(f"API request failed with status {resp.status_code}.")
+            raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
         try:
             data = resp.json()
         except ValueError:
-            raise Exception("Invalid JSON response from OpenCTI.")
+            raise Exception("Invalid response from API. Please verify your API Token and Base URL are correct.")
         if "errors" in data and data["errors"]:
             raise Exception(f"GraphQL error: {data['errors'][0].get('message', 'Unknown error')}")
         return data.get("data", {})
 
-    def _validate_connection_params(self, connection_params: dict):
-        if not connection_params.get('base_url'):
-            raise Exception("base_url is required and cannot be empty.")
-        if not connection_params.get('api_token'):
-            raise Exception("api_token is required and cannot be empty.")
-
     def test_connection(self, connectionParameters: dict):
         try:
-            self._validate_connection_params(connectionParameters)
-            base_url = connectionParameters['base_url']
-            headers = self._get_headers(connectionParameters)
+            base_url = connectionParameters['base_url'].rstrip('/')
+            api_token = connectionParameters['api_token']
+            headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
+
             self._graphql_request(base_url, headers, "{ about { version } }", {})
-            return {"status": "success", "message": "Connected to OpenCTI successfully."}
+            return {'status': 'success', 'message': 'Connected to OpenCTI successfully.'}
         except requests.exceptions.ConnectionError:
-            raise Exception("Unable to connect to OpenCTI. Please verify the Base URL.")
+            raise Exception('Unable to connect to OpenCTI. Please verify the Base URL.')
         except requests.exceptions.Timeout:
-            raise Exception("Connection to OpenCTI timed out.")
+            raise Exception('Connection to OpenCTI timed out.')
         except Exception as e:
-            self.logger.error("Exception while testing connection", exc_info=True)
+            self.logger.error("Exception while testing connection", exc_info=e)
             raise Exception(str(e))
 
     def lookup_observable(self, request: RequestBody) -> ResponseBody:
         try:
-            self._validate_connection_params(request.connectionParameters)
-            base_url = request.connectionParameters['base_url']
-            headers = self._get_headers(request.connectionParameters)
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_token = request.connectionParameters['api_token']
+            headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
 
             observables = request.parameters["observables"]
             if isinstance(observables, str):
                 observables = [o.strip() for o in observables.split(",") if o.strip()]
             elif not isinstance(observables, list):
                 raise Exception("observables must be a string or list.")
+
+            if not observables:
+                raise Exception("observables is required and cannot be empty.")
 
             observable_type = request.parameters["observable_type"]
             if observable_type not in ALLOWED_OBSERVABLE_TYPES:
@@ -134,9 +126,6 @@ class Opencti():
                 )
 
             results = []
-            if not observables:
-                raise Exception("observables is required and cannot be empty.")
-
             for obs in observables:
                 filters = {
                     "mode": "and",
@@ -170,14 +159,14 @@ class Opencti():
         except requests.exceptions.Timeout:
             raise Exception("Connection to OpenCTI timed out.")
         except Exception as e:
-            self.logger.error("error while running action 'lookup_observable'", exc_info=True)
+            self.logger.error("error while running action 'lookup_observable'", exc_info=e)
             raise Exception(str(e))
 
     def get_indicator_details(self, request: RequestBody) -> ResponseBody:
         try:
-            self._validate_connection_params(request.connectionParameters)
-            base_url = request.connectionParameters['base_url']
-            headers = self._get_headers(request.connectionParameters)
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_token = request.connectionParameters['api_token']
+            headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
 
             indicator_ids = request.parameters["indicator_ids"]
             if isinstance(indicator_ids, str):
@@ -203,14 +192,14 @@ class Opencti():
         except requests.exceptions.Timeout:
             raise Exception("Connection to OpenCTI timed out.")
         except Exception as e:
-            self.logger.error("error while running action 'get_indicator_details'", exc_info=True)
+            self.logger.error("error while running action 'get_indicator_details'", exc_info=e)
             raise Exception(str(e))
 
     def search_entities(self, request: RequestBody) -> ResponseBody:
         try:
-            self._validate_connection_params(request.connectionParameters)
-            base_url = request.connectionParameters['base_url']
-            headers = self._get_headers(request.connectionParameters)
+            base_url = request.connectionParameters['base_url'].rstrip('/')
+            api_token = request.connectionParameters['api_token']
+            headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
 
             search_term = request.parameters["search_term"]
             if not search_term or not search_term.strip():
@@ -236,5 +225,5 @@ class Opencti():
         except requests.exceptions.Timeout:
             raise Exception("Connection to OpenCTI timed out.")
         except Exception as e:
-            self.logger.error("error while running action 'search_entities'", exc_info=True)
+            self.logger.error("error while running action 'search_entities'", exc_info=e)
             raise Exception(str(e))
