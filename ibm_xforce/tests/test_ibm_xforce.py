@@ -160,3 +160,129 @@ def test_lookup_ip_error_handling(mock_get):
         assert False, "Should have raised exception"
     except Exception as e:
         assert "API Error" in str(e)
+
+
+# --- Lookup File Hash ---
+
+@patch("requests.get")
+def test_lookup_file_hash(mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        "malware": {"type": "Trojan", "risk": "high"}
+    }
+    mock_get.return_value = mock_response
+
+    req = create_request_body({"hashes": ["d41d8cd98f00b204e9800998ecf8427e"]})
+    resp = integration_class.lookup_file_hash(req)
+
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 1
+    assert resp["results"][0]["hash"] == "d41d8cd98f00b204e9800998ecf8427e"
+    assert "malware" in resp["results"][0]
+
+
+def test_lookup_file_hash_invalid_hash():
+    req = create_request_body({"hashes": ["invalidhash"]})
+    try:
+        integration_class.lookup_file_hash(req)
+        assert False, "Should have raised exception"
+    except Exception as e:
+        assert "Invalid file hash format" in str(e)
+
+
+# --- Lookup CVE ---
+
+@patch("requests.get")
+def test_lookup_cve(mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        "title": "Test CVE",
+        "cvss": {"score": 7.5}
+    }
+    mock_get.return_value = mock_response
+
+    req = create_request_body({"cve_ids": ["CVE-2023-12345"]})
+    resp = integration_class.lookup_cve(req)
+
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 1
+    assert resp["results"][0]["cve_id"] == "CVE-2023-12345"
+    assert "vulnerability" in resp["results"][0]
+
+
+def test_lookup_cve_invalid_format():
+    req = create_request_body({"cve_ids": ["INVALID-123"]})
+    try:
+        integration_class.lookup_cve(req)
+        assert False, "Should have raised exception"
+    except Exception as e:
+        assert "Invalid CVE ID format" in str(e)
+
+
+# --- Get Latest CVEs ---
+
+@patch("requests.get")
+def test_get_latest_cves(mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = [
+        {"title": "CVE-2023-0001", "cvss": {"score": 9.8}}
+    ]
+    mock_get.return_value = mock_response
+
+    req = create_request_body({"limit": "10"})
+    resp = integration_class.get_latest_cves(req)
+
+    assert resp["status"] == "success"
+    assert "vulnerabilities" in resp
+
+
+# --- WHOIS Lookup ---
+
+@patch("requests.get")
+def test_whois_lookup(mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        "registrant": {"name": "Test Org"},
+        "createdDate": "2020-01-01"
+    }
+    mock_get.return_value = mock_response
+
+    req = create_request_body({"domains": ["example.com"]})
+    resp = integration_class.whois_lookup(req)
+
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 1
+    assert resp["results"][0]["domain"] == "example.com"
+    assert "whois" in resp["results"][0]
+
+
+# --- Search CVEs ---
+
+@patch("requests.get")
+def test_search_cves(mock_get):
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {
+        "total_rows": 5,
+        "rows": [{"title": "Apache vulnerability"}]
+    }
+    mock_get.return_value = mock_response
+
+    req = create_request_body({"query": "apache"})
+    resp = integration_class.search_cves(req)
+
+    assert resp["status"] == "success"
+    assert "results" in resp
+
+
+def test_search_cves_empty_query():
+    req = create_request_body({"query": ""})
+    try:
+        integration_class.search_cves(req)
+        assert False, "Should have raised exception"
+    except Exception as e:
+        assert "Search query is required" in str(e)
