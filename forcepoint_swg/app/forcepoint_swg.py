@@ -17,8 +17,15 @@ class ForcepointSwg():
 
     def _get_connection(self, connection_params):
         base_url = connection_params['server_url'].rstrip('/')
+        token_url = connection_params['token_url'].rstrip('/')
         api_key = connection_params['api_key']
-        return base_url, api_key
+        return base_url, token_url, api_key
+
+    def _get_bearer_token(self, token_url, api_key):
+        resp = requests.post(token_url, headers={"X-API-KEY": api_key}, timeout=30)
+        if resp.status_code >= 300:
+            raise Exception(f"Token generation failed: {resp.status_code} {resp.text}")
+        return resp.json().get('token')
 
     # -------------------------------------------------------------------------
     # Test Connection
@@ -26,13 +33,13 @@ class ForcepointSwg():
     def test_connection(self, connectionParameters: dict):
         try:
             base_url = connectionParameters['server_url'].rstrip('/')
+            token_url = connectionParameters['token_url'].rstrip('/')
             api_key = connectionParameters['api_key']
-            headers = {
-                "Authorization": f"Bearer {api_key}",
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
-            resp = requests.get(f"{base_url}/customcategories", headers=headers, timeout=30)
+
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
+
+            resp = requests.get(base_url, headers=headers, timeout=30)
             if resp.status_code in (401, 403):
                 raise Exception(f"Authentication failed: {resp.status_code} {resp.text}")
             if resp.status_code >= 500:
@@ -51,34 +58,35 @@ class ForcepointSwg():
     # -------------------------------------------------------------------------
     def get_all_custom_categories(self, request: RequestBody) -> dict:
         try:
-            base_url, api_key = self._get_connection(request.connectionParameters)
-            headers = self._get_headers(api_key)
+            base_url, token_url, api_key = self._get_connection(request.connectionParameters)
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
 
             all_categories = []
-            cursor = request.parameters.get('cursor')
+            cursor = request.parameters.get('cursor', '')
 
             while True:
                 params = {}
                 if cursor:
                     params['cursor'] = cursor
 
-                resp = requests.get(f"{base_url}/customcategories", headers=headers, params=params, timeout=30)
+                resp = requests.get(base_url, headers=headers, params=params, timeout=30)
                 if resp.status_code >= 300:
                     raise Exception(resp.text)
 
                 data = resp.json()
-                categories = data if isinstance(data, list) else data.get('data', [])
+                categories = data.get('categories', [])
                 all_categories.extend(categories)
 
-                cursor = data.get('cursor') if isinstance(data, dict) else None
+                cursor = data.get('nextPageCursor')
                 if not cursor:
                     break
 
             return {
                 "status": "success",
                 "message": "Categories retrieved successfully.",
-                "categories": all_categories,
-                "count": len(all_categories)
+                "totalResults": len(all_categories),
+                "categories": all_categories
             }
 
         except Exception as e:
@@ -90,8 +98,9 @@ class ForcepointSwg():
     # -------------------------------------------------------------------------
     def create_category(self, request: RequestBody) -> dict:
         try:
-            base_url, api_key = self._get_connection(request.connectionParameters)
-            headers = self._get_headers(api_key)
+            base_url, token_url, api_key = self._get_connection(request.connectionParameters)
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
 
             payload = {"name": request.parameters['name']}
             if request.parameters.get('description'):
@@ -103,14 +112,18 @@ class ForcepointSwg():
             if request.parameters.get('comment'):
                 payload['comment'] = request.parameters['comment']
 
-            resp = requests.post(f"{base_url}/customcategories", headers=headers, json=payload, timeout=30)
+            resp = requests.post(base_url, headers=headers, json=payload, timeout=30)
             if resp.status_code >= 300:
                 raise Exception(resp.text)
 
+            transaction_data = resp.json()
             return {
                 "status": "success",
-                "message": "Category created successfully.",
-                "category": resp.json()
+                "message": "Category creation request accepted.",
+                "transactionId": transaction_data.get("transactionId"),
+                "transactionStatus": transaction_data.get("status"),
+                "data": transaction_data.get("data"),
+                "comment": transaction_data.get("comment")
             }
 
         except Exception as e:
@@ -122,37 +135,46 @@ class ForcepointSwg():
     # -------------------------------------------------------------------------
     def get_category_by_id(self, request: RequestBody) -> dict:
         try:
-            base_url, api_key = self._get_connection(request.connectionParameters)
-            headers = self._get_headers(api_key)
+            base_url, token_url, api_key = self._get_connection(request.connectionParameters)
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
 
             category_id = request.parameters['categoryId']
             all_sites = []
-            cursor = request.parameters.get('cursor')
+            cursor = request.parameters.get('cursor', '')
 
+            category_info = {}
             while True:
                 params = {}
                 if cursor:
                     params['cursor'] = cursor
 
-                resp = requests.get(f"{base_url}/customcategories/{category_id}", headers=headers, params=params, timeout=30)
+                resp = requests.get(f"{base_url}/{category_id}", headers=headers, params=params, timeout=30)
                 if resp.status_code >= 300:
                     raise Exception(resp.text)
 
                 data = resp.json()
-                sites = data.get('sites', []) if isinstance(data, dict) else []
+                if not category_info:
+                    category_info = {
+                        "id": data.get("id"),
+                        "name": data.get("name"),
+                        "description": data.get("description"),
+                        "policyName": data.get("policyName")
+                    }
+
+                sites = data.get('sites', [])
                 all_sites.extend(sites)
 
-                cursor = data.get('cursor') if isinstance(data, dict) else None
+                cursor = data.get('nextPageCursor')
                 if not cursor:
                     break
 
-            category = data if isinstance(data, dict) else {}
-            category['sites'] = all_sites
+            category_info['sites'] = all_sites
 
             return {
                 "status": "success",
                 "message": "Category retrieved successfully.",
-                "category": category
+                "category": category_info
             }
 
         except Exception as e:
@@ -164,8 +186,9 @@ class ForcepointSwg():
     # -------------------------------------------------------------------------
     def add_or_remove_category_sites(self, request: RequestBody) -> dict:
         try:
-            base_url, api_key = self._get_connection(request.connectionParameters)
-            headers = self._get_headers(api_key)
+            base_url, token_url, api_key = self._get_connection(request.connectionParameters)
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
 
             category_id = request.parameters['categoryId']
             action = request.parameters['action']
@@ -175,7 +198,7 @@ class ForcepointSwg():
                 payload['comment'] = request.parameters['comment']
 
             resp = requests.patch(
-                f"{base_url}/customcategories/{category_id}",
+                f"{base_url}/{category_id}",
                 headers=headers,
                 json=payload,
                 params={"action": action},
@@ -184,11 +207,14 @@ class ForcepointSwg():
             if resp.status_code >= 300:
                 raise Exception(resp.text)
 
+            transaction_data = resp.json()
             return {
                 "status": "success",
                 "message": f"Sites {action} operation accepted.",
-                "categoryId": category_id,
-                "action": action
+                "transactionId": transaction_data.get("transactionId"),
+                "transactionStatus": transaction_data.get("status"),
+                "data": transaction_data.get("data"),
+                "comment": transaction_data.get("comment")
             }
 
         except Exception as e:
@@ -200,19 +226,24 @@ class ForcepointSwg():
     # -------------------------------------------------------------------------
     def delete_category(self, request: RequestBody) -> dict:
         try:
-            base_url, api_key = self._get_connection(request.connectionParameters)
-            headers = self._get_headers(api_key)
+            base_url, token_url, api_key = self._get_connection(request.connectionParameters)
+            token = self._get_bearer_token(token_url, api_key)
+            headers = self._get_headers(token)
 
             category_id = request.parameters['categoryId']
 
-            resp = requests.delete(f"{base_url}/customcategories/{category_id}", headers=headers, timeout=30)
+            resp = requests.delete(f"{base_url}/{category_id}", headers=headers, timeout=30)
             if resp.status_code >= 300:
                 raise Exception(resp.text)
 
+            transaction_data = resp.json()
             return {
                 "status": "success",
-                "message": "Category deleted successfully.",
-                "categoryId": category_id
+                "message": "Category deletion request accepted.",
+                "transactionId": transaction_data.get("transactionId"),
+                "transactionStatus": transaction_data.get("status"),
+                "data": transaction_data.get("data"),
+                "comment": transaction_data.get("comment")
             }
 
         except Exception as e:
