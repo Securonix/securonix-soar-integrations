@@ -269,6 +269,175 @@ def test_search_entities_with_limit(mock_post):
     assert call_body["variables"]["first"] == 10
 
 
+# --- Get Indicators ---
+
+@patch("requests.post")
+def test_get_indicators_success(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "indicators": {
+            "edges": [{
+                "node": {
+                    "id": "ind-1",
+                    "name": "Malicious Domain",
+                    "pattern": "[domain-name:value = 'evil.com']",
+                    "pattern_type": "stix",
+                    "confidence": 90,
+                    "valid_from": "2024-01-01T00:00:00Z",
+                    "valid_until": "2025-01-01T00:00:00Z",
+                    "objectLabel": [{"value": "malicious"}],
+                    "objectMarking": [],
+                    "createdBy": {"name": "MITRE"}
+                }
+            }]
+        }
+    })
+    req = create_request_body({"search": "evil"})
+    resp = integration_class.get_indicators(req)
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 1
+    assert resp["results"][0]["name"] == "Malicious Domain"
+
+
+@patch("requests.post")
+def test_get_indicators_with_filters(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "indicators": {"edges": []}
+    })
+    req = create_request_body({"labels": "malicious,apt", "confidence": "80", "indicator_type": "stix", "limit": "10"})
+    resp = integration_class.get_indicators(req)
+    assert resp["status"] == "success"
+    call_body = mock_post.call_args[1]["json"]
+    assert call_body["variables"]["first"] == 10
+    assert "filters" in call_body["variables"]
+
+
+@patch("requests.post")
+def test_get_indicators_no_params(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "indicators": {"edges": []}
+    })
+    req = create_request_body({})
+    resp = integration_class.get_indicators(req)
+    assert resp["status"] == "success"
+    assert resp["results"] == []
+
+
+# --- Get Relationships ---
+
+@patch("requests.post")
+def test_get_relationships_success(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "stixCoreRelationships": {
+            "edges": [{
+                "node": {
+                    "id": "rel-1",
+                    "relationship_type": "uses",
+                    "start_time": "2024-01-01T00:00:00Z",
+                    "stop_time": None,
+                    "confidence": 75,
+                    "from": {"id": "entity-1", "entity_type": "Threat-Actor", "name": "APT28"},
+                    "to": {"id": "entity-2", "entity_type": "Malware", "name": "X-Agent"}
+                }
+            }]
+        }
+    })
+    req = create_request_body({"entity_id": "entity-1"})
+    resp = integration_class.get_relationships(req)
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 1
+    assert resp["results"][0]["relationship_type"] == "uses"
+
+
+@patch("requests.post")
+def test_get_relationships_with_type_filter(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "stixCoreRelationships": {"edges": []}
+    })
+    req = create_request_body({"entity_id": "entity-1", "relationship_type": "targets", "limit": "5"})
+    resp = integration_class.get_relationships(req)
+    assert resp["status"] == "success"
+    call_body = mock_post.call_args[1]["json"]
+    assert call_body["variables"]["first"] == 5
+
+
+def test_get_relationships_empty_entity_id():
+    req = create_request_body({"entity_id": ""})
+    try:
+        integration_class.get_relationships(req)
+        assert False, "Should have raised exception"
+    except Exception as e:
+        assert "entity_id is required" in str(e)
+
+
+# --- List Labels ---
+
+@patch("requests.post")
+def test_list_labels_success(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "labels": {
+            "edges": [
+                {"node": {"id": "lbl-1", "value": "malicious", "color": "#ff0000"}},
+                {"node": {"id": "lbl-2", "value": "benign", "color": "#00ff00"}}
+            ]
+        }
+    })
+    req = create_request_body({})
+    resp = integration_class.list_labels(req)
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 2
+    assert resp["results"][0]["value"] == "malicious"
+
+
+# --- List Marking Definitions ---
+
+@patch("requests.post")
+def test_list_marking_definitions_success(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "markingDefinitions": {
+            "edges": [
+                {"node": {"id": "marking-1", "definition": "TLP:WHITE", "definition_type": "TLP"}},
+                {"node": {"id": "marking-2", "definition": "TLP:RED", "definition_type": "TLP"}}
+            ]
+        }
+    })
+    req = create_request_body({})
+    resp = integration_class.list_marking_definitions(req)
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 2
+    assert resp["results"][1]["definition"] == "TLP:RED"
+
+
+# --- List Organizations ---
+
+@patch("requests.post")
+def test_list_organizations_success(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "organizations": {
+            "edges": [
+                {"node": {"id": "org-1", "name": "MITRE", "description": "Threat research org"}},
+                {"node": {"id": "org-2", "name": "CISA", "description": "US cybersecurity agency"}}
+            ]
+        }
+    })
+    req = create_request_body({})
+    resp = integration_class.list_organizations(req)
+    assert resp["status"] == "success"
+    assert len(resp["results"]) == 2
+    assert resp["results"][0]["name"] == "MITRE"
+
+
+@patch("requests.post")
+def test_list_organizations_with_limit(mock_post):
+    mock_post.return_value = mock_graphql_response({
+        "organizations": {"edges": []}
+    })
+    req = create_request_body({"limit": "5"})
+    resp = integration_class.list_organizations(req)
+    assert resp["status"] == "success"
+    call_body = mock_post.call_args[1]["json"]
+    assert call_body["variables"]["first"] == 5
+
+
 # --- Connection Parameter Validation ---
 
 def test_missing_base_url():
