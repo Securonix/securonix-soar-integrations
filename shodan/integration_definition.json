@@ -3,20 +3,20 @@
         {
             "label": "Server URL",
             "name": "server_url",
-            "desc": "Server URL of the Shodan Instance",
+            "desc": "Base URL of the Shodan API (default: https://api.shodan.io)",
             "type": "String",
             "values": [],
             "isSecret": false,
-            "optional": false,
+            "optional": true,
             "encrypted": false
         },
         {
             "label": "API Token",
             "name": "api_token",
-            "desc": "Token for Authetication",
+            "desc": "Shodan API Key for authentication",
             "type": "String",
             "values": [],
-            "isSecret": false,
+            "isSecret": true,
             "optional": false,
             "encrypted": false
         }
@@ -24,15 +24,15 @@
     "functions": [
         {
             "desc": "Returns all services that have been found on the given host IP",
-            "label": "Get Host of IP",
+            "label": "Get Host Info",
             "name": "ip_address",
-            "type": "Get Host from IP",
+            "type": "Enrichment",
             "sampleOutput": "",
             "inParameters": [
                 {
-                    "label": "Ip Address",
+                    "label": "IP Address",
                     "name": "ip_addr",
-                    "desc": "Provide IP address ",
+                    "desc": "IPv4 address to look up",
                     "type": "String",
                     "values": [],
                     "isSecret": false,
@@ -42,17 +42,450 @@
             ],
             "outParameters": [
                 {
-                    "label": "hosts",
-                    "name": "hosts",
-                    "desc": "Response",
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "IP address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Organization",
+                    "name": "organization",
+                    "desc": "Organization that owns the IP",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ports",
+                    "name": "ports",
+                    "desc": "Open ports",
                     "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Vulnerabilities",
+                    "name": "vulnerabilities",
+                    "desc": "Known CVEs",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get DNS information for a domain including subdomains",
+            "label": "Domain Lookup",
+            "name": "domain_lookup",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name to look up (e.g. google.com)",
+                    "type": "String",
                     "values": [],
                     "isSecret": false,
                     "optional": false,
                     "encrypted": false
                 }
+            ],
+            "outParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subdomains",
+                    "name": "subdomains",
+                    "desc": "List of subdomains",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Search Shodan using query strings",
+            "label": "Host Search",
+            "name": "host_search",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Shodan search query (e.g. apache, port:22)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for results (optional)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Total",
+                    "name": "total",
+                    "desc": "Total number of results",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Matches",
+                    "name": "matches",
+                    "desc": "Search result matches",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get result count for a Shodan search query",
+            "label": "Host Count",
+            "name": "host_count",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Shodan search query",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Facets",
+                    "name": "facets",
+                    "desc": "Comma-separated list of facets (optional, e.g. country,org)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Total",
+                    "name": "total",
+                    "desc": "Total number of results",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Facets",
+                    "name": "facets",
+                    "desc": "Facet breakdown",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "List all ports that Shodan crawls on the Internet",
+            "label": "List Ports",
+            "name": "list_ports",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Ports",
+                    "name": "ports",
+                    "desc": "List of port numbers",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "List all protocols that can be used for scanning",
+            "label": "List Protocols",
+            "name": "list_protocols",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Protocols",
+                    "name": "protocols",
+                    "desc": "Map of protocol name to description",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "List available Shodan services/banners",
+            "label": "List Services",
+            "name": "list_services",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Services",
+                    "name": "services",
+                    "desc": "Map of port to service name",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Calculate honeypot probability score for an IP",
+            "label": "Honeyscore",
+            "name": "honeyscore",
+            "type": "Enrichment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "IP Address",
+                    "name": "ip",
+                    "desc": "IPv4 address to check",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "IP address checked",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Honeyscore",
+                    "name": "honeyscore",
+                    "desc": "Honeypot probability (0.0 to 1.0)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get the caller's external IP address",
+            "label": "My IP",
+            "name": "my_ip",
+            "type": "Utility",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "External IP address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get API usage and plan information",
+            "label": "API Info",
+            "name": "api_info",
+            "type": "Utility",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Query Credits",
+                    "name": "query_credits",
+                    "desc": "Remaining query credits",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Scan Credits",
+                    "name": "scan_credits",
+                    "desc": "Remaining scan credits",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Plan",
+                    "name": "plan",
+                    "desc": "API plan name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "raw_response",
+                    "desc": "Full API response",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
             ]
         }
     ]
-
 }
