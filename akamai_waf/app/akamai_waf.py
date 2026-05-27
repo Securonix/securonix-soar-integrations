@@ -22,8 +22,8 @@ class AkamaiWaf():
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
         self.logger.info("executing block_ip action")
-        session = self.get_session(self, client_token, client_secret, access_token)
-        data, error = self._get_network_list(self, network_list_id, host, session)
+        session = self.get_session(client_token, client_secret, access_token)
+        data, error = self._get_network_list(network_list_id, host, session)
         if error:
             return error
 
@@ -45,7 +45,7 @@ class AkamaiWaf():
             "list": updated_ips,
             "description": data.get("description", "")
         }
-        update_response, error = self._update_network_list(self, host, network_list_id, payload, session)
+        update_response, error = self._update_network_list(host, network_list_id, payload, session)
         if error:
             return error
 
@@ -64,8 +64,8 @@ class AkamaiWaf():
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
         self.logger.info("executing unblock_ip action")
-        session = self.get_session(self, client_token, client_secret, access_token)
-        data, error = self._get_network_list(self, network_list_id, host, session)
+        session = self.get_session(client_token, client_secret, access_token)
+        data, error = self._get_network_list(network_list_id, host, session)
         if error:
             return error
 
@@ -86,7 +86,7 @@ class AkamaiWaf():
             "list": updated_ips,
             "description": data.get("description", "")
         }
-        update_response, error = self._update_network_list(self, host, network_list_id, payload, session)
+        update_response, error = self._update_network_list(host, network_list_id, payload, session)
         if error:
             return error
 
@@ -137,10 +137,10 @@ class AkamaiWaf():
         if ip_address:
             params["clientIP"] = ip_address
 
-        response = self.get_session(self, client_token, client_secret, access_token).get(url, params=params)
+        response = self.get_session(client_token, client_secret, access_token).get(url, params=params)
 
         if response.status_code != 200:
-            return self._handle_error(self, response)
+            return self._handle_error(response)
 
         data = response.json()
 
@@ -160,7 +160,7 @@ class AkamaiWaf():
             raise ValueError("Missing required connection parameters.")
     
         try:
-            session = self.get_session(self=self, client_token=client_token, client_secret=client_secret, access_token=access_token)
+            session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
             if host.startswith("https://"):
                 base_url = host
             else:
@@ -206,7 +206,7 @@ class AkamaiWaf():
         url = f"{host}/network-list/v2/network-lists/{network_list_id}"
         response = session.get(url)
         if response.status_code != 200:
-            return None, self._handle_error(self, response)
+            return None, self._handle_error(response)
         return response.json(), None
     
 
@@ -215,7 +215,7 @@ class AkamaiWaf():
         response = session.put(url, data=json.dumps(payload))
 
         if response.status_code not in [200, 201]:
-            return None, self._handle_error(self, response)
+            return None, self._handle_error(response)
 
         return response.json(), None
     
