@@ -62,7 +62,7 @@
                 {
                     "label": "IP Addresses",
                     "name": "ip_addresses",
-                    "desc": "The Id of network list",
+                    "desc": "The IP addresses",
                     "type": "List",
                     "values": [],
                     "isSecret": false,
@@ -133,7 +133,7 @@
                 {
                     "label": "IP Addresses",
                     "name": "ip_addresses",
-                    "desc": "The Id of network list",
+                    "desc": "The IP addresses",
                     "type": "List",
                     "values": [],
                     "isSecret": false,
@@ -224,7 +224,7 @@
                 {
                     "label": "Attack Type",
                     "name": "attack_type",
-                    "desc": "Optional attack group filter",
+                    "desc": "Optional attack type filter",
                     "type": "String",
                     "values": [],
                     "isSecret": false,
@@ -234,7 +234,7 @@
                 {
                     "label": "IP Address",
                     "name": "ip_address",
-                    "desc": "Optional IP filter",
+                    "desc": "Optional IP address",
                     "type": "String",
                     "values": [],
                     "isSecret": false,
@@ -264,7 +264,7 @@
                     "encrypted": false
                 },
                 {
-                    "label": "Message",
+                    "label": "Event Count",
                     "name": "event_count",
                     "desc": "The total count of security events",
                     "type": "Number",
@@ -274,7 +274,7 @@
                     "encrypted": false
                 },
                 {
-                    "label": "Network List Id",
+                    "label": "Events",
                     "name": "events",
                     "desc": "The security events",
                     "type": "List",
