@@ -1,0 +1,456 @@
+{
+    "connectionParameters": [
+        {
+            "label": "Base URL",
+            "name": "base_url",
+            "desc": "QRadar API base URL (e.g. https://your-qradar-host/api). Required.",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "API Token",
+            "name": "api_token",
+            "desc": "QRadar SEC token for authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Timeout",
+            "name": "timeout",
+            "desc": "HTTP request timeout in seconds. Defaults to 30.",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Max Retries",
+            "name": "max_retries",
+            "desc": "Maximum number of retry attempts for failed requests. Defaults to 3.",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "API Version",
+            "name": "api_version",
+            "desc": "QRadar API version. Defaults to 14.0.",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "IBM QRadar SIEM integration for offense investigation, event search (Ariel), and offense management. Enables SOC analysts to investigate offenses, search events/flows, and manage offense lifecycle.",
+    "functions": [
+        {
+            "label": "Fetch Offenses",
+            "name": "fetch_offenses",
+            "type": "Investigation",
+            "desc": "Retrieve a list of offenses from QRadar SIEM",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Filter",
+                    "name": "filter",
+                    "desc": "QRadar filter expression (e.g. status=OPEN)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Range Start",
+                    "name": "range_start",
+                    "desc": "Pagination start index. Defaults to 0.",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Range End",
+                    "name": "range_end",
+                    "desc": "Pagination end index. Defaults to 49.",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Offense Count",
+                    "name": "count",
+                    "desc": "Number of offenses returned",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offenses",
+                    "name": "offenses",
+                    "desc": "List of offense objects",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Offense Details",
+            "name": "get_offense_details",
+            "type": "Investigation",
+            "desc": "Get full details of a specific offense by ID",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Offense ID",
+                    "name": "offense_id",
+                    "desc": "The ID of the offense to retrieve",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Offense",
+                    "name": "offense",
+                    "desc": "Full offense details",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Risk Level",
+                    "name": "risk_level",
+                    "desc": "Risk level based on offense magnitude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Update Offense",
+            "name": "update_offense",
+            "type": "Investigation",
+            "desc": "Update an offense (close, assign, change status)",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Offense ID",
+                    "name": "offense_id",
+                    "desc": "The ID of the offense to update",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "New status (OPEN, HIDDEN, CLOSED)",
+                    "type": "String",
+                    "values": ["OPEN", "HIDDEN", "CLOSED"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Closing Reason ID",
+                    "name": "closing_reason_id",
+                    "desc": "ID of the closing reason (required when status=CLOSED)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assigned To",
+                    "name": "assigned_to",
+                    "desc": "Username to assign the offense to",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Offense",
+                    "name": "offense",
+                    "desc": "Updated offense object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Offense Notes",
+            "name": "get_offense_notes",
+            "type": "Investigation",
+            "desc": "Retrieve all notes for a specific offense",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Offense ID",
+                    "name": "offense_id",
+                    "desc": "The ID of the offense to get notes for",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Notes",
+                    "name": "notes",
+                    "desc": "List of offense notes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note Count",
+                    "name": "count",
+                    "desc": "Number of notes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Add Offense Note",
+            "name": "add_offense_note",
+            "type": "Investigation",
+            "desc": "Add a note to a specific offense",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Offense ID",
+                    "name": "offense_id",
+                    "desc": "The ID of the offense to add a note to",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note Text",
+                    "name": "note_text",
+                    "desc": "The text content of the note",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Note",
+                    "name": "note",
+                    "desc": "Created note object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Closing Reasons",
+            "name": "get_closing_reasons",
+            "type": "Investigation",
+            "desc": "Retrieve all available offense closing reasons",
+            "sampleOutput": "",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Closing Reasons",
+                    "name": "closing_reasons",
+                    "desc": "List of available closing reasons",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of closing reasons",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Create Search",
+            "name": "create_search",
+            "type": "Investigation",
+            "desc": "Create an Ariel search query (AQL) to search events or flows",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Query Expression",
+                    "name": "query_expression",
+                    "desc": "AQL query string (e.g. SELECT * FROM events WHERE offenseid=123)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Search ID",
+                    "name": "search_id",
+                    "desc": "ID of the created search",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Initial search status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Search Status",
+            "name": "get_search_status",
+            "type": "Investigation",
+            "desc": "Check the status of an Ariel search",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Search ID",
+                    "name": "search_id",
+                    "desc": "The ID of the search to check status for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Search status (WAIT, EXECUTE, SORTING, COMPLETED, CANCELED, ERROR)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Search Results",
+            "name": "get_search_results",
+            "type": "Investigation",
+            "desc": "Retrieve results of a completed Ariel search",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Search ID",
+                    "name": "search_id",
+                    "desc": "The ID of the search to get results for",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Range Start",
+                    "name": "range_start",
+                    "desc": "Pagination start index. Defaults to 0.",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Range End",
+                    "name": "range_end",
+                    "desc": "Pagination end index. Defaults to 49.",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Search results (events or flows)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}

@@ -13,11 +13,11 @@
     {
       "label": "API Key",
       "name": "api_key",
-      "desc": "Optional API key if required by the deployment or proxy layer",
+      "desc": "Optional Auth-Key for URLhaus API (sent as Auth-Key header)",
       "type": "String",
       "values": [],
       "isSecret": true,
-      "optional": false,
+      "optional": true,
       "encrypted": false
     }
   ],

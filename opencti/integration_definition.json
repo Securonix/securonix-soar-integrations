@@ -1,0 +1,344 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Base URL",
+        "name": "base_url",
+        "desc": "OpenCTI instance URL (e.g., https://opencti.example.com)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Token",
+        "name": "api_token",
+        "desc": "OpenCTI API token for authentication",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "OpenCTI integration for IOC and observable enrichment. Supports observable lookups, indicator details retrieval, entity search, relationship mapping, and reference data listing using the OpenCTI GraphQL API.",
+    "functions": [
+      {
+        "label": "Lookup Observable",
+        "name": "lookup_observable",
+        "type": "ThreatIntel",
+        "desc": "Look up observables (IP, domain, URL, hash) in OpenCTI for enrichment data",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Observables",
+            "name": "observables",
+            "desc": "Comma-separated list or array of observable values",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Observable Type",
+            "name": "observable_type",
+            "desc": "Type of observable (IPv4-Addr, Domain-Name, Url, StixFile)",
+            "type": "String",
+            "values": ["IPv4-Addr", "Domain-Name", "Url", "StixFile"],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Observable enrichment results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Indicator Details",
+        "name": "get_indicator_details",
+        "type": "ThreatIntel",
+        "desc": "Get full indicator details including kill chain phases, labels, and confidence score",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Indicator IDs",
+            "name": "indicator_ids",
+            "desc": "Comma-separated list or array of OpenCTI indicator IDs",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Indicator detail results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Search Entities",
+        "name": "search_entities",
+        "type": "ThreatIntel",
+        "desc": "Search across OpenCTI STIX domain objects by keyword and optional entity type",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Search Term",
+            "name": "search_term",
+            "desc": "Keyword to search for across OpenCTI entities",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Entity Type",
+            "name": "entity_type",
+            "desc": "Optional STIX domain object type filter (e.g., Malware, Threat-Actor, Campaign)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum number of results to return (default: 25)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Search results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Indicators",
+        "name": "get_indicators",
+        "type": "ThreatIntel",
+        "desc": "Search indicators by text, labels, confidence, or indicator type",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Search",
+            "name": "search",
+            "desc": "Optional search text to filter indicators",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Labels",
+            "name": "labels",
+            "desc": "Comma-separated labels to filter by",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Confidence",
+            "name": "confidence",
+            "desc": "Minimum confidence score to filter by",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Indicator Type",
+            "name": "indicator_type",
+            "desc": "Indicator pattern type filter (e.g., stix, yara, sigma)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum number of results to return (default: 25)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Indicator search results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Relationships",
+        "name": "get_relationships",
+        "type": "ThreatIntel",
+        "desc": "Get relationships connected to an entity including source, target, and relationship type",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Entity ID",
+            "name": "entity_id",
+            "desc": "OpenCTI entity ID to get relationships for",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Relationship Type",
+            "name": "relationship_type",
+            "desc": "Optional relationship type filter (e.g., uses, targets, indicates)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum number of results to return (default: 25)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Relationship results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "List Labels",
+        "name": "list_labels",
+        "type": "ThreatIntel",
+        "desc": "List all labels defined in OpenCTI",
+        "sampleOutput": "",
+        "inParameters": [],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of labels with id, value, and color",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "List Marking Definitions",
+        "name": "list_marking_definitions",
+        "type": "ThreatIntel",
+        "desc": "List all marking definitions (TLP, PAP, etc.) in OpenCTI",
+        "sampleOutput": "",
+        "inParameters": [],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of marking definitions with id, definition, and definition_type",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "List Organizations",
+        "name": "list_organizations",
+        "type": "ThreatIntel",
+        "desc": "List organizations (identities) in OpenCTI",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum number of results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of organizations with id, name, and description",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }

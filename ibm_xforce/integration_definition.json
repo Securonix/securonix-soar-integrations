@@ -126,6 +126,171 @@
             "encrypted": false
           }
         ]
+      },
+      {
+        "label": "Lookup File Hash",
+        "name": "lookup_file_hash",
+        "type": "ThreatIntel",
+        "desc": "Look up file hash (MD5/SHA1/SHA256) malware reputation from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "File Hashes",
+            "name": "hashes",
+            "desc": "Comma-separated list or array of file hashes (MD5, SHA1, or SHA256)",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "File hash malware lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Lookup CVE",
+        "name": "lookup_cve",
+        "type": "ThreatIntel",
+        "desc": "Look up CVE vulnerability details from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "CVE IDs",
+            "name": "cve_ids",
+            "desc": "Comma-separated list or array of CVE IDs (e.g., CVE-2023-12345)",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "CVE vulnerability lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Latest CVEs",
+        "name": "get_latest_cves",
+        "type": "ThreatIntel",
+        "desc": "Get the latest reported CVE vulnerabilities from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum number of CVEs to return",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Vulnerabilities",
+            "name": "vulnerabilities",
+            "desc": "List of latest CVE vulnerabilities",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "WHOIS Lookup",
+        "name": "whois_lookup",
+        "type": "ThreatIntel",
+        "desc": "Look up WHOIS registration information for domains from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Domains",
+            "name": "domains",
+            "desc": "Comma-separated list or array of domain names",
+            "type": "List",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "WHOIS lookup results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Search CVEs",
+        "name": "search_cves",
+        "type": "ThreatIntel",
+        "desc": "Search CVE vulnerabilities by keyword from IBM X-Force Exchange",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Search keyword or phrase to find CVEs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Bookmark",
+            "name": "bookmark",
+            "desc": "Pagination bookmark for next page of results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "CVE search results",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
       }
     ]
   }
