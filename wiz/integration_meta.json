@@ -1,0 +1,16 @@
+{
+    "name": "wiz",
+    "type": "python",
+    "clazz": "app.wiz",
+    "label": "Wiz",
+    "native": false,
+    "testUrl": "",
+    "category": "Cloud Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Wiz integration for cloud security posture management. Supports issue retrieval, resource inventory, evidence collection, and project team lookup using the Wiz GraphQL API."
+  }
