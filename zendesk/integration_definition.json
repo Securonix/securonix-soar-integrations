@@ -66,26 +66,6 @@
     "desc": "Zendesk Support integration for incident and ticket management workflows. Supports creating, updating, searching tickets, managing comments, and user lookup via the Zendesk REST API.",
     "functions": [
       {
-        "label": "Test Connectivity",
-        "name": "test_connectivity",
-        "type": "Enrichment",
-        "desc": "Validate credentials and connectivity to Zendesk",
-        "sampleOutput": "",
-        "inParameters": [],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Connection status message",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
         "label": "Create Ticket",
         "name": "create_ticket",
         "type": "Containment",
