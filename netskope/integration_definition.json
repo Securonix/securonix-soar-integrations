@@ -1,0 +1,353 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Tenant Hostname",
+        "name": "tenant_hostname",
+        "desc": "Netskope tenant hostname (e.g., mytenant.goskope.com)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Token",
+        "name": "api_token",
+        "desc": "Netskope REST API v2 token",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "Request Timeout",
+        "name": "timeout",
+        "desc": "Request timeout in seconds (default: 30)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Verify SSL",
+        "name": "verify_ssl",
+        "desc": "Verify SSL certificates (default: true)",
+        "type": "String",
+        "values": ["true", "false"],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Proxy",
+        "name": "proxy",
+        "desc": "Proxy URL for outbound requests (optional)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "Netskope cloud security integration for SOAR. Supports alert/event retrieval, incident investigation, and URL list management via REST API v2.",
+    "functions": [
+      {
+        "label": "Get Alerts",
+        "name": "get_alerts",
+        "type": "Enrichment",
+        "desc": "Retrieve alerts with optional filters (alert_type, time_period, user, severity, raw query)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Alert Type",
+            "name": "alert_type",
+            "desc": "Filter by alert type (dlp, malware, policy, security_assessment, compromised_credential, watchlist, quarantine, remediation, uba)",
+            "type": "String",
+            "values": ["dlp", "malware", "policy", "security_assessment", "compromised_credential", "watchlist", "quarantine", "remediation", "uba"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "User",
+            "name": "user",
+            "desc": "Filter by user email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Severity",
+            "name": "severity",
+            "desc": "Filter by severity level",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of alert objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Events",
+        "name": "get_events",
+        "type": "Enrichment",
+        "desc": "Retrieve events by type (application, page, network, audit, infrastructure, incident)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Event Type",
+            "name": "event_type",
+            "desc": "Event type to retrieve (application, page, network, audit, infrastructure, incident)",
+            "type": "String",
+            "values": ["application", "page", "network", "audit", "infrastructure", "incident"],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "User",
+            "name": "user",
+            "desc": "Filter by user email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of event objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Incidents",
+        "name": "get_incidents",
+        "type": "Enrichment",
+        "desc": "Retrieve incidents from Netskope via datasearch",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Filter by incident status (new, in_progress, resolved, closed)",
+            "type": "String",
+            "values": ["new", "in_progress", "resolved", "closed"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of incident objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Alert Details",
+        "name": "get_alert_details",
+        "type": "Enrichment",
+        "desc": "Retrieve a single alert by its ID",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Alert ID",
+            "name": "alert_id",
+            "desc": "The alert ID to retrieve",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Single alert object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Update URL List",
+        "name": "update_url_list",
+        "type": "Action",
+        "desc": "Add or replace URLs in a custom URL list (response/remediation action)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to modify",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Action",
+            "name": "action",
+            "desc": "Operation to perform on the URL list",
+            "type": "String",
+            "values": ["append", "replace"],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "URLs",
+            "name": "urls",
+            "desc": "Comma-separated list of URLs to add or replace",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Updated URL list confirmation",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }
