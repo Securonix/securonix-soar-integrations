@@ -299,16 +299,16 @@
         ]
       },
       {
-        "label": "Update URL List",
-        "name": "update_url_list",
-        "type": "Action",
-        "desc": "Add or replace URLs in a custom URL list (response/remediation action)",
+        "label": "Block URL",
+        "name": "block_url",
+        "type": "Containment",
+        "desc": "Append URLs to a Netskope URL list and deploy the policy",
         "sampleOutput": "",
         "inParameters": [
           {
             "label": "List ID",
             "name": "list_id",
-            "desc": "ID of the URL list to modify",
+            "desc": "ID of the URL list to append to",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -316,19 +316,111 @@
             "encrypted": false
           },
           {
-            "label": "Action",
-            "name": "action",
-            "desc": "Operation to perform on the URL list",
+            "label": "URLs",
+            "name": "urls",
+            "desc": "Comma-separated list of URLs to block",
             "type": "String",
-            "values": ["append", "replace"],
+            "values": [],
             "isSecret": false,
             "optional": false,
             "encrypted": false
           },
           {
-            "label": "URLs",
-            "name": "urls",
-            "desc": "Comma-separated list of URLs to add or replace",
+            "label": "Type",
+            "name": "type",
+            "desc": "Match type for the URL entries (default: exact)",
+            "type": "String",
+            "values": ["exact", "regex"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block Domain",
+        "name": "block_domain",
+        "type": "Containment",
+        "desc": "Append validated domains to a Netskope URL list and deploy the policy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to append to",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Domains",
+            "name": "domains",
+            "desc": "Comma-separated list of domains to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Type",
+            "name": "type",
+            "desc": "Match type for the domain entries (default: exact)",
+            "type": "String",
+            "values": ["exact", "regex"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block IP",
+        "name": "block_ip",
+        "type": "Containment",
+        "desc": "Append validated IPv4/IPv6/CIDR addresses to a Netskope URL list and deploy the policy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to append to",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "IPs",
+            "name": "ips",
+            "desc": "Comma-separated list of IPv4, IPv6, or CIDR addresses to block",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -340,7 +432,58 @@
           {
             "label": "Results",
             "name": "results",
-            "desc": "Updated URL list confirmation",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block File Hash",
+        "name": "block_file_hash",
+        "type": "Containment",
+        "desc": "Add MD5 or SHA256 file hashes to a Netskope File Hash List",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "File Hash List Name",
+            "name": "file_hash_list_name",
+            "desc": "Name of the existing File Hash List to update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Hashes",
+            "name": "hashes",
+            "desc": "Comma-separated list of MD5 or SHA256 hashes to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Hash Type",
+            "name": "hash_type",
+            "desc": "Expected hash type for validation (optional — auto-detected if omitted)",
+            "type": "String",
+            "values": ["md5", "sha256"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "API response from Netskope File Hash List update",
             "type": "String",
             "values": [],
             "isSecret": false,
