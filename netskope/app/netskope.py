@@ -1,6 +1,8 @@
 from app.model.request_body import RequestBody
 from app.model.response_body import ResponseBody
+import ipaddress
 import logging
+import re
 import time
 import requests
 
@@ -10,7 +12,13 @@ VALID_ALERT_TYPES = {
     "dlp", "malware", "policy", "security_assessment",
     "compromised_credential", "watchlist", "quarantine", "remediation", "uba",
 }
-VALID_URL_ACTIONS = {"append", "replace"}
+VALID_URL_TYPES = {"exact", "regex"}
+VALID_HASH_TYPES = {"md5", "sha256"}
+_RE_DOMAIN = re.compile(
+    r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
+)
+_RE_MD5 = re.compile(r"^[0-9a-fA-F]{32}$")
+_RE_SHA256 = re.compile(r"^[0-9a-fA-F]{64}$")
 
 MAX_RETRIES = 3
 BACKOFF_FACTOR = 2
@@ -54,7 +62,7 @@ class Netskope():
         return {
             "base_url": f"https://{tenant_hostname}",
             "headers": {
-                "Netskope-API-Token": api_token,
+                "Netskope-Api-Token": api_token,
                 "Content-Type": "application/json",
                 "User-Agent": USER_AGENT,
             },
@@ -292,33 +300,157 @@ class Netskope():
             self.logger.error("Error in get_alert_details", exc_info=e)
             raise Exception(str(e))
 
-    def update_url_list(self, request: RequestBody) -> ResponseBody:
+    def _append_urllist_and_deploy(self, config: dict, list_id: int, items: list, url_type: str) -> dict:
+        endpoint = f"/api/v2/policy/urllist/{list_id}/append"
+        body = {"data": {"urls": items, "type": url_type}}
+        self._make_request(config, "PATCH", endpoint, json_body=body)
+        self._make_request(config, "POST", "/api/v2/policy/urllist/deploy")
+        return {"status": "success", "list_id": list_id, "items_added": items}
+
+    def block_url(self, request: RequestBody) -> ResponseBody:
         try:
             config = self._get_config(request.connectionParameters)
             params = request.parameters
 
-            list_id = (params.get("list_id") or "").strip()
-            if not list_id:
-                raise Exception("list_id is required.")
+            raw_list_id = params.get("list_id")
+            try:
+                list_id = int(raw_list_id)
+                if list_id < 1:
+                    raise ValueError()
+            except (ValueError, TypeError):
+                raise Exception("list_id must be a positive integer.")
 
-            action = (params.get("action") or "").strip().lower()
-            if not action:
-                raise Exception("action is required.")
-            if action not in VALID_URL_ACTIONS:
-                raise Exception(f"action must be one of: {', '.join(sorted(VALID_URL_ACTIONS))}")
-
-            urls = (params.get("urls") or "").strip()
+            raw_urls = params.get("urls") or ""
+            if isinstance(raw_urls, list):
+                urls = [u.strip() for u in raw_urls if str(u).strip()]
+            else:
+                urls = [u.strip() for u in str(raw_urls).split(",") if u.strip()]
             if not urls:
-                raise Exception("urls is required.")
-            url_list = [u.strip() for u in urls.split(",") if u.strip()]
-            if not url_list:
-                raise Exception("urls must contain at least one valid URL.")
+                raise Exception("urls must contain at least one value.")
 
-            endpoint = f"/api/v2/policy/urllist/{list_id}/{action}"
-            body = {"urls": url_list}
+            url_type = (params.get("type") or "exact").strip().lower()
+            if url_type not in VALID_URL_TYPES:
+                raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
 
-            data = self._make_request(config, "PATCH", endpoint, json_body=body)
-            return {"status": "success", "result": data}
+            return self._append_urllist_and_deploy(config, list_id, urls, url_type)
         except Exception as e:
-            self.logger.error("Error in update_url_list", exc_info=e)
+            self.logger.error("Error in block_url", exc_info=e)
             raise Exception(str(e))
+
+    def block_domain(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = self._get_config(request.connectionParameters)
+            params = request.parameters
+
+            raw_list_id = params.get("list_id")
+            try:
+                list_id = int(raw_list_id)
+                if list_id < 1:
+                    raise ValueError()
+            except (ValueError, TypeError):
+                raise Exception("list_id must be a positive integer.")
+
+            raw_domains = params.get("domains") or ""
+            if isinstance(raw_domains, list):
+                domains = [d.strip() for d in raw_domains if str(d).strip()]
+            else:
+                domains = [d.strip() for d in str(raw_domains).split(",") if d.strip()]
+            if not domains:
+                raise Exception("domains must contain at least one value.")
+
+            invalid = [d for d in domains if not _RE_DOMAIN.match(d)]
+            if invalid:
+                raise Exception(f"Invalid domain(s): {', '.join(invalid)}")
+
+            url_type = (params.get("type") or "exact").strip().lower()
+            if url_type not in VALID_URL_TYPES:
+                raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
+
+            return self._append_urllist_and_deploy(config, list_id, domains, url_type)
+        except Exception as e:
+            self.logger.error("Error in block_domain", exc_info=e)
+            raise Exception(str(e))
+
+    def block_ip(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = self._get_config(request.connectionParameters)
+            params = request.parameters
+
+            raw_list_id = params.get("list_id")
+            try:
+                list_id = int(raw_list_id)
+                if list_id < 1:
+                    raise ValueError()
+            except (ValueError, TypeError):
+                raise Exception("list_id must be a positive integer.")
+
+            raw_ips = params.get("ips") or ""
+            if isinstance(raw_ips, list):
+                ips = [i.strip() for i in raw_ips if str(i).strip()]
+            else:
+                ips = [i.strip() for i in str(raw_ips).split(",") if i.strip()]
+            if not ips:
+                raise Exception("ips must contain at least one value.")
+
+            invalid = []
+            for ip in ips:
+                try:
+                    ipaddress.ip_network(ip, strict=False)
+                except ValueError:
+                    invalid.append(ip)
+            if invalid:
+                raise Exception(f"Invalid IP/CIDR value(s): {', '.join(invalid)}")
+
+            return self._append_urllist_and_deploy(config, list_id, ips, "exact")
+        except Exception as e:
+            self.logger.error("Error in block_ip", exc_info=e)
+            raise Exception(str(e))
+
+    def block_file_hash(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = self._get_config(request.connectionParameters)
+            params = request.parameters
+
+            file_hash_list_name = (params.get("file_hash_list_name") or "").strip()
+            if not file_hash_list_name:
+                raise Exception("file_hash_list_name is required.")
+
+            raw_hashes = params.get("hashes") or ""
+            if isinstance(raw_hashes, list):
+                hashes = [h.strip() for h in raw_hashes if str(h).strip()]
+            else:
+                hashes = [h.strip() for h in str(raw_hashes).split(",") if h.strip()]
+            if not hashes:
+                raise Exception("hashes must contain at least one value.")
+
+            hash_type = (params.get("hash_type") or "").strip().lower()
+            if hash_type and hash_type not in VALID_HASH_TYPES:
+                raise Exception(f"hash_type must be one of: {', '.join(sorted(VALID_HASH_TYPES))}")
+
+            invalid = []
+            for h in hashes:
+                if not (_RE_MD5.match(h) or _RE_SHA256.match(h)):
+                    invalid.append(h)
+                elif hash_type == "md5" and not _RE_MD5.match(h):
+                    invalid.append(h)
+                elif hash_type == "sha256" and not _RE_SHA256.match(h):
+                    invalid.append(h)
+            if invalid:
+                raise Exception(f"Invalid hash value(s): {', '.join(invalid)}")
+
+            data = self._make_request(
+                config, "POST", "/api/v1/updateFileHashList",
+                params={"name": file_hash_list_name},
+                json_body={"list": ",".join(hashes)},
+            )
+            return {
+                "status": "success",
+                "file_hash_list": file_hash_list_name,
+                "hashes_added": hashes,
+                "result": data,
+            }
+        except Exception as e:
+            self.logger.error("Error in block_file_hash", exc_info=e)
+            raise Exception(str(e))
+
+
