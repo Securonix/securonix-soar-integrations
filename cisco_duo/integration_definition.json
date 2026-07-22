@@ -1,0 +1,584 @@
+{
+    "connectionParameters": [
+        {
+            "label": "API Hostname",
+            "name": "api_hostname",
+            "desc": "Duo Admin API hostname (e.g., api-XXXXXXXX.duosecurity.com)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Integration Key",
+            "name": "integration_key",
+            "desc": "Duo Admin API integration key",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Secret Key",
+            "name": "secret_key",
+            "desc": "Duo Admin API secret key",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Retrieve details for a specific Duo user by user_id or username",
+            "label": "Get User",
+            "name": "duo_get_user",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Username",
+                    "name": "username",
+                    "desc": "Duo username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "User",
+                    "name": "user",
+                    "desc": "User object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Search for Duo users with filtering and pagination",
+            "label": "Search Users",
+            "name": "duo_search_users",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Username",
+                    "name": "username",
+                    "desc": "Filter by username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Filter by email address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Filter by user status",
+                    "type": "String",
+                    "values": ["active", "bypass", "disabled", "locked_out", "pending_deletion"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Maximum number of results to return (max 300)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "Offset for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Users",
+                    "name": "users",
+                    "desc": "List of user objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching users",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Pagination",
+                    "name": "pagination",
+                    "desc": "Pagination metadata",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve Duo authentication logs with filtering and pagination",
+            "label": "Get Auth Logs",
+            "name": "duo_get_auth_logs",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Min Time",
+                    "name": "mintime",
+                    "desc": "Start time as 13-digit Unix timestamp in milliseconds",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Max Time",
+                    "name": "maxtime",
+                    "desc": "End time as 13-digit Unix timestamp in milliseconds",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Users",
+                    "name": "users",
+                    "desc": "Filter by user IDs (comma-separated)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Filter by authentication result",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Factors",
+                    "name": "factors",
+                    "desc": "Filter by authentication factor",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Applications",
+                    "name": "applications",
+                    "desc": "Filter by application key",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Reasons",
+                    "name": "reasons",
+                    "desc": "Filter by authentication reason",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event Types",
+                    "name": "event_types",
+                    "desc": "Filter by event type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Maximum number of log entries to return (max 1000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for cursor-based pagination",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Auth Logs",
+                    "name": "authlogs",
+                    "desc": "List of authentication log entries",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching log entries",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for next page",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve the groups a Duo user belongs to",
+            "label": "Get User Groups",
+            "name": "duo_get_user_groups",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Username",
+                    "name": "username",
+                    "desc": "Duo username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Groups",
+                    "name": "groups",
+                    "desc": "List of group objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of groups returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve the phones/devices registered to a Duo user",
+            "label": "Get User Devices",
+            "name": "duo_get_user_devices",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Username",
+                    "name": "username",
+                    "desc": "Duo username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Phones",
+                    "name": "phones",
+                    "desc": "List of phone/device objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of devices returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Change a Duo user's status (active, bypass, disabled)",
+            "label": "Update User Status",
+            "name": "duo_update_user_status",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Username",
+                    "name": "username",
+                    "desc": "Duo username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "New status for the user",
+                    "type": "String",
+                    "values": ["active", "bypass", "disabled"],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "User",
+                    "name": "user",
+                    "desc": "Updated user object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add a Duo user to a group",
+            "label": "Add User to Group",
+            "name": "duo_add_user_to_group",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Duo group ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Duo group ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Remove a Duo user from a group",
+            "label": "Remove User from Group",
+            "name": "duo_remove_user_from_group",
+            "type": "Containment",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Duo group ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "User ID",
+                    "name": "user_id",
+                    "desc": "Duo user ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Duo group ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}

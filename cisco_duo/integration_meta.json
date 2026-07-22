@@ -1,0 +1,16 @@
+{
+    "name": "cisco_duo",
+    "type": "python",
+    "clazz": "app.cisco_duo",
+    "label": "Cisco Duo",
+    "native": false,
+    "testUrl": "",
+    "category": "Identity Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Cisco Duo Admin API integration for managing users, groups, devices, authentication logs, and user statuses. Supports HMAC-SHA512 authentication, pagination, and rate-limit retry."
+}
