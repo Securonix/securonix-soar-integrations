@@ -579,6 +579,452 @@
                     "encrypted": false
                 }
             ]
+        },
+        {
+            "desc": "Retrieve all Duo groups with pagination",
+            "label": "Get Groups",
+            "name": "duo_get_groups",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Number of results per page (max 300, default 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "Offset for pagination (max 10000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Groups",
+                    "name": "groups",
+                    "desc": "List of group objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching groups",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of groups returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Search Duo groups by name (client-side filter on the retrieved page; the Duo API does not support server-side group name search)",
+            "label": "Search Groups",
+            "name": "duo_search_groups",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Group Name",
+                    "name": "group_name",
+                    "desc": "Group name to search for (case-insensitive, matched client-side on the retrieved page only)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Number of results per page (max 300, default 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "Offset for pagination (max 10000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Groups",
+                    "name": "groups",
+                    "desc": "List of matching group objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of groups returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single Duo phone/device by phone_id",
+            "label": "Get Device",
+            "name": "duo_get_device",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Phone ID",
+                    "name": "phone_id",
+                    "desc": "Duo phone/device ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Phone",
+                    "name": "phone",
+                    "desc": "Phone/device object",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Phone ID",
+                    "name": "phone_id",
+                    "desc": "Duo phone/device ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve registered Duo phones/devices with pagination",
+            "label": "Search Devices",
+            "name": "duo_search_devices",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Number",
+                    "name": "number",
+                    "desc": "Filter by phone number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Extension",
+                    "name": "extension",
+                    "desc": "Filter by extension",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Number of results per page (max 300, default 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "Offset for pagination (max 10000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Phones",
+                    "name": "phones",
+                    "desc": "List of phone/device objects",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching phones/devices",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of phones/devices returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve Duo administrator audit logs with filtering and pagination",
+            "label": "Get Admin Logs",
+            "name": "duo_get_admin_logs",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Min Time",
+                    "name": "mintime",
+                    "desc": "Start time as 13-digit Unix timestamp in milliseconds (within last 180 days)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Max Time",
+                    "name": "maxtime",
+                    "desc": "End time as 13-digit Unix timestamp in milliseconds",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Administrator",
+                    "name": "administrator",
+                    "desc": "Filter by administrator username (client-side filter on retrieved page; not supported server-side by Duo)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Action",
+                    "name": "action",
+                    "desc": "Filter by action type (client-side filter on retrieved page; not supported server-side by Duo)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Number of log entries to return (max 1000, default 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for cursor-based pagination",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Admin Logs",
+                    "name": "adminlogs",
+                    "desc": "List of administrator audit log entries",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching log entries",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of log entries returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for next page",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve Duo telephony (SMS and phone-call) logs with pagination",
+            "label": "Get Telephony Logs",
+            "name": "duo_get_telephony_logs",
+            "type": "Investigate",
+            "sampleOutput": "",
+            "inParameters": [
+                {
+                    "label": "Min Time",
+                    "name": "mintime",
+                    "desc": "Start time as 13-digit Unix timestamp in milliseconds (within last 180 days)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Max Time",
+                    "name": "maxtime",
+                    "desc": "End time as 13-digit Unix timestamp in milliseconds",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Number of log entries to return (max 1000, default 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for cursor-based pagination",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Telephony Logs",
+                    "name": "telephonylogs",
+                    "desc": "List of telephony log entries",
+                    "type": "List",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total Objects",
+                    "name": "total_objects",
+                    "desc": "Total number of matching log entries",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of log entries returned",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Next Offset",
+                    "name": "next_offset",
+                    "desc": "Pagination token for next page",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
         }
     ]
 }

@@ -1265,3 +1265,678 @@ class TestDuoSigningUtility:
         encoded_part = result[len("Basic "):]
         decoded = base64.b64decode(encoded_part).decode("utf-8")
         assert decoded == f"{ikey}:{signature}"
+
+
+class TestDuoGetGroups:
+    """Tests for the duo_get_groups action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_get_groups_success(self, mock_get):
+        """Test successful retrieval of groups with metadata."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [
+                {"group_id": "DG001", "name": "Engineering", "desc": "Eng team", "status": "Active"},
+                {"group_id": "DG002", "name": "VPN Users", "desc": "VPN", "status": "Active"}
+            ],
+            "metadata": {"total_objects": 2}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "success"
+        assert result["message"] == "Groups retrieved successfully."
+        assert len(result["groups"]) == 2
+        assert result["count"] == 2
+        assert result["total_objects"] == 2
+        assert "pagination" not in result
+
+    @patch('requests.get')
+    def test_get_groups_limit_capped_at_300(self, mock_get):
+        """Test that limit is capped at 300 when a higher value is provided."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [],
+            "metadata": {"total_objects": 0}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 500})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "success"
+        call_kwargs = mock_get.call_args
+        params_sent = call_kwargs[1].get('params') or call_kwargs.kwargs.get('params', {})
+        assert params_sent.get('limit') == '300'
+
+    @patch('requests.get')
+    def test_get_groups_pagination_metadata(self, mock_get):
+        """Test pagination metadata is present when total_objects exceeds offset+limit."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [{"group_id": f"DG{i}"} for i in range(100)],
+            "metadata": {"total_objects": 250}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 100, "offset": 0})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "success"
+        assert "pagination" in result
+        assert result["pagination"]["offset"] == 0
+        assert result["pagination"]["limit"] == 100
+        assert result["pagination"]["total_objects"] == 250
+        assert result["pagination"]["next_offset"] == 100
+
+    @patch('requests.get')
+    def test_get_groups_no_pagination_when_all_fetched(self, mock_get):
+        """Test no pagination metadata when all results fit in one page."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [{"group_id": "DG001"}],
+            "metadata": {"total_objects": 1}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 100, "offset": 0})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "success"
+        assert "pagination" not in result
+
+    def test_get_groups_offset_exceeds_10000(self):
+        """Test that offset > 10000 raises an exception."""
+        request = _make_request_body({"offset": 10001})
+
+        with pytest.raises(Exception, match="Offset exceeds maximum retrievable records limit of 10000"):
+            self.duo.duo_get_groups(request)
+
+    @patch('requests.get')
+    def test_get_groups_api_stat_fail(self, mock_get):
+        """Test that non-OK stat from Duo API returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Something went wrong"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "failed"
+        assert "Something went wrong" in result["message"]
+
+    @patch('requests.get')
+    def test_get_groups_http_401_raises(self, mock_get):
+        """Test that HTTP 401 errors are properly raised."""
+        mock_response = Mock()
+        mock_response.status_code = 401
+        mock_response.text = "Unauthorized"
+        mock_response.json.return_value = {"stat": "FAIL", "message": "Invalid credentials"}
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+
+        with pytest.raises(Exception, match="Authentication failed"):
+            self.duo.duo_get_groups(request)
+
+    @patch('time.sleep')
+    @patch('requests.get')
+    def test_get_groups_rate_limit_retry_then_success(self, mock_get, mock_sleep):
+        """Test that 429 is retried and eventually succeeds for duo_get_groups."""
+        mock_429_response = Mock()
+        mock_429_response.status_code = 429
+        mock_429_response.headers = {"Retry-After": "2"}
+
+        mock_200_response = Mock()
+        mock_200_response.status_code = 200
+        mock_200_response.json.return_value = {
+            "stat": "OK",
+            "response": [{"group_id": "DG001", "name": "Engineering"}],
+            "metadata": {"total_objects": 1}
+        }
+
+        mock_get.side_effect = [mock_429_response, mock_200_response]
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_groups(request)
+
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        mock_sleep.assert_called_once_with(2)
+        assert mock_get.call_count == 2
+
+
+class TestDuoSearchGroups:
+    """Tests for the duo_search_groups action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_search_groups_success_case_insensitive(self, mock_get):
+        """Test that group_name matches a subset case-insensitively."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [
+                {"group_id": "DG001", "name": "Engineering"},
+                {"group_id": "DG002", "name": "VPN Users"},
+                {"group_id": "DG003", "name": "engineering-admins"}
+            ],
+            "metadata": {"total_objects": 3}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"group_name": "engineering"})
+        result = self.duo.duo_search_groups(request)
+
+        assert result["status"] == "success"
+        assert result["count"] == 2
+        matched_names = [g["name"] for g in result["groups"]]
+        assert "Engineering" in matched_names
+        assert "engineering-admins" in matched_names
+        assert "VPN Users" not in matched_names
+
+    def test_search_groups_missing_group_name(self):
+        """Test that missing group_name raises an exception."""
+        request = _make_request_body({})
+
+        with pytest.raises(Exception, match="Missing required parameter: group_name"):
+            self.duo.duo_search_groups(request)
+
+    @patch('requests.get')
+    def test_search_groups_no_matches(self, mock_get):
+        """Test search returning no matches yields success with empty groups."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [
+                {"group_id": "DG001", "name": "Engineering"},
+                {"group_id": "DG002", "name": "VPN Users"}
+            ],
+            "metadata": {"total_objects": 2}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"group_name": "nonexistent"})
+        result = self.duo.duo_search_groups(request)
+
+        assert result["status"] == "success"
+        assert result["groups"] == []
+        assert result["count"] == 0
+
+    @patch('requests.get')
+    def test_search_groups_api_stat_fail(self, mock_get):
+        """Test that non-OK stat from Duo API returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Something went wrong"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"group_name": "engineering"})
+        result = self.duo.duo_search_groups(request)
+
+        assert result["status"] == "failed"
+        assert "Something went wrong" in result["message"]
+
+
+class TestDuoGetDevice:
+    """Tests for the duo_get_device action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_get_device_success(self, mock_get):
+        """Test successful retrieval of a device by phone_id."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "phone_id": "DPXXXXXXXXXXXXXXXXXX",
+                "number": "+15555550100",
+                "type": "mobile",
+                "platform": "Apple iOS"
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"phone_id": "DPXXXXXXXXXXXXXXXXXX"})
+        result = self.duo.duo_get_device(request)
+
+        assert result["status"] == "success"
+        assert result["message"] == "Device retrieved successfully."
+        assert result["phone"]["phone_id"] == "DPXXXXXXXXXXXXXXXXXX"
+        assert result["phone_id"] == "DPXXXXXXXXXXXXXXXXXX"
+
+    def test_get_device_missing_phone_id(self):
+        """Test that missing phone_id raises an exception."""
+        request = _make_request_body({})
+
+        with pytest.raises(Exception, match="Missing required parameter: phone_id"):
+            self.duo.duo_get_device(request)
+
+    @patch('requests.get')
+    def test_get_device_not_found_404(self, mock_get):
+        """Test that a 404 returns failed status with Device not found."""
+        mock_response = Mock()
+        mock_response.status_code = 404
+        mock_response.text = "Resource not found"
+        mock_response.json.return_value = {"stat": "FAIL", "message": "Resource not found"}
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"phone_id": "DP_INVALID"})
+        result = self.duo.duo_get_device(request)
+
+        assert result["status"] == "failed"
+        assert "Device not found" in result["message"]
+        assert "DP_INVALID" in result["message"]
+
+    @patch('requests.get')
+    def test_get_device_stat_not_ok(self, mock_get):
+        """Test that a non-OK stat returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Invalid phone_id"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"phone_id": "DP_BAD"})
+        result = self.duo.duo_get_device(request)
+
+        assert result["status"] == "failed"
+        assert "Device not found" in result["message"]
+
+
+class TestDuoSearchDevices:
+    """Tests for the duo_search_devices action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_search_devices_success(self, mock_get):
+        """Test successful retrieval of devices with metadata."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [
+                {"phone_id": "DP001", "number": "+15555550100"},
+                {"phone_id": "DP002", "number": "+15555550101"}
+            ],
+            "metadata": {"total_objects": 2}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_search_devices(request)
+
+        assert result["status"] == "success"
+        assert result["message"] == "Devices retrieved successfully."
+        assert len(result["phones"]) == 2
+        assert result["count"] == 2
+        assert result["total_objects"] == 2
+        assert "pagination" not in result
+
+    @patch('requests.get')
+    def test_search_devices_with_filters(self, mock_get):
+        """Test that number and extension filters are sent as query params."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [{"phone_id": "DP001", "number": "+15555550100", "extension": "123"}],
+            "metadata": {"total_objects": 1}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"number": "+15555550100", "extension": "123"})
+        result = self.duo.duo_search_devices(request)
+
+        assert result["status"] == "success"
+        call_kwargs = mock_get.call_args
+        params_sent = call_kwargs[1].get('params') or call_kwargs.kwargs.get('params', {})
+        assert params_sent.get('number') == '+15555550100'
+        assert params_sent.get('extension') == '123'
+
+    @patch('requests.get')
+    def test_search_devices_limit_capped_at_300(self, mock_get):
+        """Test that limit is capped at 300 when a higher value is provided."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [],
+            "metadata": {"total_objects": 0}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 500})
+        result = self.duo.duo_search_devices(request)
+
+        assert result["status"] == "success"
+        call_kwargs = mock_get.call_args
+        params_sent = call_kwargs[1].get('params') or call_kwargs.kwargs.get('params', {})
+        assert params_sent.get('limit') == '300'
+
+    @patch('requests.get')
+    def test_search_devices_pagination_metadata(self, mock_get):
+        """Test pagination metadata is present when more pages are available."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": [{"phone_id": f"DP{i}"} for i in range(100)],
+            "metadata": {"total_objects": 250}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 100, "offset": 0})
+        result = self.duo.duo_search_devices(request)
+
+        assert result["status"] == "success"
+        assert "pagination" in result
+        assert result["pagination"]["next_offset"] == 100
+        assert result["pagination"]["total_objects"] == 250
+
+    def test_search_devices_offset_exceeds_10000(self):
+        """Test that offset > 10000 raises an exception."""
+        request = _make_request_body({"offset": 10001})
+
+        with pytest.raises(Exception, match="Offset exceeds maximum retrievable records limit of 10000"):
+            self.duo.duo_search_devices(request)
+
+    @patch('requests.get')
+    def test_search_devices_api_stat_fail(self, mock_get):
+        """Test that non-OK stat from Duo API returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Something went wrong"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_search_devices(request)
+
+        assert result["status"] == "failed"
+        assert "Something went wrong" in result["message"]
+
+
+class TestDuoGetAdminLogs:
+    """Tests for the duo_get_admin_logs action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_get_admin_logs_success(self, mock_get):
+        """Test successful retrieval of administrator logs from response.items."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [
+                    {"username": "admin1@x.com", "action": "user_update"},
+                    {"username": "admin2@x.com", "action": "admin_login"}
+                ],
+                "metadata": {"total_objects": 2}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "success"
+        assert result["message"] == "Administrator logs retrieved successfully."
+        assert len(result["adminlogs"]) == 2
+        assert result["count"] == 2
+        assert result["total_objects"] == 2
+
+    @patch('requests.get')
+    def test_get_admin_logs_pagination(self, mock_get):
+        """Test pagination metadata when next_offset is present."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [{"username": "admin1@x.com", "action": "user_update"}],
+                "metadata": {"total_objects": 500, "next_offset": "1571780764000,5bf98546-f4c1"}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "success"
+        assert "pagination" in result
+        assert result["pagination"]["next_offset"] == "1571780764000,5bf98546-f4c1"
+        assert result["next_offset"] == "1571780764000,5bf98546-f4c1"
+
+    @patch('requests.get')
+    def test_get_admin_logs_limit_capped_at_1000(self, mock_get):
+        """Test that limit is capped at 1000 when a higher value is provided."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {"items": [], "metadata": {"total_objects": 0}}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 5000})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "success"
+        call_kwargs = mock_get.call_args
+        params_sent = call_kwargs[1].get('params') or call_kwargs.kwargs.get('params', {})
+        assert params_sent.get('limit') == '1000'
+
+    def test_get_admin_logs_invalid_mintime_format(self):
+        """Test that an invalid mintime format raises an exception."""
+        request = _make_request_body({"mintime": "123456"})
+
+        with pytest.raises(Exception, match="Invalid mintime"):
+            self.duo.duo_get_admin_logs(request)
+
+    def test_get_admin_logs_mintime_older_than_180_days(self):
+        """Test that a mintime older than 180 days raises an exception."""
+        # A 13-digit ms timestamp well over 180 days in the past (year 2001)
+        request = _make_request_body({"mintime": "1000000000000"})
+
+        with pytest.raises(Exception, match="180 days"):
+            self.duo.duo_get_admin_logs(request)
+
+    @patch('requests.get')
+    def test_get_admin_logs_administrator_filter(self, mock_get):
+        """Test client-side administrator filter on username."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [
+                    {"username": "admin1@x.com", "action": "user_update"},
+                    {"username": "admin2@x.com", "action": "admin_login"}
+                ],
+                "metadata": {"total_objects": 2}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"administrator": "admin1"})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        assert result["adminlogs"][0]["username"] == "admin1@x.com"
+
+    @patch('requests.get')
+    def test_get_admin_logs_action_filter(self, mock_get):
+        """Test client-side action filter."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [
+                    {"username": "admin1@x.com", "action": "user_update"},
+                    {"username": "admin2@x.com", "action": "admin_login"}
+                ],
+                "metadata": {"total_objects": 2}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"action": "login"})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "success"
+        assert result["count"] == 1
+        assert result["adminlogs"][0]["action"] == "admin_login"
+
+    @patch('requests.get')
+    def test_get_admin_logs_api_stat_fail(self, mock_get):
+        """Test that non-OK stat from Duo API returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Something went wrong"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_admin_logs(request)
+
+        assert result["status"] == "failed"
+        assert "Something went wrong" in result["message"]
+
+
+class TestDuoGetTelephonyLogs:
+    """Tests for the duo_get_telephony_logs action."""
+
+    def setup_method(self):
+        self.duo = CiscoDuo()
+
+    @patch('requests.get')
+    def test_get_telephony_logs_success(self, mock_get):
+        """Test successful retrieval of telephony logs from response.items."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [
+                    {"context": "authentication", "type": "sms", "credits": 1},
+                    {"context": "enrollment", "type": "phone", "credits": 2}
+                ],
+                "metadata": {"total_objects": 2}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_telephony_logs(request)
+
+        assert result["status"] == "success"
+        assert result["message"] == "Telephony logs retrieved successfully."
+        assert len(result["telephonylogs"]) == 2
+        assert result["count"] == 2
+        assert result["total_objects"] == 2
+
+    @patch('requests.get')
+    def test_get_telephony_logs_pagination(self, mock_get):
+        """Test pagination metadata when next_offset is present."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {
+                "items": [{"context": "authentication", "type": "sms"}],
+                "metadata": {"total_objects": 500, "next_offset": "1571780764000,abc123"}
+            }
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_telephony_logs(request)
+
+        assert result["status"] == "success"
+        assert "pagination" in result
+        assert result["pagination"]["next_offset"] == "1571780764000,abc123"
+        assert result["next_offset"] == "1571780764000,abc123"
+
+    @patch('requests.get')
+    def test_get_telephony_logs_limit_capped_at_1000(self, mock_get):
+        """Test that limit is capped at 1000 when a higher value is provided."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "OK",
+            "response": {"items": [], "metadata": {"total_objects": 0}}
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({"limit": 5000})
+        result = self.duo.duo_get_telephony_logs(request)
+
+        assert result["status"] == "success"
+        call_kwargs = mock_get.call_args
+        params_sent = call_kwargs[1].get('params') or call_kwargs.kwargs.get('params', {})
+        assert params_sent.get('limit') == '1000'
+
+    def test_get_telephony_logs_invalid_mintime_format(self):
+        """Test that an invalid mintime format raises an exception."""
+        request = _make_request_body({"mintime": "123456"})
+
+        with pytest.raises(Exception, match="Invalid mintime"):
+            self.duo.duo_get_telephony_logs(request)
+
+    @patch('requests.get')
+    def test_get_telephony_logs_api_stat_fail(self, mock_get):
+        """Test that non-OK stat from Duo API returns failed status."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "stat": "FAIL",
+            "message": "Something went wrong"
+        }
+        mock_get.return_value = mock_response
+
+        request = _make_request_body({})
+        result = self.duo.duo_get_telephony_logs(request)
+
+        assert result["status"] == "failed"
+        assert "Something went wrong" in result["message"]

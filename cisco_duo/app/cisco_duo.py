@@ -461,6 +461,398 @@ class CiscoDuo:
             self.logger.error("error while running action 'duo_remove_user_from_group'", exc_info=e)
             raise Exception(str(e))
 
+    # ---------------------------------------------------------------------
+    # Get Groups
+    # ---------------------------------------------------------------------
+    def duo_get_groups(self, request: RequestBody) -> dict:
+        """
+        Retrieve all Duo groups with offset-based pagination.
+
+        Uses GET /admin/v1/groups. Supports limit (max 300, default 100) and offset.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            limit = request.parameters.get('limit', 100)
+            offset = request.parameters.get('offset', 0)
+
+            if offset > 10000:
+                raise Exception("Offset exceeds maximum retrievable records limit of 10000")
+
+            limit = min(int(limit), 300)
+
+            params = {"limit": str(limit), "offset": str(offset)}
+
+            resp = self._get_with_retry(host, "/admin/v1/groups", params, ikey, skey)
+            body = resp.json()
+
+            if body.get("stat") != "OK":
+                return {"status": "failed", "message": body.get("message", "Failed to retrieve groups")}
+
+            groups = body.get("response", [])
+            metadata = body.get("metadata", {})
+            total_objects = metadata.get("total_objects", len(groups))
+
+            result = {
+                "status": "success",
+                "message": "Groups retrieved successfully.",
+                "groups": groups,
+                "total_objects": total_objects,
+                "count": len(groups)
+            }
+
+            if total_objects > offset + limit:
+                result["pagination"] = {
+                    "offset": offset,
+                    "limit": limit,
+                    "total_objects": total_objects,
+                    "next_offset": offset + limit
+                }
+
+            return result
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_get_groups'", exc_info=e)
+            raise Exception(str(e))
+
+    # ---------------------------------------------------------------------
+    # Search Groups
+    # ---------------------------------------------------------------------
+    def duo_search_groups(self, request: RequestBody) -> dict:
+        """
+        Search Duo groups by name.
+
+        NOTE: The Duo Admin API GET /admin/v1/groups endpoint does NOT support a
+        server-side name search parameter. This action retrieves a single page of
+        groups using Duo pagination (limit/offset) and applies a case-insensitive
+        client-side filter on the 'name' field to that page only. It does not
+        automatically fetch all pages.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            group_name = request.parameters.get('group_name')
+            if not group_name:
+                raise Exception("Missing required parameter: group_name")
+
+            limit = request.parameters.get('limit', 100)
+            offset = request.parameters.get('offset', 0)
+
+            if offset > 10000:
+                raise Exception("Offset exceeds maximum retrievable records limit of 10000")
+
+            limit = min(int(limit), 300)
+
+            params = {"limit": str(limit), "offset": str(offset)}
+
+            resp = self._get_with_retry(host, "/admin/v1/groups", params, ikey, skey)
+            body = resp.json()
+
+            if body.get("stat") != "OK":
+                return {"status": "failed", "message": body.get("message", "Failed to retrieve groups")}
+
+            groups = body.get("response", [])
+
+            # CLIENT-SIDE FILTER: The Duo Admin API GET /admin/v1/groups endpoint
+            # does NOT support a server-side name/search query parameter. We therefore
+            # apply a case-insensitive substring match on the 'name' field of the
+            # groups returned in THIS page only (no automatic multi-page fetching).
+            search_term = group_name.lower()
+            matching = [g for g in groups if search_term in (g.get("name") or "").lower()]
+
+            metadata = body.get("metadata", {})
+            total_objects = metadata.get("total_objects", len(groups))
+
+            result = {
+                "status": "success",
+                "message": "Groups searched successfully.",
+                "groups": matching,
+                "count": len(matching)
+            }
+
+            if total_objects > offset + limit:
+                result["pagination"] = {
+                    "offset": offset,
+                    "limit": limit,
+                    "total_objects": total_objects,
+                    "next_offset": offset + limit
+                }
+
+            return result
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_search_groups'", exc_info=e)
+            raise Exception(str(e))
+
+    # ---------------------------------------------------------------------
+    # Get Device
+    # ---------------------------------------------------------------------
+    def duo_get_device(self, request: RequestBody) -> dict:
+        """
+        Retrieve a single Duo phone/device by phone_id.
+
+        Uses GET /admin/v1/phones/{phone_id}. phone_id is required.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            phone_id = request.parameters.get('phone_id')
+            if not phone_id:
+                raise Exception("Missing required parameter: phone_id")
+
+            try:
+                resp = self._get_with_retry(host, f"/admin/v1/phones/{phone_id}", {}, ikey, skey)
+                body = resp.json()
+                if body.get("stat") != "OK":
+                    return {"status": "failed", "message": f"Device not found: {phone_id}"}
+                phone = body.get("response")
+            except Exception as e:
+                error_msg = str(e)
+                if "404" in error_msg or "Not Found" in error_msg:
+                    return {"status": "failed", "message": f"Device not found: {phone_id}"}
+                raise
+
+            return {
+                "status": "success",
+                "message": "Device retrieved successfully.",
+                "phone": phone,
+                "phone_id": phone.get("phone_id")
+            }
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_get_device'", exc_info=e)
+            raise Exception(str(e))
+
+    # ---------------------------------------------------------------------
+    # Search Devices
+    # ---------------------------------------------------------------------
+    def duo_search_devices(self, request: RequestBody) -> dict:
+        """
+        Retrieve registered Duo phones/devices with pagination.
+
+        Uses GET /admin/v1/phones. Supports server-side filters 'number' and
+        'extension', plus limit (max 300, default 100) and offset.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            limit = request.parameters.get('limit', 100)
+            offset = request.parameters.get('offset', 0)
+
+            if offset > 10000:
+                raise Exception("Offset exceeds maximum retrievable records limit of 10000")
+
+            limit = min(int(limit), 300)
+
+            params = {"limit": str(limit), "offset": str(offset)}
+
+            # Server-side filters supported by Duo Admin API GET /admin/v1/phones
+            if request.parameters.get('number'):
+                params['number'] = request.parameters['number']
+            if request.parameters.get('extension'):
+                params['extension'] = request.parameters['extension']
+
+            resp = self._get_with_retry(host, "/admin/v1/phones", params, ikey, skey)
+            body = resp.json()
+
+            if body.get("stat") != "OK":
+                return {"status": "failed", "message": body.get("message", "Failed to retrieve devices")}
+
+            phones = body.get("response", [])
+            metadata = body.get("metadata", {})
+            total_objects = metadata.get("total_objects", len(phones))
+
+            result = {
+                "status": "success",
+                "message": "Devices retrieved successfully.",
+                "phones": phones,
+                "total_objects": total_objects,
+                "count": len(phones)
+            }
+
+            if total_objects > offset + limit:
+                result["pagination"] = {
+                    "offset": offset,
+                    "limit": limit,
+                    "total_objects": total_objects,
+                    "next_offset": offset + limit
+                }
+
+            return result
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_search_devices'", exc_info=e)
+            raise Exception(str(e))
+
+    # ---------------------------------------------------------------------
+    # Get Administrator Logs
+    # ---------------------------------------------------------------------
+    def duo_get_admin_logs(self, request: RequestBody) -> dict:
+        """
+        Retrieve Duo administrator audit logs with filtering and cursor-based pagination.
+
+        Uses the v2 endpoint GET /admin/v2/logs/administrator which returns:
+        {"stat": "OK", "response": {"items": [...], "metadata": {...}}}
+
+        Server-side filters: mintime/maxtime (13-digit ms), limit (max 1000), next_offset.
+
+        NOTE: The Duo Admin API v2 administrator logs endpoint does NOT support
+        server-side 'administrator' or 'action' filters. When provided, these are
+        applied as case-insensitive client-side filters on the retrieved page only.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            limit = request.parameters.get('limit', 100)
+            limit = min(int(limit), 1000)
+
+            mintime = request.parameters.get('mintime')
+            if mintime:
+                mintime_str = str(mintime)
+                if len(mintime_str) != 13 or not mintime_str.isdigit():
+                    raise Exception("Invalid mintime: must be a 13-digit Unix timestamp in milliseconds")
+                import time as time_module
+                current_ms = int(time_module.time() * 1000)
+                max_lookback_ms = 180 * 24 * 60 * 60 * 1000
+                if current_ms - int(mintime_str) > max_lookback_ms:
+                    raise Exception("Invalid mintime: must be within the last 180 days")
+
+            params = {"limit": str(limit)}
+            if mintime:
+                params['mintime'] = str(mintime)
+            if request.parameters.get('maxtime'):
+                params['maxtime'] = str(request.parameters['maxtime'])
+            if request.parameters.get('next_offset'):
+                params['next_offset'] = request.parameters['next_offset']
+
+            resp = self._get_with_retry(host, "/admin/v2/logs/administrator", params, ikey, skey)
+            body = resp.json()
+
+            if body.get("stat") != "OK":
+                return {"status": "failed", "message": body.get("message", "Failed to retrieve administrator logs")}
+
+            response_data = body.get("response", {})
+            adminlogs = response_data.get("items", [])
+            metadata = response_data.get("metadata", {})
+
+            # CLIENT-SIDE FILTERS: The Duo Admin API v2 administrator logs endpoint
+            # does NOT support 'administrator' or 'action' as server-side query
+            # parameters. When supplied, they are applied as case-insensitive
+            # substring matches on THIS page's results only (no multi-page fetching).
+            administrator = request.parameters.get('administrator')
+            if administrator:
+                term = administrator.lower()
+                adminlogs = [log for log in adminlogs
+                             if term in (log.get("username") or "").lower()]
+            action = request.parameters.get('action')
+            if action:
+                term = action.lower()
+                adminlogs = [log for log in adminlogs
+                             if term in (log.get("action") or "").lower()]
+
+            result = {
+                "status": "success",
+                "message": "Administrator logs retrieved successfully.",
+                "adminlogs": adminlogs,
+                "count": len(adminlogs),
+                "total_objects": metadata.get("total_objects", len(adminlogs))
+            }
+
+            next_offset = metadata.get("next_offset")
+            if next_offset:
+                result["pagination"] = {
+                    "next_offset": next_offset,
+                    "total_objects": metadata.get("total_objects")
+                }
+                result["next_offset"] = next_offset
+
+            return result
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_get_admin_logs'", exc_info=e)
+            raise Exception(str(e))
+
+    # ---------------------------------------------------------------------
+    # Get Telephony Logs
+    # ---------------------------------------------------------------------
+    def duo_get_telephony_logs(self, request: RequestBody) -> dict:
+        """
+        Retrieve Duo telephony (SMS/phone-call) logs with cursor-based pagination.
+
+        Uses the v2 endpoint GET /admin/v2/logs/telephony which returns:
+        {"stat": "OK", "response": {"items": [...], "metadata": {...}}}
+
+        Server-side filters: mintime/maxtime (13-digit ms), limit (max 1000), next_offset.
+        """
+        try:
+            host = request.connectionParameters['api_hostname']
+            ikey = request.connectionParameters['integration_key']
+            skey = request.connectionParameters['secret_key']
+
+            limit = request.parameters.get('limit', 100)
+            limit = min(int(limit), 1000)
+
+            mintime = request.parameters.get('mintime')
+            if mintime:
+                mintime_str = str(mintime)
+                if len(mintime_str) != 13 or not mintime_str.isdigit():
+                    raise Exception("Invalid mintime: must be a 13-digit Unix timestamp in milliseconds")
+                import time as time_module
+                current_ms = int(time_module.time() * 1000)
+                max_lookback_ms = 180 * 24 * 60 * 60 * 1000
+                if current_ms - int(mintime_str) > max_lookback_ms:
+                    raise Exception("Invalid mintime: must be within the last 180 days")
+
+            params = {"limit": str(limit)}
+            if mintime:
+                params['mintime'] = str(mintime)
+            if request.parameters.get('maxtime'):
+                params['maxtime'] = str(request.parameters['maxtime'])
+            if request.parameters.get('next_offset'):
+                params['next_offset'] = request.parameters['next_offset']
+
+            resp = self._get_with_retry(host, "/admin/v2/logs/telephony", params, ikey, skey)
+            body = resp.json()
+
+            if body.get("stat") != "OK":
+                return {"status": "failed", "message": body.get("message", "Failed to retrieve telephony logs")}
+
+            response_data = body.get("response", {})
+            telephonylogs = response_data.get("items", [])
+            metadata = response_data.get("metadata", {})
+
+            result = {
+                "status": "success",
+                "message": "Telephony logs retrieved successfully.",
+                "telephonylogs": telephonylogs,
+                "count": len(telephonylogs),
+                "total_objects": metadata.get("total_objects", len(telephonylogs))
+            }
+
+            next_offset = metadata.get("next_offset")
+            if next_offset:
+                result["pagination"] = {
+                    "next_offset": next_offset,
+                    "total_objects": metadata.get("total_objects")
+                }
+                result["next_offset"] = next_offset
+
+            return result
+
+        except Exception as e:
+            self.logger.error("error while running action 'duo_get_telephony_logs'", exc_info=e)
+            raise Exception(str(e))
+
     # =========================================================================
     # Internal helpers
     # =========================================================================
