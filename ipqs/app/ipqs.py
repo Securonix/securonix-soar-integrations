@@ -1,34 +1,40 @@
 from app.model.request_body import RequestBody
 from app.model.response_body import ResponseBody
 import logging
-import json
 import requests
 
 
 class Ipqs():
 
+    DEFAULT_TIMEOUT = 30
+
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
+    def _get_timeout(self, connectionParameters: dict) -> int:
+        timeout = connectionParameters.get('timeout', '')
+        if not timeout or timeout in [None, 'None', 'null']:
+            return self.DEFAULT_TIMEOUT
+        return int(timeout)
+
     # -------------------------------
-    # Test Connection (SOAR calls this)
+    # Test Connection
     # -------------------------------
     def test_connection(self, connectionParameters: dict):
         base_url = connectionParameters['base_url'].rstrip('/')
         api_key = connectionParameters['api_key']
-        timeout = connectionParameters.get('timeout', 30)
-        if timeout in [None, "None", "", "null"]:
-            timeout = 30
-        else:
-            timeout = int(timeout)
+        timeout = self._get_timeout(connectionParameters)
 
         try:
-            test_ip = "8.8.8.8"
-            url = f"{base_url}/api/json/ip/{api_key}/{test_ip}"
+            url = f"{base_url}/api/json/ip/{api_key}/8.8.8.8"
             resp = requests.get(url, timeout=timeout)
-            resp.raise_for_status()
+            if resp.status_code in (401, 403):
+                raise Exception("Authentication failed. Please verify your API key.")
+            if resp.status_code >= 500:
+                raise Exception(f"IPQS server error: HTTP {resp.status_code}")
+            if resp.status_code >= 400:
+                raise Exception(f"IPQS request failed: HTTP {resp.status_code}")
             data = resp.json()
-            self.logger.debug("IPQS response to test_connection is %s", json.dumps(data))
             if data.get("success", False):
                 return {'status': 'success', 'message': 'Connected to IPQualityScore successfully.'}
             raise Exception(f"IPQS API returned error: {data}")
@@ -41,7 +47,7 @@ class Ipqs():
             raise
 
     # -------------------------------
-    # Internal helpers
+    # Helpers
     # -------------------------------
     def _normalize_ips(self, ips):
         if isinstance(ips, str):
@@ -62,21 +68,13 @@ class Ipqs():
             raise Exception(f"IPQS request failed: HTTP {resp.status_code}")
         return resp.json()
 
-    def _get_connection(self, connectionParameters: dict):
-        base_url = connectionParameters['base_url'].rstrip('/')
-        api_key = connectionParameters['api_key']
-        timeout = connectionParameters.get('timeout', 30)
-        if timeout in [None, "None", "", "null"]:
-            timeout = 30
-        else:
-            timeout = int(timeout)
-        return base_url, api_key, timeout
-
     # -------------------------------
     # Actions
     # -------------------------------
     def detect_residential_proxies(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
@@ -94,7 +92,9 @@ class Ipqs():
             raise
 
     def detect_private_vpn(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
@@ -112,7 +112,9 @@ class Ipqs():
             raise
 
     def detect_tor_nodes(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
@@ -130,7 +132,9 @@ class Ipqs():
             raise
 
     def detect_anonymous_proxies(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
@@ -148,7 +152,9 @@ class Ipqs():
             raise
 
     def detect_botnets(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
@@ -166,7 +172,9 @@ class Ipqs():
             raise
 
     def detect_malicious_ips(self, request: RequestBody) -> ResponseBody:
-        base_url, api_key, timeout = self._get_connection(request.connectionParameters)
+        base_url = request.connectionParameters['base_url'].rstrip('/')
+        api_key = request.connectionParameters['api_key']
+        timeout = self._get_timeout(request.connectionParameters)
         ips = self._normalize_ips(request.parameters["sourceaddress"])
         results = []
         try:
