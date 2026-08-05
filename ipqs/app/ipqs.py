@@ -76,7 +76,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
@@ -96,7 +96,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
@@ -116,7 +116,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
@@ -136,7 +136,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
@@ -156,7 +156,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
@@ -176,7 +176,7 @@ class Ipqs():
         base_url = request.connectionParameters['base_url'].rstrip('/')
         api_key = request.connectionParameters['api_key']
         timeout = _get_timeout(request.connectionParameters)
-        ips = _normalize_ips(request.parameters["sourceaddress"])
+        ips = _normalize_ips(request.parameters["ips"])
         results = []
         try:
             for ip in ips:
