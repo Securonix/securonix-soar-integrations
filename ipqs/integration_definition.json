@@ -43,7 +43,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses",
             "type": "List",
             "values": [],
@@ -74,7 +74,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses",
             "type": "List",
             "values": [],
@@ -105,7 +105,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses",
             "type": "List",
             "values": [],
@@ -136,7 +136,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses",
             "type": "List",
             "values": [],
@@ -167,7 +167,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses",
             "type": "List",
             "values": [],
@@ -198,7 +198,7 @@
         "inParameters": [
           {
             "label": "IP Addresses",
-            "name": "ips",
+            "name": "sourceaddress",
             "desc": "Comma-separated list or array of IP addresses or CIDR ranges",
             "type": "List",
             "values": [],
@@ -222,4 +222,3 @@
       }
     ]
   }
-  
