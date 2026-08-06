@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from app.netskope import Netskope
+from app.netskope import Netskope, _get_config
 
 
 def _mock_request_body(connection_params=None, parameters=None):
@@ -23,28 +23,23 @@ def _default_conn():
 class TestGetConfig:
 
     def test_missing_tenant_hostname(self):
-        ns = Netskope()
         with pytest.raises(Exception, match="tenant_hostname is required"):
-            ns._get_config({"api_token": "tok"})
+            _get_config({"api_token": "tok"})
 
     def test_missing_api_token(self):
-        ns = Netskope()
         with pytest.raises(Exception, match="api_token is required"):
-            ns._get_config({"tenant_hostname": "t.goskope.com"})
+            _get_config({"tenant_hostname": "t.goskope.com"})
 
     def test_invalid_timeout(self):
-        ns = Netskope()
         with pytest.raises(Exception, match="timeout must be a positive integer"):
-            ns._get_config({"tenant_hostname": "t.goskope.com", "api_token": "tok", "timeout": "-1"})
+            _get_config({"tenant_hostname": "t.goskope.com", "api_token": "tok", "timeout": "-1"})
 
     def test_invalid_timeout_non_numeric(self):
-        ns = Netskope()
         with pytest.raises(Exception, match="timeout must be a positive integer"):
-            ns._get_config({"tenant_hostname": "t.goskope.com", "api_token": "tok", "timeout": "abc"})
+            _get_config({"tenant_hostname": "t.goskope.com", "api_token": "tok", "timeout": "abc"})
 
     def test_valid_config(self):
-        ns = Netskope()
-        config = ns._get_config(_default_conn())
+        config = _get_config(_default_conn())
         assert config["base_url"] == "https://mytenant.goskope.com"
         assert config["headers"]["Netskope-Api-Token"] == "test-token-123"
         assert config["headers"]["User-Agent"] == "SecuronixSOAR-Netskope/1.0"
@@ -52,17 +47,15 @@ class TestGetConfig:
         assert config["verify"] is True
 
     def test_verify_ssl_string_false(self):
-        ns = Netskope()
         conn = _default_conn()
         conn["verify_ssl"] = "false"
-        config = ns._get_config(conn)
+        config = _get_config(conn)
         assert config["verify"] is False
 
     def test_proxy_config(self):
-        ns = Netskope()
         conn = _default_conn()
         conn["proxy"] = "http://proxy:8080"
-        config = ns._get_config(conn)
+        config = _get_config(conn)
         assert config["proxies"] == {"http": "http://proxy:8080", "https": "http://proxy:8080"}
 
 
