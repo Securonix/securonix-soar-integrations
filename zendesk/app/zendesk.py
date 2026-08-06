@@ -30,7 +30,7 @@ def _get_config(connection_params: dict) -> dict:
     api_token = str(api_token).strip()
 
     raw_timeout = connection_params.get("timeout")
-    if raw_timeout is not None:
+    if raw_timeout is not None and str(raw_timeout).strip() != "":
         try:
             timeout = int(raw_timeout)
             if timeout < 1:
