@@ -25,103 +25,113 @@ BACKOFF_FACTOR = 2
 USER_AGENT = "SecuronixSOAR-Netskope/1.0"
 
 
+def _get_config(connection_params: dict) -> dict:
+    tenant_hostname = (connection_params.get("tenant_hostname") or "").strip()
+    if not tenant_hostname:
+        raise Exception("tenant_hostname is required.")
+    api_token = connection_params.get("api_token", "")
+    if not api_token or not str(api_token).strip():
+        raise Exception("api_token is required.")
+    api_token = str(api_token).strip()
+
+    raw_timeout = connection_params.get("timeout")
+    if raw_timeout is not None:
+        try:
+            timeout = int(raw_timeout)
+            if timeout < 1:
+                raise ValueError()
+        except (ValueError, TypeError):
+            raise Exception("timeout must be a positive integer.")
+    else:
+        timeout = 30
+
+    verify_ssl = connection_params.get("verify_ssl", True)
+    if isinstance(verify_ssl, str):
+        verify_ssl = verify_ssl.lower() in ("true", "1", "yes")
+    elif not isinstance(verify_ssl, bool):
+        raise Exception("verify_ssl must be a boolean value.")
+
+    proxy = connection_params.get("proxy")
+    proxies = {"http": proxy, "https": proxy} if proxy else None
+
+    return {
+        "base_url": f"https://{tenant_hostname}",
+        "headers": {
+            "Netskope-Api-Token": api_token,
+            "Content-Type": "application/json",
+            "User-Agent": USER_AGENT,
+        },
+        "timeout": timeout,
+        "verify": verify_ssl,
+        "proxies": proxies,
+    }
+
+
+def _make_request(config: dict, method: str, endpoint: str, json_body=None, params=None):
+    url = f"{config['base_url']}{endpoint}"
+    for attempt in range(MAX_RETRIES):
+        try:
+            resp = requests.request(
+                method=method,
+                url=url,
+                headers=config["headers"],
+                json=json_body,
+                params=params,
+                timeout=config["timeout"],
+                verify=config["verify"],
+                proxies=config["proxies"],
+            )
+            if resp.status_code in (401, 403):
+                raise Exception("Authentication failed. Verify tenant_hostname and api_token.")
+            if resp.status_code == 404:
+                raise Exception("Resource not found.")
+            if resp.status_code == 422:
+                error_detail = ""
+                try:
+                    err = resp.json()
+                    error_detail = str(err.get("error", "") or err.get("message", ""))
+                except Exception:
+                    pass
+                raise Exception(f"Validation error: {error_detail}" if error_detail else "Validation error.")
+            if resp.status_code == 429:
+                if attempt < MAX_RETRIES - 1:
+                    retry_after = resp.headers.get("Retry-After")
+                    wait = int(retry_after) if retry_after else BACKOFF_FACTOR ** (attempt + 1)
+                    time.sleep(wait)
+                    continue
+                raise Exception("Rate limit exceeded. Please try again later.")
+            if resp.status_code >= 500:
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(BACKOFF_FACTOR ** (attempt + 1))
+                    continue
+                raise Exception(f"Netskope server error (HTTP {resp.status_code}).")
+            if resp.status_code == 204:
+                return {}
+            return resp.json()
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to Netskope. Check tenant_hostname and network.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to Netskope timed out.")
+    raise Exception("Max retries exceeded.")
+
+
+def _append_urllist_and_deploy(config: dict, list_id: int, items: list, url_type: str) -> dict:
+    endpoint = f"/api/v2/policy/urllist/{list_id}/append"
+    body = {"data": {"urls": items, "type": url_type}}
+    _make_request(config, "PATCH", endpoint, json_body=body)
+    _make_request(config, "POST", "/api/v2/policy/urllist/deploy")
+    return {"status": "success", "list_id": list_id, "items_added": items}
+
+
 class Netskope():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
-    def _get_config(self, connection_params: dict) -> dict:
-        tenant_hostname = (connection_params.get("tenant_hostname") or "").strip()
-        if not tenant_hostname:
-            raise Exception("tenant_hostname is required.")
-        api_token = connection_params.get("api_token", "")
-        if not api_token or not str(api_token).strip():
-            raise Exception("api_token is required.")
-        api_token = str(api_token).strip()
-
-        raw_timeout = connection_params.get("timeout")
-        if raw_timeout is not None:
-            try:
-                timeout = int(raw_timeout)
-                if timeout < 1:
-                    raise ValueError()
-            except (ValueError, TypeError):
-                raise Exception("timeout must be a positive integer.")
-        else:
-            timeout = 30
-
-        verify_ssl = connection_params.get("verify_ssl", True)
-        if isinstance(verify_ssl, str):
-            verify_ssl = verify_ssl.lower() in ("true", "1", "yes")
-        elif not isinstance(verify_ssl, bool):
-            raise Exception("verify_ssl must be a boolean value.")
-
-        proxy = connection_params.get("proxy")
-        proxies = {"http": proxy, "https": proxy} if proxy else None
-
-        return {
-            "base_url": f"https://{tenant_hostname}",
-            "headers": {
-                "Netskope-Api-Token": api_token,
-                "Content-Type": "application/json",
-                "User-Agent": USER_AGENT,
-            },
-            "timeout": timeout,
-            "verify": verify_ssl,
-            "proxies": proxies,
-        }
-
-    def _make_request(self, config: dict, method: str, endpoint: str, json_body=None, params=None):
-        url = f"{config['base_url']}{endpoint}"
-        for attempt in range(MAX_RETRIES):
-            try:
-                resp = requests.request(
-                    method=method,
-                    url=url,
-                    headers=config["headers"],
-                    json=json_body,
-                    params=params,
-                    timeout=config["timeout"],
-                    verify=config["verify"],
-                    proxies=config["proxies"],
-                )
-                if resp.status_code in (401, 403):
-                    raise Exception("Authentication failed. Verify tenant_hostname and api_token.")
-                if resp.status_code == 404:
-                    raise Exception("Resource not found.")
-                if resp.status_code == 422:
-                    error_detail = ""
-                    try:
-                        err = resp.json()
-                        error_detail = str(err.get("error", "") or err.get("message", ""))
-                    except Exception:
-                        pass
-                    raise Exception(f"Validation error: {error_detail}" if error_detail else "Validation error.")
-                if resp.status_code == 429:
-                    if attempt < MAX_RETRIES - 1:
-                        retry_after = resp.headers.get("Retry-After")
-                        wait = int(retry_after) if retry_after else BACKOFF_FACTOR ** (attempt + 1)
-                        time.sleep(wait)
-                        continue
-                    raise Exception("Rate limit exceeded. Please try again later.")
-                if resp.status_code >= 500:
-                    if attempt < MAX_RETRIES - 1:
-                        time.sleep(BACKOFF_FACTOR ** (attempt + 1))
-                        continue
-                    raise Exception(f"Netskope server error (HTTP {resp.status_code}).")
-                if resp.status_code == 204:
-                    return {}
-                return resp.json()
-            except requests.exceptions.ConnectionError:
-                raise Exception("Unable to connect to Netskope. Check tenant_hostname and network.")
-            except requests.exceptions.Timeout:
-                raise Exception("Connection to Netskope timed out.")
-        raise Exception("Max retries exceeded.")
-
     def test_connection(self, connectionParameters: dict):
         try:
-            config = self._get_config(connectionParameters)
-            self._make_request(config, "GET", "/api/v2/events/datasearch/alert", params={"limit": 1})
+            config = _get_config(connectionParameters)
+            _make_request(config, "GET", "/api/v2/events/datasearch/alert", params={"limit": 1})
             return {"status": "success", "message": "Connected to Netskope tenant successfully."}
         except Exception as e:
             self.logger.error("Exception while testing connection", exc_info=e)
@@ -129,7 +139,7 @@ class Netskope():
 
     def get_alerts(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             query_params = {}
@@ -176,7 +186,7 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
-            data = self._make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
+            data = _make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
             return {"status": "success", "alerts": data.get("result", data.get("data", []))}
         except Exception as e:
             self.logger.error("Error in get_alerts", exc_info=e)
@@ -184,7 +194,7 @@ class Netskope():
 
     def get_events(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             event_type = (params.get("event_type") or "").strip().lower()
@@ -227,7 +237,7 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
-            data = self._make_request(config, "GET", f"/api/v2/events/datasearch/{event_type}", params=query_params)
+            data = _make_request(config, "GET", f"/api/v2/events/datasearch/{event_type}", params=query_params)
             return {"status": "success", "events": data.get("result", data.get("data", []))}
         except Exception as e:
             self.logger.error("Error in get_events", exc_info=e)
@@ -235,7 +245,7 @@ class Netskope():
 
     def get_incidents(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             query_params = {}
@@ -272,7 +282,7 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
-            data = self._make_request(config, "GET", "/api/v2/events/datasearch/incident", params=query_params)
+            data = _make_request(config, "GET", "/api/v2/events/datasearch/incident", params=query_params)
             return {"status": "success", "incidents": data.get("result", data.get("data", []))}
         except Exception as e:
             self.logger.error("Error in get_incidents", exc_info=e)
@@ -280,7 +290,7 @@ class Netskope():
 
     def get_alert_details(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             alert_id = (params.get("alert_id") or "").strip()
@@ -291,7 +301,7 @@ class Netskope():
 
             query_params = {"query": f"alert_id eq {alert_id}", "limit": 1}
 
-            data = self._make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
+            data = _make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
             results = data.get("result", data.get("data", []))
             if not results:
                 raise Exception(f"Alert not found for alert_id: {alert_id}")
@@ -300,16 +310,9 @@ class Netskope():
             self.logger.error("Error in get_alert_details", exc_info=e)
             raise Exception(str(e))
 
-    def _append_urllist_and_deploy(self, config: dict, list_id: int, items: list, url_type: str) -> dict:
-        endpoint = f"/api/v2/policy/urllist/{list_id}/append"
-        body = {"data": {"urls": items, "type": url_type}}
-        self._make_request(config, "PATCH", endpoint, json_body=body)
-        self._make_request(config, "POST", "/api/v2/policy/urllist/deploy")
-        return {"status": "success", "list_id": list_id, "items_added": items}
-
     def block_url(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             raw_list_id = params.get("list_id")
@@ -332,14 +335,14 @@ class Netskope():
             if url_type not in VALID_URL_TYPES:
                 raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
 
-            return self._append_urllist_and_deploy(config, list_id, urls, url_type)
+            return _append_urllist_and_deploy(config, list_id, urls, url_type)
         except Exception as e:
             self.logger.error("Error in block_url", exc_info=e)
             raise Exception(str(e))
 
     def block_domain(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             raw_list_id = params.get("list_id")
@@ -366,14 +369,14 @@ class Netskope():
             if url_type not in VALID_URL_TYPES:
                 raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
 
-            return self._append_urllist_and_deploy(config, list_id, domains, url_type)
+            return _append_urllist_and_deploy(config, list_id, domains, url_type)
         except Exception as e:
             self.logger.error("Error in block_domain", exc_info=e)
             raise Exception(str(e))
 
     def block_ip(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             raw_list_id = params.get("list_id")
@@ -401,14 +404,14 @@ class Netskope():
             if invalid:
                 raise Exception(f"Invalid IP/CIDR value(s): {', '.join(invalid)}")
 
-            return self._append_urllist_and_deploy(config, list_id, ips, "exact")
+            return _append_urllist_and_deploy(config, list_id, ips, "exact")
         except Exception as e:
             self.logger.error("Error in block_ip", exc_info=e)
             raise Exception(str(e))
 
     def block_file_hash(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             file_hash_list_name = (params.get("file_hash_list_name") or "").strip()
@@ -438,7 +441,7 @@ class Netskope():
             if invalid:
                 raise Exception(f"Invalid hash value(s): {', '.join(invalid)}")
 
-            data = self._make_request(
+            data = _make_request(
                 config, "POST", "/api/v1/updateFileHashList",
                 params={"name": file_hash_list_name},
                 json_body={"list": ",".join(hashes)},
@@ -452,5 +455,3 @@ class Netskope():
         except Exception as e:
             self.logger.error("Error in block_file_hash", exc_info=e)
             raise Exception(str(e))
-
-

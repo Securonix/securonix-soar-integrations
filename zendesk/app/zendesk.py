@@ -17,117 +17,120 @@ BACKOFF_FACTOR = 2
 USER_AGENT = "SecuronixSOAR-Zendesk/1.0"
 
 
+def _get_config(connection_params: dict) -> dict:
+    subdomain = (connection_params.get("subdomain") or "").strip()
+    if not subdomain:
+        raise Exception("subdomain is required.")
+    email = (connection_params.get("email") or "").strip()
+    if not email:
+        raise Exception("email is required.")
+    api_token = connection_params.get("api_token", "")
+    if not api_token or not str(api_token).strip():
+        raise Exception("api_token is required.")
+    api_token = str(api_token).strip()
+
+    raw_timeout = connection_params.get("timeout")
+    if raw_timeout is not None:
+        try:
+            timeout = int(raw_timeout)
+            if timeout < 1:
+                raise ValueError()
+        except (ValueError, TypeError):
+            raise Exception("timeout must be a positive integer.")
+    else:
+        timeout = 30
+
+    verify_ssl = connection_params.get("verify_ssl", True)
+    if isinstance(verify_ssl, str):
+        verify_ssl = verify_ssl.lower() in ("true", "1", "yes")
+    elif not isinstance(verify_ssl, bool):
+        raise Exception("verify_ssl must be a boolean value.")
+    proxy = connection_params.get("proxy")
+    proxies = {"http": proxy, "https": proxy} if proxy else None
+
+    credentials = b64encode(f"{email}/token:{api_token}".encode()).decode()
+
+    return {
+        "base_url": f"https://{subdomain}.zendesk.com",
+        "headers": {
+            "Authorization": f"Basic {credentials}",
+            "Content-Type": "application/json",
+            "User-Agent": USER_AGENT,
+        },
+        "timeout": timeout,
+        "verify": verify_ssl,
+        "proxies": proxies,
+    }
+
+
+def _make_request(config: dict, method: str, endpoint: str, json_body=None, params=None):
+    url = f"{config['base_url']}{endpoint}"
+    for attempt in range(MAX_RETRIES):
+        try:
+            resp = requests.request(
+                method=method,
+                url=url,
+                headers=config["headers"],
+                json=json_body,
+                params=params,
+                timeout=config["timeout"],
+                verify=config["verify"],
+                proxies=config["proxies"],
+            )
+            if resp.status_code in (401, 403):
+                raise Exception("Authentication failed. Verify subdomain, email, and api_token.")
+            if resp.status_code == 404:
+                raise Exception("Resource not found.")
+            if resp.status_code == 422:
+                error_detail = ""
+                try:
+                    err = resp.json()
+                    error_detail = str(err.get("error", "") or err.get("description", ""))
+                except Exception:
+                    pass
+                raise Exception(f"Validation error: {error_detail}" if error_detail else "Validation error.")
+            if resp.status_code == 429:
+                if attempt < MAX_RETRIES - 1:
+                    retry_after = resp.headers.get("Retry-After")
+                    wait = int(retry_after) if retry_after else BACKOFF_FACTOR ** (attempt + 1)
+                    time.sleep(wait)
+                    continue
+                raise Exception("Rate limit exceeded. Please try again later.")
+            if resp.status_code >= 500:
+                if attempt < MAX_RETRIES - 1:
+                    time.sleep(BACKOFF_FACTOR ** (attempt + 1))
+                    continue
+                raise Exception(f"Zendesk server error (HTTP {resp.status_code}).")
+            if resp.status_code == 204:
+                return {}
+            return resp.json()
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to Zendesk. Check subdomain and network.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to Zendesk timed out.")
+    raise Exception("Max retries exceeded.")
+
+
+def _resolve_user_id(config: dict, email: str) -> int:
+    data = _make_request(config, "GET", "/api/v2/users/search.json", params={"query": email})
+    users = data.get("users", [])
+    if not users:
+        raise Exception(f"User not found for email: {email}")
+    for user in users:
+        if user.get("email", "").lower() == email.lower():
+            return user["id"]
+    return users[0]["id"]
+
+
 class Zendesk():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
-    def _get_config(self, connection_params: dict) -> dict:
-        subdomain = (connection_params.get("subdomain") or "").strip()
-        if not subdomain:
-            raise Exception("subdomain is required.")
-        email = (connection_params.get("email") or "").strip()
-        if not email:
-            raise Exception("email is required.")
-        api_token = connection_params.get("api_token", "")
-        if not api_token or not str(api_token).strip():
-            raise Exception("api_token is required.")
-        api_token = str(api_token).strip()
-
-        raw_timeout = connection_params.get("timeout")
-        if raw_timeout is not None:
-            try:
-                timeout = int(raw_timeout)
-                if timeout < 1:
-                    raise ValueError()
-            except (ValueError, TypeError):
-                raise Exception("timeout must be a positive integer.")
-        else:
-            timeout = 30
-
-        verify_ssl = connection_params.get("verify_ssl", True)
-        if isinstance(verify_ssl, str):
-            verify_ssl = verify_ssl.lower() in ("true", "1", "yes")
-        elif not isinstance(verify_ssl, bool):
-            raise Exception("verify_ssl must be a boolean value.")
-        proxy = connection_params.get("proxy")
-        proxies = {"http": proxy, "https": proxy} if proxy else None
-
-        credentials = b64encode(f"{email}/token:{api_token}".encode()).decode()
-
-        return {
-            "base_url": f"https://{subdomain}.zendesk.com",
-            "headers": {
-                "Authorization": f"Basic {credentials}",
-                "Content-Type": "application/json",
-                "User-Agent": USER_AGENT,
-            },
-            "timeout": timeout,
-            "verify": verify_ssl,
-            "proxies": proxies,
-        }
-
-    def _make_request(self, config: dict, method: str, endpoint: str, json_body=None, params=None):
-        url = f"{config['base_url']}{endpoint}"
-        for attempt in range(MAX_RETRIES):
-            try:
-                resp = requests.request(
-                    method=method,
-                    url=url,
-                    headers=config["headers"],
-                    json=json_body,
-                    params=params,
-                    timeout=config["timeout"],
-                    verify=config["verify"],
-                    proxies=config["proxies"],
-                )
-                if resp.status_code in (401, 403):
-                    raise Exception("Authentication failed. Verify subdomain, email, and api_token.")
-                if resp.status_code == 404:
-                    raise Exception("Resource not found.")
-                if resp.status_code == 422:
-                    error_detail = ""
-                    try:
-                        err = resp.json()
-                        error_detail = str(err.get("error", "") or err.get("description", ""))
-                    except Exception:
-                        pass
-                    raise Exception(f"Validation error: {error_detail}" if error_detail else "Validation error.")
-                if resp.status_code == 429:
-                    if attempt < MAX_RETRIES - 1:
-                        retry_after = resp.headers.get("Retry-After")
-                        wait = int(retry_after) if retry_after else BACKOFF_FACTOR ** (attempt + 1)
-                        time.sleep(wait)
-                        continue
-                    raise Exception("Rate limit exceeded. Please try again later.")
-                if resp.status_code >= 500:
-                    if attempt < MAX_RETRIES - 1:
-                        time.sleep(BACKOFF_FACTOR ** (attempt + 1))
-                        continue
-                    raise Exception(f"Zendesk server error (HTTP {resp.status_code}).")
-                if resp.status_code == 204:
-                    return {}
-                return resp.json()
-            except requests.exceptions.ConnectionError:
-                raise Exception("Unable to connect to Zendesk. Check subdomain and network.")
-            except requests.exceptions.Timeout:
-                raise Exception("Connection to Zendesk timed out.")
-        raise Exception("Max retries exceeded.")
-
-    def _resolve_user_id(self, config: dict, email: str) -> int:
-        data = self._make_request(config, "GET", "/api/v2/users/search.json", params={"query": email})
-        users = data.get("users", [])
-        if not users:
-            raise Exception(f"User not found for email: {email}")
-        for user in users:
-            if user.get("email", "").lower() == email.lower():
-                return user["id"]
-        return users[0]["id"]
-
     def test_connection(self, connectionParameters: dict):
         try:
-            config = self._get_config(connectionParameters)
-            data = self._make_request(config, "GET", "/api/v2/users/me.json")
+            config = _get_config(connectionParameters)
+            data = _make_request(config, "GET", "/api/v2/users/me.json")
             user = data.get("user", {})
             return {"status": "success", "message": f"Connected as {user.get('name', 'unknown')} ({user.get('email', '')})."}
         except Exception as e:
@@ -136,7 +139,7 @@ class Zendesk():
 
     def create_ticket(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             subject = (params.get("subject") or "").strip()
@@ -175,13 +178,13 @@ class Zendesk():
 
             assignee_email = (params.get("assignee_email") or "").strip()
             if assignee_email:
-                ticket["assignee_id"] = self._resolve_user_id(config, assignee_email)
+                ticket["assignee_id"] = _resolve_user_id(config, assignee_email)
 
             requester_email = (params.get("requester_email") or "").strip()
             if requester_email:
-                ticket["requester_id"] = self._resolve_user_id(config, requester_email)
+                ticket["requester_id"] = _resolve_user_id(config, requester_email)
 
-            data = self._make_request(config, "POST", "/api/v2/tickets.json", json_body={"ticket": ticket})
+            data = _make_request(config, "POST", "/api/v2/tickets.json", json_body={"ticket": ticket})
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
             self.logger.error("Error in create_ticket", exc_info=e)
@@ -189,7 +192,7 @@ class Zendesk():
 
     def get_ticket_details(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             ticket_id = request.parameters.get("ticket_id")
             if not ticket_id:
                 raise Exception("ticket_id is required.")
@@ -200,7 +203,7 @@ class Zendesk():
             except (ValueError, TypeError):
                 raise Exception("ticket_id must be a positive integer.")
 
-            data = self._make_request(config, "GET", f"/api/v2/tickets/{ticket_id}.json")
+            data = _make_request(config, "GET", f"/api/v2/tickets/{ticket_id}.json")
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
             self.logger.error("Error in get_ticket_details", exc_info=e)
@@ -208,7 +211,7 @@ class Zendesk():
 
     def update_ticket(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             ticket_id = params.get("ticket_id")
@@ -253,12 +256,12 @@ class Zendesk():
 
             assignee_email = (params.get("assignee_email") or "").strip()
             if assignee_email:
-                ticket["assignee_id"] = self._resolve_user_id(config, assignee_email)
+                ticket["assignee_id"] = _resolve_user_id(config, assignee_email)
 
             if not ticket:
                 raise Exception("At least one field to update is required.")
 
-            data = self._make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": ticket})
+            data = _make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": ticket})
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
             self.logger.error("Error in update_ticket", exc_info=e)
@@ -266,7 +269,7 @@ class Zendesk():
 
     def add_comment(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             ticket_id = params.get("ticket_id")
@@ -288,7 +291,7 @@ class Zendesk():
                 public = public.lower() in ("true", "1", "yes")
 
             ticket = {"comment": {"body": comment_body, "public": public}}
-            data = self._make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": ticket})
+            data = _make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": ticket})
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
             self.logger.error("Error in add_comment", exc_info=e)
@@ -296,7 +299,7 @@ class Zendesk():
 
     def search_tickets(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             query_parts = ["type:ticket"]
@@ -355,7 +358,7 @@ class Zendesk():
             search_query = " ".join(query_parts)
             api_params = {"query": search_query, "per_page": page_size}
 
-            data = self._make_request(config, "GET", "/api/v2/search.json", params=api_params)
+            data = _make_request(config, "GET", "/api/v2/search.json", params=api_params)
             return {
                 "status": "success",
                 "tickets": data.get("results", []),
@@ -369,7 +372,7 @@ class Zendesk():
 
     def search_users(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             query = (params.get("query") or "").strip()
@@ -387,7 +390,7 @@ class Zendesk():
                     raise Exception("page_size must be a valid integer.")
 
             api_params = {"query": query, "per_page": page_size}
-            data = self._make_request(config, "GET", "/api/v2/users/search.json", params=api_params)
+            data = _make_request(config, "GET", "/api/v2/users/search.json", params=api_params)
             return {
                 "status": "success",
                 "users": data.get("users", []),
@@ -401,7 +404,7 @@ class Zendesk():
 
     def change_ticket_status(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             ticket_id = params.get("ticket_id")
@@ -420,7 +423,7 @@ class Zendesk():
             if status not in VALID_WRITABLE_STATUSES:
                 raise Exception(f"status must be one of: {', '.join(sorted(VALID_WRITABLE_STATUSES))}")
 
-            data = self._make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": {"status": status}})
+            data = _make_request(config, "PUT", f"/api/v2/tickets/{ticket_id}.json", json_body={"ticket": {"status": status}})
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
             self.logger.error("Error in change_ticket_status", exc_info=e)
@@ -428,7 +431,7 @@ class Zendesk():
 
     def get_ticket_comments(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             ticket_id = params.get("ticket_id")
@@ -452,7 +455,7 @@ class Zendesk():
                     raise Exception("page_size must be a valid integer.")
 
             api_params = {"per_page": page_size}
-            data = self._make_request(config, "GET", f"/api/v2/tickets/{ticket_id}/comments.json", params=api_params)
+            data = _make_request(config, "GET", f"/api/v2/tickets/{ticket_id}/comments.json", params=api_params)
             return {
                 "status": "success",
                 "comments": data.get("comments", []),
@@ -466,7 +469,7 @@ class Zendesk():
 
     def list_ticket_attachments(self, request: RequestBody) -> ResponseBody:
         try:
-            config = self._get_config(request.connectionParameters)
+            config = _get_config(request.connectionParameters)
             params = request.parameters
 
             ticket_id = params.get("ticket_id")
@@ -479,7 +482,7 @@ class Zendesk():
             except (ValueError, TypeError):
                 raise Exception("ticket_id must be a positive integer.")
 
-            data = self._make_request(config, "GET", f"/api/v2/tickets/{ticket_id}/comments.json")
+            data = _make_request(config, "GET", f"/api/v2/tickets/{ticket_id}/comments.json")
             comments = data.get("comments", [])
             attachments = []
             for comment in comments:
