@@ -159,8 +159,10 @@ class TestGetTicketDetails:
         mock_request.return_value = _mock_response(404)
         z = Zendesk()
         req = _request({"ticket_id": "999"})
-        with pytest.raises(Exception, match="Resource not found"):
-            z.get_ticket_details(req)
+        result = z.get_ticket_details(req)
+        assert result["status"] == "success"
+        assert result["ticket"] == {}
+        assert "not found" in result["message"]
 
     def test_missing_ticket_id(self):
         z = Zendesk()

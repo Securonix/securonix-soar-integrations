@@ -100,7 +100,7 @@ def _make_request(method: str, url: str, api_key: str, timeout: int,
             raise Exception("Authentication failed. Verify api_key.")
 
         if resp.status_code == 404:
-            raise Exception("Resource not found.")
+            raise Exception("NOT_FOUND")
 
         if resp.status_code == 429:
             if attempt < MAX_RETRIES - 1:
@@ -239,6 +239,8 @@ class AnyRun:
             return {"status": "success", "task_id": task_id, "analysis_status": status,
                     "raw_response": result}
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"status": "success", "task_id": task_id, "results": [], "message": "Task not found."}
             self.logger.error("Exception in get_analysis_status", exc_info=e)
             raise Exception(str(e))
 
@@ -267,6 +269,8 @@ class AnyRun:
                 "raw_response": result,
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"status": "success", "task_id": task_id, "results": [], "message": "Task not found."}
             self.logger.error("Exception in get_analysis_report", exc_info=e)
             raise Exception(str(e))
 
@@ -292,6 +296,8 @@ class AnyRun:
                 "raw_response": result,
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"status": "success", "task_id": task_id, "results": [], "message": "Task not found."}
             self.logger.error("Exception in extract_iocs", exc_info=e)
             raise Exception(str(e))
 
@@ -336,5 +342,7 @@ class AnyRun:
                 "content_type": content_type,
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"status": "success", "task_id": task_id, "results": [], "message": "Task not found."}
             self.logger.error("Exception in download_artifact", exc_info=e)
             raise Exception(str(e))

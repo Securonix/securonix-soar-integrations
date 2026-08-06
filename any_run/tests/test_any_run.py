@@ -313,5 +313,6 @@ class TestErrorHandling:
     @patch("app.any_run.requests.request")
     def test_404_not_found(self, mock_request):
         mock_request.return_value = _mock_response(404)
-        with pytest.raises(Exception, match="Resource not found"):
-            integration_class.get_analysis_status(_make_request({"task_id": "nonexistent"}))
+        result = integration_class.get_analysis_status(_make_request({"task_id": "nonexistent"}))
+        assert result["status"] == "success"
+        assert result["message"] == "Task not found."

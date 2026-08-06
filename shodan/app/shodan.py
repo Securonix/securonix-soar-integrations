@@ -68,6 +68,9 @@ def _make_request(base_url: str, endpoint: str, api_token: str, timeout: int, pa
                     continue
                 raise Exception(f"Shodan server error (HTTP {resp.status_code}).")
 
+            if resp.status_code == 404:
+                raise Exception("NOT_FOUND")
+
             try:
                 err_body = resp.json()
                 err_msg = err_body.get("error", resp.text)
@@ -144,6 +147,8 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"ip": ip, "results": [], "message": "No information available for that IP."}
             self.logger.exception("Error in ip_address action")
             raise Exception(str(e))
 
@@ -162,6 +167,8 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"domain": domain, "results": [], "message": "No information available for that domain."}
             self.logger.exception("Error in domain_lookup action")
             raise Exception(str(e))
 
@@ -272,6 +279,8 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"ip": ip, "honeyscore": None, "message": "No information available for that IP."}
             self.logger.exception("Error in honeyscore action")
             raise Exception(str(e))
 

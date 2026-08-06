@@ -206,6 +206,8 @@ class Zendesk():
             data = _make_request(config, "GET", f"/api/v2/tickets/{ticket_id}.json")
             return {"status": "success", "ticket": data.get("ticket", {})}
         except Exception as e:
+            if "Resource not found" in str(e):
+                return {"status": "success", "ticket": {}, "message": f"Ticket {ticket_id} not found."}
             self.logger.error("Error in get_ticket_details", exc_info=e)
             raise Exception(str(e))
 
@@ -464,6 +466,8 @@ class Zendesk():
                 "next_page": data.get("next_page"),
             }
         except Exception as e:
+            if "Resource not found" in str(e):
+                return {"status": "success", "comments": [], "count": 0, "message": f"Ticket {ticket_id} not found."}
             self.logger.error("Error in get_ticket_comments", exc_info=e)
             raise Exception(str(e))
 
