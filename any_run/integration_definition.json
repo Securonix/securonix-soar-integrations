@@ -104,9 +104,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Submission result with task_id",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier for the submitted file",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Raw Response",
+            "name": "raw_response",
+            "desc": "Full raw API response",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -155,9 +175,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Submission result with task_id",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier for the submitted URL",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Raw Response",
+            "name": "raw_response",
+            "desc": "Full raw API response",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -186,9 +226,39 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Task status information",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Analysis Status",
+            "name": "analysis_status",
+            "desc": "Current task status (queued, running, completed, failed)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Raw Response",
+            "name": "raw_response",
+            "desc": "Full raw API response",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -217,9 +287,99 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Full analysis report",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Verdict",
+            "name": "verdict",
+            "desc": "Analysis verdict (e.g. malicious, suspicious, no-threats)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Score",
+            "name": "score",
+            "desc": "Threat score from the analysis",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Malware Family",
+            "name": "malware_family",
+            "desc": "Identified malware family name (if any)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Tags",
+            "name": "tags",
+            "desc": "Analysis tags",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Process Activity",
+            "name": "process_activity",
+            "desc": "Process activity observed during analysis",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Network Activity",
+            "name": "network_activity",
+            "desc": "Network activity observed during analysis",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "MITRE ATT&CK",
+            "name": "mitre_attacks",
+            "desc": "MITRE ATT&CK technique mappings",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Raw Response",
+            "name": "raw_response",
+            "desc": "Full raw API response",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -248,9 +408,69 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Extracted IOCs (domains, IPs, URLs, hashes)",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Domains",
+            "name": "domains",
+            "desc": "Extracted domain IOCs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "IP Addresses",
+            "name": "ip_addresses",
+            "desc": "Extracted IP address IOCs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "URLs",
+            "name": "urls",
+            "desc": "Extracted URL IOCs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Hashes",
+            "name": "hashes",
+            "desc": "Extracted file hash IOCs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Raw Response",
+            "name": "raw_response",
+            "desc": "Full raw API response",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -299,9 +519,59 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Base64-encoded artifact content with metadata",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Task ID",
+            "name": "task_id",
+            "desc": "Sandbox task identifier",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Artifact Type",
+            "name": "artifact_type",
+            "desc": "Type of artifact downloaded (pcap, screenshot, dropped_file)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Content",
+            "name": "content",
+            "desc": "Base64-encoded artifact content",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Filename",
+            "name": "filename",
+            "desc": "Artifact filename",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Content Type",
+            "name": "content_type",
+            "desc": "MIME type of the artifact",
             "type": "String",
             "values": [],
             "isSecret": false,
