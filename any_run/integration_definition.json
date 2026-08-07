@@ -60,7 +60,7 @@
     {
       "label": "Submit File",
       "name": "submit_file",
-      "type": "Enrichment",
+      "type": "Action",
       "desc": "Submit a file for sandbox analysis and return task ID",
       "sampleOutput": "",
       "inParameters": [
@@ -152,7 +152,7 @@
     {
       "label": "Submit URL",
       "name": "submit_url",
-      "type": "Enrichment",
+      "type": "Action",
       "desc": "Submit a URL for sandbox detonation and return task ID",
       "sampleOutput": "",
       "inParameters": [
@@ -530,7 +530,7 @@
     {
       "label": "Download Artifact",
       "name": "download_artifact",
-      "type": "Enrichment",
+      "type": "Action",
       "desc": "Download analysis artifacts (PCAP, screenshots, dropped files) as base64-encoded content",
       "sampleOutput": "",
       "inParameters": [
