@@ -123,9 +123,7 @@
                     "encrypted": false
                 }
             ]
-        }
-    ],
-    "functions": [
+        },
         {
             "label": "Domain Search",
             "name": "umbrella_domain_search",
@@ -338,7 +336,6 @@
                     "encrypted": false
                 }
             ]
-        }
         },
         {
             "label": "Domain Security",
@@ -756,7 +753,6 @@
                     "encrypted": false
                 }
             ]
-        }
         },
         {
             "label": "Email WHOIS",
@@ -990,7 +986,6 @@
                     "encrypted": false
                 }
             ]
-        }
         },
         {
             "label": "IP Timeline",
