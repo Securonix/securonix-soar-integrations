@@ -1,0 +1,1473 @@
+{
+    "desc": "Cisco Umbrella Investigate connector for Securonix SOAR. Provides threat intelligence and DNS security insights through the Cisco Investigate API v2.",
+    "connectionParameters": [
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "Cisco Umbrella API key/client ID with Investigate read permission",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "label": "API Secret",
+            "name": "api_secret",
+            "desc": "Cisco Umbrella API secret/client secret",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "label": "Base URL",
+            "name": "base_url",
+            "desc": "Cisco Umbrella API base URL (default: https://api.umbrella.com)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Request Timeout",
+            "name": "request_timeout",
+            "desc": "Timeout in seconds for API requests (default: 30)",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "Verify SSL",
+            "name": "verify_ssl",
+            "desc": "Enable TLS certificate verification (default: true)",
+            "type": "String",
+            "values": ["true", "false"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "label": "Domain Categorization",
+            "name": "umbrella_domain_categorization",
+            "desc": "Retrieve Cisco Umbrella security and content categories for a domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"securityCategories\":[{\"name\":\"Malware\",\"categoryType\":\"malware\",\"count\":5}],\"contentCategories\":[{\"name\":\"Business\",\"categoryType\":\"business\",\"count\":3}],\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name to categorize",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Security Categories",
+                    "name": "securityCategories",
+                    "desc": "Security categories for the domain",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Content Categories",
+                    "name": "contentCategories",
+                    "desc": "Content categories for the domain",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "label": "Domain Search",
+            "name": "umbrella_domain_search",
+            "desc": "Search newly observed domains matching a search expression",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"results\":[\"example.com\",\"test.com\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Expression",
+                    "name": "expression",
+                    "desc": "Search expression (regex pattern)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Maximum number of results (optional, default: 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "List of matching domains",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of results",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain Co-occurrences",
+            "name": "umbrella_domain_co_occurrences",
+            "desc": "Find domains commonly observed together with a target domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"coOccurrences\":[{\"domain\":\"linked.com\",\"count\":10}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Target domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Co-occurrences",
+                    "name": "coOccurrences",
+                    "desc": "Related domains and co-occurrence counts",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of co-occurrences",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Related Domains",
+            "name": "umbrella_domain_related",
+            "desc": "Retrieve Cisco Umbrella related-domain information for campaign expansion",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"relatedDomains\":[\"www.cisco.com\",\"developer.cisco.com\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Target domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Related Domains",
+                    "name": "relatedDomains",
+                    "desc": "List of related domains",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of related domains",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+        },
+        {
+            "label": "Domain Security",
+            "name": "umbrella_domain_security",
+            "desc": "Retrieve domain security characteristics/reputation information",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"security\":{\"threatType\":\"malware\",\"detectedBy\":[\"securityVendor1\",\"securityVendor2\"]},\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name to check",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Security",
+                    "name": "security",
+                    "desc": "Security characteristics",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain Risk Score",
+            "name": "umbrella_get_domain_risk_score",
+            "desc": "Retrieve domain risk score",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"riskScore\":15,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name to check",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Risk Score",
+                    "name": "riskScore",
+                    "desc": "Risk score (0-100, higher = more risky)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Passive DNS",
+            "name": "umbrella_list_resource_record",
+            "desc": "Retrieve passive DNS/resource-record information",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"query\":\"cisco.com\",\"records\":[{\"recordName\":\"cisco.com\",\"recordType\":\"A\",\"recordData\":\"173.36.128.1\",\"firstSeen\":1609459200,\"lastSeen\":1723420800,\"minTtl\":3600,\"maxTtl\":86400}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Domain, IP, or value to search",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query Type",
+                    "name": "query_type",
+                    "desc": "Type: name, domain, ip, raw",
+                    "type": "String",
+                    "values": ["name", "domain", "ip", "raw"],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "The query string",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Records",
+                    "name": "records",
+                    "desc": "Passive DNS records",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of records",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+        ,
+        {
+            "label": "Subdomain Enumeration",
+            "name": "umbrella_list_domain_subdomain",
+            "desc": "Enumerate subdomains for a target domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"subdomains\":[\"www.cisco.com\",\"developer.cisco.com\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Parent domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Maximum number of results (optional)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subdomains",
+                    "name": "subdomains",
+                    "desc": "List of subdomains",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of subdomains",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain WHOIS",
+            "name": "umbrella_get_whois_for_domain",
+            "desc": "Retrieve WHOIS information for a domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"whois\":{\"registrar\":\"Cisco Systems\",\"createdDate\":\"2000-01-01T00:00:00Z\",\"updatedDate\":\"2023-01-01T00:00:00Z\",\"expirationDate\":\"2025-01-01T00:00:00Z\"},\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Whois",
+                    "name": "whois",
+                    "desc": "WHOIS information",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain WHOIS History",
+            "name": "umbrella_get_domain_whois_history",
+            "desc": "Retrieve WHOIS history for a domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"domain\":\"cisco.com\",\"history\":[{\"whois\":\"...\",\"timestamp\":1609459200}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "The queried domain",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "History",
+                    "name": "history",
+                    "desc": "WHOIS history records",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of history records",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+        },
+        {
+            "label": "Email WHOIS",
+            "name": "umbrella_get_email_whois",
+            "desc": "Retrieve domains registered with an email address",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"email\":\"admin@example.com\",\"domains\":[\"example.com\",\"test.com\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Email address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "The queried email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Domains",
+                    "name": "domains",
+                    "desc": "List of registered domains",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of domains",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Domain Timeline",
+            "name": "umbrella_get_domain_timeline",
+            "desc": "Retrieve timeline events for a domain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"indicator\":\"cisco.com\",\"indicatorType\":\"domain\",\"timeline\":[{\"timestamp\":1609459200,\"eventType\":\"registration\",\"description\":\"Domain registered\"}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Domain",
+                    "name": "domain",
+                    "desc": "Domain name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator",
+                    "name": "indicator",
+                    "desc": "The queried indicator",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator Type",
+                    "name": "indicatorType",
+                    "desc": "Type of indicator (domain)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Timeline",
+                    "name": "timeline",
+                    "desc": "Timeline events",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of timeline events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "URL Timeline",
+            "name": "umbrella_get_url_timeline",
+            "desc": "Retrieve timeline events for a URL",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"indicator\":\"https://example.com/page\",\"indicatorType\":\"url\",\"timeline\":[{\"timestamp\":1609459200,\"eventType\":\"first_seen\",\"description\":\"URL first observed\"}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "URL",
+                    "name": "url",
+                    "desc": "URL to query",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator",
+                    "name": "indicator",
+                    "desc": "The queried indicator",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator Type",
+                    "name": "indicatorType",
+                    "desc": "Type of indicator (url)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Timeline",
+                    "name": "timeline",
+                    "desc": "Timeline events",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of timeline events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+        },
+        {
+            "label": "IP Timeline",
+            "name": "umbrella_get_ip_timeline",
+            "desc": "Retrieve timeline events for an IP address",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"indicator\":\"8.8.8.8\",\"indicatorType\":\"ip\",\"timeline\":[{\"timestamp\":1609459200,\"eventType\":\"first_seen\",\"description\":\"IP first observed\"}],\"count\":1,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "IP address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator",
+                    "name": "indicator",
+                    "desc": "The queried indicator",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Indicator Type",
+                    "name": "indicatorType",
+                    "desc": "Type of indicator (ip)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Timeline",
+                    "name": "timeline",
+                    "desc": "Timeline events",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of timeline events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "IP BGP Lookup",
+            "name": "umbrella_get_ip_bgp",
+            "desc": "Retrieve BGP/ASN information for an IP address",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"ip\":\"8.8.8.8\",\"asn\":\"15169\",\"cidr\":\"8.8.8.0/24\",\"rir\":\"ARIN\",\"description\":\"Google LLC\",\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "IP address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP",
+                    "name": "ip",
+                    "desc": "The queried IP",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "Autonomous System Number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "CIDR",
+                    "name": "cidr",
+                    "desc": "CIDR block",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "RIR",
+                    "name": "rir",
+                    "desc": "Regional Internet Registry",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Network description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "ASN BGP Prefixes",
+            "name": "umbrella_get_asn_bgp",
+            "desc": "Retrieve network prefixes for an ASN",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"asn\":\"15169\",\"prefixes\":[\"8.8.8.0/24\",\"8.8.4.0/24\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "Autonomous System Number (e.g., 15169 or AS15169)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "The queried ASN",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Prefixes",
+                    "name": "prefixes",
+                    "desc": "List of network prefixes",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of prefixes",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "ASN Info",
+            "name": "umbrella_list_asn",
+            "desc": "List Autonomous System Number (ASN) information for infrastructure enrichment",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"asn\":\"15169\",\"asnInfo\":{\"asn\":\"15169\",\"description\":\"Google LLC\",\"rir\":\"ARIN\"}}",
+            "inParameters": [
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "Autonomous System Number (e.g., 15169 or AS15169)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "The queried ASN",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN Info",
+                    "name": "asnInfo",
+                    "desc": "ASN information object",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "ASN description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "RIR",
+                    "name": "rir",
+                    "desc": "Regional Internet Registry",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Prefixes for ASN",
+            "name": "umbrella_list_prefixes_for_asn",
+            "desc": "Retrieve IP prefixes owned by an ASN for infrastructure mapping",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"asn\":\"15169\",\"prefixes\":[\"8.8.8.0/24\",\"8.8.4.0/24\"],\"count\":2,\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "Autonomous System Number (e.g., 15169 or AS15169)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "The queried ASN",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Prefixes",
+                    "name": "prefixes",
+                    "desc": "List of network prefixes",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of prefixes",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "ASN for Prefix",
+            "name": "umbrella_list_asn_for_prefix",
+            "desc": "Find the ASN associated with an IP prefix for network ownership investigation",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"prefix\":\"8.8.8.0/24\",\"asn\":\"15169\",\"asnDescription\":\"Google LLC\",\"rir\":\"ARIN\",\"rawResponse\":{}}",
+            "inParameters": [
+                {
+                    "label": "Prefix",
+                    "name": "prefix",
+                    "desc": "IP prefix in CIDR format (e.g., 8.8.8.0/24)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Prefix",
+                    "name": "prefix",
+                    "desc": "The queried prefix",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN",
+                    "name": "asn",
+                    "desc": "Autonomous System Number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "ASN Description",
+                    "name": "asnDescription",
+                    "desc": "ASN description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "RIR",
+                    "name": "rir",
+                    "desc": "Regional Internet Registry",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Raw Response",
+                    "name": "rawResponse",
+                    "desc": "Raw Cisco API response",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}
