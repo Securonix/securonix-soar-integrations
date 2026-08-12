@@ -1,0 +1,324 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "Cisco Umbrella OAuth2 client ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "Cisco Umbrella OAuth2 client secret",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Cisco Umbrella API base URL (e.g., https://api.umbrella.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Timeout",
+      "name": "timeout",
+      "desc": "HTTP request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "isTestConnectivity": true,
+  "desc": "Cisco Umbrella Cloud Security connector for managing Destination Lists and their destinations (URLs, IPv4 addresses, FQDNs/domains) via the Cisco Umbrella Cloud Security API.",
+  "functions": [
+    {
+      "label": "Add Destination",
+      "name": "add_destination",
+      "type": "Containment",
+      "desc": "Add one or more destinations (URLs, IPv4 addresses, or FQDNs) to a specified Destination List. Automatically batches requests of more than 500 destinations.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Destination List ID",
+          "name": "destination_list_id",
+          "desc": "ID of the target Destination List (positive integer)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destinations",
+          "name": "destinations",
+          "desc": "Comma-separated list or array of destination values (URLs, IPs, or FQDNs)",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination Type",
+          "name": "destination_type",
+          "desc": "Type of destination: URL, IPV4, or DOMAIN (auto-detected if omitted)",
+          "type": "String",
+          "values": ["URL", "IPV4", "DOMAIN"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "Optional comment or note for the destination entry",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Added destinations",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Destinations",
+      "name": "get_destinations",
+      "type": "Enrichment",
+      "desc": "Retrieve destinations within a specified Destination List with optional pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Destination List ID",
+          "name": "destination_list_id",
+          "desc": "ID of the Destination List (positive integer)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Page",
+          "name": "page",
+          "desc": "Page number (default: 1)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Results per page (default: 100, min: 1, max: 100)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of destinations and total count",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Destination",
+      "name": "delete_destination",
+      "type": "Containment",
+      "desc": "Remove one or more destinations from a Destination List by their destination IDs. Maximum 500 IDs per request.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Destination List ID",
+          "name": "destination_list_id",
+          "desc": "ID of the Destination List (positive integer)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination IDs",
+          "name": "destination_ids",
+          "desc": "Comma-separated list or array of destination IDs to delete (positive integers, max 500)",
+          "type": "List",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Number of deleted destinations",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Create Destination List",
+      "name": "create_destination_list",
+      "type": "Containment",
+      "desc": "Create a new Destination List in Cisco Umbrella.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Name",
+          "name": "name",
+          "desc": "Name of the new Destination List",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Access",
+          "name": "access",
+          "desc": "List type: allow or block",
+          "type": "String",
+          "values": ["allow", "block"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Is Global",
+          "name": "is_global",
+          "desc": "Whether the list is global (default: false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Bundle Type ID",
+          "name": "bundle_type_id",
+          "desc": "Bundle type ID (1=DNS, 2=SWG, 4=Firewall). Default: 1",
+          "type": "String",
+          "values": ["1", "2", "4"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created Destination List details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Destination List",
+      "name": "update_destination_list",
+      "type": "Containment",
+      "desc": "Update the name of an existing Destination List.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Destination List ID",
+          "name": "destination_list_id",
+          "desc": "ID of the Destination List to update (positive integer)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Name",
+          "name": "name",
+          "desc": "New name for the Destination List",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Updated Destination List details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

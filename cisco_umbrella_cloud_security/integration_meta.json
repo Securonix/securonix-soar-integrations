@@ -1,0 +1,16 @@
+{
+  "name": "cisco_umbrella_cloud_security",
+  "type": "python",
+  "clazz": "app.cisco_umbrella",
+  "label": "Cisco Umbrella Cloud Security",
+  "native": false,
+  "testUrl": "",
+  "category": "Network Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Cisco Umbrella Cloud Security connector for managing Destination Lists and their destinations (URLs, IPv4 addresses, FQDNs/domains) via the Cisco Umbrella Cloud Security API."
+}
