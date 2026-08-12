@@ -1,7 +1,7 @@
 {
   "name": "cisco_umbrella_cloud_security",
   "type": "python",
-  "clazz": "app.cisco_umbrella",
+  "clazz": "app.cisco_umbrella_cloud_security",
   "label": "Cisco Umbrella Cloud Security",
   "native": false,
   "testUrl": "",

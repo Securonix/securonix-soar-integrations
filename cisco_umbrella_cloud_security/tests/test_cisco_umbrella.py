@@ -1,7 +1,7 @@
 import pytest
 import time
 from unittest.mock import patch, MagicMock
-from app.cisco_umbrella import CiscoUmbrella, _detect_type, _is_valid_ipv4, _is_valid_url, _is_valid_domain
+from app.cisco_umbrella_cloud_security import CiscoUmbrella, _detect_type, _is_valid_ipv4, _is_valid_url, _is_valid_domain
 from app.model.request_body import RequestBody
 
 
@@ -60,14 +60,14 @@ class TestGetToken:
 
     def test_token_success(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             token = connector._get_token(BASE_URL, "id", "secret", 30, True, None)
         assert token == "test_token"
 
     def test_token_cached(self):
         connector = CiscoUmbrella()
         connector._token_cache[(BASE_URL, "id")] = {"token": "cached_token", "expiry": time.time() + 3600}
-        with patch("app.cisco_umbrella.requests.post") as mock_post:
+        with patch("app.cisco_umbrella_cloud_security.requests.post") as mock_post:
             token = connector._get_token(BASE_URL, "id", "secret", 30, True, None)
         mock_post.assert_not_called()
         assert token == "cached_token"
@@ -75,19 +75,19 @@ class TestGetToken:
     def test_token_refresh_when_expired(self):
         connector = CiscoUmbrella()
         connector._token_cache[(BASE_URL, "id")] = {"token": "old_token", "expiry": time.time() - 1}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             token = connector._get_token(BASE_URL, "id", "secret", 30, True, None)
         assert token == "test_token"
 
     def test_token_401(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_error(401)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_error(401)):
             with pytest.raises(Exception, match="Authentication failed"):
                 connector._get_token(BASE_URL, "id", "secret", 30, True, None)
 
     def test_token_403(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_error(403)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_error(403)):
             with pytest.raises(Exception, match="Authorization failed"):
                 connector._get_token(BASE_URL, "id", "secret", 30, True, None)
 
@@ -96,21 +96,21 @@ class TestGetToken:
         m = MagicMock()
         m.status_code = 200
         m.json.return_value = {}
-        with patch("app.cisco_umbrella.requests.post", return_value=m):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=m):
             with pytest.raises(Exception, match="missing access_token"):
                 connector._get_token(BASE_URL, "id", "secret", 30, True, None)
 
     def test_token_connection_error(self):
         import requests as req_lib
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", side_effect=req_lib.exceptions.ConnectionError):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", side_effect=req_lib.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
                 connector._get_token(BASE_URL, "id", "secret", 30, True, None)
 
     def test_token_timeout(self):
         import requests as req_lib
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", side_effect=req_lib.exceptions.Timeout):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", side_effect=req_lib.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
                 connector._get_token(BASE_URL, "id", "secret", 30, True, None)
 
@@ -118,7 +118,7 @@ class TestGetToken:
         connector = CiscoUmbrella()
         connector._token_cache[(BASE_URL, "id_a")] = {"token": "token_a", "expiry": time.time() + 3600}
         connector._token_cache[(BASE_URL, "id_b")] = {"token": "token_b", "expiry": time.time() + 3600}
-        with patch("app.cisco_umbrella.requests.post") as mock_post:
+        with patch("app.cisco_umbrella_cloud_security.requests.post") as mock_post:
             token_a = connector._get_token(BASE_URL, "id_a", "secret", 30, True, None)
             token_b = connector._get_token(BASE_URL, "id_b", "secret", 30, True, None)
         mock_post.assert_not_called()
@@ -130,32 +130,32 @@ class TestGetToken:
 # _get_timeout validation
 # -----------------------------------------------------------------------
 class TestGetTimeout:
-    from app.cisco_umbrella import _get_timeout
+    from app.cisco_umbrella_cloud_security import _get_timeout
 
     def test_missing_uses_default(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         assert _get_timeout({}) == 30
 
     def test_none_string_uses_default(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         assert _get_timeout({"timeout": "None"}) == 30
 
     def test_valid_timeout(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         assert _get_timeout({"timeout": "60"}) == 60
 
     def test_invalid_string_raises(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         with pytest.raises(Exception, match="timeout must be a positive integer"):
             _get_timeout({"timeout": "abc"})
 
     def test_zero_raises(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         with pytest.raises(Exception, match="timeout must be a positive integer"):
             _get_timeout({"timeout": "0"})
 
     def test_negative_raises(self):
-        from app.cisco_umbrella import _get_timeout
+        from app.cisco_umbrella_cloud_security import _get_timeout
         with pytest.raises(Exception, match="timeout must be a positive integer"):
             _get_timeout({"timeout": "-5"})
 
@@ -198,36 +198,36 @@ class TestTestConnection:
 
     def test_success(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})):
             result = connector.test_connection(CONN)
         assert result["status"] == "success"
         assert "Connected" in result["message"]
 
     def test_token_failure_propagates(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_error(401)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_error(401)):
             with pytest.raises(Exception, match="Authentication failed"):
                 connector.test_connection(CONN)
 
     def test_destinationlists_403(self):
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(403)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(403)):
             with pytest.raises(Exception, match="Authorization failed"):
                 connector.test_connection(CONN)
 
     def test_connection_error(self):
         import requests as req_lib
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", side_effect=req_lib.exceptions.ConnectionError):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", side_effect=req_lib.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
                 connector.test_connection(CONN)
 
     def test_timeout(self):
         import requests as req_lib
         connector = CiscoUmbrella()
-        with patch("app.cisco_umbrella.requests.post", side_effect=req_lib.exceptions.Timeout):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", side_effect=req_lib.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
                 connector.test_connection(CONN)
 
@@ -241,8 +241,8 @@ class TestAddDestination:
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": "evil.com"})
         resp_body = {"data": [{"destination": "evil.com"}]}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)):
             result = connector.add_destination(req)
         assert result["status"] == "success"
         assert len(result["added"]) == 1
@@ -250,8 +250,8 @@ class TestAddDestination:
     def test_success_multiple_csv(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": "a.com, b.com, c.com"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})):
             result = connector.add_destination(req)
         assert result["status"] == "success"
 
@@ -259,8 +259,8 @@ class TestAddDestination:
         connector = CiscoUmbrella()
         destinations = [f"host{i}.com" for i in range(600)]
         req = _make_request({"destination_list_id": "123", "destinations": destinations})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.add_destination(req)
         # Should have made 2 POST calls (500 + 100)
         assert mock_req.call_count == 2
@@ -268,14 +268,14 @@ class TestAddDestination:
     def test_empty_destinations_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": ""})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="cannot be empty"):
                 connector.add_destination(req)
 
     def test_invalid_destination_list_id(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "abc", "destinations": "evil.com"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="positive integer"):
                 connector.add_destination(req)
 
@@ -286,15 +286,15 @@ class TestAddDestination:
             "destinations": "evil.com",
             "destination_type": "WHATEVER",
         })
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="destination_type must be one of"):
                 connector.add_destination(req)
 
     def test_auto_detect_ipv4(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": "8.8.8.8"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.add_destination(req)
         body = mock_req.call_args[1]["json"]
         assert body[0]["type"] == "IPV4"
@@ -302,8 +302,8 @@ class TestAddDestination:
     def test_auto_detect_url(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": "https://evil.com/path"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.add_destination(req)
         body = mock_req.call_args[1]["json"]
         assert body[0]["type"] == "URL"
@@ -311,8 +311,8 @@ class TestAddDestination:
     def test_auto_detect_domain(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destinations": "evil.com"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.add_destination(req)
         body = mock_req.call_args[1]["json"]
         assert body[0]["type"] == "DOMAIN"
@@ -325,8 +325,8 @@ class TestAddDestination:
             "destination_type": "DOMAIN",
             "comment": "blocked by SOAR",
         })
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.add_destination(req)
         call_kwargs = mock_req.call_args
         body = call_kwargs[1]["json"]
@@ -343,8 +343,8 @@ class TestGetDestinations:
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
         resp_body = {"data": [{"destination": "evil.com"}], "meta": {"total": 1}}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)):
             result = connector.get_destinations(req)
         assert result["status"] == "success"
         assert result["total"] == 1
@@ -352,8 +352,8 @@ class TestGetDestinations:
     def test_pagination_params_passed(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "page": "3", "limit": "50"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok({"data": []})) as mock_req:
             connector.get_destinations(req)
         params = mock_req.call_args[1]["params"]
         assert params["page"] == 3
@@ -362,43 +362,43 @@ class TestGetDestinations:
     def test_invalid_page_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "page": "abc"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="page must be"):
                 connector.get_destinations(req)
 
     def test_page_less_than_1_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "page": "0"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="page must be"):
                 connector.get_destinations(req)
 
     def test_invalid_limit_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "limit": "abc"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="limit must be"):
                 connector.get_destinations(req)
 
     def test_limit_over_100_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "limit": "500"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="limit must be"):
                 connector.get_destinations(req)
 
     def test_limit_zero_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "limit": "0"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="limit must be"):
                 connector.get_destinations(req)
 
     def test_404_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "999"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(404)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(404)):
             with pytest.raises(Exception, match="not found"):
                 connector.get_destinations(req)
 
@@ -411,8 +411,8 @@ class TestDeleteDestination:
     def test_success(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destination_ids": "1001,1002"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_no_content()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_no_content()):
             result = connector.delete_destination(req)
         assert result["status"] == "success"
         assert result["deleted_count"] == 2
@@ -420,8 +420,8 @@ class TestDeleteDestination:
     def test_ids_normalized_to_int(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destination_ids": "1001, 1002"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_no_content()) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_no_content()) as mock_req:
             connector.delete_destination(req)
         body = mock_req.call_args[1]["json"]
         assert body == [1001, 1002]
@@ -429,8 +429,8 @@ class TestDeleteDestination:
     def test_ids_as_list(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destination_ids": [1001, 1002, 1003]})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_no_content()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_no_content()):
             result = connector.delete_destination(req)
         assert result["deleted_count"] == 3
 
@@ -438,21 +438,21 @@ class TestDeleteDestination:
         connector = CiscoUmbrella()
         ids = [str(i) for i in range(501)]
         req = _make_request({"destination_list_id": "123", "destination_ids": ids})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="Maximum 500"):
                 connector.delete_destination(req)
 
     def test_empty_ids_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destination_ids": ""})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="cannot be empty"):
                 connector.delete_destination(req)
 
     def test_non_integer_id_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "destination_ids": "abc"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="positive integer"):
                 connector.delete_destination(req)
 
@@ -466,8 +466,8 @@ class TestCreateDestinationList:
         connector = CiscoUmbrella()
         req = _make_request({"name": "My Allow List", "access": "allow"})
         resp_body = {"data": {"id": 1, "name": "My Allow List", "access": "allow"}}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)):
             result = connector.create_destination_list(req)
         assert result["status"] == "success"
         assert result["destination_list"]["access"] == "allow"
@@ -476,36 +476,36 @@ class TestCreateDestinationList:
         connector = CiscoUmbrella()
         req = _make_request({"name": "My Block List", "access": "block"})
         resp_body = {"data": {"id": 2, "name": "My Block List", "access": "block"}}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)):
             result = connector.create_destination_list(req)
         assert result["destination_list"]["access"] == "block"
 
     def test_missing_name_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"name": "", "access": "allow"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="name is required"):
                 connector.create_destination_list(req)
 
     def test_invalid_access_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"name": "Test", "access": "deny"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="allow.*block"):
                 connector.create_destination_list(req)
 
     def test_invalid_bundle_type_id_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"name": "Test", "access": "block", "bundle_type_id": "999"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="bundle_type_id must be one of"):
                 connector.create_destination_list(req)
 
     def test_invalid_is_global_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"name": "Test", "access": "block", "is_global": "banana"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="is_global must be"):
                 connector.create_destination_list(req)
 
@@ -513,8 +513,8 @@ class TestCreateDestinationList:
         connector = CiscoUmbrella()
         req = _make_request({"name": "Test", "access": "block", "is_global": "true", "bundle_type_id": "1"})
         resp_body = {"data": {"id": 3, "name": "Test", "access": "block"}}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)) as mock_req:
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)) as mock_req:
             connector.create_destination_list(req)
         body = mock_req.call_args[1]["json"]
         assert body["isGlobal"] is True
@@ -530,8 +530,8 @@ class TestUpdateDestinationList:
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "name": "New Name"})
         resp_body = {"data": {"id": 123, "name": "New Name"}}
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_ok(resp_body)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_ok(resp_body)):
             result = connector.update_destination_list(req)
         assert result["status"] == "success"
         assert result["destination_list"]["name"] == "New Name"
@@ -539,22 +539,22 @@ class TestUpdateDestinationList:
     def test_missing_name_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123", "name": ""})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="name is required"):
                 connector.update_destination_list(req)
 
     def test_invalid_dl_id_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "not-an-int", "name": "Test"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()):
             with pytest.raises(Exception, match="positive integer"):
                 connector.update_destination_list(req)
 
     def test_404_raises(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "999", "name": "Test"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(404)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(404)):
             with pytest.raises(Exception, match="not found"):
                 connector.update_destination_list(req)
 
@@ -567,24 +567,24 @@ class TestErrorHandling:
     def test_401_message(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(401)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(401)):
             with pytest.raises(Exception, match="Authentication failed"):
                 connector.get_destinations(req)
 
     def test_403_message(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(403)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(403)):
             with pytest.raises(Exception, match="Authorization failed"):
                 connector.get_destinations(req)
 
     def test_500_message(self):
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", return_value=_mock_error(500)):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", return_value=_mock_error(500)):
             with pytest.raises(Exception, match="server error"):
                 connector.get_destinations(req)
 
@@ -592,8 +592,8 @@ class TestErrorHandling:
         import requests as req_lib
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", side_effect=req_lib.exceptions.ConnectionError):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", side_effect=req_lib.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
                 connector.get_destinations(req)
 
@@ -601,7 +601,7 @@ class TestErrorHandling:
         import requests as req_lib
         connector = CiscoUmbrella()
         req = _make_request({"destination_list_id": "123"})
-        with patch("app.cisco_umbrella.requests.post", return_value=_mock_token_response()), \
-             patch("app.cisco_umbrella.requests.request", side_effect=req_lib.exceptions.Timeout):
+        with patch("app.cisco_umbrella_cloud_security.requests.post", return_value=_mock_token_response()), \
+             patch("app.cisco_umbrella_cloud_security.requests.request", side_effect=req_lib.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
                 connector.get_destinations(req)
