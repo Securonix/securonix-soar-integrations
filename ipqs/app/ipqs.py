@@ -81,8 +81,14 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("is_residential_proxy"):
-                    results.append({"ip": ip, "category": "Residential Proxy"})
+                is_residential = data.get("is_residential_proxy", False)
+                results.append({
+                    "ip": ip,
+                    "category": "Residential Proxy" if is_residential else "Not a Residential Proxy",
+                    "proxy": data.get("proxy", False),
+                    "vpn": data.get("vpn", False),
+                    "fraud_score": data.get("fraud_score", 0),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
@@ -101,8 +107,14 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("vpn"):
-                    results.append({"ip": ip, "category": "Private VPN"})
+                is_vpn = data.get("vpn", False)
+                results.append({
+                    "ip": ip,
+                    "category": "Private VPN" if is_vpn else "Not a VPN",
+                    "vpn": is_vpn,
+                    "proxy": data.get("proxy", False),
+                    "fraud_score": data.get("fraud_score", 0),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
@@ -121,8 +133,14 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("tor"):
-                    results.append({"ip": ip, "category": "Tor Node"})
+                is_tor = data.get("tor", False)
+                results.append({
+                    "ip": ip,
+                    "category": "Tor Node" if is_tor else "Not a Tor Node",
+                    "tor": is_tor,
+                    "proxy": data.get("proxy", False),
+                    "fraud_score": data.get("fraud_score", 0),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
@@ -141,8 +159,14 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("proxy"):
-                    results.append({"ip": ip, "category": "Anonymous Proxy"})
+                is_proxy = data.get("proxy", False)
+                results.append({
+                    "ip": ip,
+                    "category": "Anonymous Proxy" if is_proxy else "Not a Proxy",
+                    "proxy": is_proxy,
+                    "vpn": data.get("vpn", False),
+                    "fraud_score": data.get("fraud_score", 0),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
@@ -161,8 +185,14 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("bot_status"):
-                    results.append({"ip": ip, "category": "Botnet"})
+                is_bot = data.get("bot_status", False)
+                results.append({
+                    "ip": ip,
+                    "category": "Botnet" if is_bot else "Not a Botnet",
+                    "bot_status": is_bot,
+                    "proxy": data.get("proxy", False),
+                    "fraud_score": data.get("fraud_score", 0),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
@@ -181,12 +211,19 @@ class Ipqs():
         try:
             for ip in ips:
                 data = _lookup_ip(base_url, api_key, timeout, ip)
-                if data.get("fraud_score", 0) >= 75:
-                    results.append({
-                        "ip": ip,
-                        "category": "Malicious IP",
-                        "risk_score": data.get("fraud_score")
-                    })
+                fraud_score = data.get("fraud_score", 0)
+                results.append({
+                    "ip": ip,
+                    "category": "Malicious IP" if fraud_score >= 75 else "Not Malicious",
+                    "risk_score": fraud_score,
+                    "proxy": data.get("proxy", False),
+                    "vpn": data.get("vpn", False),
+                    "tor": data.get("tor", False),
+                    "recent_abuse": data.get("recent_abuse", False),
+                    "bot_status": data.get("bot_status", False),
+                    "country_code": data.get("country_code", ""),
+                    "isp": data.get("ISP", ""),
+                })
             return {"status": "success", "results": results}
         except requests.exceptions.ConnectionError:
             raise Exception("Unable to connect to IPQS. Please verify the base_url and network connectivity.")
