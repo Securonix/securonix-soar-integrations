@@ -118,7 +118,7 @@ def _handle_response_errors(resp, resource_hint: str = ""):
         )
 
 
-class CiscoUmbrella:
+class CiscoUmbrellaCloudSecurity:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
