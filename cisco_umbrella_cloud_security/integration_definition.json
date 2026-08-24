@@ -114,8 +114,18 @@
       ],
       "outParameters": [
         {
-          "label": "Results",
-          "name": "results",
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Added",
+          "name": "added",
           "desc": "Added destinations",
           "type": "String",
           "values": [],
@@ -165,9 +175,29 @@
       ],
       "outParameters": [
         {
-          "label": "Results",
-          "name": "results",
-          "desc": "List of destinations and total count",
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destinations",
+          "name": "destinations",
+          "desc": "List of destinations",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of destinations",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -206,8 +236,18 @@
       ],
       "outParameters": [
         {
-          "label": "Results",
-          "name": "results",
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Deleted Count",
+          "name": "deleted_count",
           "desc": "Number of deleted destinations",
           "type": "String",
           "values": [],
@@ -267,9 +307,19 @@
       ],
       "outParameters": [
         {
-          "label": "Results",
-          "name": "results",
-          "desc": "Created Destination List details",
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination List",
+          "name": "destination_list",
+          "desc": "Created Destination List details (id, name, access)",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -308,9 +358,19 @@
       ],
       "outParameters": [
         {
-          "label": "Results",
-          "name": "results",
-          "desc": "Updated Destination List details",
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination List",
+          "name": "destination_list",
+          "desc": "Updated Destination List details (id, name)",
           "type": "String",
           "values": [],
           "isSecret": false,

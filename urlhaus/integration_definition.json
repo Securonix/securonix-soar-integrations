@@ -44,9 +44,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "URL reputation lookup results",
+          "desc": "URL reputation results per URL",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -75,9 +85,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Host reputation lookup results",
+          "desc": "Host reputation results per host",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -106,9 +126,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Domain reputation lookup results",
+          "desc": "Domain reputation results per domain",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -137,9 +167,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "File reputation lookup results",
+          "desc": "File reputation results per hash",
           "type": "String",
           "values": [],
           "isSecret": false,

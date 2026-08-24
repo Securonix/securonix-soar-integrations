@@ -1,336 +1,448 @@
 {
-    "connectionParameters": [
-      {
-        "label": "API Key",
-        "name": "api_key",
-        "desc": "Pulsedive API key (passed as query parameter)",
-        "type": "String",
-        "values": [],
-        "isSecret": true,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Base URL",
-        "name": "base_url",
-        "desc": "Pulsedive API base URL (default: https://pulsedive.com/api)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Request Timeout",
-        "name": "timeout",
-        "desc": "Request timeout in seconds (default: 30)",
-        "type": "Integer",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Verify SSL",
-        "name": "verify_ssl",
-        "desc": "Verify SSL certificates (default: true)",
-        "type": "Boolean",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Proxy",
-        "name": "proxy",
-        "desc": "Proxy URL for outbound requests (optional)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      }
-    ],
-    "testUrl": "https://pulsedive.com/api/indicator.php",
-    "isMultiAuthentication": false,
-    "desc": "Pulsedive integration for cyber threat intelligence enrichment. Supports enriching IPs, domains, URLs, and file hashes, plus searching indicators and threats using the Pulsedive REST API.",
-    "functions": [
-      {
-        "label": "Test Connectivity",
-        "name": "test_connectivity",
-        "type": "Enrichment",
-        "desc": "Validate the API key and connectivity to Pulsedive",
-        "sampleOutput": "",
-        "inParameters": [],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Connection status message",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Indicator Details",
-        "name": "get_indicator_details",
-        "type": "Enrichment",
-        "desc": "Retrieve full threat intelligence details for any indicator (IP, domain, URL, or hash)",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Indicator",
-            "name": "indicator",
-            "desc": "The indicator value to look up (IP, domain, URL, or hash)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Indicator details including risk, threats, and feeds",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Enrich IP",
-        "name": "enrich_ip",
-        "type": "Enrichment",
-        "desc": "Enrich an IP address with Pulsedive threat intelligence",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "IP Address",
-            "name": "ip",
-            "desc": "IPv4 or IPv6 address to enrich",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "IP threat intelligence details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Enrich Domain",
-        "name": "enrich_domain",
-        "type": "Enrichment",
-        "desc": "Enrich a domain name with Pulsedive threat intelligence",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Domain",
-            "name": "domain",
-            "desc": "Domain name to enrich (e.g., example.com)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Domain threat intelligence details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Enrich URL",
-        "name": "enrich_url",
-        "type": "Enrichment",
-        "desc": "Enrich a URL with Pulsedive threat intelligence",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "URL",
-            "name": "url",
-            "desc": "Full URL to enrich (must start with http:// or https://)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "URL threat intelligence details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Enrich Hash",
-        "name": "enrich_hash",
-        "type": "Enrichment",
-        "desc": "Enrich a file hash (MD5, SHA1, or SHA256) with Pulsedive threat intelligence",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Hash",
-            "name": "hash",
-            "desc": "File hash to enrich (MD5: 32 chars, SHA1: 40 chars, SHA256: 64 chars)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Hash threat intelligence details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Search Indicators",
-        "name": "search_indicators",
-        "type": "Enrichment",
-        "desc": "Search Pulsedive for indicators matching a query with optional type and risk filters",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Query",
-            "name": "query",
-            "desc": "Search term or indicator value",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Indicator Type",
-            "name": "indicator_type",
-            "desc": "Filter by indicator type (ip, domain, url, hash)",
-            "type": "String",
-            "values": ["ip", "domain", "url", "hash"],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Risk Level",
-            "name": "risk",
-            "desc": "Filter by risk level (none, low, medium, high, critical, unknown)",
-            "type": "String",
-            "values": ["none", "low", "medium", "high", "critical", "unknown"],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Limit",
-            "name": "limit",
-            "desc": "Maximum number of results to return (default: 10, max: 100)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of matching indicators with total count",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Search Threats",
-        "name": "search_threats",
-        "type": "Enrichment",
-        "desc": "Search Pulsedive for threat entries matching a query",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Query",
-            "name": "query",
-            "desc": "Threat name or keyword to search",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Limit",
-            "name": "limit",
-            "desc": "Maximum number of results to return (default: 10, max: 100)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of matching threats with total count",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      }
-    ]
-  }
+  "connectionParameters": [
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "Pulsedive API key (passed as query parameter)",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Pulsedive API base URL (default: https://pulsedive.com/api)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Request Timeout",
+      "name": "timeout",
+      "desc": "Request timeout in seconds (default: 30)",
+      "type": "Integer",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "Boolean",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "testUrl": "https://pulsedive.com/api/indicator.php",
+  "isMultiAuthentication": false,
+  "desc": "Pulsedive integration for cyber threat intelligence enrichment. Supports enriching IPs, domains, URLs, and file hashes, plus searching indicators and threats using the Pulsedive REST API.",
+  "functions": [
+    {
+      "label": "Test Connectivity",
+      "name": "test_connectivity",
+      "type": "Enrichment",
+      "desc": "Validate the API key and connectivity to Pulsedive",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Connection status message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Indicator Details",
+      "name": "get_indicator_details",
+      "type": "Enrichment",
+      "desc": "Retrieve full threat intelligence details for any indicator (IP, domain, URL, or hash)",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "The indicator value to look up (IP, domain, URL, or hash)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "Indicator details including risk, threats, and feeds",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Enrich IP",
+      "name": "enrich_ip",
+      "type": "Enrichment",
+      "desc": "Enrich an IP address with Pulsedive threat intelligence",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "IP Address",
+          "name": "ip",
+          "desc": "IPv4 or IPv6 address to enrich",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "IP threat intelligence details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Enrich Domain",
+      "name": "enrich_domain",
+      "type": "Enrichment",
+      "desc": "Enrich a domain name with Pulsedive threat intelligence",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "Domain name to enrich (e.g., example.com)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "Domain threat intelligence details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Enrich URL",
+      "name": "enrich_url",
+      "type": "Enrichment",
+      "desc": "Enrich a URL with Pulsedive threat intelligence",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "URL",
+          "name": "url",
+          "desc": "Full URL to enrich (must start with http:// or https://)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "URL threat intelligence details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Enrich Hash",
+      "name": "enrich_hash",
+      "type": "Enrichment",
+      "desc": "Enrich a file hash (MD5, SHA1, or SHA256) with Pulsedive threat intelligence",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Hash",
+          "name": "hash",
+          "desc": "File hash to enrich (MD5: 32 chars, SHA1: 40 chars, SHA256: 64 chars)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator",
+          "name": "indicator",
+          "desc": "Hash threat intelligence details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Search Indicators",
+      "name": "search_indicators",
+      "type": "Enrichment",
+      "desc": "Search Pulsedive for indicators matching a query with optional type and risk filters",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Query",
+          "name": "query",
+          "desc": "Search term or indicator value",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Indicator Type",
+          "name": "indicator_type",
+          "desc": "Filter by indicator type (ip, domain, url, hash)",
+          "type": "String",
+          "values": [
+            "ip",
+            "domain",
+            "url",
+            "hash"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Risk Level",
+          "name": "risk",
+          "desc": "Filter by risk level (none, low, medium, high, critical, unknown)",
+          "type": "String",
+          "values": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "critical",
+            "unknown"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results to return (default: 10, max: 100)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of matching indicators",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Search Threats",
+      "name": "search_threats",
+      "type": "Enrichment",
+      "desc": "Search Pulsedive for threat entries matching a query",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Query",
+          "name": "query",
+          "desc": "Threat name or keyword to search",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results to return (default: 10, max: 100)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of matching threats",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

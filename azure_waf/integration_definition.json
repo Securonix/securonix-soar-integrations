@@ -124,9 +124,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Policies",
+            "name": "policies",
             "desc": "List of WAF policies",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Total Count",
+            "name": "total_count",
+            "desc": "Total number of policies",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -175,8 +195,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Policy",
+            "name": "policy",
             "desc": "WAF policy details",
             "type": "String",
             "values": [],
@@ -226,9 +256,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Custom Rules",
+            "name": "custom_rules",
             "desc": "List of custom rules",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Total Count",
+            "name": "total_count",
+            "desc": "Total number of custom rules",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -297,8 +347,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule",
+            "name": "rule",
             "desc": "Updated block rule",
             "type": "String",
             "values": [],
@@ -368,9 +428,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Updated block rule and removed IP",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule",
+            "name": "rule",
+            "desc": "Updated block rule",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Removed IP",
+            "name": "removed_ip",
+            "desc": "The IP address that was removed",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -439,9 +519,39 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "IP block status",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "IP",
+            "name": "ip",
+            "desc": "The IP address checked",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Blocked",
+            "name": "blocked",
+            "desc": "Whether the IP is blocked",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule Name",
+            "name": "rule_name",
+            "desc": "Name of the WAF rule checked",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -500,9 +610,39 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule Name",
+            "name": "rule_name",
+            "desc": "Name of the WAF block rule",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Blocked IPs",
+            "name": "blocked_ips",
             "desc": "List of blocked IPs",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Total Count",
+            "name": "total_count",
+            "desc": "Total number of blocked IPs",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -561,8 +701,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule",
+            "name": "rule",
             "desc": "Updated rule with Enabled state",
             "type": "String",
             "values": [],
@@ -622,8 +772,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Rule",
+            "name": "rule",
             "desc": "Updated rule with Disabled state",
             "type": "String",
             "values": [],
