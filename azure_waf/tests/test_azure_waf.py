@@ -4,8 +4,10 @@ from unittest.mock import patch, MagicMock
 from app.azure_waf import (
     AzureWaf, _validate_ip, _validate_required, _find_soar_rule,
     _find_ip_match_condition, _build_soar_rule, _is_soar_ip_block_rule,
-    _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, MAX_RETRIES,
+    _next_available_priority, DEFAULT_RULE_NAME, MAX_RETRIES,
 )
+
+_TokenExpiredError = AzureWaf._TokenExpiredError
 from app.model.request_body import RequestBody
 
 CONN = {
