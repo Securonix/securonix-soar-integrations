@@ -1,0 +1,16 @@
+{
+    "name": "any_run",
+    "type": "python",
+    "clazz": "app.any_run",
+    "label": "ANY.RUN",
+    "native": false,
+    "testUrl": "",
+    "category": "Malware Analysis",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "ANY.RUN sandbox integration for automated malware analysis. Supports file/URL submission, analysis status polling, report retrieval, IOC extraction, and artifact download."
+  }

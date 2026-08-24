@@ -1,0 +1,16 @@
+{
+    "name": "Cisco Umbrella Investigate",
+    "type": "python",
+    "clazz": "",
+    "label": "Cisco Umbrella Investigate",
+    "native": false,
+    "testUrl": "",
+    "category": "Data Enrichment and Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "cisco_umbrella_investigate/cisco-umbrella-logo.png",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": ""
+}

@@ -1,0 +1,598 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Subdomain",
+        "name": "subdomain",
+        "desc": "Zendesk subdomain (e.g., 'mycompany' for mycompany.zendesk.com)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "Email",
+        "name": "email",
+        "desc": "Email address associated with the API token",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Token",
+        "name": "api_token",
+        "desc": "Zendesk API token",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "Request Timeout",
+        "name": "timeout",
+        "desc": "Request timeout in seconds (default: 30)",
+        "type": "Integer",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Verify SSL",
+        "name": "verify_ssl",
+        "desc": "Verify SSL certificates (default: true)",
+        "type": "Boolean",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Proxy",
+        "name": "proxy",
+        "desc": "Proxy URL for outbound requests (optional)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      }
+    ],
+    "testUrl": "https://zendesk.com",
+    "isMultiAuthentication": false,
+    "desc": "Zendesk Support integration for incident and ticket management workflows. Supports creating, updating, searching tickets, managing comments, and user lookup via the Zendesk REST API.",
+    "functions": [
+      {
+        "label": "Create Ticket",
+        "name": "create_ticket",
+        "type": "Containment",
+        "desc": "Create a new Zendesk support ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Subject",
+            "name": "subject",
+            "desc": "Ticket subject (max 150 characters)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Description",
+            "name": "description",
+            "desc": "Ticket description (sent as initial comment)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Priority",
+            "name": "priority",
+            "desc": "Ticket priority",
+            "type": "String",
+            "values": ["low", "normal", "high", "urgent"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Type",
+            "name": "type",
+            "desc": "Ticket type",
+            "type": "String",
+            "values": ["problem", "incident", "question", "task"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Initial ticket status",
+            "type": "String",
+            "values": ["new", "open", "pending", "solved"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Tags",
+            "name": "tags",
+            "desc": "Comma-separated tags",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Assignee Email",
+            "name": "assignee_email",
+            "desc": "Email of the assignee (resolved to user ID)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Requester Email",
+            "name": "requester_email",
+            "desc": "Email of the requester (resolved to user ID)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Created ticket object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Ticket Details",
+        "name": "get_ticket_details",
+        "type": "Enrichment",
+        "desc": "Retrieve full details of a specific ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket to retrieve",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Full ticket object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Update Ticket",
+        "name": "update_ticket",
+        "type": "Containment",
+        "desc": "Update fields on an existing ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket to update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Subject",
+            "name": "subject",
+            "desc": "Updated subject (max 150 characters)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Priority",
+            "name": "priority",
+            "desc": "Updated priority",
+            "type": "String",
+            "values": ["low", "normal", "high", "urgent"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Type",
+            "name": "type",
+            "desc": "Updated type",
+            "type": "String",
+            "values": ["problem", "incident", "question", "task"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Updated status",
+            "type": "String",
+            "values": ["new", "open", "pending", "solved"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Tags",
+            "name": "tags",
+            "desc": "Comma-separated tags (replaces existing tags)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Assignee Email",
+            "name": "assignee_email",
+            "desc": "Email of the assignee (resolved to user ID)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Updated ticket object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Add Comment",
+        "name": "add_comment",
+        "type": "Containment",
+        "desc": "Add a public or internal comment to a ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket to comment on",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Comment Body",
+            "name": "comment_body",
+            "desc": "The comment text",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Public",
+            "name": "public",
+            "desc": "Whether the comment is public (true) or internal note (false). Default: true",
+            "type": "Boolean",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Updated ticket object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Search Tickets",
+        "name": "search_tickets",
+        "type": "Enrichment",
+        "desc": "Search tickets using keyword and/or field-specific filters",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Free-text keyword search",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Filter by ticket status",
+            "type": "String",
+            "values": ["new", "open", "pending", "solved", "closed"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Assignee Email",
+            "name": "assignee_email",
+            "desc": "Filter by assignee email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Requester Email",
+            "name": "requester_email",
+            "desc": "Filter by requester email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Tags",
+            "name": "tags",
+            "desc": "Filter by tags (comma-separated)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Created After",
+            "name": "created_after",
+            "desc": "Filter tickets created after this date (ISO format)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Created Before",
+            "name": "created_before",
+            "desc": "Filter tickets created before this date (ISO format)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Page Size",
+            "name": "page_size",
+            "desc": "Number of results per page (default: 25, max: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of matching tickets with pagination info",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Search Users",
+        "name": "search_users",
+        "type": "Enrichment",
+        "desc": "Search for users by name or email",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Name or email to search",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Page Size",
+            "name": "page_size",
+            "desc": "Number of results per page (default: 25, max: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of matching users",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Change Ticket Status",
+        "name": "change_ticket_status",
+        "type": "Containment",
+        "desc": "Change the status of a ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "New ticket status",
+            "type": "String",
+            "values": ["new", "open", "pending", "solved"],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Updated ticket object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Ticket Comments",
+        "name": "get_ticket_comments",
+        "type": "Enrichment",
+        "desc": "Retrieve all comments on a ticket",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Page Size",
+            "name": "page_size",
+            "desc": "Number of results per page (default: 25, max: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of ticket comments",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "List Ticket Attachments",
+        "name": "list_ticket_attachments",
+        "type": "Enrichment",
+        "desc": "List attachment metadata from a ticket's comments (does not download files)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Ticket ID",
+            "name": "ticket_id",
+            "desc": "The ID of the ticket",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of attachment metadata (id, filename, content_url, content_type, size)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,645 @@
+{
+  "connectionParameters": [
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "ANY.RUN API key for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "ANY.RUN API base URL (default: https://api.any.run/v1)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Request Timeout",
+      "name": "timeout",
+      "desc": "Request timeout in seconds (default: 60)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": [
+        "true",
+        "false"
+      ],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "ANY.RUN sandbox integration for automated malware analysis. Supports file/URL submission, analysis status polling, report retrieval, IOC extraction, and artifact download.",
+  "functions": [
+    {
+      "label": "Submit File",
+      "name": "submit_file",
+      "type": "Action",
+      "desc": "Submit a file for sandbox analysis and return task ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "File Content",
+          "name": "file_content",
+          "desc": "Base64-encoded file content",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "File Name",
+          "name": "file_name",
+          "desc": "Original filename (max 255 characters)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "OS Type",
+          "name": "os_type",
+          "desc": "Target operating system for analysis (default: windows10)",
+          "type": "String",
+          "values": [
+            "windows7",
+            "windows10",
+            "windows11"
+          ],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Timeout Duration",
+          "name": "timeout_duration",
+          "desc": "Analysis timeout in seconds (uses sandbox default if not specified)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier for the submitted file",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full raw API response",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Submit URL",
+      "name": "submit_url",
+      "type": "Action",
+      "desc": "Submit a URL for sandbox detonation and return task ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "URL",
+          "name": "url",
+          "desc": "URL to analyze (must be HTTP or HTTPS)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "OS Type",
+          "name": "os_type",
+          "desc": "Target operating system for analysis (default: windows10)",
+          "type": "String",
+          "values": [
+            "windows7",
+            "windows10",
+            "windows11"
+          ],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Timeout Duration",
+          "name": "timeout_duration",
+          "desc": "Analysis timeout in seconds (uses sandbox default if not specified)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier for the submitted URL",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full raw API response",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Analysis Status",
+      "name": "get_analysis_status",
+      "type": "Enrichment",
+      "desc": "Check whether a sandbox task is queued, running, completed, or failed",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task/submission identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Analysis Status",
+          "name": "analysis_status",
+          "desc": "Current task status (queued, running, completed, failed)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full raw API response",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Analysis Report",
+      "name": "get_analysis_report",
+      "type": "Enrichment",
+      "desc": "Retrieve analysis verdict, score, malware family, MITRE ATT&CK mappings, and activity summary",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task/submission identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Verdict",
+          "name": "verdict",
+          "desc": "Analysis verdict (e.g. malicious, suspicious, no-threats)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Score",
+          "name": "score",
+          "desc": "Threat score from the analysis",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Malware Family",
+          "name": "malware_family",
+          "desc": "Identified malware family name (if any)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Analysis tags",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Process Activity",
+          "name": "process_activity",
+          "desc": "Process activity observed during analysis",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Network Activity",
+          "name": "network_activity",
+          "desc": "Network activity observed during analysis",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "MITRE ATT&CK",
+          "name": "mitre_attacks",
+          "desc": "MITRE ATT&CK technique mappings",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full raw API response",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Extract IOCs",
+      "name": "extract_iocs",
+      "type": "Enrichment",
+      "desc": "Extract indicators of compromise (domains, IPs, URLs, hashes) from a completed analysis",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task/submission identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domains",
+          "name": "domains",
+          "desc": "Extracted domain IOCs",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "IP Addresses",
+          "name": "ip_addresses",
+          "desc": "Extracted IP address IOCs",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "URLs",
+          "name": "urls",
+          "desc": "Extracted URL IOCs",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Hashes",
+          "name": "hashes",
+          "desc": "Extracted file hash IOCs",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Raw Response",
+          "name": "raw_response",
+          "desc": "Full raw API response",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Download Artifact",
+      "name": "download_artifact",
+      "type": "Action",
+      "desc": "Download analysis artifacts (PCAP, screenshots, dropped files) as base64-encoded content",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task/submission identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Artifact Type",
+          "name": "artifact_type",
+          "desc": "Type of artifact to download",
+          "type": "String",
+          "values": [
+            "pcap",
+            "screenshot",
+            "dropped_file"
+          ],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Artifact ID",
+          "name": "artifact_id",
+          "desc": "Specific artifact identifier (for multiple screenshots or dropped files)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Task ID",
+          "name": "task_id",
+          "desc": "Sandbox task identifier",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Artifact Type",
+          "name": "artifact_type",
+          "desc": "Type of artifact downloaded (pcap, screenshot, dropped_file)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Content",
+          "name": "content",
+          "desc": "Base64-encoded artifact content",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Filename",
+          "name": "filename",
+          "desc": "Artifact filename",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Content Type",
+          "name": "content_type",
+          "desc": "MIME type of the artifact",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

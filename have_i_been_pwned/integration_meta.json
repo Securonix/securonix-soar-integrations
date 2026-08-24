@@ -1,0 +1,16 @@
+{
+  "name": "have_i_been_pwned",
+  "type": "python",
+  "clazz": "app.have_i_been_pwned",
+  "label": "Have I Been Pwned",
+  "native": false,
+  "testUrl": "",
+  "category": "Data Enrichment and Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Have I Been Pwned (HIBP) API v3 integration for checking whether accounts, domains, and passwords have appeared in known data breaches, pastes, and stealer logs. Supports breach/paste lookups, k-anonymity range searches, domain breach exposure, and breach catalogue enrichment."
+}

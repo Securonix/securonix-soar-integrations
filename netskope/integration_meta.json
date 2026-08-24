@@ -1,0 +1,16 @@
+{
+    "name": "netskope",
+    "type": "python",
+    "clazz": "app.netskope",
+    "label": "Netskope",
+    "native": false,
+    "testUrl": "",
+    "category": "Cloud Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Netskope cloud security integration for SOAR. Supports alert/event retrieval, incident investigation, and URL list management via REST API v2."
+  }

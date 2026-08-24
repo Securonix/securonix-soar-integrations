@@ -13,103 +13,111 @@ MAX_RETRIES = 3
 BACKOFF_FACTOR = 2
 
 
+def _get_connection(connection_params: dict):
+    base_url = connection_params.get('server_url', DEFAULT_BASE_URL).rstrip('/')
+    if not base_url:
+        base_url = DEFAULT_BASE_URL
+    api_token = connection_params.get('api_token')
+    if not api_token:
+        raise Exception("API Token is required.")
+    timeout = DEFAULT_TIMEOUT
+    try:
+        t = connection_params.get('timeout')
+        if t:
+            timeout = max(1, int(t))
+    except (ValueError, TypeError):
+        pass
+    return base_url, api_token, timeout
+
+
+def _make_request(base_url: str, endpoint: str, api_token: str, timeout: int, params: dict = None) -> dict:
+    logger = logging.getLogger(__name__)
+    url = f"{base_url}{endpoint}"
+    req_params = params.copy() if params else {}
+    req_params["key"] = api_token
+
+    last_exception = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            resp = requests.get(url, params=req_params, timeout=timeout)
+
+            if resp.status_code == 200:
+                try:
+                    return resp.json()
+                except ValueError:
+                    return {"raw_text": resp.text}
+
+            if resp.status_code in (401, 403):
+                raise Exception("Authentication failed. Please verify your API Token is correct.")
+
+            if resp.status_code == 429:
+                if attempt < MAX_RETRIES - 1:
+                    wait = BACKOFF_FACTOR ** (attempt + 1)
+                    logger.warning("Rate limited (429). Retrying in %ds...", wait)
+                    time.sleep(wait)
+                    last_exception = Exception("Rate limit exceeded. Please try again later.")
+                    continue
+                raise Exception("Rate limit exceeded. Please try again later.")
+
+            if resp.status_code >= 500:
+                if attempt < MAX_RETRIES - 1:
+                    wait = BACKOFF_FACTOR ** (attempt + 1)
+                    logger.warning("Server error (%d). Retrying in %ds...", resp.status_code, wait)
+                    time.sleep(wait)
+                    last_exception = Exception(f"Shodan server error (HTTP {resp.status_code}).")
+                    continue
+                raise Exception(f"Shodan server error (HTTP {resp.status_code}).")
+
+            if resp.status_code == 404:
+                raise Exception("NOT_FOUND")
+
+            try:
+                err_body = resp.json()
+                err_msg = err_body.get("error", resp.text)
+            except ValueError:
+                err_msg = resp.text
+            raise Exception(f"API request failed (HTTP {resp.status_code}): {err_msg}")
+
+        except requests.exceptions.ConnectionError:
+            raise Exception("Unable to connect to Shodan. Please verify the Server URL.")
+        except requests.exceptions.Timeout:
+            raise Exception("Connection to Shodan timed out.")
+        except Exception as e:
+            if "Authentication failed" in str(e) or "Rate limit" in str(e) or "Unable to connect" in str(e) or "timed out" in str(e):
+                raise
+            last_exception = e
+            if attempt < MAX_RETRIES - 1:
+                continue
+            raise
+
+    if last_exception:
+        raise last_exception
+
+
+def _validate_ip(ip: str):
+    if not ip or not ip.strip():
+        raise Exception("IP address is required and cannot be empty.")
+    ip = ip.strip()
+    if not IP_PATTERN.match(ip):
+        raise Exception(f"Invalid IP address format: {ip}")
+    return ip
+
+
+def _validate_required(value, field_name: str):
+    if not value or (isinstance(value, str) and not value.strip()):
+        raise Exception(f"{field_name} is required and cannot be empty.")
+    return value.strip() if isinstance(value, str) else value
+
+
 class Shodan:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
 
-    def _get_connection(self, connection_params: dict):
-        base_url = connection_params.get('server_url', DEFAULT_BASE_URL).rstrip('/')
-        if not base_url:
-            base_url = DEFAULT_BASE_URL
-        api_token = connection_params.get('api_token')
-        if not api_token:
-            raise Exception("API Token is required.")
-        timeout = DEFAULT_TIMEOUT
-        try:
-            t = connection_params.get('timeout')
-            if t:
-                timeout = max(1, int(t))
-        except (ValueError, TypeError):
-            pass
-        return base_url, api_token, timeout
-
-    def _make_request(self, base_url: str, endpoint: str, api_token: str, timeout: int, params: dict = None) -> dict:
-        url = f"{base_url}{endpoint}"
-        req_params = params.copy() if params else {}
-        req_params["key"] = api_token
-
-        last_exception = None
-        for attempt in range(MAX_RETRIES):
-            try:
-                resp = requests.get(url, params=req_params, timeout=timeout)
-
-                if resp.status_code == 200:
-                    try:
-                        return resp.json()
-                    except ValueError:
-                        return {"raw_text": resp.text}
-
-                if resp.status_code in (401, 403):
-                    raise Exception("Authentication failed. Please verify your API Token is correct.")
-
-                if resp.status_code == 429:
-                    if attempt < MAX_RETRIES - 1:
-                        wait = BACKOFF_FACTOR ** (attempt + 1)
-                        self.logger.warning("Rate limited (429). Retrying in %ds...", wait)
-                        time.sleep(wait)
-                        last_exception = Exception("Rate limit exceeded. Please try again later.")
-                        continue
-                    raise Exception("Rate limit exceeded. Please try again later.")
-
-                if resp.status_code >= 500:
-                    if attempt < MAX_RETRIES - 1:
-                        wait = BACKOFF_FACTOR ** (attempt + 1)
-                        self.logger.warning("Server error (%d). Retrying in %ds...", resp.status_code, wait)
-                        time.sleep(wait)
-                        last_exception = Exception(f"Shodan server error (HTTP {resp.status_code}).")
-                        continue
-                    raise Exception(f"Shodan server error (HTTP {resp.status_code}).")
-
-                try:
-                    err_body = resp.json()
-                    err_msg = err_body.get("error", resp.text)
-                except ValueError:
-                    err_msg = resp.text
-                raise Exception(f"API request failed (HTTP {resp.status_code}): {err_msg}")
-
-            except requests.exceptions.ConnectionError:
-                raise Exception("Unable to connect to Shodan. Please verify the Server URL.")
-            except requests.exceptions.Timeout:
-                raise Exception("Connection to Shodan timed out.")
-            except Exception as e:
-                if "Authentication failed" in str(e) or "Rate limit" in str(e) or "Unable to connect" in str(e) or "timed out" in str(e):
-                    raise
-                last_exception = e
-                if attempt < MAX_RETRIES - 1:
-                    continue
-                raise
-
-        if last_exception:
-            raise last_exception
-
-    def _validate_ip(self, ip: str):
-        if not ip or not ip.strip():
-            raise Exception("IP address is required and cannot be empty.")
-        ip = ip.strip()
-        if not IP_PATTERN.match(ip):
-            raise Exception(f"Invalid IP address format: {ip}")
-        return ip
-
-    def _validate_required(self, value, field_name: str):
-        if not value or (isinstance(value, str) and not value.strip()):
-            raise Exception(f"{field_name} is required and cannot be empty.")
-        return value.strip() if isinstance(value, str) else value
-
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url, api_token, timeout = self._get_connection(connectionParameters)
-            self._make_request(base_url, "/api-info", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(connectionParameters)
+            _make_request(base_url, "/api-info", api_token, timeout)
             return {"status": "success", "message": "Connected to Shodan successfully."}
         except Exception as e:
             self.logger.exception("Exception while testing connection")
@@ -117,11 +125,11 @@ class Shodan:
 
     def ip_address(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
             ip = request.parameters.get('ip_addr') or request.parameters.get('ip')
-            ip = self._validate_ip(ip)
+            ip = _validate_ip(ip)
 
-            data = self._make_request(base_url, f"/shodan/host/{ip}", api_token, timeout)
+            data = _make_request(base_url, f"/shodan/host/{ip}", api_token, timeout)
 
             return {
                 "ip": data.get("ip_str", ip),
@@ -139,15 +147,17 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"ip": ip, "results": [], "message": "No information available for that IP."}
             self.logger.exception("Error in ip_address action")
             raise Exception(str(e))
 
     def domain_lookup(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            domain = self._validate_required(request.parameters.get('domain'), "domain")
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            domain = _validate_required(request.parameters.get('domain'), "domain")
 
-            data = self._make_request(base_url, f"/dns/domain/{domain}", api_token, timeout)
+            data = _make_request(base_url, f"/dns/domain/{domain}", api_token, timeout)
 
             return {
                 "domain": data.get("domain", domain),
@@ -157,13 +167,15 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"domain": domain, "results": [], "message": "No information available for that domain."}
             self.logger.exception("Error in domain_lookup action")
             raise Exception(str(e))
 
     def host_search(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            query = self._validate_required(request.parameters.get('query'), "query")
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            query = _validate_required(request.parameters.get('query'), "query")
 
             params = {"query": query}
             page = request.parameters.get('page')
@@ -175,7 +187,7 @@ class Shodan:
                 except (ValueError, TypeError):
                     pass
 
-            data = self._make_request(base_url, "/shodan/host/search", api_token, timeout, params)
+            data = _make_request(base_url, "/shodan/host/search", api_token, timeout, params)
 
             return {
                 "total": data.get("total", 0),
@@ -188,15 +200,15 @@ class Shodan:
 
     def host_count(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            query = self._validate_required(request.parameters.get('query'), "query")
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            query = _validate_required(request.parameters.get('query'), "query")
 
             params = {"query": query}
             facets = request.parameters.get('facets')
             if facets:
                 params["facets"] = facets
 
-            data = self._make_request(base_url, "/shodan/host/count", api_token, timeout, params)
+            data = _make_request(base_url, "/shodan/host/count", api_token, timeout, params)
 
             return {
                 "total": data.get("total", 0),
@@ -209,8 +221,8 @@ class Shodan:
 
     def list_ports(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            data = self._make_request(base_url, "/shodan/ports", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            data = _make_request(base_url, "/shodan/ports", api_token, timeout)
 
             return {
                 "ports": data if isinstance(data, list) else [],
@@ -222,8 +234,8 @@ class Shodan:
 
     def list_protocols(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            data = self._make_request(base_url, "/shodan/protocols", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            data = _make_request(base_url, "/shodan/protocols", api_token, timeout)
 
             return {
                 "protocols": data if isinstance(data, dict) else {},
@@ -235,8 +247,8 @@ class Shodan:
 
     def list_services(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            data = self._make_request(base_url, "/shodan/services", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            data = _make_request(base_url, "/shodan/services", api_token, timeout)
 
             return {
                 "services": data if isinstance(data, dict) else {},
@@ -248,11 +260,10 @@ class Shodan:
 
     def honeyscore(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            ip = request.parameters.get('ip')
-            ip = self._validate_ip(ip)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            ip = _validate_ip(request.parameters.get('ip'))
 
-            data = self._make_request(base_url, f"/labs/honeyscore/{ip}", api_token, timeout)
+            data = _make_request(base_url, f"/labs/honeyscore/{ip}", api_token, timeout)
 
             if isinstance(data, dict):
                 score = data.get("honeyscore")
@@ -268,13 +279,15 @@ class Shodan:
                 "raw_response": data
             }
         except Exception as e:
+            if "NOT_FOUND" in str(e):
+                return {"ip": ip, "honeyscore": None, "message": "No information available for that IP."}
             self.logger.exception("Error in honeyscore action")
             raise Exception(str(e))
 
     def my_ip(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            data = self._make_request(base_url, "/tools/myip", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            data = _make_request(base_url, "/tools/myip", api_token, timeout)
 
             ip = data if isinstance(data, str) else data.get("ip") if isinstance(data, dict) else str(data)
 
@@ -288,8 +301,8 @@ class Shodan:
 
     def api_info(self, request: RequestBody) -> dict:
         try:
-            base_url, api_token, timeout = self._get_connection(request.connectionParameters)
-            data = self._make_request(base_url, "/api-info", api_token, timeout)
+            base_url, api_token, timeout = _get_connection(request.connectionParameters)
+            data = _make_request(base_url, "/api-info", api_token, timeout)
 
             return {
                 "query_credits": data.get("query_credits"),

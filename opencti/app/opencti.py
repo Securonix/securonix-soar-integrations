@@ -128,46 +128,49 @@ query Organizations($first: Int) {
 """
 
 
+def _graphql_request(base_url: str, headers: dict, query: str, variables: dict) -> dict:
+    resp = requests.post(
+        f"{base_url}/graphql",
+        json={"query": query, "variables": variables},
+        headers=headers,
+        timeout=30
+    )
+    if resp.status_code in (401, 403):
+        raise Exception("Authentication failed. Please verify your API Token is correct.")
+    if resp.status_code >= 300:
+        raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
+    try:
+        data = resp.json()
+    except ValueError:
+        raise Exception("Invalid response from API. Please verify your API Token and Base URL are correct.")
+    if "errors" in data and data["errors"]:
+        raise Exception(f"GraphQL error: {data['errors'][0].get('message', 'Unknown error')}")
+    return data.get("data", {})
+
+
+def _get_connection(connection_params: dict):
+    base_url = connection_params['base_url'].rstrip('/')
+    api_token = connection_params['api_token']
+    headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
+    return base_url, headers
+
+
+def _parse_limit(raw_limit, default=25):
+    try:
+        return max(1, min(int(raw_limit), 100))
+    except (ValueError, TypeError):
+        return default
+
+
 class Opencti():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
-    def _graphql_request(self, base_url: str, headers: dict, query: str, variables: dict) -> dict:
-        resp = requests.post(
-            f"{base_url}/graphql",
-            json={"query": query, "variables": variables},
-            headers=headers,
-            timeout=30
-        )
-        if resp.status_code in (401, 403):
-            raise Exception("Authentication failed. Please verify your API Token is correct.")
-        if resp.status_code >= 300:
-            raise Exception(f"API request failed with status {resp.status_code}. Please check your configuration.")
-        try:
-            data = resp.json()
-        except ValueError:
-            raise Exception("Invalid response from API. Please verify your API Token and Base URL are correct.")
-        if "errors" in data and data["errors"]:
-            raise Exception(f"GraphQL error: {data['errors'][0].get('message', 'Unknown error')}")
-        return data.get("data", {})
-
-    def _get_connection(self, connection_params: dict):
-        base_url = connection_params['base_url'].rstrip('/')
-        api_token = connection_params['api_token']
-        headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
-        return base_url, headers
-
-    def _parse_limit(self, raw_limit, default=25):
-        try:
-            return max(1, min(int(raw_limit), 100))
-        except (ValueError, TypeError):
-            return default
-
     def test_connection(self, connectionParameters: dict):
         try:
-            base_url, headers = self._get_connection(connectionParameters)
-            self._graphql_request(base_url, headers, "{ about { version } }", {})
+            base_url, headers = _get_connection(connectionParameters)
+            _graphql_request(base_url, headers, "{ about { version } }", {})
             return {'status': 'success', 'message': 'Connected to OpenCTI successfully.'}
         except requests.exceptions.ConnectionError:
             raise Exception('Unable to connect to OpenCTI. Please verify the Base URL.')
@@ -179,7 +182,7 @@ class Opencti():
 
     def lookup_observable(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
+            base_url, headers = _get_connection(request.connectionParameters)
 
             observables = request.parameters["observables"]
             if isinstance(observables, str):
@@ -207,7 +210,7 @@ class Opencti():
                     ],
                     "filterGroups": []
                 }
-                data = self._graphql_request(base_url, headers, OBSERVABLE_QUERY, {"filters": filters})
+                data = _graphql_request(base_url, headers, OBSERVABLE_QUERY, {"filters": filters})
                 edges = data.get("stixCyberObservables", {}).get("edges", [])
                 results.append({
                     "observable": obs,
@@ -226,7 +229,7 @@ class Opencti():
 
     def get_indicator_details(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
+            base_url, headers = _get_connection(request.connectionParameters)
 
             indicator_ids = request.parameters["indicator_ids"]
             if isinstance(indicator_ids, str):
@@ -240,7 +243,7 @@ class Opencti():
             for ind_id in indicator_ids:
                 if not ind_id:
                     raise Exception("Indicator ID cannot be empty.")
-                data = self._graphql_request(base_url, headers, INDICATOR_QUERY, {"id": ind_id})
+                data = _graphql_request(base_url, headers, INDICATOR_QUERY, {"id": ind_id})
                 indicator = data.get("indicator")
                 if not indicator:
                     raise Exception(f"No indicator found for ID: {ind_id}")
@@ -257,20 +260,20 @@ class Opencti():
 
     def search_entities(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
+            base_url, headers = _get_connection(request.connectionParameters)
 
             search_term = request.parameters["search_term"]
             if not search_term or not search_term.strip():
                 raise Exception("search_term is required and cannot be empty.")
 
             entity_type = request.parameters.get("entity_type")
-            limit = self._parse_limit(request.parameters.get("limit", "25"))
+            limit = _parse_limit(request.parameters.get("limit", "25"))
 
             variables = {"search": search_term.strip(), "first": limit}
             if entity_type and entity_type.strip():
                 variables["types"] = [entity_type.strip()]
 
-            data = self._graphql_request(base_url, headers, SEARCH_ENTITIES_QUERY, variables)
+            data = _graphql_request(base_url, headers, SEARCH_ENTITIES_QUERY, variables)
             edges = data.get("stixDomainObjects", {}).get("edges", [])
 
             return {"status": "success", "results": [e["node"] for e in edges]}
@@ -284,13 +287,13 @@ class Opencti():
 
     def get_indicators(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
+            base_url, headers = _get_connection(request.connectionParameters)
 
             search = request.parameters.get("search")
             labels = request.parameters.get("labels")
             confidence = request.parameters.get("confidence")
             indicator_type = request.parameters.get("indicator_type")
-            limit = self._parse_limit(request.parameters.get("limit", "25"))
+            limit = _parse_limit(request.parameters.get("limit", "25"))
 
             filters_list = []
             if labels:
@@ -307,7 +310,7 @@ class Opencti():
             if filters_list:
                 variables["filters"] = {"mode": "and", "filters": filters_list, "filterGroups": []}
 
-            data = self._graphql_request(base_url, headers, INDICATORS_QUERY, variables)
+            data = _graphql_request(base_url, headers, INDICATORS_QUERY, variables)
             edges = data.get("indicators", {}).get("edges", [])
 
             return {"status": "success", "results": [e["node"] for e in edges]}
@@ -321,14 +324,14 @@ class Opencti():
 
     def get_relationships(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
+            base_url, headers = _get_connection(request.connectionParameters)
 
             entity_id = request.parameters.get("entity_id")
             if not entity_id or not entity_id.strip():
                 raise Exception("entity_id is required and cannot be empty.")
 
             relationship_type = request.parameters.get("relationship_type")
-            limit = self._parse_limit(request.parameters.get("limit", "25"))
+            limit = _parse_limit(request.parameters.get("limit", "25"))
 
             filters_list = [
                 {"key": ["fromId", "toId"], "values": [entity_id.strip()], "operator": "eq", "mode": "or"}
@@ -341,7 +344,7 @@ class Opencti():
                 "filters": {"mode": "and", "filters": filters_list, "filterGroups": []}
             }
 
-            data = self._graphql_request(base_url, headers, RELATIONSHIPS_QUERY, variables)
+            data = _graphql_request(base_url, headers, RELATIONSHIPS_QUERY, variables)
             edges = data.get("stixCoreRelationships", {}).get("edges", [])
 
             return {"status": "success", "results": [e["node"] for e in edges]}
@@ -355,8 +358,8 @@ class Opencti():
 
     def list_labels(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
-            data = self._graphql_request(base_url, headers, LABELS_QUERY, {})
+            base_url, headers = _get_connection(request.connectionParameters)
+            data = _graphql_request(base_url, headers, LABELS_QUERY, {})
             edges = data.get("labels", {}).get("edges", [])
             return {"status": "success", "results": [e["node"] for e in edges]}
         except requests.exceptions.ConnectionError:
@@ -369,8 +372,8 @@ class Opencti():
 
     def list_marking_definitions(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
-            data = self._graphql_request(base_url, headers, MARKING_DEFINITIONS_QUERY, {})
+            base_url, headers = _get_connection(request.connectionParameters)
+            data = _graphql_request(base_url, headers, MARKING_DEFINITIONS_QUERY, {})
             edges = data.get("markingDefinitions", {}).get("edges", [])
             return {"status": "success", "results": [e["node"] for e in edges]}
         except requests.exceptions.ConnectionError:
@@ -383,9 +386,9 @@ class Opencti():
 
     def list_organizations(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, headers = self._get_connection(request.connectionParameters)
-            limit = self._parse_limit(request.parameters.get("limit", "100"))
-            data = self._graphql_request(base_url, headers, ORGANIZATIONS_QUERY, {"first": limit})
+            base_url, headers = _get_connection(request.connectionParameters)
+            limit = _parse_limit(request.parameters.get("limit", "100"))
+            data = _graphql_request(base_url, headers, ORGANIZATIONS_QUERY, {"first": limit})
             edges = data.get("organizations", {}).get("edges", [])
             return {"status": "success", "results": [e["node"] for e in edges]}
         except requests.exceptions.ConnectionError:

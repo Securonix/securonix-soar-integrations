@@ -1,0 +1,16 @@
+{
+    "name": "pulsedive",
+    "type": "python",
+    "clazz": "app.pulsedive",
+    "label": "Pulsedive",
+    "native": false,
+    "testUrl": "",
+    "category": "Threat Intelligence",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Pulsedive integration for cyber threat intelligence enrichment. Supports enriching IPs, domains, URLs, and file hashes, plus searching indicators and threats using the Pulsedive REST API."
+  }

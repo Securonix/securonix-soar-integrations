@@ -1,0 +1,496 @@
+{
+    "connectionParameters": [
+      {
+        "label": "Tenant Hostname",
+        "name": "tenant_hostname",
+        "desc": "Netskope tenant hostname (e.g., mytenant.goskope.com)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "API Token",
+        "name": "api_token",
+        "desc": "Netskope REST API v2 token",
+        "type": "String",
+        "values": [],
+        "isSecret": true,
+        "optional": false,
+        "encrypted": false
+      },
+      {
+        "label": "Request Timeout",
+        "name": "timeout",
+        "desc": "Request timeout in seconds (default: 30)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Verify SSL",
+        "name": "verify_ssl",
+        "desc": "Verify SSL certificates (default: true)",
+        "type": "String",
+        "values": ["true", "false"],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      },
+      {
+        "label": "Proxy",
+        "name": "proxy",
+        "desc": "Proxy URL for outbound requests (optional)",
+        "type": "String",
+        "values": [],
+        "isSecret": false,
+        "optional": true,
+        "encrypted": false
+      }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "Netskope cloud security integration for SOAR. Supports alert/event retrieval, incident investigation, and URL list management via REST API v2.",
+    "functions": [
+      {
+        "label": "Get Alerts",
+        "name": "get_alerts",
+        "type": "Enrichment",
+        "desc": "Retrieve alerts with optional filters (alert_type, time_period, user, severity, raw query)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Alert Type",
+            "name": "alert_type",
+            "desc": "Filter by alert type (dlp, malware, policy, security_assessment, compromised_credential, watchlist, quarantine, remediation, uba)",
+            "type": "String",
+            "values": ["dlp", "malware", "policy", "security_assessment", "compromised_credential", "watchlist", "quarantine", "remediation", "uba"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "User",
+            "name": "user",
+            "desc": "Filter by user email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Severity",
+            "name": "severity",
+            "desc": "Filter by severity level",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of alert objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Events",
+        "name": "get_events",
+        "type": "Enrichment",
+        "desc": "Retrieve events by type (application, page, network, audit, infrastructure, incident)",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Event Type",
+            "name": "event_type",
+            "desc": "Event type to retrieve (application, page, network, audit, infrastructure, incident)",
+            "type": "String",
+            "values": ["application", "page", "network", "audit", "infrastructure", "incident"],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "User",
+            "name": "user",
+            "desc": "Filter by user email",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of event objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Incidents",
+        "name": "get_incidents",
+        "type": "Enrichment",
+        "desc": "Retrieve incidents from Netskope via datasearch",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Filter by incident status (new, in_progress, resolved, closed)",
+            "type": "String",
+            "values": ["new", "in_progress", "resolved", "closed"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Time Period",
+            "name": "time_period",
+            "desc": "Time range in hours (default: 24)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Query",
+            "name": "query",
+            "desc": "Raw datasearch query string",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          },
+          {
+            "label": "Limit",
+            "name": "limit",
+            "desc": "Maximum results to return (default: 100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "List of incident objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Get Alert Details",
+        "name": "get_alert_details",
+        "type": "Enrichment",
+        "desc": "Retrieve a single alert by its ID",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Alert ID",
+            "name": "alert_id",
+            "desc": "The alert ID to retrieve",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Single alert object",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block URL",
+        "name": "block_url",
+        "type": "Containment",
+        "desc": "Append URLs to a Netskope URL list and deploy the policy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to append to",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "URLs",
+            "name": "urls",
+            "desc": "Comma-separated list of URLs to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Type",
+            "name": "type",
+            "desc": "Match type for the URL entries (default: exact)",
+            "type": "String",
+            "values": ["exact", "regex"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block Domain",
+        "name": "block_domain",
+        "type": "Containment",
+        "desc": "Append validated domains to a Netskope URL list and deploy the policy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to append to",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Domains",
+            "name": "domains",
+            "desc": "Comma-separated list of domains to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Type",
+            "name": "type",
+            "desc": "Match type for the domain entries (default: exact)",
+            "type": "String",
+            "values": ["exact", "regex"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block IP",
+        "name": "block_ip",
+        "type": "Containment",
+        "desc": "Append validated IPv4/IPv6/CIDR addresses to a Netskope URL list and deploy the policy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list to append to",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "IPs",
+            "name": "ips",
+            "desc": "Comma-separated list of IPv4, IPv6, or CIDR addresses to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "Confirmation with list_id and items_added",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Block File Hash",
+        "name": "block_file_hash",
+        "type": "Containment",
+        "desc": "Add MD5 or SHA256 file hashes to a Netskope File Hash List",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "File Hash List Name",
+            "name": "file_hash_list_name",
+            "desc": "Name of the existing File Hash List to update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Hashes",
+            "name": "hashes",
+            "desc": "Comma-separated list of MD5 or SHA256 hashes to block",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Hash Type",
+            "name": "hash_type",
+            "desc": "Expected hash type for validation (optional — auto-detected if omitted)",
+            "type": "String",
+            "values": ["md5", "sha256"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Results",
+            "name": "results",
+            "desc": "API response from Netskope File Hash List update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      }
+    ]
+  }
