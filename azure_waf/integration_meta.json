@@ -1,0 +1,16 @@
+{
+    "name": "azure_waf",
+    "type": "python",
+    "clazz": "app.azure_waf",
+    "label": "Azure WAF",
+    "native": false,
+    "testUrl": "",
+    "category": "Cloud Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Azure Application Gateway WAF integration for retrieving WAF policies, inspecting custom rules, and performing automated IP blocking/unblocking remediation via the Azure Management REST API."
+  }
