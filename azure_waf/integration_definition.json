@@ -95,26 +95,6 @@
     "desc": "Azure Application Gateway WAF integration for retrieving WAF policies, inspecting custom rules, and performing automated IP blocking/unblocking remediation via the Azure Management REST API.",
     "functions": [
       {
-        "label": "Test Connection",
-        "name": "test_connection",
-        "type": "Enrichment",
-        "desc": "Verify connectivity and credentials by obtaining an OAuth2 token and listing WAF policies",
-        "sampleOutput": "{\"status\": \"success\", \"message\": \"Connected to Azure WAF successfully.\"}",
-        "inParameters": [],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Connection test result",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
         "label": "List WAF Policies",
         "name": "list_waf_policies",
         "type": "Enrichment",
