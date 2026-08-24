@@ -98,7 +98,6 @@
         "label": "Test Connection",
         "name": "test_connection",
         "type": "Enrichment",
-        "isTestConnectivity": true,
         "desc": "Verify connectivity and credentials by obtaining an OAuth2 token and listing WAF policies",
         "sampleOutput": "{\"status\": \"success\", \"message\": \"Connected to Azure WAF successfully.\"}",
         "inParameters": [],
