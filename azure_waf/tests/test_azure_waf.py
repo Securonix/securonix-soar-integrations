@@ -1,13 +1,12 @@
 import pytest
 import time
 from unittest.mock import patch, MagicMock
+import app.azure_waf as _mod
 from app.azure_waf import (
     AzureWaf, _validate_ip, _validate_required, _find_soar_rule,
     _find_ip_match_condition, _build_soar_rule, _is_soar_ip_block_rule,
-    _next_available_priority, DEFAULT_RULE_NAME, MAX_RETRIES,
+    _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, MAX_RETRIES,
 )
-
-_TokenExpiredError = AzureWaf._TokenExpiredError
 from app.model.request_body import RequestBody
 
 CONN = {
@@ -155,122 +154,114 @@ class TestNextAvailablePriority:
 # ── Token ─────────────────────────────────────────────────────────────────────
 
 class TestGetToken:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_success(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)):
-            assert connector._get_token("t", "c", "s", 30, True, None) == "test-token"
+            assert _mod._get_token("t", "c", "s", 30, True, None) == "test-token"
 
     def test_cached(self):
-        connector = AzureWaf()
-        connector._token_cache["t:c"] = {"token": "cached", "expires_at": time.time() + 3600}
+        _mod._token_cache["t:c"] = {"token": "cached", "expires_at": time.time() + 3600}
         with patch("app.azure_waf.requests.post") as mock_post:
-            token = connector._get_token("t", "c", "s", 30, True, None)
+            token = _mod._get_token("t", "c", "s", 30, True, None)
         mock_post.assert_not_called()
         assert token == "cached"
 
     def test_expired_cache_refreshes(self):
-        connector = AzureWaf()
-        connector._token_cache["t:c"] = {"token": "old", "expires_at": time.time() - 1}
+        _mod._token_cache["t:c"] = {"token": "old", "expires_at": time.time() - 1}
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)):
-            assert connector._get_token("t", "c", "s", 30, True, None) == "test-token"
+            assert _mod._get_token("t", "c", "s", 30, True, None) == "test-token"
 
     def test_401_raises(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(401)):
             with pytest.raises(Exception, match="Authentication failed"):
-                connector._get_token("t", "c", "s", 30, True, None)
+                _mod._get_token("t", "c", "s", 30, True, None)
 
     def test_missing_token_raises(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, {})):
             with pytest.raises(Exception, match="missing access_token"):
-                connector._get_token("t", "c", "s", 30, True, None)
+                _mod._get_token("t", "c", "s", 30, True, None)
 
     def test_connection_error(self):
         import requests as req_lib
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", side_effect=req_lib.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
-                connector._get_token("t", "c", "s", 30, True, None)
+                _mod._get_token("t", "c", "s", 30, True, None)
 
-    def test_cache_isolated_per_instance(self):
-        c1 = AzureWaf()
-        c2 = AzureWaf()
-        c1._token_cache["t:c"] = {"token": "token1", "expires_at": time.time() + 3600}
+    def test_cache_shared_across_instances(self):
+        _mod._token_cache["t:c"] = {"token": "token1", "expires_at": time.time() + 3600}
         with patch("app.azure_waf.requests.post") as mock_post:
-            mock_post.return_value = _make_resp(200, TOKEN_RESP)
-            t2 = c2._get_token("t", "c", "s", 30, True, None)
-        assert t2 == "test-token"
-        assert mock_post.call_count == 1
+            token = _mod._get_token("t", "c", "s", 30, True, None)
+        mock_post.assert_not_called()
+        assert token == "token1"
 
 
 # ── _request ──────────────────────────────────────────────────────────────────
 
 class TestRequest:
     def test_200(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.request", return_value=_make_resp(200, {"value": []})):
-            assert connector._request("GET", "http://x", "tok", 30, True, None) == {"value": []}
+            assert _mod._request("GET", "http://x", "tok", 30, True, None) == {"value": []}
 
     def test_404_raises(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.request", return_value=_make_resp(404)):
             with pytest.raises(Exception, match="Resource not found"):
-                connector._request("GET", "http://x", "tok", 30, True, None)
+                _mod._request("GET", "http://x", "tok", 30, True, None)
 
     def test_403_raises(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.request", return_value=_make_resp(403)):
             with pytest.raises(Exception, match="Authorization failed"):
-                connector._request("GET", "http://x", "tok", 30, True, None)
+                _mod._request("GET", "http://x", "tok", 30, True, None)
 
     def test_401_raises_token_expired(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.request", return_value=_make_resp(401)):
             with pytest.raises(_TokenExpiredError):
-                connector._request("GET", "http://x", "tok", 30, True, None)
+                _mod._request("GET", "http://x", "tok", 30, True, None)
 
     def test_429_retries(self):
-        connector = AzureWaf()
         r = _make_resp(429)
         r.headers = {"Retry-After": "1"}
         with patch("app.azure_waf.requests.request", return_value=r), \
              patch("app.azure_waf.time.sleep") as mock_sleep:
             with pytest.raises(Exception, match="rate limit"):
-                connector._request("GET", "http://x", "tok", 30, True, None)
+                _mod._request("GET", "http://x", "tok", 30, True, None)
         assert mock_sleep.call_count == MAX_RETRIES - 1
 
     def test_500_retries(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.request", return_value=_make_resp(500)), \
              patch("app.azure_waf.time.sleep") as mock_sleep:
             with pytest.raises(Exception, match="server error"):
-                connector._request("GET", "http://x", "tok", 30, True, None)
+                _mod._request("GET", "http://x", "tok", 30, True, None)
         assert mock_sleep.call_count == MAX_RETRIES - 1
 
 
 # ── _request_with_refresh ─────────────────────────────────────────────────────
 
 class TestRequestWithRefresh:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_refreshes_on_401(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)) as mock_post, \
              patch("app.azure_waf.requests.request", side_effect=[_make_resp(401), _make_resp(200, {"ok": True})]):
-            result = connector._request_with_refresh("GET", "http://x", "t", "c", "s", 30, True, None)
+            result = _mod._request_with_refresh("GET", "http://x", "t", "c", "s", 30, True, None)
         assert result == {"ok": True}
         assert mock_post.call_count == 2
 
     def test_raises_after_double_401(self):
-        connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf.requests.request", return_value=_make_resp(401)):
             with pytest.raises(Exception, match="Authorization failed after token refresh"):
-                connector._request_with_refresh("GET", "http://x", "t", "c", "s", 30, True, None)
+                _mod._request_with_refresh("GET", "http://x", "t", "c", "s", 30, True, None)
 
 
 # ── test_connection ───────────────────────────────────────────────────────────
 
 class TestTestConnection:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_success_with_rg(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -297,6 +288,9 @@ class TestTestConnection:
 # ── list_waf_policies ─────────────────────────────────────────────────────────
 
 class TestListWafPolicies:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_success(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -325,6 +319,9 @@ class TestListWafPolicies:
 # ── get_waf_policy / get_custom_rules ─────────────────────────────────────────
 
 class TestGetWafPolicy:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_success(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -339,6 +336,9 @@ class TestGetWafPolicy:
 
 
 class TestGetCustomRules:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_returns_rules(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -357,6 +357,9 @@ class TestGetCustomRules:
 # ── add_ip_to_block_list ──────────────────────────────────────────────────────
 
 class TestAddIpToBlockList:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_creates_new_rule(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -447,6 +450,9 @@ class TestAddIpToBlockList:
 # ── remove_ip_from_block_list ─────────────────────────────────────────────────
 
 class TestRemoveIpFromBlockList:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_removes_ip(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -493,6 +499,9 @@ class TestRemoveIpFromBlockList:
 # ── check_ip_in_block_list ────────────────────────────────────────────────────
 
 class TestCheckIpInBlockList:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_ip_blocked(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -542,6 +551,9 @@ class TestCheckIpInBlockList:
 # ── get_blocked_ips ───────────────────────────────────────────────────────────
 
 class TestGetBlockedIps:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_returns_ips(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -568,6 +580,9 @@ class TestGetBlockedIps:
 # ── enable / disable custom rule ──────────────────────────────────────────────
 
 class TestEnableCustomRule:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_enables_rule(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -591,6 +606,9 @@ class TestEnableCustomRule:
 
 
 class TestDisableCustomRule:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
     def test_disables_rule(self):
         connector = AzureWaf()
         with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
