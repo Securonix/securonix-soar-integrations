@@ -138,18 +138,6 @@ def _build_soar_rule(rule_name: str, match_values: list, priority: int = 10) -> 
     }
 
 
-def _get_policy(connector, base_url, subscription_id, resource_group, policy_name,
-                tenant_id, client_id, client_secret, timeout, verify_ssl, proxies) -> dict:
-    url = _policy_url(base_url, subscription_id, resource_group, policy_name)
-    return connector._request_with_refresh("GET", url, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
-
-
-def _put_policy(connector, base_url, subscription_id, resource_group, policy_name, policy,
-                tenant_id, client_id, client_secret, timeout, verify_ssl, proxies) -> dict:
-    url = _policy_url(base_url, subscription_id, resource_group, policy_name)
-    return connector._request_with_refresh("PUT", url, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
-
-
 class AzureWaf:
 
     class _TokenExpiredError(Exception):
@@ -323,7 +311,7 @@ class AzureWaf:
             rg = _validate_required(params.get("resource_group") or conn_rg, "resource_group")
             policy_name = _validate_required(params.get("policy_name"), "policy_name")
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             return {"status": "success", "policy": policy}
         except Exception:
             self.logger.error("Error in get_waf_policy", exc_info=True)
@@ -337,7 +325,7 @@ class AzureWaf:
             rg = _validate_required(params.get("resource_group") or conn_rg, "resource_group")
             policy_name = _validate_required(params.get("policy_name"), "policy_name")
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             return {"status": "success", "custom_rules": custom_rules, "total_count": len(custom_rules)}
         except Exception:
@@ -354,7 +342,7 @@ class AzureWaf:
             ip_address = _validate_ip(_validate_required(params.get("ip_address"), "ip_address"))
             rule_name = (params.get("rule_name") or DEFAULT_RULE_NAME).strip()
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.setdefault("properties", {}).setdefault("customRules", [])
 
             soar_rule = _find_soar_rule(custom_rules, rule_name)
@@ -374,7 +362,7 @@ class AzureWaf:
                 if ip_address not in cond["matchValues"]:
                     cond["matchValues"].append(ip_address)
 
-            _put_policy(self, base_url, sub_id, rg, policy_name, policy, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            self._request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             updated_rule = _find_soar_rule(policy["properties"]["customRules"], rule_name)
             return {"status": "success", "rule": updated_rule}
         except Exception:
@@ -391,7 +379,7 @@ class AzureWaf:
             ip_address = _validate_ip(_validate_required(params.get("ip_address"), "ip_address"))
             rule_name = (params.get("rule_name") or DEFAULT_RULE_NAME).strip()
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             soar_rule = _find_soar_rule(custom_rules, rule_name)
 
@@ -406,7 +394,7 @@ class AzureWaf:
             if not cond["matchValues"]:
                 soar_rule["state"] = "Disabled"
 
-            _put_policy(self, base_url, sub_id, rg, policy_name, policy, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            self._request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": soar_rule, "removed_ip": ip_address}
         except Exception:
             self.logger.error("Error in remove_ip_from_block_list", exc_info=True)
@@ -422,7 +410,7 @@ class AzureWaf:
             ip_address = _validate_ip(_validate_required(params.get("ip_address"), "ip_address"))
             rule_name = (params.get("rule_name") or DEFAULT_RULE_NAME).strip()
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             soar_rule = _find_soar_rule(custom_rules, rule_name)
 
@@ -449,7 +437,7 @@ class AzureWaf:
             policy_name = _validate_required(params.get("policy_name"), "policy_name")
             rule_name = (params.get("rule_name") or DEFAULT_RULE_NAME).strip()
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             soar_rule = _find_soar_rule(custom_rules, rule_name)
 
@@ -472,7 +460,7 @@ class AzureWaf:
             policy_name = _validate_required(params.get("policy_name"), "policy_name")
             rule_name = _validate_required(params.get("rule_name"), "rule_name")
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             rule = _find_soar_rule(custom_rules, rule_name)
 
@@ -480,7 +468,7 @@ class AzureWaf:
                 raise Exception(f"Custom rule '{rule_name}' not found in policy '{policy_name}'.")
 
             rule["state"] = "Enabled"
-            _put_policy(self, base_url, sub_id, rg, policy_name, policy, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            self._request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": rule}
         except Exception:
             self.logger.error("Error in enable_custom_rule", exc_info=True)
@@ -495,7 +483,7 @@ class AzureWaf:
             policy_name = _validate_required(params.get("policy_name"), "policy_name")
             rule_name = _validate_required(params.get("rule_name"), "rule_name")
 
-            policy = _get_policy(self, base_url, sub_id, rg, policy_name, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            policy = self._request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             custom_rules = policy.get("properties", {}).get("customRules", [])
             rule = _find_soar_rule(custom_rules, rule_name)
 
@@ -503,7 +491,7 @@ class AzureWaf:
                 raise Exception(f"Custom rule '{rule_name}' not found in policy '{policy_name}'.")
 
             rule["state"] = "Disabled"
-            _put_policy(self, base_url, sub_id, rg, policy_name, policy, tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            self._request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": rule}
         except Exception:
             self.logger.error("Error in disable_custom_rule", exc_info=True)
