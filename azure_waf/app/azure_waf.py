@@ -138,11 +138,10 @@ def _build_soar_rule(rule_name: str, match_values: list, priority: int = 10) -> 
     }
 
 
-class _TokenExpiredError(Exception):
-    pass
-
-
 class AzureWaf:
+
+    class _TokenExpiredError(Exception):
+        pass
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
@@ -216,7 +215,7 @@ class AzureWaf:
                 return resp.json() if resp.content else {}
 
             if resp.status_code == 401:
-                raise _TokenExpiredError()
+                raise AzureWaf._TokenExpiredError()
 
             if resp.status_code == 403:
                 raise Exception("Authorization failed (HTTP 403). Verify service principal permissions.")
@@ -257,12 +256,12 @@ class AzureWaf:
         token = self._get_token(tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
         try:
             return self._request(method, url, token, timeout, verify_ssl, proxies, **kwargs)
-        except _TokenExpiredError:
+        except AzureWaf._TokenExpiredError:
             self._invalidate_token(tenant_id, client_id)
             token = self._get_token(tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
             try:
                 return self._request(method, url, token, timeout, verify_ssl, proxies, **kwargs)
-            except _TokenExpiredError:
+            except AzureWaf._TokenExpiredError:
                 raise Exception("Authorization failed after token refresh. Verify service principal permissions.")
 
     # ------------------------------------------------------------------
