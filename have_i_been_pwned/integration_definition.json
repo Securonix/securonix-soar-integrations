@@ -1,366 +1,619 @@
 {
-    "connectionParameters": [
-      {
-        "label": "Base URL",
-        "name": "base_url",
-        "desc": "HIBP API base URL (e.g. https://haveibeenpwned.com/api/v3)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Pwned Passwords Base URL",
-        "name": "passwords_base_url",
-        "desc": "Pwned Passwords range API base URL (e.g. https://api.pwnedpasswords.com)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "API Key",
-        "name": "api_key",
-        "desc": "Have I Been Pwned API key (sent in the hibp-api-key header) for account, paste, domain and stealer-log endpoints.",
-        "type": "String",
-        "values": [],
-        "isSecret": true,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "User Agent",
-        "name": "user_agent",
-        "desc": "User-agent sent on every request identifying the API consumer (required by HIBP; a missing user-agent returns HTTP 403).",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      }
-    ],
-    "testUrl": "https://haveibeenpwned.com/api/v3/latestbreach",
-    "isMultiAuthentication": false,
-    "desc": "Have I Been Pwned (HIBP) API v3 integration for checking whether accounts, domains, and passwords have appeared in known data breaches, pastes, and stealer logs. Supports breach/paste lookups, k-anonymity range searches, domain breach exposure, and breach catalogue enrichment. Data is provided by Have I Been Pwned (https://haveibeenpwned.com) under the Creative Commons Attribution 4.0 International License.",
-    "functions": [
-      {
-        "label": "Check Breached Account",
-        "name": "check_breached_account",
-        "type": "Enrichment",
-        "desc": "Return all breaches an account (email, username, or phone) has appeared in. Requires an API key.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Account",
-            "name": "account",
-            "desc": "The account to search for (email, username, or phone). URL-encoded and case-insensitive.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Truncate Response",
-            "name": "truncate_response",
-            "desc": "Return only breach names when true (default), or full breach objects when false.",
-            "type": "Boolean",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Domain",
-            "name": "domain",
-            "desc": "Filter results to breaches against this domain only (e.g. adobe.com).",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Include Unverified",
-            "name": "include_unverified",
-            "desc": "Include breaches flagged as unverified (default: true).",
-            "type": "Boolean",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Breach results for the account with total count and breached flag.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check Breached Domain",
-        "name": "check_breached_domain",
-        "type": "Enrichment",
-        "desc": "Return all breached email aliases on a verified domain and the breaches they appeared in. Requires an API key and a verified domain.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Domain",
-            "name": "domain",
-            "desc": "Verified domain to search (must be added to the domain search dashboard).",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Mapping of email aliases to breach names, with total count.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check Paste Account",
-        "name": "check_paste_account",
-        "type": "Enrichment",
-        "desc": "Return all pastes an email address has appeared in, newest first. Requires an API key.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Account",
-            "name": "account",
-            "desc": "The email address to search for. URL-encoded and case-insensitive.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Paste records for the account with total count.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check Stealer Logs By Email",
-        "name": "check_stealer_logs_by_email",
-        "type": "Enrichment",
-        "desc": "Return the website domains where an email appeared in stealer logs. Requires a Pro API key and a verified domain.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Email",
-            "name": "email",
-            "desc": "The email address (on a verified domain) to search for.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of website domains from stealer logs with total count.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check Password Range",
-        "name": "check_password_range",
-        "type": "Enrichment",
-        "desc": "Query the Pwned Passwords range API using k-anonymity (first 5 hash characters). No API key required.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Hash Prefix",
-            "name": "hash_prefix",
-            "desc": "First 5 hexadecimal characters of the SHA-1 or NTLM password hash.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Add Padding",
-            "name": "add_padding",
-            "desc": "Request padded responses (padding rows with count 0 are discarded automatically).",
-            "type": "Boolean",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Mode",
-            "name": "mode",
-            "desc": "Hash mode; set to 'ntlm' for NTLM suffixes. Defaults to SHA-1.",
-            "type": "String",
-            "values": ["sha1", "ntlm"],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of hash suffixes and their prevalence counts.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check Breached Account Range",
-        "name": "check_breached_account_range",
-        "type": "Enrichment",
-        "desc": "Search breaches for an email by SHA-1 hash range using k-anonymity (first 6 hash characters). Requires a Pro/High RPM API key.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Hash Prefix",
-            "name": "hash_prefix",
-            "desc": "First 6 hexadecimal characters of the normalized email address SHA-1 hash.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of objects containing hashSuffix and the breach names (websites) it appeared in.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Latest Breach",
-        "name": "get_latest_breach",
-        "type": "Enrichment",
-        "desc": "Return the most recently added breach based on AddedDate. No API key required.",
-        "sampleOutput": "",
-        "inParameters": [],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "The most recently added breach object.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Breaches",
-        "name": "get_breaches",
-        "type": "Enrichment",
-        "desc": "Return the breach catalogue, optionally filtered by domain or spam-list flag. No API key required.",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Domain",
-            "name": "domain",
-            "desc": "Filter the catalogue to breaches against this domain (e.g. adobe.com).",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Is Spam List",
-            "name": "is_spam_list",
-            "desc": "Filter to breaches that are (true) or are not (false) flagged as a spam list.",
-            "type": "Boolean",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of breach objects in the catalogue with total count.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Data Classes",
-        "name": "get_data_classes",
-        "type": "Enrichment",
-        "desc": "Return all data classes (compromised attribute types) in the system. No API key required.",
-        "sampleOutput": "",
-        "inParameters": [],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Alphabetically ordered list of data class names with total count.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      }
-    ]
-  }
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "HIBP API base URL (e.g. https://haveibeenpwned.com/api/v3)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Pwned Passwords Base URL",
+      "name": "passwords_base_url",
+      "desc": "Pwned Passwords range API base URL (e.g. https://api.pwnedpasswords.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "Have I Been Pwned API key (sent in the hibp-api-key header) for account, paste, domain and stealer-log endpoints.",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "User Agent",
+      "name": "user_agent",
+      "desc": "User-agent sent on every request identifying the API consumer (required by HIBP; a missing user-agent returns HTTP 403).",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    }
+  ],
+  "testUrl": "https://haveibeenpwned.com/api/v3/latestbreach",
+  "isMultiAuthentication": false,
+  "desc": "Have I Been Pwned (HIBP) API v3 integration for checking whether accounts, domains, and passwords have appeared in known data breaches, pastes, and stealer logs. Supports breach/paste lookups, k-anonymity range searches, domain breach exposure, and breach catalogue enrichment. Data is provided by Have I Been Pwned (https://haveibeenpwned.com) under the Creative Commons Attribution 4.0 International License.",
+  "functions": [
+    {
+      "label": "Check Breached Account",
+      "name": "check_breached_account",
+      "type": "Enrichment",
+      "desc": "Return all breaches an account (email, username, or phone) has appeared in. Requires an API key.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Account",
+          "name": "account",
+          "desc": "The account to search for (email, username, or phone). URL-encoded and case-insensitive.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Truncate Response",
+          "name": "truncate_response",
+          "desc": "Return only breach names when true (default), or full breach objects when false.",
+          "type": "Boolean",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "Filter results to breaches against this domain only (e.g. adobe.com).",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Include Unverified",
+          "name": "include_unverified",
+          "desc": "Include breaches flagged as unverified (default: true).",
+          "type": "Boolean",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Account",
+          "name": "account",
+          "desc": "The account checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Breached",
+          "name": "breached",
+          "desc": "Whether the account was found in breaches",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Breaches",
+          "name": "breaches",
+          "desc": "List of breach objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of breaches",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check Breached Domain",
+      "name": "check_breached_domain",
+      "type": "Enrichment",
+      "desc": "Return all breached email aliases on a verified domain and the breaches they appeared in. Requires an API key and a verified domain.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "Verified domain to search (must be added to the domain search dashboard).",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "The domain checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Breached Accounts",
+          "name": "breached_accounts",
+          "desc": "Mapping of email aliases to breach names",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of breached accounts",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check Paste Account",
+      "name": "check_paste_account",
+      "type": "Enrichment",
+      "desc": "Return all pastes an email address has appeared in, newest first. Requires an API key.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Account",
+          "name": "account",
+          "desc": "The email address to search for. URL-encoded and case-insensitive.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Account",
+          "name": "account",
+          "desc": "The account checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Pastes",
+          "name": "pastes",
+          "desc": "List of paste records",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of pastes",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check Stealer Logs By Email",
+      "name": "check_stealer_logs_by_email",
+      "type": "Enrichment",
+      "desc": "Return the website domains where an email appeared in stealer logs. Requires a Pro API key and a verified domain.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Email",
+          "name": "email",
+          "desc": "The email address (on a verified domain) to search for.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Email",
+          "name": "email",
+          "desc": "The email checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Website Domains",
+          "name": "website_domains",
+          "desc": "List of website domains from stealer logs",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total count",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check Password Range",
+      "name": "check_password_range",
+      "type": "Enrichment",
+      "desc": "Query the Pwned Passwords range API using k-anonymity (first 5 hash characters). No API key required.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Hash Prefix",
+          "name": "hash_prefix",
+          "desc": "First 5 hexadecimal characters of the SHA-1 or NTLM password hash.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Add Padding",
+          "name": "add_padding",
+          "desc": "Request padded responses (padding rows with count 0 are discarded automatically).",
+          "type": "Boolean",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Mode",
+          "name": "mode",
+          "desc": "Hash mode; set to 'ntlm' for NTLM suffixes. Defaults to SHA-1.",
+          "type": "String",
+          "values": [
+            "sha1",
+            "ntlm"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Hash Prefix",
+          "name": "hash_prefix",
+          "desc": "The hash prefix queried",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Mode",
+          "name": "mode",
+          "desc": "Hash mode (sha1 or ntlm)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of hash suffixes and prevalence counts",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check Breached Account Range",
+      "name": "check_breached_account_range",
+      "type": "Enrichment",
+      "desc": "Search breaches for an email by SHA-1 hash range using k-anonymity (first 6 hash characters). Requires a Pro/High RPM API key.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Hash Prefix",
+          "name": "hash_prefix",
+          "desc": "First 6 hexadecimal characters of the normalized email address SHA-1 hash.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Hash Prefix",
+          "name": "hash_prefix",
+          "desc": "The hash prefix queried",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of hash suffix and breach name objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Latest Breach",
+      "name": "get_latest_breach",
+      "type": "Enrichment",
+      "desc": "Return the most recently added breach based on AddedDate. No API key required.",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Breach",
+          "name": "breach",
+          "desc": "The most recently added breach object",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Breaches",
+      "name": "get_breaches",
+      "type": "Enrichment",
+      "desc": "Return the breach catalogue, optionally filtered by domain or spam-list flag. No API key required.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "Filter the catalogue to breaches against this domain (e.g. adobe.com).",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Is Spam List",
+          "name": "is_spam_list",
+          "desc": "Filter to breaches that are (true) or are not (false) flagged as a spam list.",
+          "type": "Boolean",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Breaches",
+          "name": "breaches",
+          "desc": "List of breach objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of breaches",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Data Classes",
+      "name": "get_data_classes",
+      "type": "Enrichment",
+      "desc": "Return all data classes (compromised attribute types) in the system. No API key required.",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Data Classes",
+          "name": "data_classes",
+          "desc": "List of data class names",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of data classes",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

@@ -64,9 +64,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of threat alerts returned from Skybox Security",
+          "desc": "List of threat alerts",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -115,9 +125,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of vulnerabilities returned from Skybox Security",
+          "desc": "List of vulnerabilities",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -156,9 +176,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of exposed vulnerabilities for the specified asset",
+          "desc": "List of exposed vulnerabilities",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -207,9 +237,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of network access rules matching the specified filters",
+          "desc": "List of network access rules",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -268,9 +308,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Attack simulation results including reachability and attack path details",
+          "desc": "Attack simulation results",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -319,9 +369,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of security policy violations returned from Skybox Security",
+          "desc": "List of security policy violations",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -350,9 +410,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Risk score and risk level details for the specified asset",
+          "desc": "Risk score details for the asset",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -383,7 +453,11 @@
           "name": "indicator_type",
           "desc": "Type of the indicator: ip, cve, or hostname",
           "type": "String",
-          "values": ["ip", "cve", "hostname"],
+          "values": [
+            "ip",
+            "cve",
+            "hostname"
+          ],
           "isSecret": false,
           "optional": false,
           "encrypted": false
@@ -391,9 +465,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Threat intelligence details for the specified indicator",
+          "desc": "Threat intelligence details",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -442,9 +526,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "Confirmation and details of the IP block action",
+          "desc": "Confirmation of the IP block action",
           "type": "String",
           "values": [],
           "isSecret": false,
@@ -465,7 +559,11 @@
           "name": "status",
           "desc": "Filter change requests by status (e.g., open, closed, pending)",
           "type": "String",
-          "values": ["open", "closed", "pending"],
+          "values": [
+            "open",
+            "closed",
+            "pending"
+          ],
           "isSecret": false,
           "optional": true,
           "encrypted": false
@@ -483,9 +581,19 @@
       ],
       "outParameters": [
         {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
           "label": "Results",
           "name": "results",
-          "desc": "List of firewall change requests matching the specified filters",
+          "desc": "List of firewall change requests",
           "type": "String",
           "values": [],
           "isSecret": false,

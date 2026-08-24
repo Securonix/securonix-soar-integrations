@@ -124,8 +124,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Alerts",
+            "name": "alerts",
             "desc": "List of alert objects",
             "type": "String",
             "values": [],
@@ -195,8 +205,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Events",
+            "name": "events",
             "desc": "List of event objects",
             "type": "String",
             "values": [],
@@ -256,8 +276,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Incidents",
+            "name": "incidents",
             "desc": "List of incident objects",
             "type": "String",
             "values": [],
@@ -287,8 +317,18 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Alert",
+            "name": "alert",
             "desc": "Single alert object",
             "type": "String",
             "values": [],
@@ -338,9 +378,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Confirmation with list_id and items_added",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list that was updated",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Items Added",
+            "name": "items_added",
+            "desc": "List of URLs added to the block list",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -389,9 +449,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Confirmation with list_id and items_added",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list that was updated",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Items Added",
+            "name": "items_added",
+            "desc": "List of domains added to the block list",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -430,9 +510,29 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "Confirmation with list_id and items_added",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "List ID",
+            "name": "list_id",
+            "desc": "ID of the URL list that was updated",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Items Added",
+            "name": "items_added",
+            "desc": "List of IPs added to the block list",
             "type": "String",
             "values": [],
             "isSecret": false,
@@ -481,13 +581,43 @@
         ],
         "outParameters": [
           {
-            "label": "Results",
-            "name": "results",
-            "desc": "API response from Netskope File Hash List update",
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
             "type": "String",
             "values": [],
             "isSecret": false,
             "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "File Hash List",
+            "name": "file_hash_list",
+            "desc": "Name of the file hash list that was updated",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Hashes Added",
+            "name": "hashes_added",
+            "desc": "List of hashes added to the file hash list",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Result",
+            "name": "result",
+            "desc": "Raw API response from Netskope",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
             "encrypted": false
           }
         ]

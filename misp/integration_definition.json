@@ -31,17 +31,118 @@
       "desc": "Search MISP events by attribute value, event ID, date range, tags, type, or category",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Value", "name": "value", "desc": "IOC value to search for", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Event ID", "name": "eventid", "desc": "Specific event ID to search", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Date From", "name": "date_from", "desc": "Start date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Date To", "name": "date_to", "desc": "End date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Tags", "name": "tags", "desc": "Tags to filter by", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Attribute type filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Category", "name": "category", "desc": "Attribute category filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Maximum number of results (default: 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "IOC value to search for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Event ID",
+          "name": "eventid",
+          "desc": "Specific event ID to search",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Date From",
+          "name": "date_from",
+          "desc": "Start date filter (YYYY-MM-DD)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Date To",
+          "name": "date_to",
+          "desc": "End date filter (YYYY-MM-DD)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Tags to filter by",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Attribute type filter",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "desc": "Attribute category filter",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results (default: 50)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of events returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Events",
+          "name": "events",
+          "desc": "List of matching events",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -51,16 +152,108 @@
       "desc": "Create a new MISP event",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Info", "name": "info", "desc": "Event description (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Distribution", "name": "distribution", "desc": "Distribution level 0-4 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Threat Level ID", "name": "threat_level_id", "desc": "Threat level 1-4 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Analysis", "name": "analysis", "desc": "Analysis level 0-2 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Date", "name": "date", "desc": "Event date (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Tags", "name": "tags", "desc": "Comma-separated tags to add", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Published", "name": "published", "desc": "Whether to publish the event", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {
+          "label": "Info",
+          "name": "info",
+          "desc": "Event description (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Distribution",
+          "name": "distribution",
+          "desc": "Distribution level 0-4 (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Threat Level ID",
+          "name": "threat_level_id",
+          "desc": "Threat level 1-4 (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Analysis",
+          "name": "analysis",
+          "desc": "Analysis level 0-2 (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Date",
+          "name": "date",
+          "desc": "Event date (YYYY-MM-DD)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Comma-separated tags to add",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Published",
+          "name": "published",
+          "desc": "Whether to publish the event",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Created event details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Event ID",
+          "name": "event_id",
+          "desc": "Created event ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -70,10 +263,38 @@
       "desc": "Retrieve full event details by event ID",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Event ID", "name": "event_id", "desc": "MISP event ID (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Event ID",
+          "name": "event_id",
+          "desc": "MISP event ID (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Event details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Event",
+          "name": "event",
+          "desc": "Full event object",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -83,15 +304,98 @@
       "desc": "Add an attribute (IOC) to an existing MISP event",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Event ID", "name": "event_id", "desc": "Target event ID (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Attribute type e.g. ip-src, domain, md5 (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Attribute value (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Category", "name": "category", "desc": "Attribute category", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "To IDS", "name": "to_ids", "desc": "Flag for IDS export", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Comment", "name": "comment", "desc": "Attribute comment", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {
+          "label": "Event ID",
+          "name": "event_id",
+          "desc": "Target event ID (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Attribute type e.g. ip-src, domain, md5 (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "Attribute value (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "desc": "Attribute category",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "To IDS",
+          "name": "to_ids",
+          "desc": "Flag for IDS export",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "Attribute comment",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Created attribute details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Attribute ID",
+          "name": "attribute_id",
+          "desc": "Created attribute ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -101,16 +405,108 @@
       "desc": "Search MISP attributes across all events",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Value", "name": "value", "desc": "IOC value(s) to search, comma-separated for multiple", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Attribute type filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Category", "name": "category", "desc": "Attribute category filter", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Tags", "name": "tags", "desc": "Tags to filter by", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Date From", "name": "date_from", "desc": "Start date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Date To", "name": "date_to", "desc": "End date filter (YYYY-MM-DD)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Maximum number of results (default: 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "IOC value(s) to search, comma-separated for multiple",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Attribute type filter",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Category",
+          "name": "category",
+          "desc": "Attribute category filter",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Tags",
+          "name": "tags",
+          "desc": "Tags to filter by",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Date From",
+          "name": "date_from",
+          "desc": "Start date filter (YYYY-MM-DD)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Date To",
+          "name": "date_to",
+          "desc": "End date filter (YYYY-MM-DD)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results (default: 50)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Attribute search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of attributes returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Attributes",
+          "name": "attributes",
+          "desc": "List of matching attributes",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -120,12 +516,61 @@
       "desc": "Add a tag to a MISP event or attribute",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Target Type", "name": "target_type", "desc": "Target type: 'event' or 'attribute' (required)", "type": "String", "values": ["event", "attribute"], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Target ID", "name": "target_id", "desc": "ID of the target event or attribute (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Tag Name", "name": "tag_name", "desc": "Name of the tag to add (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Target Type",
+          "name": "target_type",
+          "desc": "Target type: 'event' or 'attribute' (required)",
+          "type": "String",
+          "values": [
+            "event",
+            "attribute"
+          ],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Target ID",
+          "name": "target_id",
+          "desc": "ID of the target event or attribute (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Tag Name",
+          "name": "tag_name",
+          "desc": "Name of the tag to add (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Tag operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Tag operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -135,12 +580,61 @@
       "desc": "Remove a tag from a MISP event or attribute",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Target Type", "name": "target_type", "desc": "Target type: 'event' or 'attribute' (required)", "type": "String", "values": ["event", "attribute"], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Target ID", "name": "target_id", "desc": "ID of the target event or attribute (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Tag Name", "name": "tag_name", "desc": "Name of the tag to remove (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Target Type",
+          "name": "target_type",
+          "desc": "Target type: 'event' or 'attribute' (required)",
+          "type": "String",
+          "values": [
+            "event",
+            "attribute"
+          ],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Target ID",
+          "name": "target_id",
+          "desc": "ID of the target event or attribute (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Tag Name",
+          "name": "tag_name",
+          "desc": "Name of the tag to remove (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Tag operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Tag operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -150,13 +644,82 @@
       "desc": "Record a sighting for a MISP attribute",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Attribute ID", "name": "attribute_id", "desc": "ID of the attribute to sight", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attribute Value", "name": "attribute_value", "desc": "Value of the attribute to sight", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Sighting type: 0=sighting, 1=false positive, 2=expiration (default: 0)", "type": "String", "values": ["0", "1", "2"], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Source", "name": "source", "desc": "Source of the sighting", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {
+          "label": "Attribute ID",
+          "name": "attribute_id",
+          "desc": "ID of the attribute to sight",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Attribute Value",
+          "name": "attribute_value",
+          "desc": "Value of the attribute to sight",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Sighting type: 0=sighting, 1=false positive, 2=expiration (default: 0)",
+          "type": "String",
+          "values": [
+            "0",
+            "1",
+            "2"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source of the sighting",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Sighting creation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Sighting ID",
+          "name": "sighting_id",
+          "desc": "Created sighting ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -167,7 +730,36 @@
       "sampleOutput": "",
       "inParameters": [],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Feed list", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of feeds",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Feeds",
+          "name": "feeds",
+          "desc": "List of feed objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -177,10 +769,48 @@
       "desc": "Enable a MISP feed by ID",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to enable (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the feed to enable (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Feed operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the enabled feed",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -190,10 +820,48 @@
       "desc": "Disable a MISP feed by ID",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to disable (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the feed to disable (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Feed operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the disabled feed",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -203,10 +871,48 @@
       "desc": "Trigger a fetch for a MISP feed by ID (fire-and-forget)",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Feed ID", "name": "feed_id", "desc": "ID of the feed to fetch (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the feed to fetch (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Feed fetch trigger result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Feed ID",
+          "name": "feed_id",
+          "desc": "ID of the fetched feed",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Operation result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     },
     {
@@ -216,10 +922,58 @@
       "desc": "Check if a value appears in any enabled MISP warninglist",
       "sampleOutput": "",
       "inParameters": [
-        {"label": "Value", "name": "value", "desc": "IOC value to check (required)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "IOC value to check (required)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Warninglist match results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "The value checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Matched",
+          "name": "matched",
+          "desc": "Whether the value matched any warninglist",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Warninglists",
+          "name": "warninglists",
+          "desc": "List of matching warninglists",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
       ]
     }
   ]

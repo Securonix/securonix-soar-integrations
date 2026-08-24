@@ -1,384 +1,558 @@
 {
-    "connectionParameters": [
-      {
-        "label": "Client ID",
-        "name": "client_id",
-        "desc": "Wiz service account Client ID",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Client Secret",
-        "name": "client_secret",
-        "desc": "Wiz service account Client Secret",
-        "type": "String",
-        "values": [],
-        "isSecret": true,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Region",
-        "name": "region",
-        "desc": "Wiz API region (e.g., us1, us2, eu1, eu2). Default: us1",
-        "type": "String",
-        "values": ["us1", "us2", "eu1", "eu2"],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Request Timeout",
-        "name": "timeout",
-        "desc": "Request timeout in seconds (default: 60)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Verify SSL",
-        "name": "verify_ssl",
-        "desc": "Verify SSL certificates (default: true)",
-        "type": "String",
-        "values": ["true", "false"],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Proxy",
-        "name": "proxy",
-        "desc": "Proxy URL for outbound requests (optional)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Page Size",
-        "name": "page_size",
-        "desc": "Default page size for list actions (default: 100, max: 500)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      }
-    ],
-    "isMultiAuthentication": false,
-    "desc": "Wiz integration for cloud security posture management. Supports issue retrieval, resource inventory, evidence collection, and project team lookup using the Wiz GraphQL API.",
-    "functions": [
-      {
-        "label": "Get Issues",
-        "name": "get_issues",
-        "type": "Enrichment",
-        "desc": "Retrieve security issues/findings from Wiz with optional filters",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Issue Type",
-            "name": "issue_type",
-            "desc": "Filter by issue type",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Entity Type",
-            "name": "entity_type",
-            "desc": "Filter by entity type",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource ID",
-            "name": "resource_id",
-            "desc": "Filter by resource ID",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Severity",
-            "name": "severity",
-            "desc": "Filter by severity (CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL)",
-            "type": "String",
-            "values": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Page Size",
-            "name": "page_size",
-            "desc": "Number of results per page",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Page Token",
-            "name": "page_token",
-            "desc": "Cursor for pagination (endCursor from previous response)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of issues with pagination info",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Issue by ID",
-        "name": "get_issue_by_id",
-        "type": "Enrichment",
-        "desc": "Retrieve a specific issue by its Wiz issue ID",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Issue ID",
-            "name": "issue_id",
-            "desc": "Wiz issue ID",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Issue details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Issue Evidence",
-        "name": "get_issue_evidence",
-        "type": "Enrichment",
-        "desc": "Retrieve evidence and notes for a specific issue",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Issue ID",
-            "name": "issue_id",
-            "desc": "Wiz issue ID",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Issue evidence and notes",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Resources",
-        "name": "get_resources",
-        "type": "Enrichment",
-        "desc": "List/search cloud resources in Wiz with optional filters",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Resource Name",
-            "name": "resource_name",
-            "desc": "Search by resource name",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Type",
-            "name": "resource_type",
-            "desc": "Filter by resource type",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Cloud Account",
-            "name": "cloud_account",
-            "desc": "Filter by cloud account ID",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Filter by subscription/external ID",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Project Name",
-            "name": "project_name",
-            "desc": "Filter by Wiz project name",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Page Size",
-            "name": "page_size",
-            "desc": "Number of results per page",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Page Token",
-            "name": "page_token",
-            "desc": "Cursor for pagination (endCursor from previous response)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "List of resources with pagination info",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Resource",
-        "name": "get_resource",
-        "type": "Enrichment",
-        "desc": "Retrieve a single resource by ID or name",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Resource ID",
-            "name": "resource_id",
-            "desc": "Wiz resource ID (provide this or resource_name)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Name",
-            "name": "resource_name",
-            "desc": "Resource name to search (provide this or resource_id)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Resource details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Project Team",
-        "name": "get_project_team",
-        "type": "Enrichment",
-        "desc": "Retrieve team members (owners, security champions, members) for a Wiz project",
-        "sampleOutput": "",
-        "inParameters": [
-          {
-            "label": "Project Name",
-            "name": "project_name",
-            "desc": "Wiz project name",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Results",
-            "name": "results",
-            "desc": "Project team details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      }
-    ]
-  }
+  "connectionParameters": [
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "Wiz service account Client ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "Wiz service account Client Secret",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Region",
+      "name": "region",
+      "desc": "Wiz API region (e.g., us1, us2, eu1, eu2). Default: us1",
+      "type": "String",
+      "values": [
+        "us1",
+        "us2",
+        "eu1",
+        "eu2"
+      ],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Request Timeout",
+      "name": "timeout",
+      "desc": "Request timeout in seconds (default: 60)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": [
+        "true",
+        "false"
+      ],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Page Size",
+      "name": "page_size",
+      "desc": "Default page size for list actions (default: 100, max: 500)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Wiz integration for cloud security posture management. Supports issue retrieval, resource inventory, evidence collection, and project team lookup using the Wiz GraphQL API.",
+  "functions": [
+    {
+      "label": "Get Issues",
+      "name": "get_issues",
+      "type": "Enrichment",
+      "desc": "Retrieve security issues/findings from Wiz with optional filters",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Issue Type",
+          "name": "issue_type",
+          "desc": "Filter by issue type",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Entity Type",
+          "name": "entity_type",
+          "desc": "Filter by entity type",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource ID",
+          "name": "resource_id",
+          "desc": "Filter by resource ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Severity",
+          "name": "severity",
+          "desc": "Filter by severity (CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL)",
+          "type": "String",
+          "values": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFORMATIONAL"
+          ],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of results per page",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Token",
+          "name": "page_token",
+          "desc": "Cursor for pagination (endCursor from previous response)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Issues",
+          "name": "issues",
+          "desc": "List of issue objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of issues",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Page Info",
+          "name": "page_info",
+          "desc": "Pagination info",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Issue by ID",
+      "name": "get_issue_by_id",
+      "type": "Enrichment",
+      "desc": "Retrieve a specific issue by its Wiz issue ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Issue ID",
+          "name": "issue_id",
+          "desc": "Wiz issue ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Issue",
+          "name": "issue",
+          "desc": "Full issue details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Issue Evidence",
+      "name": "get_issue_evidence",
+      "type": "Enrichment",
+      "desc": "Retrieve evidence and notes for a specific issue",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Issue ID",
+          "name": "issue_id",
+          "desc": "Wiz issue ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Issue ID",
+          "name": "issue_id",
+          "desc": "The issue ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Title",
+          "name": "title",
+          "desc": "Issue title",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Evidence",
+          "name": "evidence",
+          "desc": "Issue evidence",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Notes",
+          "name": "notes",
+          "desc": "Issue notes",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Resources",
+      "name": "get_resources",
+      "type": "Enrichment",
+      "desc": "List/search cloud resources in Wiz with optional filters",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Resource Name",
+          "name": "resource_name",
+          "desc": "Search by resource name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Type",
+          "name": "resource_type",
+          "desc": "Filter by resource type",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Cloud Account",
+          "name": "cloud_account",
+          "desc": "Filter by cloud account ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Filter by subscription/external ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Project Name",
+          "name": "project_name",
+          "desc": "Filter by Wiz project name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of results per page",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Token",
+          "name": "page_token",
+          "desc": "Cursor for pagination (endCursor from previous response)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Resources",
+          "name": "resources",
+          "desc": "List of resource objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of resources",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Page Info",
+          "name": "page_info",
+          "desc": "Pagination info",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Resource",
+      "name": "get_resource",
+      "type": "Enrichment",
+      "desc": "Retrieve a single resource by ID or name",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Resource ID",
+          "name": "resource_id",
+          "desc": "Wiz resource ID (provide this or resource_name)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Name",
+          "name": "resource_name",
+          "desc": "Resource name to search (provide this or resource_id)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Resource",
+          "name": "resource",
+          "desc": "Resource details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Project Team",
+      "name": "get_project_team",
+      "type": "Enrichment",
+      "desc": "Retrieve team members (owners, security champions, members) for a Wiz project",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Project Name",
+          "name": "project_name",
+          "desc": "Wiz project name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Project Name",
+          "name": "project_name",
+          "desc": "Name of the project",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Owners",
+          "name": "owners",
+          "desc": "List of project owners",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Security Champions",
+          "name": "security_champions",
+          "desc": "List of security champions",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Members",
+          "name": "members",
+          "desc": "List of project members",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
