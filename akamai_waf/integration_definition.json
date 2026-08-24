@@ -192,6 +192,16 @@
             "sampleOutput": "",
             "inParameters": [
                 {
+                    "label": "Config ID",
+                    "name": "config_id",
+                    "desc": "Unique identifier for each security configuration. ",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
                     "label": "Start Time",
                     "name": "start_time",
                     "desc": "ISO8601 string (e.g., 2024-01-01T00:00:00Z)",
@@ -212,30 +222,10 @@
                     "encrypted": false
                 },
                 {
-                    "label": "Policy Id",
-                    "name": "policy_id",
-                    "desc": "Optional policy filter",
-                    "type": "String",
-                    "values": [],
-                    "isSecret": false,
-                    "optional": true,
-                    "encrypted": false
-                },
-                {
-                    "label": "Attack Type",
-                    "name": "attack_type",
-                    "desc": "Optional attack type filter",
-                    "type": "String",
-                    "values": [],
-                    "isSecret": false,
-                    "optional": true,
-                    "encrypted": false
-                },
-                {
-                    "label": "IP Address",
-                    "name": "ip_address",
-                    "desc": "Optional IP address",
-                    "type": "String",
+                    "label": "Offset",
+                    "name": "offset",
+                    "desc": "offset from where events needs to be fetched",
+                    "type": "Number",
                     "values": [],
                     "isSecret": false,
                     "optional": true,
