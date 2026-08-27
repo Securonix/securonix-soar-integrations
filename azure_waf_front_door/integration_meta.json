@@ -1,0 +1,16 @@
+{
+    "name": "azure_waf_front_door",
+    "type": "python",
+    "clazz": "app.azure_waf_front_door",
+    "label": "Azure WAF - Front Door",
+    "native": false,
+    "testUrl": "",
+    "category": "Cloud Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Azure Front Door WAF integration for retrieving WAF policies, inspecting custom rules, and performing automated IP and URL blocking/unblocking remediation via the Azure Management REST API."
+  }
