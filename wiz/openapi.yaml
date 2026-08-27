@@ -1,0 +1,703 @@
+openapi: 3.0.3
+info:
+  title: Wiz GraphQL API
+  description: |
+    Wiz integration for cloud security posture management via the Wiz GraphQL API.
+    Supports issue retrieval, resource inventory, evidence collection, and project team lookup.
+
+    Authentication:
+    All actions first obtain a Bearer token via OAuth2 client credentials, then send all
+    requests to a single GraphQL endpoint. The operation being performed is determined by
+    the GraphQL query operation name and root field inside the request body — not the URL.
+
+    Shared Endpoint (all actions):
+      POST https://api.{region}.app.wiz.io/graphql
+      Authorization: Bearer <access_token>
+
+    Supported regions: us1, us2, eu1, eu2
+  version: 1.0.0
+  contact:
+    name: Wiz
+    url: https://www.wiz.io/
+
+servers:
+  - url: https://api.{region}.app.wiz.io
+    description: Wiz GraphQL API
+    variables:
+      region:
+        default: us1
+        enum:
+          - us1
+          - us2
+          - eu1
+          - eu2
+
+security:
+  - bearerAuth: []
+
+paths:
+  /oauth/token:
+    post:
+      operationId: authenticate
+      summary: Authenticate (OAuth2 Client Credentials)
+      description: Obtain a Bearer access token using Wiz service account client credentials.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - grant_type
+                - client_id
+                - client_secret
+                - audience
+              properties:
+                grant_type:
+                  type: string
+                  example: client_credentials
+                client_id:
+                  type: string
+                  example: <client_id>
+                client_secret:
+                  type: string
+                  example: <client_secret>
+                audience:
+                  type: string
+                  example: wiz-api
+            example:
+              grant_type: client_credentials
+              client_id: <client_id>
+              client_secret: <client_secret>
+              audience: wiz-api
+      responses:
+        '200':
+          description: Access token returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+              example:
+                access_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+                token_type: Bearer
+                expires_in: 3600
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /graphql#GetIssues:
+    post:
+      operationId: get_issues
+      summary: Get Issues
+      description: |
+        Retrieve security issues/findings from Wiz with optional filters.
+        GraphQL operation: **GetIssues** — root field: `issues`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetIssues($first: Int, $after: String, $filterBy: IssueFilters) {
+                  issues(first: $first, after: $after, filterBy: $filterBy) {
+                    nodes {
+                      id title severity status type createdAt updatedAt
+                      entitySnapshot { id name type }
+                      resource { id name type }
+                    }
+                    pageInfo { hasNextPage endCursor }
+                    totalCount
+                  }
+                }
+              variables:
+                first: 100
+                filterBy:
+                  severity:
+                    - HIGH
+      responses:
+        '200':
+          description: Issues returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIssuesResponse'
+              example:
+                status: success
+                issues:
+                  - id: issue-uuid-001
+                    title: S3 bucket publicly accessible
+                    severity: HIGH
+                    status: OPEN
+                    type: TOXIC_COMBINATION
+                    createdAt: "2024-01-15T10:30:00Z"
+                    updatedAt: "2024-01-16T08:00:00Z"
+                    entitySnapshot:
+                      id: entity-uuid-001
+                      name: my-s3-bucket
+                      type: BUCKET
+                    resource:
+                      id: resource-uuid-001
+                      name: my-s3-bucket
+                      type: BUCKET
+                total_count: 1
+                page_info:
+                  hasNextPage: false
+                  endCursor: cursor-abc123
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /graphql#GetIssueById:
+    post:
+      operationId: get_issue_by_id
+      summary: Get Issue by ID
+      description: |
+        Retrieve a specific issue by its Wiz issue ID.
+        GraphQL operation: **GetIssueById** — root field: `issue`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetIssueById($id: ID!) {
+                  issue(id: $id) {
+                    id title severity status type createdAt updatedAt
+                    description remediation
+                    entitySnapshot { id name type }
+                    resource { id name type region cloudPlatform }
+                    project { id name }
+                  }
+                }
+              variables:
+                id: issue-uuid-001
+      responses:
+        '200':
+          description: Issue details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIssueByIdResponse'
+              example:
+                status: success
+                issue:
+                  id: issue-uuid-001
+                  title: S3 bucket publicly accessible
+                  severity: HIGH
+                  status: OPEN
+                  type: TOXIC_COMBINATION
+                  createdAt: "2024-01-15T10:30:00Z"
+                  updatedAt: "2024-01-16T08:00:00Z"
+                  description: The S3 bucket is publicly accessible and contains sensitive data.
+                  remediation: Disable public access on the S3 bucket.
+                  entitySnapshot:
+                    id: entity-uuid-001
+                    name: my-s3-bucket
+                    type: BUCKET
+                  resource:
+                    id: resource-uuid-001
+                    name: my-s3-bucket
+                    type: BUCKET
+                    region: us-east-1
+                    cloudPlatform: AWS
+                  project:
+                    id: project-uuid-001
+                    name: Production
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /graphql#GetIssueEvidence:
+    post:
+      operationId: get_issue_evidence
+      summary: Get Issue Evidence
+      description: |
+        Retrieve evidence and analyst notes for a specific issue.
+        GraphQL operation: **GetIssueEvidence** — root field: `issue` (evidence + notes sub-fields)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetIssueEvidence($id: ID!) {
+                  issue(id: $id) {
+                    id title
+                    evidence {
+                      currentValue expectedValue
+                      cloudConfigurationLink activityLog
+                    }
+                    notes {
+                      text createdAt
+                      updatedBy { email }
+                    }
+                  }
+                }
+              variables:
+                id: issue-uuid-001
+      responses:
+        '200':
+          description: Issue evidence and notes returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIssueEvidenceResponse'
+              example:
+                status: success
+                issue_id: issue-uuid-001
+                title: S3 bucket publicly accessible
+                evidence:
+                  currentValue: Public access enabled
+                  expectedValue: Public access disabled
+                  cloudConfigurationLink: https://console.aws.amazon.com/s3/buckets/my-s3-bucket
+                  activityLog: Bucket policy updated on 2024-01-10
+                notes:
+                  - text: Assigned to security team for remediation.
+                    createdAt: "2024-01-15T12:00:00Z"
+                    updatedBy:
+                      email: analyst@example.com
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /graphql#GetResources:
+    post:
+      operationId: get_resources
+      summary: Get Resources
+      description: |
+        List/search cloud resources in Wiz with optional filters.
+        GraphQL operation: **GetResources** — root field: `resources`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetResources($first: Int, $after: String, $filterBy: ResourceFilters) {
+                  resources(first: $first, after: $after, filterBy: $filterBy) {
+                    nodes {
+                      id name type region cloudPlatform
+                      subscriptionId subscriptionExternalId
+                      cloudAccount { id name }
+                      project { id name }
+                      status
+                    }
+                    pageInfo { hasNextPage endCursor }
+                    totalCount
+                  }
+                }
+              variables:
+                first: 100
+                filterBy:
+                  type:
+                    - BUCKET
+      responses:
+        '200':
+          description: Resources returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetResourcesResponse'
+              example:
+                status: success
+                resources:
+                  - id: resource-uuid-001
+                    name: my-s3-bucket
+                    type: BUCKET
+                    region: us-east-1
+                    cloudPlatform: AWS
+                    subscriptionId: sub-uuid-001
+                    subscriptionExternalId: "123456789012"
+                    cloudAccount:
+                      id: account-uuid-001
+                      name: Production AWS
+                    project:
+                      id: project-uuid-001
+                      name: Production
+                    status: Active
+                total_count: 1
+                page_info:
+                  hasNextPage: false
+                  endCursor: cursor-xyz789
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /graphql#GetResource:
+    post:
+      operationId: get_resource
+      summary: Get Resource
+      description: |
+        Retrieve a single cloud resource by ID or name.
+        GraphQL operation: **GetResource** (by ID) or **GetResourceByName** (by name) — root field: `resource` / `resources`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetResource($id: ID!) {
+                  resource(id: $id) {
+                    id name type region cloudPlatform
+                    subscriptionId subscriptionExternalId
+                    cloudAccount { id name }
+                    project { id name }
+                    status properties tags
+                  }
+                }
+              variables:
+                id: resource-uuid-001
+      responses:
+        '200':
+          description: Resource details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetResourceResponse'
+              example:
+                status: success
+                resource:
+                  id: resource-uuid-001
+                  name: my-s3-bucket
+                  type: BUCKET
+                  region: us-east-1
+                  cloudPlatform: AWS
+                  subscriptionId: sub-uuid-001
+                  subscriptionExternalId: "123456789012"
+                  cloudAccount:
+                    id: account-uuid-001
+                    name: Production AWS
+                  project:
+                    id: project-uuid-001
+                    name: Production
+                  status: Active
+                  properties:
+                    versioning: Enabled
+                  tags:
+                    env: production
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /graphql#GetProjectTeam:
+    post:
+      operationId: get_project_team
+      summary: Get Project Team
+      description: |
+        Retrieve team members (owners, security champions, members) for a Wiz project.
+        GraphQL operation: **GetProjectTeam** — root field: `projects`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GraphQLRequest'
+            example:
+              query: |
+                query GetProjectTeam($filterBy: ProjectFilters) {
+                  projects(first: 1, filterBy: $filterBy) {
+                    nodes {
+                      id name
+                      owners { id email name }
+                      securityChampions { id email name }
+                      projectMembers { id email name }
+                    }
+                  }
+                }
+              variables:
+                filterBy:
+                  name: Production
+      responses:
+        '200':
+          description: Project team details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectTeamResponse'
+              example:
+                status: success
+                project_name: Production
+                owners:
+                  - id: user-uuid-001
+                    email: owner@example.com
+                    name: Alice Smith
+                security_champions:
+                  - id: user-uuid-002
+                    email: champion@example.com
+                    name: Bob Jones
+                members:
+                  - id: user-uuid-003
+                    email: member@example.com
+                    name: Carol White
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token obtained from POST /oauth/token
+
+  responses:
+    Unauthorized:
+      description: Authentication failed. Invalid or expired credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: Authentication failed. Verify client_id and client_secret.
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: The requested resource was not found.
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message.
+
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: integer
+
+    GraphQLRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: GraphQL query string containing the operation name and fields.
+        variables:
+          type: object
+          description: Variables for the GraphQL query.
+
+    PageInfo:
+      type: object
+      properties:
+        hasNextPage:
+          type: boolean
+        endCursor:
+          type: string
+
+    TeamMember:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+
+    EntitySnapshot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+
+    Resource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        region:
+          type: string
+        cloudPlatform:
+          type: string
+        subscriptionId:
+          type: string
+        subscriptionExternalId:
+          type: string
+        cloudAccount:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        project:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        status:
+          type: string
+        properties:
+          type: object
+          additionalProperties: true
+        tags:
+          type: object
+          additionalProperties: true
+
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        severity:
+          type: string
+          enum: [CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL]
+        status:
+          type: string
+        type:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        description:
+          type: string
+        remediation:
+          type: string
+        entitySnapshot:
+          $ref: '#/components/schemas/EntitySnapshot'
+        resource:
+          $ref: '#/components/schemas/Resource'
+        project:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+
+    GetIssuesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+        total_count:
+          type: integer
+        page_info:
+          $ref: '#/components/schemas/PageInfo'
+
+    GetIssueByIdResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        issue:
+          $ref: '#/components/schemas/Issue'
+
+    GetIssueEvidenceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        issue_id:
+          type: string
+        title:
+          type: string
+        evidence:
+          type: object
+          properties:
+            currentValue:
+              type: string
+            expectedValue:
+              type: string
+            cloudConfigurationLink:
+              type: string
+            activityLog:
+              type: string
+        notes:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+              createdAt:
+                type: string
+              updatedBy:
+                type: object
+                properties:
+                  email:
+                    type: string
+
+    GetResourcesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        total_count:
+          type: integer
+        page_info:
+          $ref: '#/components/schemas/PageInfo'
+
+    GetResourceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        resource:
+          $ref: '#/components/schemas/Resource'
+
+    GetProjectTeamResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        project_name:
+          type: string
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'
+        security_champions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'

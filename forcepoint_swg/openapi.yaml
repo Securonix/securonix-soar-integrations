@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: Forcepoint Secure Web Gateway (SWG) API
+  description: |
+    API for managing custom URL categories in Forcepoint SWG.
+    
+    Authentication Flow:
+    1. Call the Token Management API (POST {token_url}) with X-API-KEY header to obtain a bearer access token.
+    2. Use the bearer token in the Authorization header for all Custom Category API calls.
+    
+    Connection Parameters:
+    - server_url: Custom Categories API base URL (e.g., https://ws-custom-categories.api.forcepoint.io/v1.0.0)
+    - token_url: Token Management API URL (e.g., https://<host>/api/apikeys/token)
+    - api_key: API key generated from Forcepoint Web Security Cloud portal
+  version: 1.0.0
+
+servers:
+  - url: '{server_url}'
+    description: Forcepoint SWG Custom Categories API (user provides full URL with version, e.g., https://ws-custom-categories.api.forcepoint.io/v1.0.0)
+    variables:
+      server_url:
+        default: https://ws-custom-categories.api.forcepoint.io/v1.0.0
+
+security:
+  - BearerAuth: []
+
+paths:
+  /:
+    get:
+      operationId: getAllCustomCategories
+      summary: Get All Custom Categories
+      description: Retrieve all custom categories for the account. Supports cursor-based pagination.
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          description: Cursor for pagination.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllCategoriesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    post:
+      operationId: createCategory
+      summary: Create Category
+      description: Create a new custom category for the account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryRequest'
+      responses:
+        '201':
+          description: Category created. Returns a transaction response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /{categoryId}:
+    get:
+      operationId: getCategoryById
+      summary: Get Category By ID
+      description: Retrieve details of a specific custom category by ID. Supports cursor-based pagination for sites.
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID of the category to return.
+          schema:
+            type: integer
+        - name: cursor
+          in: query
+          required: false
+          description: Cursor for pagination of sites.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved category details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCategoryByIdResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    patch:
+      operationId: addOrRemoveCategorySites
+      summary: Add or Remove Category Sites
+      description: Add or remove sites from a custom category.
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID of the category.
+          schema:
+            type: integer
+        - name: action
+          in: query
+          required: true
+          description: Action identifying whether sites are being added or removed.
+          schema:
+            type: string
+            enum:
+              - add
+              - remove
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModifyCategorySitesRequest'
+      responses:
+        '202':
+          description: Request accepted. Returns a transaction response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '400':
+          $ref: '#/components/responses/ClientError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      operationId: deleteCategory
+      summary: Delete Category
+      description: Delete a custom category for the account.
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID of the category to delete.
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: Request accepted. Returns a transaction response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer access token obtained from the Token Management API.
+
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Bearer access token valid for 59 minutes.
+
+    GetAllCategoriesResponse:
+      type: object
+      properties:
+        totalResults:
+          type: integer
+          description: Total number of custom categories.
+        nextPageCursor:
+          type: string
+          nullable: true
+          description: Cursor for the next page of results.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategorySummary'
+
+    CategorySummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        policyName:
+          type: string
+
+    GetCategoryByIdResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        sites:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+        policyName:
+          type: string
+        nextPageCursor:
+          type: string
+          nullable: true
+
+    TransactionResponse:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          format: uuid
+          description: Unique transaction identifier.
+          example: "00000000-0000-0000-0000-000000000000"
+        status:
+          type: string
+          description: Transaction status.
+          example: "pending"
+        data:
+          type: object
+          description: Additional transaction data.
+        comment:
+          type: string
+          description: Comment field from the request.
+
+    CreateCategoryRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Category name.
+        description:
+          type: string
+          description: Category description.
+        sites:
+          type: array
+          items:
+            type: string
+          description: List of website URLs and IP addresses (max 30000).
+          maxItems: 30000
+        policyName:
+          type: string
+          description: Policy level custom category name.
+        comment:
+          type: string
+          description: Comment field.
+
+    ModifyCategorySitesRequest:
+      type: object
+      required:
+        - sites
+      properties:
+        sites:
+          type: array
+          items:
+            type: string
+          description: List of website URLs and IP addresses (max 30000).
+          maxItems: 30000
+        comment:
+          type: string
+          description: Comment field.
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+
+  responses:
+    ClientError:
+      description: Client error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServerError:
+      description: Server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
