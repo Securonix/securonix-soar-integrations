@@ -5,7 +5,8 @@ import app.azure_waf as _mod
 from app.azure_waf import (
     AzureWaf, _validate_ip, _validate_required, _find_soar_rule,
     _find_ip_match_condition, _build_soar_rule, _is_soar_ip_block_rule,
-    _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, MAX_RETRIES,
+    _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, DEFAULT_URL_RULE_NAME,
+    MAX_RETRIES, _normalize_url, _find_url_match_condition, _build_soar_url_rule,
 )
 from app.model.request_body import RequestBody
 
@@ -629,3 +630,213 @@ class TestDisableCustomRule:
                 connector.disable_custom_rule(
                     _make_request(params={"policy_name": "Policy1", "rule_name": "Ghost"})
                 )
+
+
+# ── _normalize_url ────────────────────────────────────────────────────────────
+
+class TestNormalizeUrl:
+    def test_full_url_extracts_path(self):
+        assert _normalize_url("https://example.com/admin/login") == "/admin/login"
+
+    def test_path_only_unchanged(self):
+        assert _normalize_url("/admin/login") == "/admin/login"
+
+    def test_path_without_leading_slash(self):
+        assert _normalize_url("admin/login") == "/admin/login"
+
+    def test_full_url_with_query(self):
+        assert _normalize_url("https://example.com/search?q=test") == "/search?q=test"
+
+    def test_strips_whitespace(self):
+        assert _normalize_url("  /admin/login  ") == "/admin/login"
+
+    def test_empty_raises(self):
+        with pytest.raises(Exception, match="url is required"):
+            _normalize_url("")
+
+
+# ── _find_url_match_condition / _build_soar_url_rule ─────────────────────────
+
+class TestUrlRuleHelpers:
+    def test_find_url_match_condition_found(self):
+        rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, ["/admin"])
+        assert _find_url_match_condition(rule)["operator"] == "BeginsWith"
+
+    def test_find_url_match_condition_not_found(self):
+        rule = {"matchConditions": [{"matchVariables": [{"variableName": "RemoteAddr"}], "operator": "IPMatch"}]}
+        assert _find_url_match_condition(rule) is None
+
+    def test_build_soar_url_rule_structure(self):
+        rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, ["/admin"], priority=5)
+        assert rule["name"] == DEFAULT_URL_RULE_NAME
+        assert rule["action"] == "Block"
+        assert rule["priority"] == 5
+        cond = rule["matchConditions"][0]
+        assert cond["matchVariables"][0]["variableName"] == "RequestUri"
+        assert cond["operator"] == "BeginsWith"
+        assert "/admin" in cond["matchValues"]
+
+
+# ── block_url ─────────────────────────────────────────────────────────────────
+
+def _policy_with_url_rule(paths=None, state="Enabled", action="Block"):
+    p = _fresh_policy()
+    if paths is not None:
+        rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, list(paths))
+        rule["state"] = state
+        rule["action"] = action
+        p["properties"]["customRules"] = [rule]
+    return p
+
+
+class TestBlockUrl:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
+    def test_creates_new_rule(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _fresh_policy()),
+                 _make_resp(200, {}),
+             ]):
+            result = connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "https://example.com/admin/login"})
+            )
+        assert result["status"] == "success"
+        assert result["blocked_url"] == "/admin/login"
+
+    def test_normalizes_full_url(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _fresh_policy()),
+                 _make_resp(200, {}),
+             ]) as mock_req:
+            connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "https://example.com/admin"})
+            )
+        put_body = mock_req.call_args[1]["json"]
+        values = put_body["properties"]["customRules"][0]["matchConditions"][0]["matchValues"]
+        assert "/admin" in values
+
+    def test_adds_to_existing_rule(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule(["/admin"])),
+                 _make_resp(200, {}),
+             ]):
+            result = connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/login"})
+            )
+        assert result["status"] == "success"
+
+    def test_deduplicates_url(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule(["/admin"])),
+                 _make_resp(200, {}),
+             ]) as mock_req:
+            connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+            )
+        put_body = mock_req.call_args[1]["json"]
+        values = put_body["properties"]["customRules"][0]["matchConditions"][0]["matchValues"]
+        assert values.count("/admin") == 1
+
+    def test_re_enables_disabled_rule(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule([], state="Disabled")),
+                 _make_resp(200, {}),
+             ]) as mock_req:
+            connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+            )
+        put_body = mock_req.call_args[1]["json"]
+        assert put_body["properties"]["customRules"][0]["state"] == "Enabled"
+
+    def test_incompatible_rule_raises(self):
+        connector = AzureWaf()
+        policy = _fresh_policy()
+        policy["properties"]["customRules"] = [{
+            "name": DEFAULT_URL_RULE_NAME, "priority": 5,
+            "ruleType": "MatchRule", "action": "Allow",
+            "state": "Enabled", "matchConditions": [],
+        }]
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", return_value=_make_resp(200, policy)):
+            with pytest.raises(Exception, match="not a compatible URL block rule"):
+                connector.block_url(
+                    _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+                )
+
+    def test_missing_url_raises(self):
+        connector = AzureWaf()
+        with pytest.raises(Exception, match="url is required"):
+            connector.block_url(_make_request(params={"policy_name": "Policy1"}))
+
+
+# ── unblock_url ───────────────────────────────────────────────────────────────
+
+class TestUnblockUrl:
+    def setup_method(self):
+        _mod._token_cache.clear()
+
+    def test_removes_url(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule(["/admin", "/login"])),
+                 _make_resp(200, {}),
+             ]):
+            result = connector.unblock_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+            )
+        assert result["unblocked_url"] == "/admin"
+
+    def test_last_url_disables_rule(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule(["/admin"])),
+                 _make_resp(200, {}),
+             ]):
+            result = connector.unblock_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+            )
+        assert result["rule"]["state"] == "Disabled"
+
+    def test_rule_not_found_raises(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", return_value=_make_resp(200, _fresh_policy())):
+            with pytest.raises(Exception, match="not found in policy"):
+                connector.unblock_url(
+                    _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+                )
+
+    def test_url_not_in_rule_raises(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", return_value=_make_resp(200, _policy_with_url_rule(["/admin"]))):
+            with pytest.raises(Exception, match="not found in rule"):
+                connector.unblock_url(
+                    _make_request(params={"policy_name": "Policy1", "url": "/other"})
+                )
+
+    def test_accepts_full_url_input(self):
+        connector = AzureWaf()
+        with patch("app.azure_waf.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf.requests.request", side_effect=[
+                 _make_resp(200, _policy_with_url_rule(["/admin"])),
+                 _make_resp(200, {}),
+             ]):
+            result = connector.unblock_url(
+                _make_request(params={"policy_name": "Policy1", "url": "https://example.com/admin"})
+            )
+        assert result["unblocked_url"] == "/admin"
+

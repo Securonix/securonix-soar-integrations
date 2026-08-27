@@ -1,797 +1,982 @@
 {
-    "connectionParameters": [
-      {
-        "label": "Tenant ID",
-        "name": "tenant_id",
-        "desc": "Azure Active Directory Tenant ID",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Client ID",
-        "name": "client_id",
-        "desc": "Azure service principal Client ID",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Client Secret",
-        "name": "client_secret",
-        "desc": "Azure service principal Client Secret",
-        "type": "String",
-        "values": [],
-        "isSecret": true,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Subscription ID",
-        "name": "subscription_id",
-        "desc": "Azure Subscription ID",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": false,
-        "encrypted": false
-      },
-      {
-        "label": "Resource Group",
-        "name": "resource_group",
-        "desc": "Default Azure Resource Group (can be overridden per action)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Base URL",
-        "name": "base_url",
-        "desc": "Azure Management API base URL (default: https://management.azure.com)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Request Timeout",
-        "name": "timeout",
-        "desc": "Request timeout in seconds (default: 30)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Verify SSL",
-        "name": "verify_ssl",
-        "desc": "Verify SSL certificates (default: true)",
-        "type": "String",
-        "values": ["true", "false"],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      },
-      {
-        "label": "Proxy",
-        "name": "proxy",
-        "desc": "Proxy URL for outbound requests (optional)",
-        "type": "String",
-        "values": [],
-        "isSecret": false,
-        "optional": true,
-        "encrypted": false
-      }
-    ],
-    "isMultiAuthentication": false,
-    "desc": "Azure Application Gateway WAF integration for retrieving WAF policies, inspecting custom rules, and performing automated IP blocking/unblocking remediation via the Azure Management REST API.",
-    "functions": [
-      {
-        "label": "List WAF Policies",
-        "name": "list_waf_policies",
-        "type": "Enrichment",
-        "desc": "List all Azure Application Gateway WAF policies in a resource group or subscription",
-        "sampleOutput": "{\"status\": \"success\", \"policies\": [{\"name\": \"Policy1\", \"location\": \"eastus\"}], \"total_count\": 1}",
-        "inParameters": [
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name. If omitted, lists all policies in the subscription.",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Policies",
-            "name": "policies",
-            "desc": "List of WAF policies",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Total Count",
-            "name": "total_count",
-            "desc": "Total number of policies",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get WAF Policy",
-        "name": "get_waf_policy",
-        "type": "Enrichment",
-        "desc": "Retrieve a specific Azure WAF policy including custom rules and policy settings",
-        "sampleOutput": "{\"status\": \"success\", \"policy\": {\"name\": \"Policy1\", \"properties\": {\"customRules\": []}}}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Policy",
-            "name": "policy",
-            "desc": "WAF policy details",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Custom Rules",
-        "name": "get_custom_rules",
-        "type": "Enrichment",
-        "desc": "Retrieve all custom rules from a WAF policy",
-        "sampleOutput": "{\"status\": \"success\", \"custom_rules\": [], \"total_count\": 0}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Custom Rules",
-            "name": "custom_rules",
-            "desc": "List of custom rules",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Total Count",
-            "name": "total_count",
-            "desc": "Total number of custom rules",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Add IP to Block List",
-        "name": "add_ip_to_block_list",
-        "type": "Remediation",
-        "desc": "Add an IPv4 address or CIDR range to the connector-managed WAF block rule",
-        "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"SecuronixSOAR-IP-Block\", \"state\": \"Enabled\"}}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "IP Address",
-            "name": "ip_address",
-            "desc": "IPv4 address or CIDR range to block (e.g. 192.168.1.1 or 10.0.0.0/24)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule",
-            "name": "rule",
-            "desc": "Updated block rule",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Remove IP from Block List",
-        "name": "remove_ip_from_block_list",
-        "type": "Remediation",
-        "desc": "Remove an IPv4 address or CIDR range from the connector-managed WAF block rule. If the last IP is removed, the rule is disabled.",
-        "sampleOutput": "{\"status\": \"success\", \"removed_ip\": \"10.0.0.1\", \"rule\": {\"name\": \"SecuronixSOAR-IP-Block\", \"state\": \"Enabled\"}}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "IP Address",
-            "name": "ip_address",
-            "desc": "IPv4 address or CIDR range to remove",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule",
-            "name": "rule",
-            "desc": "Updated block rule",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Removed IP",
-            "name": "removed_ip",
-            "desc": "The IP address that was removed",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Check IP in Block List",
-        "name": "check_ip_in_block_list",
-        "type": "Enrichment",
-        "desc": "Check whether an IP address is present in the connector-managed WAF block rule",
-        "sampleOutput": "{\"status\": \"success\", \"ip\": \"10.0.0.1\", \"blocked\": true, \"rule_name\": \"SecuronixSOAR-IP-Block\"}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "IP Address",
-            "name": "ip_address",
-            "desc": "IPv4 address or CIDR range to check",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "IP",
-            "name": "ip",
-            "desc": "The IP address checked",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Blocked",
-            "name": "blocked",
-            "desc": "Whether the IP is blocked",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Name of the WAF rule checked",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Get Blocked IPs",
-        "name": "get_blocked_ips",
-        "type": "Enrichment",
-        "desc": "Retrieve all IPs managed by the connector-owned WAF block rule",
-        "sampleOutput": "{\"status\": \"success\", \"rule_name\": \"SecuronixSOAR-IP-Block\", \"blocked_ips\": [\"10.0.0.1\"], \"total_count\": 1}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Name of the WAF block rule",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Blocked IPs",
-            "name": "blocked_ips",
-            "desc": "List of blocked IPs",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Total Count",
-            "name": "total_count",
-            "desc": "Total number of blocked IPs",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Enable Custom Rule",
-        "name": "enable_custom_rule",
-        "type": "Remediation",
-        "desc": "Enable a custom rule in a WAF policy by setting its state to Enabled",
-        "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"MyRule\", \"state\": \"Enabled\"}}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Name of the custom rule to enable",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule",
-            "name": "rule",
-            "desc": "Updated rule with Enabled state",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      },
-      {
-        "label": "Disable Custom Rule",
-        "name": "disable_custom_rule",
-        "type": "Remediation",
-        "desc": "Disable a custom rule in a WAF policy by setting its state to Disabled",
-        "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"MyRule\", \"state\": \"Disabled\"}}",
-        "inParameters": [
-          {
-            "label": "Policy Name",
-            "name": "policy_name",
-            "desc": "Name of the WAF policy",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule Name",
-            "name": "rule_name",
-            "desc": "Name of the custom rule to disable",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Resource Group",
-            "name": "resource_group",
-            "desc": "Resource group name (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          },
-          {
-            "label": "Subscription ID",
-            "name": "subscription_id",
-            "desc": "Azure Subscription ID (overrides connection parameter)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": true,
-            "encrypted": false
-          }
-        ],
-        "outParameters": [
-          {
-            "label": "Status",
-            "name": "status",
-            "desc": "Operation status (success/error)",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          },
-          {
-            "label": "Rule",
-            "name": "rule",
-            "desc": "Updated rule with Disabled state",
-            "type": "String",
-            "values": [],
-            "isSecret": false,
-            "optional": false,
-            "encrypted": false
-          }
-        ]
-      }
-    ]
-  }
+  "connectionParameters": [
+    {
+      "label": "Tenant ID",
+      "name": "tenant_id",
+      "desc": "Azure Active Directory Tenant ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "Azure service principal Client ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "Azure service principal Client Secret",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Subscription ID",
+      "name": "subscription_id",
+      "desc": "Azure Subscription ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Resource Group",
+      "name": "resource_group",
+      "desc": "Default Azure Resource Group (can be overridden per action)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Azure Management API base URL (default: https://management.azure.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Request Timeout",
+      "name": "timeout",
+      "desc": "Request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": [
+        "true",
+        "false"
+      ],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Azure Application Gateway WAF integration for retrieving WAF policies, inspecting custom rules, and performing automated IP blocking/unblocking remediation via the Azure Management REST API.",
+  "functions": [
+    {
+      "label": "List WAF Policies",
+      "name": "list_waf_policies",
+      "type": "Enrichment",
+      "desc": "List all Azure Application Gateway WAF policies in a resource group or subscription",
+      "sampleOutput": "{\"status\": \"success\", \"policies\": [{\"name\": \"Policy1\", \"location\": \"eastus\"}], \"total_count\": 1}",
+      "inParameters": [
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name. If omitted, lists all policies in the subscription.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Policies",
+          "name": "policies",
+          "desc": "List of WAF policies",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of policies",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get WAF Policy",
+      "name": "get_waf_policy",
+      "type": "Enrichment",
+      "desc": "Retrieve a specific Azure WAF policy including custom rules and policy settings",
+      "sampleOutput": "{\"status\": \"success\", \"policy\": {\"name\": \"Policy1\", \"properties\": {\"customRules\": []}}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Policy",
+          "name": "policy",
+          "desc": "WAF policy details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Custom Rules",
+      "name": "get_custom_rules",
+      "type": "Enrichment",
+      "desc": "Retrieve all custom rules from a WAF policy",
+      "sampleOutput": "{\"status\": \"success\", \"custom_rules\": [], \"total_count\": 0}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Custom Rules",
+          "name": "custom_rules",
+          "desc": "List of custom rules",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of custom rules",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add IP to Block List",
+      "name": "add_ip_to_block_list",
+      "type": "Remediation",
+      "desc": "Add an IPv4 address or CIDR range to the connector-managed WAF block rule",
+      "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"SecuronixSOAR-IP-Block\", \"state\": \"Enabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IP Address",
+          "name": "ip_address",
+          "desc": "IPv4 address or CIDR range to block (e.g. 192.168.1.1 or 10.0.0.0/24)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated block rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Remove IP from Block List",
+      "name": "remove_ip_from_block_list",
+      "type": "Remediation",
+      "desc": "Remove an IPv4 address or CIDR range from the connector-managed WAF block rule. If the last IP is removed, the rule is disabled.",
+      "sampleOutput": "{\"status\": \"success\", \"removed_ip\": \"10.0.0.1\", \"rule\": {\"name\": \"SecuronixSOAR-IP-Block\", \"state\": \"Enabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IP Address",
+          "name": "ip_address",
+          "desc": "IPv4 address or CIDR range to remove",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated block rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Removed IP",
+          "name": "removed_ip",
+          "desc": "The IP address that was removed",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Check IP in Block List",
+      "name": "check_ip_in_block_list",
+      "type": "Enrichment",
+      "desc": "Check whether an IP address is present in the connector-managed WAF block rule",
+      "sampleOutput": "{\"status\": \"success\", \"ip\": \"10.0.0.1\", \"blocked\": true, \"rule_name\": \"SecuronixSOAR-IP-Block\"}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IP Address",
+          "name": "ip_address",
+          "desc": "IPv4 address or CIDR range to check",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IP",
+          "name": "ip",
+          "desc": "The IP address checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Blocked",
+          "name": "blocked",
+          "desc": "Whether the IP is blocked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Name of the WAF rule checked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Blocked IPs",
+      "name": "get_blocked_ips",
+      "type": "Enrichment",
+      "desc": "Retrieve all IPs managed by the connector-owned WAF block rule",
+      "sampleOutput": "{\"status\": \"success\", \"rule_name\": \"SecuronixSOAR-IP-Block\", \"blocked_ips\": [\"10.0.0.1\"], \"total_count\": 1}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-IP-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Name of the WAF block rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Blocked IPs",
+          "name": "blocked_ips",
+          "desc": "List of blocked IPs",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total Count",
+          "name": "total_count",
+          "desc": "Total number of blocked IPs",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Enable Custom Rule",
+      "name": "enable_custom_rule",
+      "type": "Remediation",
+      "desc": "Enable a custom rule in a WAF policy by setting its state to Enabled",
+      "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"MyRule\", \"state\": \"Enabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Name of the custom rule to enable",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated rule with Enabled state",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Disable Custom Rule",
+      "name": "disable_custom_rule",
+      "type": "Remediation",
+      "desc": "Disable a custom rule in a WAF policy by setting its state to Disabled",
+      "sampleOutput": "{\"status\": \"success\", \"rule\": {\"name\": \"MyRule\", \"state\": \"Disabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Name of the custom rule to disable",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated rule with Disabled state",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Block URL",
+      "name": "block_url",
+      "type": "Remediation",
+      "desc": "Block a URL path in the connector-managed WAF URL block rule (SecuronixSOAR-URL-Block). Accepts full URLs or paths; internally stores the RequestUri path with BeginsWith matching.",
+      "sampleOutput": "{\"status\": \"success\", \"blocked_url\": \"/admin/login\", \"rule\": {\"name\": \"SecuronixSOAR-URL-Block\", \"state\": \"Enabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "URL",
+          "name": "url",
+          "desc": "URL or path to block (e.g. https://example.com/admin/login or /admin/login)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-URL-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated URL block rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Blocked URL",
+          "name": "blocked_url",
+          "desc": "The normalized URL path that was blocked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Unblock URL",
+      "name": "unblock_url",
+      "type": "Remediation",
+      "desc": "Remove a URL path from the connector-managed WAF URL block rule. If the last URL is removed, the rule is disabled.",
+      "sampleOutput": "{\"status\": \"success\", \"unblocked_url\": \"/admin/login\", \"rule\": {\"name\": \"SecuronixSOAR-URL-Block\", \"state\": \"Enabled\"}}",
+      "inParameters": [
+        {
+          "label": "Policy Name",
+          "name": "policy_name",
+          "desc": "Name of the WAF policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "URL",
+          "name": "url",
+          "desc": "URL or path to unblock (e.g. https://example.com/admin/login or /admin/login)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule Name",
+          "name": "rule_name",
+          "desc": "Connector-owned rule name (default: SecuronixSOAR-URL-Block)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Resource Group",
+          "name": "resource_group",
+          "desc": "Resource group name (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Subscription ID",
+          "name": "subscription_id",
+          "desc": "Azure Subscription ID (overrides connection parameter)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Rule",
+          "name": "rule",
+          "desc": "Updated URL block rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Unblocked URL",
+          "name": "unblocked_url",
+          "desc": "The normalized URL path that was unblocked",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

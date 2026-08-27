@@ -15,6 +15,7 @@ WAF_POLICY_PATH = (
     "/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies"
 )
 DEFAULT_RULE_NAME = "SecuronixSOAR-IP-Block"
+DEFAULT_URL_RULE_NAME = "SecuronixSOAR-URL-Block"
 DEFAULT_TIMEOUT = 30
 MAX_RETRIES = 3
 BACKOFF_FACTOR = 2
@@ -145,6 +146,59 @@ def _build_soar_rule(rule_name: str, match_values: list, priority: int = 10) -> 
             {
                 "matchVariables": [{"variableName": "RemoteAddr"}],
                 "operator": "IPMatch",
+                "negationCondition": False,
+                "matchValues": match_values,
+                "transforms": [],
+            }
+        ],
+    }
+
+
+def _normalize_url(value: str) -> str:
+    value = value.strip()
+    if not value:
+        raise Exception("url is required and cannot be empty.")
+    # Strip scheme+host if present, keep path+query
+    if "://" in value:
+        from urllib.parse import urlparse
+        parsed = urlparse(value)
+        path = parsed.path or "/"
+        value = path + ("?" + parsed.query if parsed.query else "")
+    if not value.startswith("/"):
+        value = "/" + value
+    return value
+
+
+def _find_url_match_condition(rule: dict) -> Optional[dict]:
+    for cond in rule.get("matchConditions", []):
+        variables = cond.get("matchVariables", [])
+        if (
+            any(v.get("variableName") == "RequestUri" for v in variables)
+            and cond.get("operator") == "BeginsWith"
+        ):
+            return cond
+    return None
+
+
+def _is_soar_url_block_rule(rule: dict) -> bool:
+    return (
+        rule.get("ruleType") == "MatchRule"
+        and rule.get("action") == "Block"
+        and _find_url_match_condition(rule) is not None
+    )
+
+
+def _build_soar_url_rule(rule_name: str, match_values: list, priority: int = 10) -> dict:
+    return {
+        "name": rule_name,
+        "priority": priority,
+        "ruleType": "MatchRule",
+        "action": "Block",
+        "state": "Enabled",
+        "matchConditions": [
+            {
+                "matchVariables": [{"variableName": "RequestUri"}],
+                "operator": "BeginsWith",
                 "negationCondition": False,
                 "matchValues": match_values,
                 "transforms": [],
@@ -517,3 +571,72 @@ class AzureWaf:
         except Exception:
             _logger.error("Error in disable_custom_rule", exc_info=True)
             raise
+
+    def block_url(self, request: RequestBody) -> dict:
+        try:
+            tenant_id, client_id, client_secret, subscription_id, conn_rg, base_url, timeout, verify_ssl, proxies = _get_connection(request.connectionParameters)
+            params = request.parameters or {}
+            sub_id = params.get("subscription_id") or subscription_id
+            rg = _validate_required(params.get("resource_group") or conn_rg, "resource_group")
+            policy_name = _validate_required(params.get("policy_name"), "policy_name")
+            url_path = _normalize_url(_validate_required(params.get("url"), "url"))
+            rule_name = (params.get("rule_name") or DEFAULT_URL_RULE_NAME).strip()
+
+            policy = _request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            custom_rules = policy.setdefault("properties", {}).setdefault("customRules", [])
+
+            soar_rule = _find_soar_rule(custom_rules, rule_name)
+            if soar_rule is None:
+                priority = _next_available_priority(custom_rules)
+                soar_rule = _build_soar_url_rule(rule_name, [url_path], priority)
+                custom_rules.append(soar_rule)
+            else:
+                if not _is_soar_url_block_rule(soar_rule):
+                    raise Exception(
+                        f"Rule '{rule_name}' exists but is not a compatible URL block rule "
+                        "(expected ruleType=MatchRule, action=Block, RequestUri+BeginsWith condition). "
+                        "Use a different rule_name to avoid modifying customer-created rules."
+                    )
+                soar_rule["state"] = "Enabled"
+                cond = _find_url_match_condition(soar_rule)
+                if url_path not in cond["matchValues"]:
+                    cond["matchValues"].append(url_path)
+
+            _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
+            updated_rule = _find_soar_rule(policy["properties"]["customRules"], rule_name)
+            return {"status": "success", "rule": updated_rule, "blocked_url": url_path}
+        except Exception:
+            _logger.error("Error in block_url", exc_info=True)
+            raise
+
+    def unblock_url(self, request: RequestBody) -> dict:
+        try:
+            tenant_id, client_id, client_secret, subscription_id, conn_rg, base_url, timeout, verify_ssl, proxies = _get_connection(request.connectionParameters)
+            params = request.parameters or {}
+            sub_id = params.get("subscription_id") or subscription_id
+            rg = _validate_required(params.get("resource_group") or conn_rg, "resource_group")
+            policy_name = _validate_required(params.get("policy_name"), "policy_name")
+            url_path = _normalize_url(_validate_required(params.get("url"), "url"))
+            rule_name = (params.get("rule_name") or DEFAULT_URL_RULE_NAME).strip()
+
+            policy = _request_with_refresh("GET", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies)
+            custom_rules = policy.get("properties", {}).get("customRules", [])
+            soar_rule = _find_soar_rule(custom_rules, rule_name)
+
+            if soar_rule is None:
+                raise Exception(f"Rule '{rule_name}' not found in policy '{policy_name}'.")
+
+            cond = _find_url_match_condition(soar_rule)
+            if cond is None or url_path not in cond["matchValues"]:
+                raise Exception(f"URL '{url_path}' not found in rule '{rule_name}'.")
+
+            cond["matchValues"].remove(url_path)
+            if not cond["matchValues"]:
+                soar_rule["state"] = "Disabled"
+
+            _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
+            return {"status": "success", "rule": soar_rule, "unblocked_url": url_path}
+        except Exception:
+            _logger.error("Error in unblock_url", exc_info=True)
+            raise
+
