@@ -334,7 +334,7 @@ def _request_with_refresh(method: str, url: str, tenant_id: str, client_id: str,
             raise Exception("Authorization failed after token refresh. Verify service principal permissions.")
 
 
-class AzureWaf:
+class AzureWafApplicationGateway:
 
     def __init__(self) -> None:
         pass

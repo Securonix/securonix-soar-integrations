@@ -3,7 +3,8 @@ import time
 from unittest.mock import patch, MagicMock
 import app.azure_waf_application_gateway as _mod
 from app.azure_waf_application_gateway import (
-    AzureWaf, _validate_ip, _validate_required, _find_soar_rule,
+    AzureWafApplicationGateway,
+    _validate_ip, _validate_required, _find_soar_rule,
     _find_ip_match_condition, _build_soar_rule, _is_soar_ip_block_rule,
     _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, DEFAULT_URL_RULE_NAME,
     MAX_RETRIES, _normalize_url, _find_url_match_condition, _build_soar_url_rule,
@@ -264,7 +265,7 @@ class TestTestConnection:
         _mod._token_cache.clear()
 
     def test_success_with_rg(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, {"value": []})) as mock_req:
             result = connector.test_connection(CONN)
@@ -272,7 +273,7 @@ class TestTestConnection:
         assert "resourceGroups" in mock_req.call_args[0][1]
 
     def test_success_without_rg(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, {"value": []})) as mock_req:
             result = connector.test_connection(CONN_NO_RG)
@@ -280,7 +281,7 @@ class TestTestConnection:
         assert "resourceGroups" not in mock_req.call_args[0][1]
 
     def test_auth_failure(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(401)):
             with pytest.raises(Exception, match="Authentication failed"):
                 connector.test_connection(CONN)
@@ -293,14 +294,14 @@ class TestListWafPolicies:
         _mod._token_cache.clear()
 
     def test_success(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, {"value": [{"name": "P1"}]})):
             result = connector.list_waf_policies(_make_request())
         assert result["total_count"] == 1
 
     def test_pagination(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, {"value": [{"name": "P1"}], "nextLink": "http://next"}),
@@ -310,7 +311,7 @@ class TestListWafPolicies:
         assert result["total_count"] == 2
 
     def test_subscription_scope_when_no_rg(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, {"value": []})) as mock_req:
             connector.list_waf_policies(_make_request(conn=CONN_NO_RG))
@@ -324,14 +325,14 @@ class TestGetWafPolicy:
         _mod._token_cache.clear()
 
     def test_success(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             result = connector.get_waf_policy(_make_request(params={"policy_name": "Policy1"}))
         assert result["policy"]["name"] == "Policy1"
 
     def test_missing_policy_name(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with pytest.raises(Exception, match="policy_name is required"):
             connector.get_waf_policy(_make_request())
 
@@ -341,14 +342,14 @@ class TestGetCustomRules:
         _mod._token_cache.clear()
 
     def test_returns_rules(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["1.2.3.4"]))):
             result = connector.get_custom_rules(_make_request(params={"policy_name": "Policy1"}))
         assert result["total_count"] == 1
 
     def test_empty(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             result = connector.get_custom_rules(_make_request(params={"policy_name": "Policy1"}))
@@ -362,7 +363,7 @@ class TestAddIpToBlockList:
         _mod._token_cache.clear()
 
     def test_creates_new_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _fresh_policy()),
@@ -374,7 +375,7 @@ class TestAddIpToBlockList:
         assert result["status"] == "success"
 
     def test_new_rule_uses_available_priority(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         policy = _fresh_policy()
         policy["properties"]["customRules"] = [{"name": "Existing", "priority": 1}]
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
@@ -387,7 +388,7 @@ class TestAddIpToBlockList:
         assert soar["priority"] != 1
 
     def test_adds_to_existing_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["10.0.0.1"])),
@@ -399,7 +400,7 @@ class TestAddIpToBlockList:
         assert result["status"] == "success"
 
     def test_deduplicates_ip(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["10.0.0.1"])),
@@ -413,7 +414,7 @@ class TestAddIpToBlockList:
         assert ips.count("10.0.0.1") == 1
 
     def test_re_enables_disabled_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule([], state="Disabled")),
@@ -426,7 +427,7 @@ class TestAddIpToBlockList:
         assert put_body["properties"]["customRules"][0]["state"] == "Enabled"
 
     def test_incompatible_rule_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         policy = _fresh_policy()
         policy["properties"]["customRules"] = [{
             "name": DEFAULT_RULE_NAME, "priority": 5,
@@ -441,7 +442,7 @@ class TestAddIpToBlockList:
                 )
 
     def test_invalid_ip_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with pytest.raises(Exception, match="Invalid IPv4"):
             connector.add_ip_to_block_list(
                 _make_request(params={"policy_name": "P1", "ip_address": "256.0.0.1"})
@@ -455,7 +456,7 @@ class TestRemoveIpFromBlockList:
         _mod._token_cache.clear()
 
     def test_removes_ip(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["10.0.0.1", "10.0.0.2"])),
@@ -467,7 +468,7 @@ class TestRemoveIpFromBlockList:
         assert result["removed_ip"] == "10.0.0.1"
 
     def test_last_ip_disables_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["10.0.0.1"])),
@@ -479,7 +480,7 @@ class TestRemoveIpFromBlockList:
         assert result["rule"]["state"] == "Disabled"
 
     def test_rule_not_found_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             with pytest.raises(Exception, match="not found in policy"):
@@ -488,7 +489,7 @@ class TestRemoveIpFromBlockList:
                 )
 
     def test_ip_not_in_rule_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"]))):
             with pytest.raises(Exception, match="not found in rule"):
@@ -504,7 +505,7 @@ class TestCheckIpInBlockList:
         _mod._token_cache.clear()
 
     def test_ip_blocked(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"]))):
             result = connector.check_ip_in_block_list(
@@ -513,7 +514,7 @@ class TestCheckIpInBlockList:
         assert result["blocked"] is True
 
     def test_ip_not_in_list(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"]))):
             result = connector.check_ip_in_block_list(
@@ -522,7 +523,7 @@ class TestCheckIpInBlockList:
         assert result["blocked"] is False
 
     def test_disabled_rule_returns_not_blocked(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"], state="Disabled"))):
             result = connector.check_ip_in_block_list(
@@ -531,7 +532,7 @@ class TestCheckIpInBlockList:
         assert result["blocked"] is False
 
     def test_allow_action_returns_not_blocked(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"], action="Allow"))):
             result = connector.check_ip_in_block_list(
@@ -540,7 +541,7 @@ class TestCheckIpInBlockList:
         assert result["blocked"] is False
 
     def test_no_rule_returns_not_blocked(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             result = connector.check_ip_in_block_list(
@@ -556,7 +557,7 @@ class TestGetBlockedIps:
         _mod._token_cache.clear()
 
     def test_returns_ips(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["1.1.1.1", "2.2.2.2"]))):
             result = connector.get_blocked_ips(_make_request(params={"policy_name": "Policy1"}))
@@ -564,14 +565,14 @@ class TestGetBlockedIps:
         assert "1.1.1.1" in result["blocked_ips"]
 
     def test_disabled_rule_returns_empty(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_rule(["1.1.1.1"], state="Disabled"))):
             result = connector.get_blocked_ips(_make_request(params={"policy_name": "Policy1"}))
         assert result["blocked_ips"] == []
 
     def test_no_rule_returns_empty(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             result = connector.get_blocked_ips(_make_request(params={"policy_name": "Policy1"}))
@@ -585,7 +586,7 @@ class TestEnableCustomRule:
         _mod._token_cache.clear()
 
     def test_enables_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["1.1.1.1"], state="Disabled")),
@@ -597,7 +598,7 @@ class TestEnableCustomRule:
         assert result["rule"]["state"] == "Enabled"
 
     def test_rule_not_found_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             with pytest.raises(Exception, match="not found in policy"):
@@ -611,7 +612,7 @@ class TestDisableCustomRule:
         _mod._token_cache.clear()
 
     def test_disables_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["1.1.1.1"])),
@@ -623,7 +624,7 @@ class TestDisableCustomRule:
         assert result["rule"]["state"] == "Disabled"
 
     def test_rule_not_found_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             with pytest.raises(Exception, match="not found in policy"):
@@ -694,7 +695,7 @@ class TestBlockUrl:
         _mod._token_cache.clear()
 
     def test_creates_new_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _fresh_policy()),
@@ -707,7 +708,7 @@ class TestBlockUrl:
         assert result["blocked_url"] == "/admin/login"
 
     def test_normalizes_full_url(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _fresh_policy()),
@@ -721,7 +722,7 @@ class TestBlockUrl:
         assert "/admin" in values
 
     def test_adds_to_existing_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin"])),
@@ -733,7 +734,7 @@ class TestBlockUrl:
         assert result["status"] == "success"
 
     def test_deduplicates_url(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin"])),
@@ -747,7 +748,7 @@ class TestBlockUrl:
         assert values.count("/admin") == 1
 
     def test_re_enables_disabled_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule([], state="Disabled")),
@@ -760,7 +761,7 @@ class TestBlockUrl:
         assert put_body["properties"]["customRules"][0]["state"] == "Enabled"
 
     def test_incompatible_rule_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         policy = _fresh_policy()
         policy["properties"]["customRules"] = [{
             "name": DEFAULT_URL_RULE_NAME, "priority": 5,
@@ -775,7 +776,7 @@ class TestBlockUrl:
                 )
 
     def test_missing_url_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with pytest.raises(Exception, match="url is required"):
             connector.block_url(_make_request(params={"policy_name": "Policy1"}))
 
@@ -787,7 +788,7 @@ class TestUnblockUrl:
         _mod._token_cache.clear()
 
     def test_removes_url(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin", "/login"])),
@@ -799,7 +800,7 @@ class TestUnblockUrl:
         assert result["unblocked_url"] == "/admin"
 
     def test_last_url_disables_rule(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin"])),
@@ -811,7 +812,7 @@ class TestUnblockUrl:
         assert result["rule"]["state"] == "Disabled"
 
     def test_rule_not_found_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _fresh_policy())):
             with pytest.raises(Exception, match="not found in policy"):
@@ -820,7 +821,7 @@ class TestUnblockUrl:
                 )
 
     def test_url_not_in_rule_raises(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", return_value=_make_resp(200, _policy_with_url_rule(["/admin"]))):
             with pytest.raises(Exception, match="not found in rule"):
@@ -829,7 +830,7 @@ class TestUnblockUrl:
                 )
 
     def test_accepts_full_url_input(self):
-        connector = AzureWaf()
+        connector = AzureWafApplicationGateway()
         with patch("app.azure_waf_application_gateway.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_application_gateway.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin"])),
