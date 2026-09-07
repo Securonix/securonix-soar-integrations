@@ -49,13 +49,15 @@
       "name": "search_by_name",
       "type": "Investigate",
       "desc": "Search for objects by name in ThreatQ",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":2,\"results\":[{\"id\":1,\"value\":\"malicious.com\"}],\"raw_response\":{\"results\":[]}}",
       "inParameters": [
         {"label": "Name", "name": "name", "desc": "Name to search for", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Limit", "name": "limit", "desc": "Max results to return", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Results", "name": "results", "desc": "Search results", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matched objects", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Results", "name": "results", "desc": "List of matched objects", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -63,13 +65,19 @@
       "name": "search_by_id",
       "type": "Investigate",
       "desc": "Search for an object by type and ID",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"object_id\":\"1\",\"object_type\":\"indicator\",\"value\":\"192.168.1.1\",\"name\":null,\"title\":null,\"result\":{\"id\":1,\"value\":\"192.168.1.1\"},\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Object details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Object ID", "name": "object_id", "desc": "The queried object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object Type", "name": "object_type", "desc": "The queried object type", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Object value (indicators)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "Object name (adversaries)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "Object title (events)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Result", "name": "result", "desc": "Full object details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -77,12 +85,21 @@
       "name": "ip_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of an IP address",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"1\",\"value\":\"192.168.1.1\",\"type\":\"IP Address\",\"indicator_status\":\"Active\",\"score\":8,\"sources\":[\"Intel\"],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "IP Address", "name": "ip", "desc": "IP address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -90,12 +107,21 @@
       "name": "url_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a URL",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"2\",\"value\":\"http://malicious.com\",\"type\":\"URL\",\"indicator_status\":\"Active\",\"score\":7,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "URL", "name": "url", "desc": "URL to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -103,12 +129,21 @@
       "name": "domain_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a domain",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"3\",\"value\":\"malicious.com\",\"type\":\"FQDN\",\"indicator_status\":\"Active\",\"score\":9,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Domain", "name": "domain", "desc": "Domain to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -116,12 +151,21 @@
       "name": "file_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a file hash (MD5, SHA-1, SHA-256)",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"4\",\"value\":\"abc123\",\"type\":\"MD5\",\"indicator_status\":\"Active\",\"score\":6,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "File Hash", "name": "file", "desc": "MD5, SHA-1, or SHA-256 hash", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -129,12 +173,21 @@
       "name": "email_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of an email address",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"found\":false,\"total_count\":0,\"indicator_id\":null,\"value\":null,\"type\":null,\"indicator_status\":null,\"score\":null,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Email", "name": "email", "desc": "Email address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -142,7 +195,7 @@
       "name": "create_indicator",
       "type": "Enrichment",
       "desc": "Create a new indicator in ThreatQ",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"10.0.0.1\",\"type\":\"IP Address\",\"indicator_status\":null,\"score\":null,\"sources\":[\"TestSource\"],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Type", "name": "type", "desc": "Indicator type (e.g., IP Address, Email Address)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Status", "name": "status", "desc": "Indicator status (Active, Expired, Indirect, Review, Whitelisted)", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false},
@@ -152,7 +205,14 @@
         {"label": "Attribute Values", "name": "attributes_values", "desc": "Comma-separated attribute values", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator", "name": "indicator", "desc": "Created indicator details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Created indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (null on create - see raw_response for status_id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score (null on create)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -160,7 +220,7 @@
       "name": "edit_indicator",
       "type": "Enrichment",
       "desc": "Update an existing indicator",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"updated_value\",\"type\":\"IP Address\",\"indicator_status\":\"Active\",\"score\":8,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Value", "name": "value", "desc": "New indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
@@ -168,7 +228,14 @@
         {"label": "Description", "name": "description", "desc": "Indicator description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator", "name": "indicator", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -176,13 +243,15 @@
       "name": "update_status",
       "type": "Enrichment",
       "desc": "Update an indicator's status",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"indicator_status\":\"Whitelisted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Status", "name": "status", "desc": "New status", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "New status name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -190,13 +259,15 @@
       "name": "update_score",
       "type": "Enrichment",
       "desc": "Update an indicator's manual score",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"score\":5,\"raw_response\":{}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Score", "name": "score", "desc": "Manual score (Generated Score or 1-10)", "type": "String", "values": ["Generated Score", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Updated indicator", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "New indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -204,13 +275,16 @@
       "name": "get_all_indicators",
       "type": "Investigate",
       "desc": "Retrieve all indicators with pagination",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":2,\"count\":2,\"indicators\":[{\"id\":1}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number (default 0)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
         {"label": "Limit", "name": "limit", "desc": "Max results (default 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicators", "name": "indicators", "desc": "List of indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Total indicators matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Indicators returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicators", "name": "indicators", "desc": "List of indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -218,13 +292,15 @@
       "name": "create_adversary",
       "type": "Enrichment",
       "desc": "Create a new adversary",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversary", "name": "adversary", "desc": "Created adversary", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Adversary ID", "name": "adversary_id", "desc": "Created adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -232,13 +308,15 @@
       "name": "edit_adversary",
       "type": "Enrichment",
       "desc": "Update an adversary name",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29 Updated\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Name", "name": "name", "desc": "New adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversary", "name": "adversary", "desc": "Updated adversary", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Adversary ID", "name": "adversary_id", "desc": "Updated adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -246,13 +324,16 @@
       "name": "get_all_adversaries",
       "type": "Investigate",
       "desc": "Retrieve all adversaries with pagination",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"adversaries\":[{\"id\":1,\"name\":\"APT29\"}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
         {"label": "Limit", "name": "limit", "desc": "Max results (max 200)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversaries", "name": "adversaries", "desc": "List of adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Total adversaries matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Adversaries returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversaries", "name": "adversaries", "desc": "List of adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -260,7 +341,7 @@
       "name": "create_event",
       "type": "Enrichment",
       "desc": "Create a new event",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Incident\",\"type\":\"Malware\",\"happened_at\":\"2025-01-01 00:00:00\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Type", "name": "type", "desc": "Event type (e.g., Malware, Watchlist)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -268,7 +349,11 @@
         {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Event", "name": "event", "desc": "Created event", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Event ID", "name": "event_id", "desc": "Created event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Event type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Happened At", "name": "happened_at", "desc": "Event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -276,7 +361,7 @@
       "name": "edit_event",
       "type": "Enrichment",
       "desc": "Update an existing event",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Updated\",\"type\":\"Malware\",\"happened_at\":\"2025-02-01\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Title", "name": "title", "desc": "New title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
@@ -285,7 +370,11 @@
         {"label": "Description", "name": "description", "desc": "New description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Event", "name": "event", "desc": "Updated event", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Event ID", "name": "event_id", "desc": "Updated event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Event type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Happened At", "name": "happened_at", "desc": "Event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -293,13 +382,16 @@
       "name": "get_all_events",
       "type": "Investigate",
       "desc": "Retrieve all events with pagination",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"events\":[{\"id\":1,\"title\":\"Event1\"}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
         {"label": "Limit", "name": "limit", "desc": "Max results", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Events", "name": "events", "desc": "List of events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Total events matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Events returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Events", "name": "events", "desc": "List of events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -307,7 +399,7 @@
       "name": "add_attribute",
       "type": "Enrichment",
       "desc": "Add an attribute to an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"attribute_id\":\"50\",\"attribute_name\":\"attr1\",\"attribute_value\":\"val1\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -315,7 +407,11 @@
         {"label": "Attribute Value", "name": "value", "desc": "Attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was added", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute ID", "name": "attribute_id", "desc": "Created attribute instance ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Name", "name": "attribute_name", "desc": "Attribute name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Value", "name": "attribute_value", "desc": "Attribute value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -323,7 +419,7 @@
       "name": "modify_attribute",
       "type": "Enrichment",
       "desc": "Modify an attribute on an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"attribute_id\":\"50\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -331,7 +427,9 @@
         {"label": "Attribute Value", "name": "attribute_value", "desc": "New attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was modified", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Attribute ID", "name": "attribute_id", "desc": "Modified attribute ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -339,14 +437,16 @@
       "name": "delete_attribute",
       "type": "Enrichment",
       "desc": "Delete an attribute from an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Attribute deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Attribute ID", "name": "attribute_id", "desc": "Attribute ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -354,14 +454,17 @@
       "name": "add_source",
       "type": "Enrichment",
       "desc": "Add a source to an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"source_id\":\"60\",\"source_name\":\"AlienVault\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Source Name", "name": "source", "desc": "Source name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the source was added", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Source ID", "name": "source_id", "desc": "Created source link ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source Name", "name": "source_name", "desc": "Source name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -369,14 +472,16 @@
       "name": "delete_source",
       "type": "Enrichment",
       "desc": "Delete a source from an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Source deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Source ID", "name": "source_id", "desc": "Source ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the source was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -384,7 +489,7 @@
       "name": "link_objects",
       "type": "Enrichment",
       "desc": "Link two objects together",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"link_id\":\"999\",\"linked_id\":\"10\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -392,7 +497,10 @@
         {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the link was created", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Link ID", "name": "link_id", "desc": "Created link (pivot) ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Linked ID", "name": "linked_id", "desc": "ID of the linked object", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -400,7 +508,7 @@
       "name": "unlink_objects",
       "type": "Enrichment",
       "desc": "Unlink two objects",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Objects unlinked\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -408,7 +516,9 @@
         {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the objects were unlinked", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -416,13 +526,15 @@
       "name": "delete_object",
       "type": "Enrichment",
       "desc": "Delete an object from ThreatQ",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"event deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Result", "name": "result", "desc": "Operation result", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the object was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -430,13 +542,15 @@
       "name": "get_related_indicators",
       "type": "Investigate",
       "desc": "Get related indicators for an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"indicators\":[{\"id\":1,\"value\":\"10.0.0.1\"}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary)", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicators", "name": "indicators", "desc": "Related indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Number of related indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicators", "name": "indicators", "desc": "Related indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -444,13 +558,15 @@
       "name": "get_related_events",
       "type": "Investigate",
       "desc": "Get related events for an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"events\":[{\"id\":20,\"title\":\"Incident\"}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Events", "name": "events", "desc": "Related events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Number of related events", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Events", "name": "events", "desc": "Related events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -458,13 +574,15 @@
       "name": "get_related_adversaries",
       "type": "Investigate",
       "desc": "Get related adversaries for an object",
-      "sampleOutput": "",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"adversaries\":[{\"id\":10,\"name\":\"APT29\"}],\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversaries", "name": "adversaries", "desc": "Related adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Total Count", "name": "total_count", "desc": "Number of related adversaries", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversaries", "name": "adversaries", "desc": "Related adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     }
   ]
