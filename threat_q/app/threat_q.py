@@ -22,6 +22,57 @@ class ThreatQ():
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
+    # --- Normalizer helpers ---
+
+    @staticmethod
+    def _first(data):
+        """Return the created object whether ThreatQ wraps it in a list or not.
+
+        Several POST endpoints return {"total": N, "data": [ {...} ]} (a list),
+        while others return {"data": {...}} (a single object). This normalizes
+        both to a single dict.
+        """
+        payload = data.get("data") if isinstance(data, dict) else data
+        if isinstance(payload, list):
+            return payload[0] if payload else {}
+        return payload or {}
+
+    @staticmethod
+    def _str_id(value):
+        return str(value) if value is not None else None
+
+    def _indicator_fields(self, ind: dict) -> dict:
+        """Flatten a single indicator object into scalar output fields."""
+        ind = ind or {}
+        type_obj = ind.get("type") or {}
+        status_obj = ind.get("status") or {}
+        return {
+            "indicator_id": self._str_id(ind.get("id")),
+            "value": ind.get("value"),
+            "type": type_obj.get("name") if type_obj else None,
+            "indicator_status": status_obj.get("name") if status_obj else None,
+            "score": ind.get("score"),
+            "sources": [s.get("name") for s in (ind.get("sources") or []) if isinstance(s, dict)],
+            "attributes": ind.get("attributes") or [],
+        }
+
+    def _event_fields(self, evt: dict) -> dict:
+        evt = evt or {}
+        type_obj = evt.get("type") or {}
+        return {
+            "event_id": self._str_id(evt.get("id")),
+            "title": evt.get("title"),
+            "type": type_obj.get("name") if type_obj else None,
+            "happened_at": evt.get("happened_at"),
+        }
+
+    def _adversary_fields(self, adv: dict) -> dict:
+        adv = adv or {}
+        return {
+            "adversary_id": self._str_id(adv.get("id")),
+            "name": adv.get("name"),
+        }
+
     # --- Internal helpers ---
 
     def _authenticate(self, base_url, cp):
@@ -94,13 +145,23 @@ class ThreatQ():
                 return t["id"]
         raise Exception(f"Unknown event type: {type_name}")
 
-    def _search_indicator(self, base_url, access_token, value):
-        data = self._request(base_url, access_token, "GET", "/indicators/search",
+    def _search_indicators_raw(self, base_url, access_token, value):
+        return self._request(base_url, access_token, "GET", "/indicators/search",
                              params={"value": value, "with": "sources,attributes,score,status,type"})
-        results = data.get("data", [])
-        if not results:
-            return None
-        return results[0] if len(results) == 1 else results
+
+    def _reputation(self, request, value_key):
+        base_url, access_token = self._connect(request.connectionParameters)
+        resp = self._search_indicators_raw(base_url, access_token, request.parameters[value_key])
+        data = resp.get("data", []) if isinstance(resp, dict) else []
+        first = data[0] if data else {}
+        out = {
+            "status": "success",
+            "found": bool(data),
+            "total_count": resp.get("total", len(data)) if isinstance(resp, dict) else len(data),
+        }
+        out.update(self._indicator_fields(first))
+        out["raw_response"] = resp
+        return out
 
     # --- Test Connection ---
 
@@ -139,7 +200,8 @@ class ThreatQ():
                     val = item.get("value") or item.get("name") or item.get("title", "")
                     if name.lower() in val.lower():
                         results.append(item)
-            return {"status": "success", "results": results}
+            return {"status": "success", "total_count": len(results),
+                    "results": results, "raw_response": {"results": results}}
         except Exception as e:
             self.logger.error("Error in search_by_name", exc_info=e)
             raise Exception(str(e))
@@ -152,7 +214,12 @@ class ThreatQ():
             ep = self._get_obj_endpoint(obj_type)
             data = self._request(base_url, access_token, "GET", f"/{ep}/{obj_id}",
                                  params={"with": "sources,attributes"})
-            return {"status": "success", "result": data.get("data", data)}
+            obj = data.get("data", data) if isinstance(data, dict) else data
+            obj = obj if isinstance(obj, dict) else {}
+            return {"status": "success", "object_id": self._str_id(obj_id),
+                    "object_type": obj_type, "value": obj.get("value"),
+                    "name": obj.get("name"), "title": obj.get("title"),
+                    "result": obj, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in search_by_id", exc_info=e)
             raise Exception(str(e))
@@ -161,45 +228,35 @@ class ThreatQ():
 
     def ip_reputation(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, access_token = self._connect(request.connectionParameters)
-            result = self._search_indicator(base_url, access_token, request.parameters['ip'])
-            return {"status": "success", "result": result or "No results found"}
+            return self._reputation(request, 'ip')
         except Exception as e:
             self.logger.error("Error in ip_reputation", exc_info=e)
             raise Exception(str(e))
 
     def url_reputation(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, access_token = self._connect(request.connectionParameters)
-            result = self._search_indicator(base_url, access_token, request.parameters['url'])
-            return {"status": "success", "result": result or "No results found"}
+            return self._reputation(request, 'url')
         except Exception as e:
             self.logger.error("Error in url_reputation", exc_info=e)
             raise Exception(str(e))
 
     def domain_reputation(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, access_token = self._connect(request.connectionParameters)
-            result = self._search_indicator(base_url, access_token, request.parameters['domain'])
-            return {"status": "success", "result": result or "No results found"}
+            return self._reputation(request, 'domain')
         except Exception as e:
             self.logger.error("Error in domain_reputation", exc_info=e)
             raise Exception(str(e))
 
     def file_reputation(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, access_token = self._connect(request.connectionParameters)
-            result = self._search_indicator(base_url, access_token, request.parameters['file'])
-            return {"status": "success", "result": result or "No results found"}
+            return self._reputation(request, 'file')
         except Exception as e:
             self.logger.error("Error in file_reputation", exc_info=e)
             raise Exception(str(e))
 
     def email_reputation(self, request: RequestBody) -> ResponseBody:
         try:
-            base_url, access_token = self._connect(request.connectionParameters)
-            result = self._search_indicator(base_url, access_token, request.parameters['email'])
-            return {"status": "success", "result": result or "No results found"}
+            return self._reputation(request, 'email')
         except Exception as e:
             self.logger.error("Error in email_reputation", exc_info=e)
             raise Exception(str(e))
@@ -225,7 +282,8 @@ class ThreatQ():
                 values = [v.strip() for v in attrs_values.split(',')]
                 payload["attributes"] = [{"name": n, "value": v} for n, v in zip(names, values)]
             data = self._request(base_url, access_token, "POST", "/indicators", json_data=[payload])
-            return {"status": "success", "indicator": data.get("data", data)}
+            ind = self._first(data)
+            return {"status": "success", **self._indicator_fields(ind), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in create_indicator", exc_info=e)
             raise Exception(str(e))
@@ -243,8 +301,9 @@ class ThreatQ():
             if p.get('description'):
                 payload['description'] = p['description']
             data = self._request(base_url, access_token, "PUT", f"/indicators/{ind_id}",
-                                 json_data=payload, params={"with": "sources,attributes,status,type"})
-            return {"status": "success", "indicator": data.get("data", data)}
+                                 json_data=payload, params={"with": "sources,attributes,score,status,type"})
+            ind = self._first(data)
+            return {"status": "success", **self._indicator_fields(ind), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in edit_indicator", exc_info=e)
             raise Exception(str(e))
@@ -258,7 +317,11 @@ class ThreatQ():
                 raise Exception(f"Invalid status: {request.parameters['status']}")
             data = self._request(base_url, access_token, "PUT", f"/indicators/{ind_id}",
                                  json_data={"status_id": status_id}, params={"with": "status"})
-            return {"status": "success", "result": data.get("data", data)}
+            obj = self._first(data)
+            status_obj = obj.get("status") or {}
+            status_name = status_obj.get("name") if status_obj else request.parameters['status']
+            return {"status": "success", "indicator_id": self._str_id(ind_id),
+                    "indicator_status": status_name, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in update_status", exc_info=e)
             raise Exception(str(e))
@@ -271,7 +334,9 @@ class ThreatQ():
             payload = {"manual_score": None if score == "Generated Score" else int(score)}
             data = self._request(base_url, access_token, "PUT", f"/indicators/{ind_id}",
                                  json_data=payload, params={"with": "score"})
-            return {"status": "success", "result": data.get("data", data)}
+            obj = self._first(data)
+            return {"status": "success", "indicator_id": self._str_id(ind_id),
+                    "score": obj.get("score"), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in update_score", exc_info=e)
             raise Exception(str(e))
@@ -284,8 +349,9 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", "/indicators",
                                  params={"limit": limit, "offset": page * limit,
                                          "with": "sources,attributes,score,status,type"})
-            return {"status": "success", "indicators": data.get("data", []),
-                    "total": data.get("total", 0)}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "indicators": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_all_indicators", exc_info=e)
             raise Exception(str(e))
@@ -301,7 +367,8 @@ class ThreatQ():
             if sources:
                 payload["sources"] = [{"name": s.strip()} for s in sources.split(',')]
             data = self._request(base_url, access_token, "POST", "/adversaries", json_data=payload)
-            return {"status": "success", "adversary": data.get("data", data)}
+            adv = self._first(data)
+            return {"status": "success", **self._adversary_fields(adv), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in create_adversary", exc_info=e)
             raise Exception(str(e))
@@ -313,7 +380,8 @@ class ThreatQ():
             data = self._request(base_url, access_token, "PUT", f"/adversaries/{adv_id}",
                                  json_data={"name": request.parameters['name']},
                                  params={"with": "sources,attributes"})
-            return {"status": "success", "adversary": data.get("data", data)}
+            adv = self._first(data)
+            return {"status": "success", **self._adversary_fields(adv), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in edit_adversary", exc_info=e)
             raise Exception(str(e))
@@ -326,8 +394,9 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", "/adversaries",
                                  params={"limit": limit, "offset": page * limit,
                                          "with": "sources,attributes"})
-            return {"status": "success", "adversaries": data.get("data", []),
-                    "total": data.get("total", 0)}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "adversaries": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_all_adversaries", exc_info=e)
             raise Exception(str(e))
@@ -347,7 +416,8 @@ class ThreatQ():
             if sources:
                 payload["sources"] = [{"name": s.strip()} for s in sources.split(',')]
             data = self._request(base_url, access_token, "POST", "/events", json_data=payload)
-            return {"status": "success", "event": data.get("data", data)}
+            evt = self._first(data)
+            return {"status": "success", **self._event_fields(evt), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in create_event", exc_info=e)
             raise Exception(str(e))
@@ -367,7 +437,8 @@ class ThreatQ():
                 payload['type_id'] = self._get_event_type_id(base_url, access_token, p['type'])
             data = self._request(base_url, access_token, "PUT", f"/events/{evt_id}",
                                  json_data=payload, params={"with": "sources,attributes,type"})
-            return {"status": "success", "event": data.get("data", data)}
+            evt = self._first(data)
+            return {"status": "success", **self._event_fields(evt), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in edit_event", exc_info=e)
             raise Exception(str(e))
@@ -380,8 +451,9 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", "/events",
                                  params={"limit": limit, "offset": page * limit,
                                          "with": "sources,attributes,type"})
-            return {"status": "success", "events": data.get("data", []),
-                    "total": data.get("total", 0)}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "events": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_all_events", exc_info=e)
             raise Exception(str(e))
@@ -395,7 +467,11 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "POST", f"/{ep}/{p['obj_id']}/attributes",
                                  json_data={"name": p['name'], "value": p['value']})
-            return {"status": "success", "result": data.get("data", data)}
+            attr = self._first(data)
+            return {"status": "success", "succeeded": True,
+                    "attribute_id": self._str_id(attr.get("id")),
+                    "attribute_name": attr.get("name"),
+                    "attribute_value": attr.get("value"), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in add_attribute", exc_info=e)
             raise Exception(str(e))
@@ -407,7 +483,8 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "PUT", f"/{ep}/{p['obj_id']}/attributes/{p['attribute_id']}",
                                  json_data={"value": p['attribute_value']})
-            return {"status": "success", "result": data.get("data", data)}
+            return {"status": "success", "succeeded": True,
+                    "attribute_id": self._str_id(p['attribute_id']), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in modify_attribute", exc_info=e)
             raise Exception(str(e))
@@ -418,7 +495,8 @@ class ThreatQ():
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
             self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/attributes/{p['attribute_id']}")
-            return {"status": "success", "result": "Attribute deleted"}
+            return {"status": "success", "succeeded": True,
+                    "message": "Attribute deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_attribute", exc_info=e)
             raise Exception(str(e))
@@ -432,7 +510,10 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "POST", f"/{ep}/{p['obj_id']}/sources",
                                  json_data={"name": p['source']})
-            return {"status": "success", "result": data.get("data", data)}
+            src = self._first(data)
+            return {"status": "success", "succeeded": True,
+                    "source_id": self._str_id(src.get("id")),
+                    "source_name": src.get("name"), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in add_source", exc_info=e)
             raise Exception(str(e))
@@ -443,7 +524,8 @@ class ThreatQ():
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
             self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/sources/{p['source_id']}")
-            return {"status": "success", "result": "Source deleted"}
+            return {"status": "success", "succeeded": True,
+                    "message": "Source deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_source", exc_info=e)
             raise Exception(str(e))
@@ -458,7 +540,11 @@ class ThreatQ():
             ep2 = self._get_obj_endpoint(p['obj2_type'])
             data = self._request(base_url, access_token, "POST", f"/{ep1}/{p['obj1_id']}/{ep2}",
                                  json_data=[{"id": int(p['obj2_id'])}])
-            return {"status": "success", "result": data.get("data", data)}
+            link = self._first(data)
+            pivot = link.get("pivot") or {}
+            return {"status": "success", "succeeded": True,
+                    "link_id": self._str_id(pivot.get("id")),
+                    "linked_id": self._str_id(link.get("id")), "raw_response": data}
         except Exception as e:
             self.logger.error("Error in link_objects", exc_info=e)
             raise Exception(str(e))
@@ -478,7 +564,8 @@ class ThreatQ():
             if not link_id:
                 raise Exception("Link not found between the two objects")
             self._request(base_url, access_token, "DELETE", f"/{ep1}/{p['obj1_id']}/{ep2}/{link_id}")
-            return {"status": "success", "result": "Objects unlinked"}
+            return {"status": "success", "succeeded": True,
+                    "message": "Objects unlinked", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in unlink_objects", exc_info=e)
             raise Exception(str(e))
@@ -491,7 +578,8 @@ class ThreatQ():
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
             self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}")
-            return {"status": "success", "result": f"{p['obj_type']} deleted"}
+            return {"status": "success", "succeeded": True,
+                    "message": f"{p['obj_type']} deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_object", exc_info=e)
             raise Exception(str(e))
@@ -505,7 +593,9 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/indicators",
                                  params={"with": "sources,attributes,score,status,type"})
-            return {"status": "success", "indicators": data.get("data", [])}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": len(items),
+                    "indicators": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_indicators", exc_info=e)
             raise Exception(str(e))
@@ -517,7 +607,9 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/events",
                                  params={"with": "sources,type"})
-            return {"status": "success", "events": data.get("data", [])}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": len(items),
+                    "events": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_events", exc_info=e)
             raise Exception(str(e))
@@ -529,7 +621,9 @@ class ThreatQ():
             ep = self._get_obj_endpoint(p['obj_type'])
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/adversaries",
                                  params={"with": "sources,attributes"})
-            return {"status": "success", "adversaries": data.get("data", [])}
+            items = data.get("data", []) or []
+            return {"status": "success", "total_count": len(items),
+                    "adversaries": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_adversaries", exc_info=e)
             raise Exception(str(e))

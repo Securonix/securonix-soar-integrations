@@ -169,6 +169,7 @@ class TestThreatQSearchActions(unittest.TestCase):
         result = self.tq.search_by_name(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(result['results'], [])
+        self.assertEqual(result['total_count'], 0)
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -181,6 +182,9 @@ class TestThreatQSearchActions(unittest.TestCase):
         result = self.tq.search_by_id(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(result['result']['id'], 1)
+        self.assertEqual(result['object_id'], "1")
+        self.assertEqual(result['object_type'], "indicator")
+        self.assertEqual(result['value'], "192.168.1.1")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -207,21 +211,44 @@ class TestThreatQReputationActions(unittest.TestCase):
     def test_ip_reputation_found(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": [{"id": 1, "value": "192.168.1.1", "status": "Active"}]
+            "total": 1,
+            "data": [{
+                "id": 1, "value": "192.168.1.1", "score": 8,
+                "type": {"id": 10, "name": "IP Address"},
+                "status": {"id": 1, "name": "Active"},
+                "sources": [{"name": "Intel"}],
+                "attributes": [{"name": "Confidence", "value": "High"}]
+            }]
         })
         req = make_request(self.conn_params, {"ip": "192.168.1.1"})
         result = self.tq.ip_reputation(req)
         self.assertEqual(result['status'], 'success')
-        self.assertNotEqual(result['result'], "No results found")
+        self.assertTrue(result['found'])
+        self.assertEqual(result['total_count'], 1)
+        self.assertEqual(result['indicator_id'], "1")
+        self.assertEqual(result['value'], "192.168.1.1")
+        self.assertEqual(result['type'], "IP Address")
+        self.assertEqual(result['indicator_status'], "Active")
+        self.assertEqual(result['score'], 8)
+        self.assertEqual(result['sources'], ["Intel"])
+        self.assertEqual(len(result['attributes']), 1)
+        self.assertIn('raw_response', result)
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
     def test_ip_reputation_not_found(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
-        mock_request.return_value = mock_api_response({"data": []})
+        mock_request.return_value = mock_api_response({"total": 0, "data": []})
         req = make_request(self.conn_params, {"ip": "10.0.0.1"})
         result = self.tq.ip_reputation(req)
-        self.assertEqual(result['result'], "No results found")
+        self.assertEqual(result['status'], 'success')
+        self.assertFalse(result['found'])
+        self.assertEqual(result['total_count'], 0)
+        self.assertIsNone(result['indicator_id'])
+        self.assertIsNone(result['score'])
+        self.assertIsNone(result['indicator_status'])
+        self.assertEqual(result['sources'], [])
+        self.assertEqual(result['attributes'], [])
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -285,7 +312,12 @@ class TestThreatQIndicatorActions(unittest.TestCase):
         mock_post.return_value = mock_auth_response()
         mock_request.side_effect = [
             mock_api_response({"data": [{"name": "IP Address", "id": 1}]}),
-            mock_api_response({"data": {"id": 100, "value": "10.0.0.1"}})
+            # Verified create shape: list wrapper, nested type, only status_id, no score
+            mock_api_response({"total": 1, "data": [{
+                "id": 100, "value": "10.0.0.1", "type_id": 10, "status_id": 1,
+                "type": {"id": 10, "name": "IP Address"},
+                "sources": [{"name": "TestSource"}]
+            }]})
         ]
         req = make_request(self.conn_params, {
             "type": "IP Address", "status": "Active",
@@ -294,6 +326,13 @@ class TestThreatQIndicatorActions(unittest.TestCase):
         })
         result = self.tq.create_indicator(req)
         self.assertEqual(result['status'], 'success')
+        self.assertEqual(result['indicator_id'], "100")
+        self.assertEqual(result['value'], "10.0.0.1")
+        self.assertEqual(result['type'], "IP Address")
+        # Verified: create response omits nested status + score -> None
+        self.assertIsNone(result['indicator_status'])
+        self.assertIsNone(result['score'])
+        self.assertIn('raw_response', result)
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -327,11 +366,13 @@ class TestThreatQIndicatorActions(unittest.TestCase):
     def test_update_status_success(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": {"id": 100, "status": "Whitelisted"}
+            "data": {"id": 100, "status": {"id": 5, "name": "Whitelisted"}}
         })
         req = make_request(self.conn_params, {"id": "100", "status": "Whitelisted"})
         result = self.tq.update_status(req)
         self.assertEqual(result['status'], 'success')
+        self.assertEqual(result['indicator_id'], "100")
+        self.assertEqual(result['indicator_status'], "Whitelisted")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -375,7 +416,8 @@ class TestThreatQIndicatorActions(unittest.TestCase):
         result = self.tq.get_all_indicators(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['indicators']), 2)
-        self.assertEqual(result['total'], 2)
+        self.assertEqual(result['total_count'], 2)
+        self.assertEqual(result['count'], 2)
 
 
 class TestThreatQAdversaryActions(unittest.TestCase):
@@ -399,6 +441,8 @@ class TestThreatQAdversaryActions(unittest.TestCase):
         req = make_request(self.conn_params, {"name": "APT29", "sources": "Intel,OSINT"})
         result = self.tq.create_adversary(req)
         self.assertEqual(result['status'], 'success')
+        self.assertEqual(result['adversary_id'], "10")
+        self.assertEqual(result['name'], "APT29")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -422,6 +466,8 @@ class TestThreatQAdversaryActions(unittest.TestCase):
         result = self.tq.get_all_adversaries(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['adversaries']), 1)
+        self.assertEqual(result['total_count'], 1)
+        self.assertEqual(result['count'], 1)
 
 
 class TestThreatQEventActions(unittest.TestCase):
@@ -440,7 +486,8 @@ class TestThreatQEventActions(unittest.TestCase):
     def test_create_event_success(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": {"id": 20, "title": "Incident"}
+            "data": {"id": 20, "title": "Incident", "happened_at": "2025-01-01 00:00:00",
+                     "type": {"id": 1, "name": "Malware"}}
         })
         req = make_request(self.conn_params, {
             "title": "Incident", "type": "Malware",
@@ -448,6 +495,10 @@ class TestThreatQEventActions(unittest.TestCase):
         })
         result = self.tq.create_event(req)
         self.assertEqual(result['status'], 'success')
+        self.assertEqual(result['event_id'], "20")
+        self.assertEqual(result['title'], "Incident")
+        self.assertEqual(result['type'], "Malware")
+        self.assertEqual(result['happened_at'], "2025-01-01 00:00:00")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -475,6 +526,8 @@ class TestThreatQEventActions(unittest.TestCase):
         result = self.tq.get_all_events(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['events']), 1)
+        self.assertEqual(result['total_count'], 1)
+        self.assertEqual(result['count'], 1)
 
 
 class TestThreatQAttributeActions(unittest.TestCase):
@@ -493,7 +546,8 @@ class TestThreatQAttributeActions(unittest.TestCase):
     def test_add_attribute_success(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": {"id": 50, "name": "attr1", "value": "val1"}
+            "total": 1,
+            "data": [{"id": 50, "attribute_id": 255, "name": "attr1", "value": "val1"}]
         })
         req = make_request(self.conn_params, {
             "obj_type": "indicator", "obj_id": "100",
@@ -501,6 +555,10 @@ class TestThreatQAttributeActions(unittest.TestCase):
         })
         result = self.tq.add_attribute(req)
         self.assertEqual(result['status'], 'success')
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['attribute_id'], "50")
+        self.assertEqual(result['attribute_name'], "attr1")
+        self.assertEqual(result['attribute_value'], "val1")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -530,7 +588,8 @@ class TestThreatQAttributeActions(unittest.TestCase):
         })
         result = self.tq.delete_attribute(req)
         self.assertEqual(result['status'], 'success')
-        self.assertEqual(result['result'], "Attribute deleted")
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['message'], "Attribute deleted")
 
 
 class TestThreatQSourceActions(unittest.TestCase):
@@ -549,13 +608,17 @@ class TestThreatQSourceActions(unittest.TestCase):
     def test_add_source_success(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": {"id": 60, "name": "AlienVault"}
+            "total": 1,
+            "data": [{"id": 60, "source_id": 10, "name": "AlienVault"}]
         })
         req = make_request(self.conn_params, {
             "obj_type": "indicator", "obj_id": "100", "source": "AlienVault"
         })
         result = self.tq.add_source(req)
         self.assertEqual(result['status'], 'success')
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['source_id'], "60")
+        self.assertEqual(result['source_name'], "AlienVault")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -571,7 +634,8 @@ class TestThreatQSourceActions(unittest.TestCase):
         })
         result = self.tq.delete_source(req)
         self.assertEqual(result['status'], 'success')
-        self.assertEqual(result['result'], "Source deleted")
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['message'], "Source deleted")
 
 
 class TestThreatQLinkActions(unittest.TestCase):
@@ -590,7 +654,8 @@ class TestThreatQLinkActions(unittest.TestCase):
     def test_link_objects_success(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({
-            "data": {"id": 1}
+            "total": 1,
+            "data": [{"id": 10, "pivot": {"id": 999}}]
         })
         req = make_request(self.conn_params, {
             "obj1_type": "indicator", "obj1_id": "100",
@@ -598,6 +663,9 @@ class TestThreatQLinkActions(unittest.TestCase):
         })
         result = self.tq.link_objects(req)
         self.assertEqual(result['status'], 'success')
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['link_id'], "999")
+        self.assertEqual(result['linked_id'], "10")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -615,7 +683,8 @@ class TestThreatQLinkActions(unittest.TestCase):
         })
         result = self.tq.unlink_objects(req)
         self.assertEqual(result['status'], 'success')
-        self.assertEqual(result['result'], "Objects unlinked")
+        self.assertTrue(result['succeeded'])
+        self.assertEqual(result['message'], "Objects unlinked")
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -654,7 +723,8 @@ class TestThreatQDeleteAndRelatedActions(unittest.TestCase):
         req = make_request(self.conn_params, {"obj_type": "event", "obj_id": "20"})
         result = self.tq.delete_object(req)
         self.assertEqual(result['status'], 'success')
-        self.assertIn("deleted", result['result'])
+        self.assertTrue(result['succeeded'])
+        self.assertIn("deleted", result['message'])
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -667,6 +737,7 @@ class TestThreatQDeleteAndRelatedActions(unittest.TestCase):
         result = self.tq.get_related_indicators(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['indicators']), 1)
+        self.assertEqual(result['total_count'], 1)
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -679,6 +750,7 @@ class TestThreatQDeleteAndRelatedActions(unittest.TestCase):
         result = self.tq.get_related_events(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['events']), 1)
+        self.assertEqual(result['total_count'], 1)
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
@@ -691,6 +763,7 @@ class TestThreatQDeleteAndRelatedActions(unittest.TestCase):
         result = self.tq.get_related_adversaries(req)
         self.assertEqual(result['status'], 'success')
         self.assertEqual(len(result['adversaries']), 1)
+        self.assertEqual(result['total_count'], 1)
 
 
 if __name__ == '__main__':
