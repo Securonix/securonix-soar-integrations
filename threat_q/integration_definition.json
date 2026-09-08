@@ -48,36 +48,38 @@
       "label": "Search by Name",
       "name": "search_by_name",
       "type": "Investigate",
-      "desc": "Search for objects by name in ThreatQ",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":2,\"results\":[{\"id\":1,\"value\":\"malicious.com\"}],\"raw_response\":{\"results\":[]}}",
+      "desc": "Search indicators, adversaries, and events whose value/name/title contains the given text",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":2,\"results\":[{\"id\":1,\"value\":\"malicious.com\"}],\"raw_response\":{\"indicators\":{\"total\":1,\"data\":[]},\"adversaries\":{\"total\":0,\"data\":[]},\"events\":{\"total\":0,\"data\":[]}}}",
       "inParameters": [
-        {"label": "Name", "name": "name", "desc": "Name to search for", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Max results to return", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Name", "name": "name", "desc": "Name/value substring to search for", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Limit", "name": "limit", "desc": "Max results to retrieve per object type", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matched objects", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Results", "name": "results", "desc": "List of matched objects", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matched objects across all types (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Results", "name": "results", "desc": "Merged list of matched objects (connector-computed)", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original per-type ThreatQ responses (indicators, adversaries, events)", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
       "label": "Search by ID",
       "name": "search_by_id",
       "type": "Investigate",
-      "desc": "Search for an object by type and ID",
-      "sampleOutput": "{\"status\":\"success\",\"object_id\":\"1\",\"object_type\":\"indicator\",\"value\":\"192.168.1.1\",\"name\":null,\"title\":null,\"result\":{\"id\":1,\"value\":\"192.168.1.1\"},\"raw_response\":{}}",
+      "desc": "Retrieve an object by type and ID",
+      "sampleOutput": "{\"status\":\"success\",\"object_id\":\"1\",\"object_type\":\"indicator\",\"value\":\"192.168.1.1\",\"name\":null,\"title\":null,\"result\":{\"id\":1,\"value\":\"192.168.1.1\"},\"raw_response\":{\"data\":{\"id\":1,\"value\":\"192.168.1.1\"}}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "object_id", "desc": "The queried object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object Type", "name": "object_type", "desc": "The queried object type", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Object value (indicators)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Name", "name": "name", "desc": "Object name (adversaries)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Title", "name": "title", "desc": "Object title (events)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Result", "name": "result", "desc": "Full object details", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Value", "name": "value", "desc": "ThreatQ value (indicators)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "ThreatQ name (adversaries)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "ThreatQ title (events)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Result", "name": "result", "desc": "Full ThreatQ object", "type": "Object", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -85,21 +87,24 @@
       "name": "ip_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of an IP address",
-      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"1\",\"value\":\"192.168.1.1\",\"type\":\"IP Address\",\"indicator_status\":\"Active\",\"score\":8,\"sources\":[\"Intel\"],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"1\",\"value\":\"192.168.1.1\",\"type_id\":10,\"type\":\"IP Address\",\"status_id\":1,\"indicator_status\":\"Active\",\"score\":8,\"sources\":[\"Intel\"],\"attributes\":[],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "IP Address", "name": "ip", "desc": "IP address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found (connector-computed)", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators (ThreatQ total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (best-effort; null when the search endpoint omits the score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -107,21 +112,24 @@
       "name": "url_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a URL",
-      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"2\",\"value\":\"http://malicious.com\",\"type\":\"URL\",\"indicator_status\":\"Active\",\"score\":7,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"2\",\"value\":\"http://malicious.com\",\"type_id\":11,\"type\":\"URL\",\"status_id\":1,\"indicator_status\":\"Active\",\"score\":7,\"sources\":[],\"attributes\":[],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "URL", "name": "url", "desc": "URL to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found (connector-computed)", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators (ThreatQ total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (best-effort; null when the search endpoint omits the score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -129,21 +137,24 @@
       "name": "domain_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a domain",
-      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"3\",\"value\":\"malicious.com\",\"type\":\"FQDN\",\"indicator_status\":\"Active\",\"score\":9,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"3\",\"value\":\"malicious.com\",\"type_id\":12,\"type\":\"FQDN\",\"status_id\":1,\"indicator_status\":\"Active\",\"score\":9,\"sources\":[],\"attributes\":[],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Domain", "name": "domain", "desc": "Domain to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found (connector-computed)", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators (ThreatQ total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (best-effort; null when the search endpoint omits the score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -151,21 +162,24 @@
       "name": "file_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of a file hash (MD5, SHA-1, SHA-256)",
-      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"4\",\"value\":\"abc123\",\"type\":\"MD5\",\"indicator_status\":\"Active\",\"score\":6,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"found\":true,\"total_count\":1,\"indicator_id\":\"4\",\"value\":\"abc123\",\"type_id\":20,\"type\":\"MD5\",\"status_id\":1,\"indicator_status\":\"Active\",\"score\":6,\"sources\":[],\"attributes\":[],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "File Hash", "name": "file", "desc": "MD5, SHA-1, or SHA-256 hash", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found (connector-computed)", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators (ThreatQ total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (best-effort; null when the search endpoint omits the score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -173,21 +187,24 @@
       "name": "email_reputation",
       "type": "Investigate",
       "desc": "Check the reputation of an email address",
-      "sampleOutput": "{\"status\":\"success\",\"found\":false,\"total_count\":0,\"indicator_id\":null,\"value\":null,\"type\":null,\"indicator_status\":null,\"score\":null,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"found\":false,\"total_count\":0,\"indicator_id\":null,\"value\":null,\"type_id\":null,\"type\":null,\"status_id\":null,\"indicator_status\":null,\"score\":null,\"sources\":[],\"attributes\":[],\"raw_response\":{\"total\":0,\"data\":[]}}",
       "inParameters": [
         {"label": "Email", "name": "email", "desc": "Email address to check", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (Active, Whitelisted, ...)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Found", "name": "found", "desc": "Whether a matching indicator was found (connector-computed)", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Number of matching indicators (ThreatQ total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "First match ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (best-effort; null when the search endpoint omits the score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -195,7 +212,7 @@
       "name": "create_indicator",
       "type": "Enrichment",
       "desc": "Create a new indicator in ThreatQ",
-      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"10.0.0.1\",\"type\":\"IP Address\",\"indicator_status\":null,\"score\":null,\"sources\":[\"TestSource\"],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"10.0.0.1\",\"type_id\":10,\"type\":\"IP Address\",\"status_id\":1,\"indicator_status\":null,\"score\":null,\"sources\":[\"TestSource\"],\"attributes\":[],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Type", "name": "type", "desc": "Indicator type (e.g., IP Address, Email Address)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Status", "name": "status", "desc": "Indicator status (Active, Expired, Indirect, Review, Whitelisted)", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false},
@@ -205,14 +222,17 @@
         {"label": "Attribute Values", "name": "attributes_values", "desc": "Comma-separated attribute values", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "Created indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status (null on create - see raw_response for status_id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score (null on create)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Created ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name. NULL on create because the create response does not include the status relationship.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score. NULL on create because the create response does not include the score relationship.", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -220,7 +240,7 @@
       "name": "edit_indicator",
       "type": "Enrichment",
       "desc": "Update an existing indicator",
-      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"updated_value\",\"type\":\"IP Address\",\"indicator_status\":\"Active\",\"score\":8,\"sources\":[],\"attributes\":[],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"value\":\"updated_value\",\"type_id\":10,\"type\":\"IP Address\",\"status_id\":1,\"indicator_status\":\"Active\",\"score\":8,\"sources\":[],\"attributes\":[],\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Value", "name": "value", "desc": "New indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
@@ -228,14 +248,17 @@
         {"label": "Description", "name": "description", "desc": "Indicator description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Value", "name": "value", "desc": "Indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Indicator type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "Indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Value", "name": "value", "desc": "ThreatQ indicator value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ indicator type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ indicator type name (from type relationship)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Status ID", "name": "status_id", "desc": "ThreatQ indicator status_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "ThreatQ status name (from status relationship)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "ThreatQ score (from score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Sources", "name": "sources", "desc": "Source names", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attributes", "name": "attributes", "desc": "Indicator attributes", "type": "List", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -243,15 +266,16 @@
       "name": "update_status",
       "type": "Enrichment",
       "desc": "Update an indicator's status",
-      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"indicator_status\":\"Whitelisted\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"indicator_status\":\"Whitelisted\",\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Status", "name": "status", "desc": "New status", "type": "String", "values": ["Active", "Expired", "Indirect", "Review", "Whitelisted"], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicator Status", "name": "indicator_status", "desc": "New status name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator Status", "name": "indicator_status", "desc": "New ThreatQ status name (from status relationship, falls back to input)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -259,15 +283,16 @@
       "name": "update_score",
       "type": "Enrichment",
       "desc": "Update an indicator's manual score",
-      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"score\":5,\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"indicator_id\":\"100\",\"score\":5,\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Score", "name": "score", "desc": "Manual score (Generated Score or 1-10)", "type": "String", "values": ["Generated Score", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Score", "name": "score", "desc": "New indicator score", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicator ID", "name": "indicator_id", "desc": "Updated ThreatQ indicator ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Score", "name": "score", "desc": "New ThreatQ score (from score relationship)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -275,16 +300,17 @@
       "name": "get_all_indicators",
       "type": "Investigate",
       "desc": "Retrieve all indicators with pagination",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":2,\"count\":2,\"indicators\":[{\"id\":1}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":250,\"count\":50,\"indicators\":[{\"id\":1}],\"raw_response\":{\"total\":250,\"data\":[]}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number (default 0)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Max results (default 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Limit", "name": "limit", "desc": "Max results per page (default 50)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Total indicators matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Count", "name": "count", "desc": "Indicators returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicators", "name": "indicators", "desc": "List of indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total indicators available (ThreatQ server total across pages)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Indicators returned on this page (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicators", "name": "indicators", "desc": "List of ThreatQ indicators", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -292,15 +318,16 @@
       "name": "create_adversary",
       "type": "Enrichment",
       "desc": "Create a new adversary",
-      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29\",\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversary ID", "name": "adversary_id", "desc": "Created adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversary ID", "name": "adversary_id", "desc": "Created ThreatQ adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "ThreatQ adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -308,15 +335,16 @@
       "name": "edit_adversary",
       "type": "Enrichment",
       "desc": "Update an adversary name",
-      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29 Updated\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"adversary_id\":\"10\",\"name\":\"APT29 Updated\",\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Name", "name": "name", "desc": "New adversary name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Adversary ID", "name": "adversary_id", "desc": "Updated adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Name", "name": "name", "desc": "Adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversary ID", "name": "adversary_id", "desc": "Updated ThreatQ adversary ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Name", "name": "name", "desc": "ThreatQ adversary name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -324,16 +352,17 @@
       "name": "get_all_adversaries",
       "type": "Investigate",
       "desc": "Retrieve all adversaries with pagination",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"adversaries\":[{\"id\":1,\"name\":\"APT29\"}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"adversaries\":[{\"id\":1,\"name\":\"APT29\"}],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Max results (max 200)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Limit", "name": "limit", "desc": "Max results per page (max 200)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Total adversaries matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Count", "name": "count", "desc": "Adversaries returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Adversaries", "name": "adversaries", "desc": "List of adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total adversaries available (ThreatQ server total across pages)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Adversaries returned on this page (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversaries", "name": "adversaries", "desc": "List of ThreatQ adversaries", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -341,19 +370,22 @@
       "name": "create_event",
       "type": "Enrichment",
       "desc": "Create a new event",
-      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Incident\",\"type\":\"Malware\",\"happened_at\":\"2025-01-01 00:00:00\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Incident\",\"type_id\":1,\"type\":\"Spearphish\",\"happened_at\":\"2025-01-01 00:00:00\",\"description\":null,\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Event type (e.g., Malware, Watchlist)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "Event type (e.g., Spearphish, Watering Hole)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Date", "name": "date", "desc": "Event date (YYYY-mm-dd HH:MM:SS)", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Sources", "name": "sources", "desc": "Comma-separated source names", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Event ID", "name": "event_id", "desc": "Created event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Event type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Happened At", "name": "happened_at", "desc": "Event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Event ID", "name": "event_id", "desc": "Created ThreatQ event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "ThreatQ event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ event type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ event type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Happened At", "name": "happened_at", "desc": "ThreatQ event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Description", "name": "description", "desc": "ThreatQ event description (null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -361,7 +393,7 @@
       "name": "edit_event",
       "type": "Enrichment",
       "desc": "Update an existing event",
-      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Updated\",\"type\":\"Malware\",\"happened_at\":\"2025-02-01\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"event_id\":\"20\",\"title\":\"Updated\",\"type_id\":1,\"type\":\"Spearphish\",\"happened_at\":\"2025-02-01\",\"description\":\"Updated desc\",\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "ID", "name": "id", "desc": "Event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Title", "name": "title", "desc": "New title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
@@ -370,11 +402,14 @@
         {"label": "Description", "name": "description", "desc": "New description", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Event ID", "name": "event_id", "desc": "Updated event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Title", "name": "title", "desc": "Event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Type", "name": "type", "desc": "Event type name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Happened At", "name": "happened_at", "desc": "Event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Event ID", "name": "event_id", "desc": "Updated ThreatQ event ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Title", "name": "title", "desc": "ThreatQ event title", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type ID", "name": "type_id", "desc": "ThreatQ event type_id", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Type", "name": "type", "desc": "ThreatQ event type name (from type relationship; null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Happened At", "name": "happened_at", "desc": "ThreatQ event date/time", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Description", "name": "description", "desc": "ThreatQ event description (null if not returned)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -382,16 +417,17 @@
       "name": "get_all_events",
       "type": "Investigate",
       "desc": "Retrieve all events with pagination",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"events\":[{\"id\":1,\"title\":\"Event1\"}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"events\":[{\"id\":1,\"title\":\"Event1\"}],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Page", "name": "page", "desc": "Page number", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Limit", "name": "limit", "desc": "Max results", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Limit", "name": "limit", "desc": "Max results per page", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Total events matching (server total)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Count", "name": "count", "desc": "Events returned on this page", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Events", "name": "events", "desc": "List of events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total events available (ThreatQ server total across pages)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Events returned on this page (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Events", "name": "events", "desc": "List of ThreatQ events", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -399,7 +435,7 @@
       "name": "add_attribute",
       "type": "Enrichment",
       "desc": "Add an attribute to an object",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"attribute_id\":\"50\",\"attribute_name\":\"attr1\",\"attribute_value\":\"val1\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"object_attribute_id\":\"41258\",\"attribute_id\":\"41258\",\"attribute_definition_id\":\"255\",\"object_id\":\"1\",\"attribute_name\":\"Confidence\",\"attribute_value\":\"High\",\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary, attachment)", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -407,11 +443,15 @@
         {"label": "Attribute Value", "name": "value", "desc": "Attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was added", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Attribute ID", "name": "attribute_id", "desc": "Created attribute instance ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attribute Name", "name": "attribute_name", "desc": "Attribute name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Attribute Value", "name": "attribute_value", "desc": "Attribute value", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object Attribute ID", "name": "object_attribute_id", "desc": "ThreatQ object-attribute record ID (data.id) - used for modify/delete", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute ID (deprecated)", "name": "attribute_id", "desc": "DEPRECATED legacy alias equal to object_attribute_id (ThreatQ data.id). Use object_attribute_id. Retained for backward compatibility.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Definition ID", "name": "attribute_definition_id", "desc": "ThreatQ attribute definition ID (data.attribute_id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Object ID", "name": "object_id", "desc": "Parent object ID (ThreatQ data.<object_type>_id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Name", "name": "attribute_name", "desc": "ThreatQ attribute name (data.name)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute Value", "name": "attribute_value", "desc": "ThreatQ attribute value (data.value)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -419,17 +459,20 @@
       "name": "modify_attribute",
       "type": "Enrichment",
       "desc": "Modify an attribute on an object",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"attribute_id\":\"50\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"object_attribute_id\":\"41258\",\"attribute_id\":\"41258\",\"raw_response\":{\"data\":{}}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Attribute ID", "name": "attribute_id", "desc": "Attribute ID to modify", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object Attribute ID", "name": "object_attribute_id", "desc": "ThreatQ object-attribute record ID (data.id from add_attribute). Preferred; takes precedence over legacy attribute_id.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute ID (deprecated)", "name": "attribute_id", "desc": "DEPRECATED legacy alias for the object-attribute record ID. Use object_attribute_id. Never interpreted as the attribute definition ID.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
         {"label": "Attribute Value", "name": "attribute_value", "desc": "New attribute value", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was modified", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Attribute ID", "name": "attribute_id", "desc": "Modified attribute ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object Attribute ID", "name": "object_attribute_id", "desc": "ThreatQ object-attribute record ID used", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute ID (deprecated)", "name": "attribute_id", "desc": "DEPRECATED legacy alias equal to object_attribute_id", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -437,16 +480,21 @@
       "name": "delete_attribute",
       "type": "Enrichment",
       "desc": "Delete an attribute from an object",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Attribute deleted\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"http_status\":204,\"object_attribute_id\":\"41258\",\"attribute_id\":\"41258\",\"message\":\"Attribute deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Attribute ID", "name": "attribute_id", "desc": "Attribute ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Object Attribute ID", "name": "object_attribute_id", "desc": "ThreatQ object-attribute record ID (data.id from add_attribute). Preferred; takes precedence over legacy attribute_id.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute ID (deprecated)", "name": "attribute_id", "desc": "DEPRECATED legacy alias for the object-attribute record ID. Use object_attribute_id. Never interpreted as the attribute definition ID.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the attribute was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "HTTP Status", "name": "http_status", "desc": "HTTP status returned by ThreatQ (204 on success)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Object Attribute ID", "name": "object_attribute_id", "desc": "ThreatQ object-attribute record ID deleted", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Attribute ID (deprecated)", "name": "attribute_id", "desc": "DEPRECATED legacy alias equal to object_attribute_id", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Connector-generated result message. Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Empty on HTTP 204 (no ThreatQ body)", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -454,17 +502,20 @@
       "name": "add_source",
       "type": "Enrichment",
       "desc": "Add a source to an object",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"source_id\":\"60\",\"source_name\":\"AlienVault\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"object_source_id\":\"18987\",\"source_id\":\"18987\",\"threatq_source_id\":\"10\",\"source_name\":\"AlienVault\",\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Source Name", "name": "source", "desc": "Source name", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the source was added", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Source ID", "name": "source_id", "desc": "Created source link ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Source Name", "name": "source_name", "desc": "Source name", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Object Source ID", "name": "object_source_id", "desc": "ThreatQ object-source relationship record ID (data.id) - used for delete", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source ID (deprecated)", "name": "source_id", "desc": "DEPRECATED legacy alias equal to object_source_id (ThreatQ data.id, the relationship record ID). Use object_source_id. Retained for backward compatibility.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "ThreatQ Source ID", "name": "threatq_source_id", "desc": "Global ThreatQ source catalog ID (data.source_id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source Name", "name": "source_name", "desc": "ThreatQ source name (data.name)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -472,16 +523,21 @@
       "name": "delete_source",
       "type": "Enrichment",
       "desc": "Delete a source from an object",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Source deleted\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"http_status\":204,\"object_source_id\":\"18987\",\"source_id\":\"18987\",\"message\":\"Source deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Source ID", "name": "source_id", "desc": "Source ID to delete", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
+        {"label": "Object Source ID", "name": "object_source_id", "desc": "ThreatQ object-source relationship record ID (data.id from add_source). Preferred; takes precedence over legacy source_id. This is NOT the global ThreatQ source catalog ID.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source ID (deprecated)", "name": "source_id", "desc": "DEPRECATED legacy alias for the object-source relationship record ID (the URL path ID). Use object_source_id.", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the source was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "HTTP Status", "name": "http_status", "desc": "HTTP status returned by ThreatQ (204 on success)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Object Source ID", "name": "object_source_id", "desc": "ThreatQ object-source relationship record ID deleted", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Source ID (deprecated)", "name": "source_id", "desc": "DEPRECATED legacy alias equal to object_source_id", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Connector-generated result message. Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Empty on HTTP 204 (no ThreatQ body)", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -489,7 +545,7 @@
       "name": "link_objects",
       "type": "Enrichment",
       "desc": "Link two objects together",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"link_id\":\"999\",\"linked_id\":\"10\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"link_id\":\"999\",\"linked_id\":\"10\",\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -497,10 +553,11 @@
         {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the link was created", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Link ID", "name": "link_id", "desc": "Created link (pivot) ID", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Linked ID", "name": "linked_id", "desc": "ID of the linked object", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Link ID", "name": "link_id", "desc": "ThreatQ object-link (pivot) relationship ID (data[0].pivot.id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Linked ID", "name": "linked_id", "desc": "ID of the linked object (data[0].id)", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -508,7 +565,7 @@
       "name": "unlink_objects",
       "type": "Enrichment",
       "desc": "Unlink two objects",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"Objects unlinked\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"http_status\":204,\"message\":\"Objects unlinked\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object 1 Type", "name": "obj1_type", "desc": "First object type", "type": "String", "values": ["indicator", "adversary", "event"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object 1 ID", "name": "obj1_id", "desc": "First object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
@@ -516,9 +573,11 @@
         {"label": "Object 2 ID", "name": "obj2_id", "desc": "Second object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the objects were unlinked", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "HTTP Status", "name": "http_status", "desc": "HTTP status returned by ThreatQ (204 on success)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Connector-generated result message. Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Empty on HTTP 204 (no ThreatQ body)", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -526,15 +585,17 @@
       "name": "delete_object",
       "type": "Enrichment",
       "desc": "Delete an object from ThreatQ",
-      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"message\":\"event deleted\",\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"succeeded\":true,\"http_status\":204,\"message\":\"event deleted\",\"raw_response\":{}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary", "attachment"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Succeeded", "name": "succeeded", "desc": "Whether the object was deleted", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Message", "name": "message", "desc": "Result message", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Succeeded", "name": "succeeded", "desc": "Connector-generated success flag. Not a ThreatQ API field.", "type": "Boolean", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "HTTP Status", "name": "http_status", "desc": "HTTP status returned by ThreatQ (204 on success)", "type": "Number", "values": [], "isSecret": false, "optional": true, "encrypted": false},
+        {"label": "Message", "name": "message", "desc": "Connector-generated result message. Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Empty on HTTP 204 (no ThreatQ body)", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -542,15 +603,17 @@
       "name": "get_related_indicators",
       "type": "Investigate",
       "desc": "Get related indicators for an object",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"indicators\":[{\"id\":1,\"value\":\"10.0.0.1\"}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"indicators\":[{\"id\":1,\"value\":\"10.0.0.1\"}],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type (indicator, event, adversary)", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Number of related indicators", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Indicators", "name": "indicators", "desc": "Related indicators", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total related indicators (ThreatQ total when available)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Related indicators returned in this response (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Indicators", "name": "indicators", "desc": "Related ThreatQ indicators", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -558,15 +621,17 @@
       "name": "get_related_events",
       "type": "Investigate",
       "desc": "Get related events for an object",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"events\":[{\"id\":20,\"title\":\"Incident\"}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"events\":[{\"id\":20,\"title\":\"Incident\"}],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Number of related events", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Events", "name": "events", "desc": "Related events", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total related events (ThreatQ total when available)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Related events returned in this response (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Events", "name": "events", "desc": "Related ThreatQ events", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     },
     {
@@ -574,15 +639,17 @@
       "name": "get_related_adversaries",
       "type": "Investigate",
       "desc": "Get related adversaries for an object",
-      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"adversaries\":[{\"id\":10,\"name\":\"APT29\"}],\"raw_response\":{}}",
+      "sampleOutput": "{\"status\":\"success\",\"total_count\":1,\"count\":1,\"adversaries\":[{\"id\":10,\"name\":\"APT29\"}],\"raw_response\":{\"total\":1,\"data\":[]}}",
       "inParameters": [
         {"label": "Object Type", "name": "obj_type", "desc": "Object type", "type": "String", "values": ["indicator", "event", "adversary"], "isSecret": false, "optional": false, "encrypted": false},
         {"label": "Object ID", "name": "obj_id", "desc": "Object ID", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false}
       ],
       "outParameters": [
-        {"label": "Total Count", "name": "total_count", "desc": "Number of related adversaries", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Adversaries", "name": "adversaries", "desc": "Related adversaries", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
-        {"label": "Raw Response", "name": "raw_response", "desc": "Full API response", "type": "String", "values": [], "isSecret": false, "optional": true, "encrypted": false}
+        {"label": "Status", "name": "status", "desc": "Connector-generated operation status (success/error). Not a ThreatQ API field.", "type": "String", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Total Count", "name": "total_count", "desc": "Total related adversaries (ThreatQ total when available)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Count", "name": "count", "desc": "Related adversaries returned in this response (connector-computed)", "type": "Number", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Adversaries", "name": "adversaries", "desc": "Related ThreatQ adversaries", "type": "List", "values": [], "isSecret": false, "optional": false, "encrypted": false},
+        {"label": "Raw Response", "name": "raw_response", "desc": "Original ThreatQ API response", "type": "Object", "values": [], "isSecret": false, "optional": true, "encrypted": false}
       ]
     }
   ]

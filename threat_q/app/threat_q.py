@@ -42,14 +42,23 @@ class ThreatQ():
         return str(value) if value is not None else None
 
     def _indicator_fields(self, ind: dict) -> dict:
-        """Flatten a single indicator object into scalar output fields."""
+        """Flatten a single indicator object into scalar output fields.
+
+        `type_id`/`status_id` are native ThreatQ scalar fields; `type`/
+        `indicator_status` are the human-readable names from the `type`/`status`
+        relationships (only present when requested via `with=type,status` and
+        actually returned). `score` is best-effort and may be null when the
+        endpoint does not include the score relationship.
+        """
         ind = ind or {}
         type_obj = ind.get("type") or {}
         status_obj = ind.get("status") or {}
         return {
             "indicator_id": self._str_id(ind.get("id")),
             "value": ind.get("value"),
+            "type_id": ind.get("type_id"),
             "type": type_obj.get("name") if type_obj else None,
+            "status_id": ind.get("status_id"),
             "indicator_status": status_obj.get("name") if status_obj else None,
             "score": ind.get("score"),
             "sources": [s.get("name") for s in (ind.get("sources") or []) if isinstance(s, dict)],
@@ -57,13 +66,18 @@ class ThreatQ():
         }
 
     def _event_fields(self, evt: dict) -> dict:
+        """Flatten an event object. `type` (name) is only present when the
+        `type` relationship is returned; `type_id` is the native scalar.
+        Resilient when `type` or `description` is absent."""
         evt = evt or {}
         type_obj = evt.get("type") or {}
         return {
             "event_id": self._str_id(evt.get("id")),
             "title": evt.get("title"),
+            "type_id": evt.get("type_id"),
             "type": type_obj.get("name") if type_obj else None,
             "happened_at": evt.get("happened_at"),
+            "description": evt.get("description"),
         }
 
     def _adversary_fields(self, adv: dict) -> dict:
@@ -193,15 +207,19 @@ class ThreatQ():
             name = request.parameters['name']
             limit = request.parameters.get('limit', 50)
             results = []
+            # search_by_name performs multiple ThreatQ calls; raw_response
+            # preserves each actual per-type API response unmodified.
+            raw = {}
             for obj_type in ['indicators', 'adversaries', 'events']:
                 data = self._request(base_url, access_token, "GET", f"/{obj_type}",
                                      params={"limit": limit, "with": "sources,attributes"})
+                raw[obj_type] = data
                 for item in data.get("data", []):
                     val = item.get("value") or item.get("name") or item.get("title", "")
                     if name.lower() in val.lower():
                         results.append(item)
             return {"status": "success", "total_count": len(results),
-                    "results": results, "raw_response": {"results": results}}
+                    "results": results, "raw_response": raw}
         except Exception as e:
             self.logger.error("Error in search_by_name", exc_info=e)
             raise Exception(str(e))
@@ -464,27 +482,61 @@ class ThreatQ():
         try:
             base_url, access_token = self._connect(request.connectionParameters)
             p = request.parameters
-            ep = self._get_obj_endpoint(p['obj_type'])
+            obj_type = p['obj_type']
+            ep = self._get_obj_endpoint(obj_type)
             data = self._request(base_url, access_token, "POST", f"/{ep}/{p['obj_id']}/attributes",
                                  json_data={"name": p['name'], "value": p['value']})
             attr = self._first(data)
-            return {"status": "success", "succeeded": True,
-                    "attribute_id": self._str_id(attr.get("id")),
-                    "attribute_name": attr.get("name"),
-                    "attribute_value": attr.get("value"), "raw_response": data}
+            # ThreatQ object-attribute record: `id` is the object-attribute
+            # record ID; `attribute_id` is the attribute DEFINITION ID; and
+            # `<object_type>_id` (e.g. indicator_id) is the parent object ID.
+            record_id = self._str_id(attr.get("id"))
+            return {
+                "status": "success",
+                "succeeded": True,
+                "object_attribute_id": record_id,
+                # Deprecated legacy alias: historically `attribute_id` returned
+                # the object-attribute record ID (data.id). Preserved for BC.
+                "attribute_id": record_id,
+                "attribute_definition_id": self._str_id(attr.get("attribute_id")),
+                "object_id": self._str_id(attr.get(f"{obj_type}_id")),
+                "attribute_name": attr.get("name"),
+                "attribute_value": attr.get("value"),
+                "raw_response": data,
+            }
         except Exception as e:
             self.logger.error("Error in add_attribute", exc_info=e)
             raise Exception(str(e))
+
+    def _resolve_object_attribute_id(self, p):
+        """Resolve the ThreatQ object-attribute RECORD id from parameters.
+
+        Accepts the precise `object_attribute_id` (preferred) and the legacy
+        `attribute_id` input, which has always referred to the same
+        object-attribute record ID (used in the URL path). If both are given,
+        `object_attribute_id` wins; the legacy `attribute_id` is NEVER
+        reinterpreted as the attribute definition ID.
+        """
+        oaid = p.get('object_attribute_id')
+        if oaid is not None and str(oaid) != "":
+            return oaid
+        legacy = p.get('attribute_id')
+        if legacy is not None and str(legacy) != "":
+            return legacy
+        raise Exception("Missing required parameter: object_attribute_id")
 
     def modify_attribute(self, request: RequestBody) -> ResponseBody:
         try:
             base_url, access_token = self._connect(request.connectionParameters)
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
-            data = self._request(base_url, access_token, "PUT", f"/{ep}/{p['obj_id']}/attributes/{p['attribute_id']}",
+            oaid = self._resolve_object_attribute_id(p)
+            data = self._request(base_url, access_token, "PUT", f"/{ep}/{p['obj_id']}/attributes/{oaid}",
                                  json_data={"value": p['attribute_value']})
             return {"status": "success", "succeeded": True,
-                    "attribute_id": self._str_id(p['attribute_id']), "raw_response": data}
+                    "object_attribute_id": self._str_id(oaid),
+                    "attribute_id": self._str_id(oaid),  # deprecated legacy alias
+                    "raw_response": data}
         except Exception as e:
             self.logger.error("Error in modify_attribute", exc_info=e)
             raise Exception(str(e))
@@ -494,8 +546,11 @@ class ThreatQ():
             base_url, access_token = self._connect(request.connectionParameters)
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
-            self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/attributes/{p['attribute_id']}")
-            return {"status": "success", "succeeded": True,
+            oaid = self._resolve_object_attribute_id(p)
+            self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/attributes/{oaid}")
+            return {"status": "success", "succeeded": True, "http_status": 204,
+                    "object_attribute_id": self._str_id(oaid),
+                    "attribute_id": self._str_id(oaid),  # deprecated legacy alias
                     "message": "Attribute deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_attribute", exc_info=e)
@@ -511,20 +566,52 @@ class ThreatQ():
             data = self._request(base_url, access_token, "POST", f"/{ep}/{p['obj_id']}/sources",
                                  json_data={"name": p['source']})
             src = self._first(data)
-            return {"status": "success", "succeeded": True,
-                    "source_id": self._str_id(src.get("id")),
-                    "source_name": src.get("name"), "raw_response": data}
+            # ThreatQ object-source record: `id` is the object-source
+            # relationship record ID; `source_id` is the GLOBAL ThreatQ source
+            # catalog ID. These are not interchangeable.
+            record_id = self._str_id(src.get("id"))
+            return {
+                "status": "success",
+                "succeeded": True,
+                "object_source_id": record_id,
+                # Deprecated legacy alias: historically `source_id` returned the
+                # object-source relationship record ID (data.id). Preserved for BC.
+                "source_id": record_id,
+                "threatq_source_id": self._str_id(src.get("source_id")),
+                "source_name": src.get("name"),
+                "raw_response": data,
+            }
         except Exception as e:
             self.logger.error("Error in add_source", exc_info=e)
             raise Exception(str(e))
+
+    def _resolve_object_source_id(self, p):
+        """Resolve the ThreatQ object-source RECORD id (the URL path id).
+
+        Verified against v6.15: DELETE /{obj}/{id}/sources/{object_source_id}
+        expects the object-source relationship record ID (data.id), NOT the
+        global ThreatQ source_id. Accepts precise `object_source_id`
+        (preferred) and legacy `source_id`, which has always meant the same
+        record ID. `object_source_id` wins if both supplied.
+        """
+        osid = p.get('object_source_id')
+        if osid is not None and str(osid) != "":
+            return osid
+        legacy = p.get('source_id')
+        if legacy is not None and str(legacy) != "":
+            return legacy
+        raise Exception("Missing required parameter: object_source_id")
 
     def delete_source(self, request: RequestBody) -> ResponseBody:
         try:
             base_url, access_token = self._connect(request.connectionParameters)
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
-            self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/sources/{p['source_id']}")
-            return {"status": "success", "succeeded": True,
+            osid = self._resolve_object_source_id(p)
+            self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}/sources/{osid}")
+            return {"status": "success", "succeeded": True, "http_status": 204,
+                    "object_source_id": self._str_id(osid),
+                    "source_id": self._str_id(osid),  # deprecated legacy alias
                     "message": "Source deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_source", exc_info=e)
@@ -564,7 +651,7 @@ class ThreatQ():
             if not link_id:
                 raise Exception("Link not found between the two objects")
             self._request(base_url, access_token, "DELETE", f"/{ep1}/{p['obj1_id']}/{ep2}/{link_id}")
-            return {"status": "success", "succeeded": True,
+            return {"status": "success", "succeeded": True, "http_status": 204,
                     "message": "Objects unlinked", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in unlink_objects", exc_info=e)
@@ -578,7 +665,7 @@ class ThreatQ():
             p = request.parameters
             ep = self._get_obj_endpoint(p['obj_type'])
             self._request(base_url, access_token, "DELETE", f"/{ep}/{p['obj_id']}")
-            return {"status": "success", "succeeded": True,
+            return {"status": "success", "succeeded": True, "http_status": 204,
                     "message": f"{p['obj_type']} deleted", "raw_response": {}}
         except Exception as e:
             self.logger.error("Error in delete_object", exc_info=e)
@@ -594,8 +681,8 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/indicators",
                                  params={"with": "sources,attributes,score,status,type"})
             items = data.get("data", []) or []
-            return {"status": "success", "total_count": len(items),
-                    "indicators": items, "raw_response": data}
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "indicators": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_indicators", exc_info=e)
             raise Exception(str(e))
@@ -608,8 +695,8 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/events",
                                  params={"with": "sources,type"})
             items = data.get("data", []) or []
-            return {"status": "success", "total_count": len(items),
-                    "events": items, "raw_response": data}
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "events": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_events", exc_info=e)
             raise Exception(str(e))
@@ -622,8 +709,8 @@ class ThreatQ():
             data = self._request(base_url, access_token, "GET", f"/{ep}/{p['obj_id']}/adversaries",
                                  params={"with": "sources,attributes"})
             items = data.get("data", []) or []
-            return {"status": "success", "total_count": len(items),
-                    "adversaries": items, "raw_response": data}
+            return {"status": "success", "total_count": data.get("total", len(items)),
+                    "count": len(items), "adversaries": items, "raw_response": data}
         except Exception as e:
             self.logger.error("Error in get_related_adversaries", exc_info=e)
             raise Exception(str(e))
