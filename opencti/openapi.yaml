@@ -1,0 +1,870 @@
+openapi: 3.0.3
+info:
+  title: OpenCTI SOAR Integration
+  description: OpenCTI integration for IOC and observable enrichment. Supports observable lookups, indicator details retrieval, entity search, relationship mapping, and reference data listing using the OpenCTI GraphQL API.
+  version: 1.1.0
+  contact:
+    name: Securonix SOAR Integrations
+
+servers:
+  - url: "{base_url}"
+    description: OpenCTI instance
+    variables:
+      base_url:
+        default: https://opencti.example.com
+        description: Configurable OpenCTI base URL
+
+security:
+  - BearerAuth: []
+
+paths:
+  /graphql/lookup_observable:
+    post:
+      operationId: lookup_observable
+      summary: Lookup Observable
+      description: Look up observables (IP, domain, URL, hash) in OpenCTI for enrichment data. Queries stixCyberObservables with filters on observable type and value.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+                - variables
+              properties:
+                query:
+                  type: string
+                  example: "query StixCyberObservables($filters: FilterGroup) { stixCyberObservables(filters: $filters) { edges { node { id entity_type observable_value created_at updated_at objectLabel { value } objectMarking { definition } indicators { edges { node { id name pattern } } } } } } }"
+                variables:
+                  type: object
+                  properties:
+                    filters:
+                      $ref: "#/components/schemas/FilterGroup"
+            example:
+              query: "query StixCyberObservables($filters: FilterGroup) { stixCyberObservables(filters: $filters) { edges { node { id entity_type observable_value created_at updated_at objectLabel { value } objectMarking { definition } indicators { edges { node { id name pattern } } } } } } }"
+              variables:
+                filters:
+                  mode: and
+                  filters:
+                    - key: ["entity_type"]
+                      values: ["IPv4-Addr"]
+                      operator: eq
+                      mode: or
+                    - key: ["observable_value"]
+                      values: ["1.1.1.1"]
+                      operator: eq
+                      mode: or
+                  filterGroups: []
+      responses:
+        "200":
+          description: Observable lookup results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      stixCyberObservables:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/Observable"
+              example:
+                data:
+                  stixCyberObservables:
+                    edges:
+                      - node:
+                          id: "obs-uuid"
+                          entity_type: "IPv4-Addr"
+                          observable_value: "1.1.1.1"
+                          created_at: "2024-01-01T00:00:00Z"
+                          updated_at: "2024-01-01T00:00:00Z"
+                          objectLabel:
+                            - value: "malicious"
+                          objectMarking: []
+                          indicators:
+                            edges:
+                              - node:
+                                  id: "ind-uuid"
+                                  name: "Malicious IP Indicator"
+                                  pattern: "[ipv4-addr:value = '1.1.1.1']"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/get_indicator_details:
+    post:
+      operationId: get_indicator_details
+      summary: Get Indicator Details
+      description: Get full indicator details including kill chain phases, labels, and confidence score.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+                - variables
+              properties:
+                query:
+                  type: string
+                  example: "query Indicator($id: String!) { indicator(id: $id) { id name pattern pattern_type valid_from valid_until confidence created modified objectLabel { value } objectMarking { definition } createdBy { name } killChainPhases { kill_chain_name phase_name } } }"
+                variables:
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: OpenCTI indicator ID
+            example:
+              query: "query Indicator($id: String!) { indicator(id: $id) { id name pattern pattern_type valid_from valid_until confidence created modified objectLabel { value } objectMarking { definition } createdBy { name } killChainPhases { kill_chain_name phase_name } } }"
+              variables:
+                id: "indicator-uuid-here"
+      responses:
+        "200":
+          description: Indicator details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      indicator:
+                        $ref: "#/components/schemas/Indicator"
+              example:
+                data:
+                  indicator:
+                    id: "ind-uuid"
+                    name: "Malicious IP"
+                    pattern: "[ipv4-addr:value = '1.1.1.1']"
+                    pattern_type: "stix"
+                    valid_from: "2024-01-01T00:00:00Z"
+                    valid_until: "2025-01-01T00:00:00Z"
+                    confidence: 85
+                    created: "2024-01-01T00:00:00Z"
+                    modified: "2024-01-01T00:00:00Z"
+                    objectLabel:
+                      - value: "malicious"
+                    objectMarking: []
+                    createdBy:
+                      name: "MITRE"
+                    killChainPhases:
+                      - kill_chain_name: "mitre-attack"
+                        phase_name: "initial-access"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/search_entities:
+    post:
+      operationId: search_entities
+      summary: Search Entities
+      description: Search across OpenCTI STIX domain objects by keyword and optional entity type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+                - variables
+              properties:
+                query:
+                  type: string
+                  example: "query StixDomainObjects($search: String, $types: [String], $first: Int) { stixDomainObjects(search: $search, types: $types, first: $first) { edges { node { id entity_type ... on StixDomainObject { name description created modified } objectLabel { value } } } } }"
+                variables:
+                  type: object
+                  required:
+                    - search
+                  properties:
+                    search:
+                      type: string
+                      description: Search keyword
+                    types:
+                      type: array
+                      items:
+                        type: string
+                      description: Optional entity type filter (e.g., Malware, Threat-Actor, Campaign)
+                    first:
+                      type: integer
+                      description: Max results (default 25, max 100)
+            example:
+              query: "query StixDomainObjects($search: String, $types: [String], $first: Int) { stixDomainObjects(search: $search, types: $types, first: $first) { edges { node { id entity_type ... on StixDomainObject { name description created modified } objectLabel { value } } } } }"
+              variables:
+                search: "APT28"
+                types: ["Threat-Actor"]
+                first: 25
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      stixDomainObjects:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/StixDomainObject"
+              example:
+                data:
+                  stixDomainObjects:
+                    edges:
+                      - node:
+                          id: "sdo-uuid"
+                          entity_type: "Threat-Actor"
+                          name: "APT28"
+                          description: "Russian state-sponsored threat actor"
+                          created: "2024-01-01T00:00:00Z"
+                          modified: "2024-06-01T00:00:00Z"
+                          objectLabel:
+                            - value: "apt"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/get_indicators:
+    post:
+      operationId: get_indicators
+      summary: Get Indicators
+      description: Search indicators by text, labels, confidence, or indicator type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+                - variables
+              properties:
+                query:
+                  type: string
+                  example: "query Indicators($search: String, $filters: FilterGroup, $first: Int) { indicators(search: $search, filters: $filters, first: $first) { edges { node { id name pattern pattern_type confidence valid_from valid_until objectLabel { value } objectMarking { definition } createdBy { name } } } } }"
+                variables:
+                  type: object
+                  properties:
+                    search:
+                      type: string
+                      description: Optional search text
+                    filters:
+                      $ref: "#/components/schemas/FilterGroup"
+                    first:
+                      type: integer
+                      description: Max results (default 25, max 100)
+            example:
+              query: "query Indicators($search: String, $filters: FilterGroup, $first: Int) { indicators(search: $search, filters: $filters, first: $first) { edges { node { id name pattern pattern_type confidence valid_from valid_until objectLabel { value } objectMarking { definition } createdBy { name } } } } }"
+              variables:
+                search: "malicious"
+                filters:
+                  mode: and
+                  filters:
+                    - key: ["confidence"]
+                      values: ["80"]
+                      operator: gte
+                      mode: or
+                  filterGroups: []
+                first: 25
+      responses:
+        "200":
+          description: Indicator search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      indicators:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/IndicatorSummary"
+              example:
+                data:
+                  indicators:
+                    edges:
+                      - node:
+                          id: "ind-uuid"
+                          name: "Malicious Domain"
+                          pattern: "[domain-name:value = 'evil.com']"
+                          pattern_type: "stix"
+                          confidence: 90
+                          valid_from: "2024-01-01T00:00:00Z"
+                          valid_until: "2025-01-01T00:00:00Z"
+                          objectLabel:
+                            - value: "malicious"
+                          objectMarking: []
+                          createdBy:
+                            name: "MITRE"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/get_relationships:
+    post:
+      operationId: get_relationships
+      summary: Get Relationships
+      description: Get relationships connected to an entity including source, target, and relationship type.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+                - variables
+              properties:
+                query:
+                  type: string
+                  example: "query StixCoreRelationships($filters: FilterGroup, $first: Int) { stixCoreRelationships(filters: $filters, first: $first) { edges { node { id relationship_type start_time stop_time confidence from { ... on BasicObject { id entity_type } ... on StixDomainObject { name } } to { ... on BasicObject { id entity_type } ... on StixDomainObject { name } } } } } }"
+                variables:
+                  type: object
+                  required:
+                    - filters
+                  properties:
+                    filters:
+                      $ref: "#/components/schemas/FilterGroup"
+                    first:
+                      type: integer
+                      description: Max results (default 25, max 100)
+            example:
+              query: "query StixCoreRelationships($filters: FilterGroup, $first: Int) { stixCoreRelationships(filters: $filters, first: $first) { edges { node { id relationship_type start_time stop_time confidence from { ... on BasicObject { id entity_type } ... on StixDomainObject { name } } to { ... on BasicObject { id entity_type } ... on StixDomainObject { name } } } } } }"
+              variables:
+                filters:
+                  mode: and
+                  filters:
+                    - key: ["fromId", "toId"]
+                      values: ["entity-uuid-here"]
+                      operator: eq
+                      mode: or
+                  filterGroups: []
+                first: 25
+      responses:
+        "200":
+          description: Relationship results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      stixCoreRelationships:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/Relationship"
+              example:
+                data:
+                  stixCoreRelationships:
+                    edges:
+                      - node:
+                          id: "rel-uuid"
+                          relationship_type: "uses"
+                          start_time: "2024-01-01T00:00:00Z"
+                          stop_time: null
+                          confidence: 75
+                          from:
+                            id: "entity-1"
+                            entity_type: "Threat-Actor"
+                            name: "APT28"
+                          to:
+                            id: "entity-2"
+                            entity_type: "Malware"
+                            name: "X-Agent"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/list_labels:
+    post:
+      operationId: list_labels
+      summary: List Labels
+      description: List all labels defined in OpenCTI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  example: "query Labels { labels { edges { node { id value color } } } }"
+                variables:
+                  type: object
+            example:
+              query: "query Labels { labels { edges { node { id value color } } } }"
+              variables: {}
+      responses:
+        "200":
+          description: List of labels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      labels:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/Label"
+              example:
+                data:
+                  labels:
+                    edges:
+                      - node:
+                          id: "lbl-uuid-1"
+                          value: "malicious"
+                          color: "#ff0000"
+                      - node:
+                          id: "lbl-uuid-2"
+                          value: "benign"
+                          color: "#00ff00"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/list_marking_definitions:
+    post:
+      operationId: list_marking_definitions
+      summary: List Marking Definitions
+      description: List all marking definitions (TLP, PAP, etc.) in OpenCTI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  example: "query MarkingDefinitions { markingDefinitions { edges { node { id definition definition_type } } } }"
+                variables:
+                  type: object
+            example:
+              query: "query MarkingDefinitions { markingDefinitions { edges { node { id definition definition_type } } } }"
+              variables: {}
+      responses:
+        "200":
+          description: List of marking definitions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      markingDefinitions:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/MarkingDefinition"
+              example:
+                data:
+                  markingDefinitions:
+                    edges:
+                      - node:
+                          id: "marking-uuid-1"
+                          definition: "TLP:WHITE"
+                          definition_type: "TLP"
+                      - node:
+                          id: "marking-uuid-2"
+                          definition: "TLP:RED"
+                          definition_type: "TLP"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+  /graphql/list_organizations:
+    post:
+      operationId: list_organizations
+      summary: List Organizations
+      description: List organizations (identities) in OpenCTI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  example: "query Organizations($first: Int) { organizations(first: $first) { edges { node { id name description } } } }"
+                variables:
+                  type: object
+                  properties:
+                    first:
+                      type: integer
+                      description: Max results (default 100, max 100)
+            example:
+              query: "query Organizations($first: Int) { organizations(first: $first) { edges { node { id name description } } } }"
+              variables:
+                first: 100
+      responses:
+        "200":
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      organizations:
+                        type: object
+                        properties:
+                          edges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                node:
+                                  $ref: "#/components/schemas/Organization"
+              example:
+                data:
+                  organizations:
+                    edges:
+                      - node:
+                          id: "org-uuid-1"
+                          name: "MITRE"
+                          description: "Threat research organization"
+                      - node:
+                          id: "org-uuid-2"
+                          name: "CISA"
+                          description: "US cybersecurity agency"
+        "401":
+          description: Authentication failed
+        "403":
+          description: Authorization failed
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: OpenCTI API Token
+
+  schemas:
+    FilterGroup:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum: [and, or]
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: array
+                items:
+                  type: string
+              values:
+                type: array
+                items:
+                  type: string
+              operator:
+                type: string
+                enum: [eq, gte, lte, contains]
+              mode:
+                type: string
+                enum: [and, or]
+        filterGroups:
+          type: array
+          items:
+            type: object
+
+    Observable:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_type:
+          type: string
+        observable_value:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        objectLabel:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+        objectMarking:
+          type: array
+          items:
+            type: object
+            properties:
+              definition:
+                type: string
+        indicators:
+          type: object
+          properties:
+            edges:
+              type: array
+              items:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      pattern:
+                        type: string
+
+    Indicator:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        pattern:
+          type: string
+        pattern_type:
+          type: string
+        valid_from:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+        confidence:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        objectLabel:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+        objectMarking:
+          type: array
+          items:
+            type: object
+            properties:
+              definition:
+                type: string
+        createdBy:
+          type: object
+          properties:
+            name:
+              type: string
+        killChainPhases:
+          type: array
+          items:
+            type: object
+            properties:
+              kill_chain_name:
+                type: string
+              phase_name:
+                type: string
+
+    IndicatorSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        pattern:
+          type: string
+        pattern_type:
+          type: string
+        confidence:
+          type: integer
+        valid_from:
+          type: string
+          format: date-time
+        valid_until:
+          type: string
+          format: date-time
+        objectLabel:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+        objectMarking:
+          type: array
+          items:
+            type: object
+            properties:
+              definition:
+                type: string
+        createdBy:
+          type: object
+          properties:
+            name:
+              type: string
+
+    StixDomainObject:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_type:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        objectLabel:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+
+    Relationship:
+      type: object
+      properties:
+        id:
+          type: string
+        relationship_type:
+          type: string
+        start_time:
+          type: string
+          format: date-time
+        stop_time:
+          type: string
+          format: date-time
+        confidence:
+          type: integer
+        from:
+          type: object
+          properties:
+            id:
+              type: string
+            entity_type:
+              type: string
+            name:
+              type: string
+        to:
+          type: object
+          properties:
+            id:
+              type: string
+            entity_type:
+              type: string
+            name:
+              type: string
+
+    Label:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        color:
+          type: string
+
+    MarkingDefinition:
+      type: object
+      properties:
+        id:
+          type: string
+        definition:
+          type: string
+        definition_type:
+          type: string
+
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string

@@ -1,0 +1,378 @@
+openapi: 3.0.3
+info:
+  title: URLhaus Threat Intelligence API
+  description: |
+    URLhaus (abuse.ch) threat intelligence API integration.
+    Supports reputation checks for URLs, domains, hosts, and file hashes
+    using the Abuse.ch URLhaus database.
+
+    Authentication:
+    Optional Auth-Key sent as HTTP header. URLhaus is a free public API.
+
+    Connection Parameters:
+    - base_url: URLhaus API base URL (e.g., https://urlhaus-api.abuse.ch/v1)
+    - api_key: Optional Auth-Key for URLhaus API
+  version: 1.0.0
+  contact:
+    name: abuse.ch
+    url: https://urlhaus.abuse.ch/
+
+servers:
+  - url: https://urlhaus-api.abuse.ch/v1
+    description: URLhaus Production API
+
+security:
+  - authKey: []
+
+paths:
+  /url/:
+    post:
+      operationId: url_reputation
+      summary: URL Reputation Lookup
+      description: Check whether a URL is known to host or distribute malware.
+      parameters:
+        - $ref: '#/components/parameters/AuthKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  description: The URL to query.
+                  example: "http://example.com/malware.exe"
+      responses:
+        '200':
+          description: URL lookup result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlLookupResponse'
+
+  /host/:
+    post:
+      operationId: host_reputation
+      summary: Host Reputation Lookup
+      description: |
+        Check whether a host (IP address or domain name) is associated with malicious activity.
+      parameters:
+        - $ref: '#/components/parameters/AuthKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - host
+              properties:
+                host:
+                  type: string
+                  description: IPv4 address, hostname, or domain name to query (case insensitive).
+                  example: "1.2.3.4"
+      responses:
+        '200':
+          description: Host lookup result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostLookupResponse'
+
+  /domain/:
+    post:
+      operationId: domain_reputation
+      summary: Domain Reputation Lookup
+      description: |
+        Check whether a domain is linked to malware distribution or malicious URLs.
+        Note: URLhaus has no dedicated /domain/ endpoint. This action uses the /host/ endpoint
+        internally, passing the domain name as the 'host' parameter.
+      parameters:
+        - $ref: '#/components/parameters/AuthKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - host
+              properties:
+                host:
+                  type: string
+                  description: Domain name to query (sent as 'host' parameter to the /host/ endpoint).
+                  example: "evil-domain.com"
+      responses:
+        '200':
+          description: Domain lookup result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostLookupResponse'
+
+  /payload/:
+    post:
+      operationId: file_reputation
+      summary: Payload/File Reputation Lookup
+      description: Check whether a file hash is known as a malicious payload.
+      parameters:
+        - $ref: '#/components/parameters/AuthKeyHeader'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - sha256_hash
+              properties:
+                sha256_hash:
+                  type: string
+                  description: SHA256 hash of the file to query.
+                  example: "d41d8cd98f00b204e9800998ecf8427e00000000000000000000000000000000"
+                md5_hash:
+                  type: string
+                  description: MD5 hash of the file to query (alternative to sha256_hash).
+                  example: "d41d8cd98f00b204e9800998ecf8427e"
+      responses:
+        '200':
+          description: Payload lookup result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayloadLookupResponse'
+
+components:
+  securitySchemes:
+    authKey:
+      type: apiKey
+      in: header
+      name: Auth-Key
+      description: Optional Auth-Key for URLhaus API access.
+
+  parameters:
+    AuthKeyHeader:
+      name: Auth-Key
+      in: header
+      required: false
+      description: Optional authentication key.
+      schema:
+        type: string
+
+  schemas:
+    UrlLookupResponse:
+      type: object
+      properties:
+        query_status:
+          type: string
+          description: Status of the query.
+          enum:
+            - ok
+            - no_results
+            - invalid_url
+        id:
+          type: string
+          description: URLhaus URL ID.
+        url:
+          type: string
+          description: The queried URL.
+        url_status:
+          type: string
+          description: Current status of the URL.
+          enum:
+            - online
+            - offline
+            - unknown
+        host:
+          type: string
+          description: Extracted host from the URL.
+        date_added:
+          type: string
+          description: Date the URL was added to URLhaus.
+        threat:
+          type: string
+          description: Threat type associated with the URL.
+          enum:
+            - malware_download
+            - none
+        blacklists:
+          type: object
+          properties:
+            spamhaus_dbl:
+              type: string
+              enum:
+                - listed
+                - not listed
+            surbl:
+              type: string
+              enum:
+                - listed
+                - not listed
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the URL.
+        payloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayloadSummary'
+
+    HostLookupResponse:
+      type: object
+      properties:
+        query_status:
+          type: string
+          description: Status of the query.
+          enum:
+            - ok
+            - no_results
+            - invalid_host
+        urlhaus_reference:
+          type: string
+          description: URLhaus reference URL.
+        host:
+          type: string
+          description: The queried host.
+        url_count:
+          type: integer
+          description: Number of URLs associated with this host.
+        blacklists:
+          type: object
+          properties:
+            spamhaus_dbl:
+              type: string
+              enum:
+                - listed
+                - not listed
+            surbl:
+              type: string
+              enum:
+                - listed
+                - not listed
+        urls:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              url:
+                type: string
+              url_status:
+                type: string
+                enum:
+                  - online
+                  - offline
+                  - unknown
+              date_added:
+                type: string
+              threat:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+
+    PayloadLookupResponse:
+      type: object
+      properties:
+        query_status:
+          type: string
+          description: Status of the query.
+          enum:
+            - ok
+            - no_results
+            - invalid_sha256
+            - invalid_md5
+        md5_hash:
+          type: string
+          description: MD5 hash of the payload.
+        sha256_hash:
+          type: string
+          description: SHA256 hash of the payload.
+        file_type:
+          type: string
+          description: File type of the payload.
+        file_size:
+          type: integer
+          description: File size in bytes.
+        signature:
+          type: string
+          description: Malware signature/family name.
+        firstseen:
+          type: string
+          description: Date the payload was first seen.
+        lastseen:
+          type: string
+          description: Date the payload was last seen.
+        url_count:
+          type: integer
+          description: Number of URLs distributing this payload.
+        urls:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              url_status:
+                type: string
+              firstseen:
+                type: string
+
+    PayloadSummary:
+      type: object
+      properties:
+        filename:
+          type: string
+        file_type:
+          type: string
+        file_size:
+          type: integer
+        md5_hash:
+          type: string
+        sha256_hash:
+          type: string
+        signature:
+          type: string
+        firstseen:
+          type: string
+
+    ConnectorResponse:
+      type: object
+      description: Standard response format returned by the connector actions.
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              host:
+                type: string
+              domain:
+                type: string
+              sha256_hash:
+                type: string
+              reputation:
+                type: string
+                description: |
+                  Reputation classification:
+                  - malicious: Active threat (online URL, known threat, payload in DB, host with URLs)
+                  - suspicious: Inactive/historical IOC (offline URL, found but no active threat)
+                  - unknown: Not found in URLhaus database
+                  - error: Unexpected API response
+                enum:
+                  - malicious
+                  - suspicious
+                  - unknown
+                  - error

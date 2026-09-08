@@ -1,0 +1,492 @@
+openapi: 3.0.3
+info:
+  title: IBM X-Force Exchange API
+  description: |
+    IBM X-Force Exchange threat intelligence API integration.
+    Supports IP reputation, domain reputation, URL reputation, file hash lookup,
+    CVE lookup, latest vulnerabilities, WHOIS lookup, and CVE search.
+
+    Authentication:
+    Uses HTTP Basic Authentication with API Key as username and API Password as password.
+
+    Connection Parameters:
+    - base_url: IBM X-Force Exchange API base URL (e.g., https://api.xforce.ibmcloud.com)
+    - api_key: IBM X-Force Exchange API key
+    - api_password: IBM X-Force Exchange API password
+  version: 1.0.0
+  contact:
+    name: IBM Security
+    url: https://exchange.xforce.ibmcloud.com/
+
+servers:
+  - url: https://api.xforce.ibmcloud.com
+    description: IBM X-Force Exchange Production API
+
+security:
+  - basicAuth: []
+
+paths:
+  /ipr/{ip}:
+    get:
+      operationId: lookup_ip
+      summary: Lookup IP Reputation
+      description: Retrieve threat intelligence and reputation details for an IP address.
+      parameters:
+        - name: ip
+          in: path
+          required: true
+          description: IPv4 address to look up (e.g., 8.8.8.8).
+          schema:
+            type: string
+            example: "8.8.8.8"
+      responses:
+        '200':
+          description: IP reputation data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpReputationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /url/{domain}:
+    get:
+      operationId: lookup_domain
+      summary: Lookup Domain Reputation
+      description: Retrieve threat intelligence and reputation details for a domain.
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          description: Domain name to look up.
+          schema:
+            type: string
+            example: "example.com"
+      responses:
+        '200':
+          description: Domain reputation data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlReputationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /url/{url}:
+    get:
+      operationId: lookup_url
+      summary: Lookup URL Reputation
+      description: Retrieve threat intelligence and reputation details for a full URL.
+      parameters:
+        - name: url
+          in: path
+          required: true
+          description: Full URL to look up.
+          schema:
+            type: string
+            example: "https://malicious-site.com/payload"
+      responses:
+        '200':
+          description: URL reputation data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlReputationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /malware/{hash}:
+    get:
+      operationId: lookup_file_hash
+      summary: Lookup File Hash
+      description: Retrieve malware intelligence and reputation details for MD5, SHA1, or SHA256 file hashes.
+      parameters:
+        - name: hash
+          in: path
+          required: true
+          description: File hash - MD5 (32 chars), SHA1 (40 chars), or SHA256 (64 chars).
+          schema:
+            type: string
+            example: "d41d8cd98f00b204e9800998ecf8427e"
+      responses:
+        '200':
+          description: Malware reputation data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MalwareResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /vulnerabilities/{cve_id}:
+    get:
+      operationId: lookup_cve
+      summary: Lookup CVE
+      description: Retrieve vulnerability details for a specific CVE ID.
+      parameters:
+        - name: cve_id
+          in: path
+          required: true
+          description: CVE identifier (e.g., CVE-2023-12345).
+          schema:
+            type: string
+            pattern: '^CVE-\d{4}-\d{4,}$'
+            example: "CVE-2023-44487"
+      responses:
+        '200':
+          description: Vulnerability details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CveResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /vulnerabilities:
+    get:
+      operationId: get_latest_cves
+      summary: Get Latest CVEs
+      description: Retrieve the latest vulnerability intelligence from IBM X-Force Exchange.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of CVEs to return.
+          schema:
+            type: string
+            example: "10"
+      responses:
+        '200':
+          description: Latest vulnerabilities returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LatestCvesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /whois/{domain}:
+    get:
+      operationId: whois_lookup
+      summary: WHOIS Lookup
+      description: Retrieve WHOIS registration details for a domain.
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          description: Domain name to look up WHOIS information for.
+          schema:
+            type: string
+            example: "example.com"
+      responses:
+        '200':
+          description: WHOIS data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhoisResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /cves/fulltext:
+    get:
+      operationId: search_cves
+      summary: Search CVEs
+      description: Search vulnerabilities using a keyword or phrase.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query keyword or phrase.
+          schema:
+            type: string
+            example: "apache log4j"
+        - name: bookmark
+          in: query
+          required: false
+          description: Pagination bookmark for next page of results.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: CVE search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CveSearchResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic Auth using API Key as username and API Password as password.
+
+  responses:
+    Unauthorized:
+      description: Authentication failed. Invalid API key or password.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Access denied. Insufficient permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found. No data available for the given input.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message.
+
+    IpReputationResponse:
+      type: object
+      properties:
+        ip:
+          type: string
+        subnets:
+          type: array
+          items:
+            type: object
+            properties:
+              subnet:
+                type: string
+              score:
+                type: number
+              reason:
+                type: string
+              created:
+                type: string
+        score:
+          type: number
+          description: Overall risk score (1-10).
+        reason:
+          type: string
+        reasonDescription:
+          type: string
+        geo:
+          type: object
+          properties:
+            country:
+              type: string
+            countrycode:
+              type: string
+        cats:
+          type: object
+          additionalProperties:
+            type: number
+        categoryDescriptions:
+          type: object
+          additionalProperties:
+            type: string
+
+    UrlReputationResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          properties:
+            url:
+              type: string
+            score:
+              type: number
+              description: Risk score (1-10).
+            cats:
+              type: object
+              additionalProperties:
+                type: boolean
+            categoryDescriptions:
+              type: object
+              additionalProperties:
+                type: string
+            application:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+        associated:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              cats:
+                type: object
+                additionalProperties:
+                  type: boolean
+
+    MalwareResponse:
+      type: object
+      properties:
+        malware:
+          type: object
+          properties:
+            hash:
+              type: string
+            type:
+              type: string
+              description: Hash type (MD5, SHA1, SHA256).
+            created:
+              type: string
+            family:
+              type: array
+              items:
+                type: string
+            risk:
+              type: string
+              description: Risk level (high, medium, low).
+            origins:
+              type: object
+              additionalProperties: true
+
+    CveResponse:
+      type: object
+      properties:
+        xfdbid:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        risk_level:
+          type: number
+        cvss:
+          type: object
+          properties:
+            version:
+              type: string
+            access_vector:
+              type: string
+            access_complexity:
+              type: string
+        temporal_score:
+          type: number
+        remedy:
+          type: string
+        reported:
+          type: string
+        tagname:
+          type: string
+        stdcode:
+          type: array
+          items:
+            type: string
+        platforms_affected:
+          type: array
+          items:
+            type: object
+            properties:
+              platform:
+                type: string
+              version:
+                type: string
+        references:
+          type: array
+          items:
+            type: object
+            properties:
+              link_target:
+                type: string
+              description:
+                type: string
+
+    LatestCvesResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/CveResponse'
+
+    CveSearchResponse:
+      type: object
+      properties:
+        total_rows:
+          type: integer
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/CveResponse'
+
+    WhoisResponse:
+      type: object
+      properties:
+        domain:
+          type: string
+        registrar:
+          type: string
+        registrant:
+          type: string
+        admin:
+          type: object
+          properties:
+            name:
+              type: string
+            organization:
+              type: string
+            country:
+              type: string
+        createdDate:
+          type: string
+        updatedDate:
+          type: string
+        expiresDate:
+          type: string
+        nameServers:
+          type: array
+          items:
+            type: string
+        contact:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              name:
+                type: string
+              organization:
+                type: string
+              country:
+                type: string

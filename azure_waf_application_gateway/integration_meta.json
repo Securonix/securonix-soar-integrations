@@ -1,8 +1,8 @@
 {
-    "name": "azure_waf",
+    "name": "azure_waf_application_gateway",
     "type": "python",
-    "clazz": "app.azure_waf",
-    "label": "Azure WAF",
+    "clazz": "app.azure_waf_application_gateway",
+    "label": "Azure WAF - Application Gateway",
     "native": false,
     "testUrl": "",
     "category": "Cloud Security",

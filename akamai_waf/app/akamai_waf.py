@@ -113,20 +113,29 @@ class AkamaiWaf():
         client_token = request.connectionParameters['client_token']
         client_secret = request.connectionParameters['client_secret']
         access_token = request.connectionParameters['access_token']
+
+        config_id = request.parameters["config_id"]
+
+        # Optional filters
+        offset = request.parameters.get("offset")
         start_time = request.parameters['start_time']
         end_time = request.parameters['end_time']
-        policy_id = request.parameters['policy_id']
-        attack_type = request.parameters['attack_type']
-        ip_address = request.parameters['ip_address']
-        limit = request.parameters['limit']
+        limit = request.parameters.get("limit", 100)
         
-        url = f"{host}/appsec/v1/events"
+        url = f"{host}/siem/v1/configs/{config_id}"
 
         params = {
-            "start": start_time,
-            "end": end_time,
             "limit": limit
         }
+
+        if offset:
+            params["offset"] = offset
+
+        if start_time:
+            params["from"] = start_time
+
+        if end_time:
+            params["to"] = end_time
 
         if policy_id:
             params["policyId"] = policy_id

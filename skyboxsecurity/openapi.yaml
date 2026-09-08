@@ -1,0 +1,575 @@
+openapi: 3.0.3
+info:
+  title: Skybox Security Integration API
+  description: >
+    Skybox Security Threat Management integration allows you to retrieve threat alerts,
+    vulnerabilities, exposed assets, network access rules, and security policy violations.
+    It also supports attack simulations, asset risk scoring, threat intelligence lookups,
+    firewall IP blocking, and change request management to automate threat response and
+    network security workflows.
+  version: 1.0.0
+  contact:
+    name: Securonix SOAR Integrations
+
+servers:
+  - url: https://{base_url}
+    description: Skybox Security Server
+    variables:
+      base_url:
+        default: skybox.example.com
+        description: Skybox Security server hostname
+
+paths:
+  /skybox/webservice/jaxrs/threats/alerts:
+    get:
+      operationId: getThreatAlerts
+      summary: Get Threat Alerts
+      description: Retrieve threat alerts from Skybox Security filtered by severity and limit.
+      tags:
+        - Threat Intel
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: severity
+          in: query
+          description: Filter alerts by severity level (e.g., HIGH, MEDIUM, LOW)
+          required: false
+          schema:
+            type: string
+            enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        - name: limit
+          in: query
+          description: Maximum number of alerts to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of threat alerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreatAlertsResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/vulnerabilities:
+    get:
+      operationId: getVulnerabilities
+      summary: Get Vulnerabilities
+      description: Retrieve vulnerability details optionally filtered by asset IP and severity.
+      tags:
+        - Vulnerability Management
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: assetIp
+          in: query
+          description: IP address of the asset to filter vulnerabilities for
+          required: false
+          schema:
+            type: string
+        - name: severity
+          in: query
+          description: Filter vulnerabilities by severity level
+          required: false
+          schema:
+            type: string
+            enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        - name: limit
+          in: query
+          description: Maximum number of vulnerabilities to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of vulnerabilities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilitiesResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/vulnerabilities/exposed:
+    get:
+      operationId: getExposedVulnerabilities
+      summary: Get Exposed Vulnerabilities
+      description: Retrieve vulnerabilities that are exposed or exploitable based on network access for a specific asset.
+      tags:
+        - Vulnerability Management
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: assetIp
+          in: query
+          description: IP address of the asset to check for exposed vulnerabilities
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of exposed vulnerabilities to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of exposed vulnerabilities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExposedVulnerabilitiesResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/firewall/rules:
+    get:
+      operationId: getNetworkAccessRules
+      summary: Get Network Access Rules
+      description: Retrieve firewall and network access rules filtered by firewall name, source IP, or destination IP.
+      tags:
+        - Network Security
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: firewallName
+          in: query
+          description: Name of the firewall to retrieve rules for
+          required: false
+          schema:
+            type: string
+        - name: sourceIp
+          in: query
+          description: Source IP address to filter network access rules
+          required: false
+          schema:
+            type: string
+        - name: destinationIp
+          in: query
+          description: Destination IP address to filter network access rules
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of network access rules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NetworkAccessRulesResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/simulation/attack:
+    post:
+      operationId: runAttackSimulation
+      summary: Run Attack Simulation
+      description: Simulate an attack path to determine if a source IP can reach a destination IP through the network.
+      tags:
+        - Network Security
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttackSimulationRequest'
+      responses:
+        '200':
+          description: Attack simulation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttackSimulationResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/policy/violations:
+    get:
+      operationId: getSecurityPolicyViolations
+      summary: Get Security Policy Violations
+      description: Retrieve security policy violations filtered by policy name and severity.
+      tags:
+        - Policy Management
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: policyName
+          in: query
+          description: Name of the security policy to filter violations for
+          required: false
+          schema:
+            type: string
+        - name: severity
+          in: query
+          description: Filter violations by severity level
+          required: false
+          schema:
+            type: string
+            enum: [CRITICAL, HIGH, MEDIUM, LOW]
+        - name: limit
+          in: query
+          description: Maximum number of violations to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of security policy violations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyViolationsResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/assets/riskscore:
+    get:
+      operationId: getAssetRiskScore
+      summary: Get Asset Risk Score
+      description: Retrieve the risk score for a specific asset based on its IP address.
+      tags:
+        - Vulnerability Management
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: assetIp
+          in: query
+          description: IP address of the asset to retrieve the risk score for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Risk score details for the asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssetRiskScoreResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/threatintelligence:
+    get:
+      operationId: getThreatIntelligence
+      summary: Get Threat Intelligence
+      description: Retrieve threat intelligence data for a specific indicator such as an IP address, CVE, or hostname.
+      tags:
+        - Threat Intel
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: indicator
+          in: query
+          description: The threat indicator to look up (e.g., IP address, CVE ID, or hostname)
+          required: true
+          schema:
+            type: string
+        - name: indicatorType
+          in: query
+          description: Type of the indicator
+          required: true
+          schema:
+            type: string
+            enum: [ip, cve, hostname]
+      responses:
+        '200':
+          description: Threat intelligence details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreatIntelligenceResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/firewall/blockip:
+    post:
+      operationId: blockIpOnFirewall
+      summary: Block IP on Firewall
+      description: Block a specific IP address on a target firewall via Skybox Security change management.
+      tags:
+        - Remediation
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockIpRequest'
+      responses:
+        '200':
+          description: Confirmation of the IP block action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlockIpResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /skybox/webservice/jaxrs/changerequests:
+    get:
+      operationId: getChangeRequests
+      summary: Get Change Requests
+      description: Retrieve firewall change requests filtered by status.
+      tags:
+        - Policy Management
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter change requests by status
+          required: false
+          schema:
+            type: string
+            enum: [open, closed, pending]
+        - name: limit
+          in: query
+          description: Maximum number of change requests to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 100
+      responses:
+        '200':
+          description: List of change requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeRequestsResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer token obtained from the login endpoint
+
+  schemas:
+    ThreatAlertsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          severity:
+            type: string
+          description:
+            type: string
+          timestamp:
+            type: string
+            format: date-time
+
+    VulnerabilitiesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          cve:
+            type: string
+          severity:
+            type: string
+          assetIp:
+            type: string
+          description:
+            type: string
+          cvss:
+            type: number
+            format: float
+
+    ExposedVulnerabilitiesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          cve:
+            type: string
+          exposed:
+            type: boolean
+          assetIp:
+            type: string
+          attackVector:
+            type: string
+
+    NetworkAccessRulesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          rule:
+            type: string
+          source:
+            type: string
+          destination:
+            type: string
+          port:
+            type: string
+          protocol:
+            type: string
+          action:
+            type: string
+            enum: [allow, deny]
+
+    AttackSimulationRequest:
+      type: object
+      required:
+        - sourceIp
+        - destinationIp
+      properties:
+        sourceIp:
+          type: string
+          description: Source IP address for the attack simulation
+        destinationIp:
+          type: string
+          description: Destination IP address for the attack simulation
+        port:
+          type: string
+          description: Target port number
+        protocol:
+          type: string
+          description: Network protocol (default TCP)
+          default: TCP
+
+    AttackSimulationResponse:
+      type: object
+      properties:
+        reachable:
+          type: boolean
+          description: Whether the destination is reachable from the source
+        path:
+          type: array
+          items:
+            type: string
+          description: Network path traversed in the simulation
+
+    PolicyViolationsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          policy:
+            type: string
+          severity:
+            type: string
+          asset:
+            type: string
+          description:
+            type: string
+
+    AssetRiskScoreResponse:
+      type: object
+      properties:
+        assetIp:
+          type: string
+        riskScore:
+          type: integer
+          description: Numeric risk score (0-100)
+        riskLevel:
+          type: string
+          description: Risk level category
+          enum: [CRITICAL, HIGH, MEDIUM, LOW]
+
+    ThreatIntelligenceResponse:
+      type: object
+      properties:
+        indicator:
+          type: string
+        type:
+          type: string
+          enum: [ip, cve, hostname]
+        malicious:
+          type: boolean
+        cvss:
+          type: number
+          format: float
+        details:
+          type: object
+          additionalProperties: true
+
+    BlockIpRequest:
+      type: object
+      required:
+        - firewallName
+        - ipAddress
+      properties:
+        firewallName:
+          type: string
+          description: Name of the firewall on which the IP should be blocked
+        ipAddress:
+          type: string
+          description: IP address to block
+        reason:
+          type: string
+          description: Reason for blocking
+          default: Blocked via Securonix SOAR
+
+    BlockIpResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        ip:
+          type: string
+        message:
+          type: string
+
+    ChangeRequestsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          status:
+            type: string
+            enum: [open, closed, pending]
+          firewall:
+            type: string
+          description:
+            type: string
+          createdAt:
+            type: string
+            format: date-time
+
+tags:
+  - name: Threat Intel
+    description: Threat alerts and intelligence lookups
+  - name: Vulnerability Management
+    description: Vulnerability scanning, exposed assets, and risk scoring
+  - name: Network Security
+    description: Firewall rules and attack simulations
+  - name: Policy Management
+    description: Security policy violations and change requests
+  - name: Remediation
+    description: Active response actions like IP blocking
