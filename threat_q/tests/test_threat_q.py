@@ -922,6 +922,30 @@ class TestThreatQEdgeCases(unittest.TestCase):
 
     @patch('app.threat_q.requests.request')
     @patch('app.threat_q.requests.post')
+    def test_reputation_called_with_only_request(self, mock_post, mock_request):
+        # Reproduces the SOAR framework invoking _reputation(request) with no
+        # value_key. The value must be derived from request.parameters.
+        mock_post.return_value = mock_auth_response()
+        mock_request.return_value = mock_api_response({
+            "total": 1, "data": [{"id": 7, "value": "evil.com"}]
+        })
+        req = make_request(self.conn_params, {"domain": "evil.com"})
+        r = self.tq._reputation(req)  # note: no value_key argument
+        self.assertEqual(r['status'], 'success')
+        self.assertTrue(r['found'])
+        self.assertEqual(r['indicator_id'], "7")
+
+    @patch('app.threat_q.requests.request')
+    @patch('app.threat_q.requests.post')
+    def test_reputation_no_value_raises(self, mock_post, mock_request):
+        mock_post.return_value = mock_auth_response()
+        req = make_request(self.conn_params, {})
+        with self.assertRaises(Exception) as ctx:
+            self.tq._reputation(req)
+        self.assertIn("No reputation value", str(ctx.exception))
+
+    @patch('app.threat_q.requests.request')
+    @patch('app.threat_q.requests.post')
     def test_reputation_zero_results(self, mock_post, mock_request):
         mock_post.return_value = mock_auth_response()
         mock_request.return_value = mock_api_response({"total": 0, "data": []})

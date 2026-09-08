@@ -163,9 +163,28 @@ class ThreatQ():
         return self._request(base_url, access_token, "GET", "/indicators/search",
                              params={"value": value, "with": "sources,attributes,score,status,type"})
 
-    def _reputation(self, request, value_key):
+    REPUTATION_VALUE_KEYS = ("ip", "url", "domain", "file", "email", "value")
+
+    def _reputation(self, request, value_key=None):
+        params = request.parameters or {}
+        # Resolve the lookup value. The SOAR framework may invoke this method
+        # directly with only `request` (no value_key), so derive it from the
+        # parameters when not explicitly provided.
+        if value_key is not None:
+            value = params[value_key]
+        else:
+            value = None
+            for k in self.REPUTATION_VALUE_KEYS:
+                if params.get(k):
+                    value = params[k]
+                    break
+            if value is None:
+                raise Exception(
+                    "No reputation value provided (expected one of: "
+                    + ", ".join(self.REPUTATION_VALUE_KEYS) + ")"
+                )
         base_url, access_token = self._connect(request.connectionParameters)
-        resp = self._search_indicators_raw(base_url, access_token, request.parameters[value_key])
+        resp = self._search_indicators_raw(base_url, access_token, value)
         data = resp.get("data", []) if isinstance(resp, dict) else []
         first = data[0] if data else {}
         out = {
