@@ -1,0 +1,16 @@
+{
+    "name": "aws_security_hub",
+    "type": "python",
+    "clazz": "app.aws_security_hub",
+    "label": "AWS Security Hub",
+    "native": false,
+    "testUrl": "",
+    "category": "Cloud Security",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "aws_security_hub/logo.svg",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "AWS Security Hub integration for cloud security finding management. Supports listing and retrieving findings, updating workflow status and severity, adding notes, retrieving finding history, and querying insight results."
+}
