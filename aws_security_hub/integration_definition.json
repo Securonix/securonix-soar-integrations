@@ -1,0 +1,676 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Access Key",
+      "name": "access_key",
+      "desc": "AWS Access Key ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Secret Key",
+      "name": "secret_key",
+      "desc": "AWS Secret Access Key",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Region",
+      "name": "region",
+      "desc": "AWS region (e.g. us-east-1)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "AWS Security Hub integration for cloud security finding management. Supports listing and retrieving findings, updating workflow status and severity, adding notes, retrieving finding history, and querying insight results.",
+  "functions": [
+    {
+      "label": "List Findings",
+      "name": "list_findings",
+      "type": "Enrichment",
+      "desc": "Retrieve Security Hub findings with optional filters for severity, workflow status, record state, and product name. Supports pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Severity Label",
+          "name": "severity_label",
+          "desc": "Filter by severity label (INFORMATIONAL, LOW, MEDIUM, HIGH, CRITICAL)",
+          "type": "String",
+          "values": ["INFORMATIONAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Workflow Status",
+          "name": "workflow_status",
+          "desc": "Filter by workflow status (NEW, NOTIFIED, RESOLVED, SUPPRESSED)",
+          "type": "String",
+          "values": ["NEW", "NOTIFIED", "RESOLVED", "SUPPRESSED"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Record State",
+          "name": "record_state",
+          "desc": "Filter by record state (ACTIVE, ARCHIVED)",
+          "type": "String",
+          "values": ["ACTIVE", "ARCHIVED"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Product Name",
+          "name": "product_name",
+          "desc": "Filter by product name (matched against ProductFields, not the top-level ProductName field)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Max Results",
+          "name": "max_results",
+          "desc": "Maximum number of findings to return (1-100, default 100)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Token",
+          "name": "next_token",
+          "desc": "Pagination token from a previous response. Omit on the first request.",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Findings",
+          "name": "findings",
+          "desc": "List of Security Hub findings",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of findings returned",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Next Token",
+          "name": "next_token",
+          "desc": "Pagination token for the next page of results",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Finding Details",
+      "name": "get_finding_details",
+      "type": "Enrichment",
+      "desc": "Retrieve full details of a specific Security Hub finding by finding ID and product ARN. Raises an error if the finding is not found.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Finding ID",
+          "name": "finding_id",
+          "desc": "The ARN or ID of the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Product ARN",
+          "name": "product_arn",
+          "desc": "The ARN of the product that generated the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Finding",
+          "name": "finding",
+          "desc": "Full finding object",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Finding Workflow Status",
+      "name": "update_finding_workflow_status",
+      "type": "Action",
+      "desc": "Update the workflow status of a Security Hub finding (NEW, NOTIFIED, RESOLVED, SUPPRESSED)",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Finding ID",
+          "name": "finding_id",
+          "desc": "The ARN or ID of the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Product ARN",
+          "name": "product_arn",
+          "desc": "The ARN of the product that generated the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Workflow Status",
+          "name": "workflow_status",
+          "desc": "New workflow status for the finding",
+          "type": "String",
+          "values": ["NEW", "NOTIFIED", "RESOLVED", "SUPPRESSED"],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Processed Findings",
+          "name": "processed_findings",
+          "desc": "List of successfully processed finding identifiers",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Unprocessed Findings",
+          "name": "unprocessed_findings",
+          "desc": "List of finding identifiers that could not be processed",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Finding Severity",
+      "name": "update_finding_severity",
+      "type": "Action",
+      "desc": "Override the severity label of a Security Hub finding",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Finding ID",
+          "name": "finding_id",
+          "desc": "The ARN or ID of the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Product ARN",
+          "name": "product_arn",
+          "desc": "The ARN of the product that generated the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Severity Label",
+          "name": "severity_label",
+          "desc": "New severity label for the finding",
+          "type": "String",
+          "values": ["INFORMATIONAL", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Processed Findings",
+          "name": "processed_findings",
+          "desc": "List of successfully processed finding identifiers",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Unprocessed Findings",
+          "name": "unprocessed_findings",
+          "desc": "List of finding identifiers that could not be processed",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add/Update Finding Note",
+      "name": "add_update_finding_note",
+      "type": "Action",
+      "desc": "Add or update a note on a Security Hub finding",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Finding ID",
+          "name": "finding_id",
+          "desc": "The ARN or ID of the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Product ARN",
+          "name": "product_arn",
+          "desc": "The ARN of the product that generated the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Note Text",
+          "name": "note_text",
+          "desc": "Text content of the note",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Note Updated By",
+          "name": "note_updated_by",
+          "desc": "Identifier of the user or process adding the note",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Processed Findings",
+          "name": "processed_findings",
+          "desc": "List of successfully processed finding identifiers",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Unprocessed Findings",
+          "name": "unprocessed_findings",
+          "desc": "List of finding identifiers that could not be processed",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Finding History",
+      "name": "get_finding_history",
+      "type": "Enrichment",
+      "desc": "Retrieve the history of changes for a specific Security Hub finding. Supports optional time range and pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Finding ID",
+          "name": "finding_id",
+          "desc": "The ARN or ID of the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Product ARN",
+          "name": "product_arn",
+          "desc": "The ARN of the product that generated the finding",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Start Time",
+          "name": "start_time",
+          "desc": "Start of the time range for history (ISO 8601 format)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "End Time",
+          "name": "end_time",
+          "desc": "End of the time range for history (ISO 8601 format)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Max Results",
+          "name": "max_results",
+          "desc": "Maximum number of history records to return (1-100, default 100)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Token",
+          "name": "next_token",
+          "desc": "Pagination token from a previous response. Omit on the first request.",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Records",
+          "name": "records",
+          "desc": "List of finding history records",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of history records returned",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Next Token",
+          "name": "next_token",
+          "desc": "Pagination token for the next page of results",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Insight Results",
+      "name": "get_insight_results",
+      "type": "Enrichment",
+      "desc": "Retrieve the results of a Security Hub insight by insight ARN",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Insight ARN",
+          "name": "insight_arn",
+          "desc": "The ARN of the Security Hub insight",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Insight ARN",
+          "name": "insight_arn",
+          "desc": "ARN of the queried insight",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Insight Results",
+          "name": "insight_results",
+          "desc": "List of insight result values with group-by attribute and counts",
+          "type": "Object",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of result values returned",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
