@@ -1,0 +1,761 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Environment ID",
+      "name": "environment_id",
+      "desc": "PingOne environment UUID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Region",
+      "name": "region",
+      "desc": "PingOne region: NorthAmerica, Europe, AsiaPacific, or Canada",
+      "type": "String",
+      "values": ["NorthAmerica", "Europe", "AsiaPacific", "Canada"],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "OAuth2 client ID of the PingOne Worker application",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "OAuth2 client secret of the PingOne Worker application",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Timeout",
+      "name": "timeout",
+      "desc": "HTTP request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "PingOne connector for managing user lifecycle, password operations, and group membership via the PingOne Management API using OAuth2 client credentials.",
+  "functions": [
+    {
+      "label": "Unlock User",
+      "name": "unlock_user",
+      "type": "Remediation",
+      "desc": "Unlock a locked PingOne user account.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user to unlock",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Deactivate User",
+      "name": "deactivate_user",
+      "type": "Remediation",
+      "desc": "Deactivate a PingOne user account.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user to deactivate",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Activate User",
+      "name": "activate_user",
+      "type": "Remediation",
+      "desc": "Activate a PingOne user account.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user to activate",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Set Password",
+      "name": "set_password",
+      "type": "Remediation",
+      "desc": "Set a new password for a PingOne user.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "New Password",
+          "name": "new_password",
+          "desc": "The new password to set for the user",
+          "type": "String",
+          "values": [],
+          "isSecret": true,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Force Password Change",
+      "name": "force_password_change",
+      "type": "Remediation",
+      "desc": "Require the user to change their password at next sign-in.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Password State",
+      "name": "get_password_state",
+      "type": "Enrichment",
+      "desc": "Retrieve the password status and state for a PingOne user.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Password State",
+          "name": "password_state",
+          "desc": "Full password state object returned by PingOne",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add User to Group",
+      "name": "add_user_to_group",
+      "type": "Remediation",
+      "desc": "Add a PingOne user to a group.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Group ID",
+          "name": "group_id",
+          "desc": "The UUID of the PingOne group",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Remove User from Group",
+      "name": "remove_user_from_group",
+      "type": "Remediation",
+      "desc": "Remove a PingOne user from a group.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Group ID",
+          "name": "group_id",
+          "desc": "The UUID of the PingOne group",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User Groups",
+      "name": "get_user_groups",
+      "type": "Enrichment",
+      "desc": "Retrieve all group memberships for a PingOne user. Supports cursor-based pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Cursor",
+          "name": "cursor",
+          "desc": "Pagination cursor from a previous response (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results to return (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Groups",
+          "name": "groups",
+          "desc": "List of group memberships",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Next Cursor",
+          "name": "next_cursor",
+          "desc": "Cursor for the next page of results (null if no more pages)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User",
+      "name": "get_user",
+      "type": "Enrichment",
+      "desc": "Retrieve PingOne user details by user ID or username.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user (provide user_id or username)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Username",
+          "name": "username",
+          "desc": "The username of the PingOne user (provide user_id or username)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "User",
+          "name": "user",
+          "desc": "User object returned by PingOne",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Create User",
+      "name": "create_user",
+      "type": "Remediation",
+      "desc": "Create a new user in a PingOne population.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Username",
+          "name": "username",
+          "desc": "Username for the new user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Email",
+          "name": "email",
+          "desc": "Email address for the new user",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Population ID",
+          "name": "population_id",
+          "desc": "UUID of the PingOne population to create the user in",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Given Name",
+          "name": "given_name",
+          "desc": "First name of the user (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Family Name",
+          "name": "family_name",
+          "desc": "Last name of the user (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "User",
+          "name": "user",
+          "desc": "Created user object (id, username, email)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update User",
+      "name": "update_user",
+      "type": "Remediation",
+      "desc": "Update profile attributes for a PingOne user.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user to update",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Given Name",
+          "name": "given_name",
+          "desc": "Updated first name (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Family Name",
+          "name": "family_name",
+          "desc": "Updated last name (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Email",
+          "name": "email",
+          "desc": "Updated email address (optional)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "User",
+          "name": "user",
+          "desc": "Updated user object returned by PingOne",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete User",
+      "name": "delete_user",
+      "type": "Remediation",
+      "desc": "Delete a PingOne user by user ID or username.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The UUID of the PingOne user (provide user_id or username)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Username",
+          "name": "username",
+          "desc": "The username of the PingOne user (provide user_id or username)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
