@@ -1,0 +1,16 @@
+{
+  "name": "ping_one",
+  "type": "python",
+  "clazz": "app.ping_one",
+  "label": "PingOne",
+  "native": false,
+  "testUrl": "",
+  "category": "Identity & Access Management",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "PingOne connector for managing user lifecycle, password operations, and group membership via the PingOne Management API using OAuth2 client credentials."
+}
