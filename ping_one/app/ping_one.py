@@ -173,25 +173,20 @@ class PingOne:
             return {}
         return resp.json()
 
-    def _conn(self, cp: dict):
-        tld = _region_to_tld(cp["region"])
-        return (
-            f"https://auth.pingone.{tld}",
-            f"https://api.pingone.{tld}",
-            cp["environment_id"],
-            cp["client_id"],
-            cp["client_secret"],
-            _get_timeout(cp),
-            _get_verify_ssl(cp),
-            _get_proxies(cp),
-        )
-
     # ------------------------------------------------------------------
     # Test connection (Python-only — not in integration_definition.json)
     # ------------------------------------------------------------------
     def test_connection(self, connectionParameters: dict):
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = \
-            self._conn(connectionParameters)
+        cp = connectionParameters
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         try:
             self._request(
                 auth_base, api_base, env_id, client_id, client_secret,
@@ -208,7 +203,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def unlock_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         try:
             self._request(
@@ -228,7 +231,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def deactivate_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         try:
             self._request(
@@ -248,7 +259,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def activate_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         try:
             self._request(
@@ -268,7 +287,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def set_password(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         new_password = request.parameters["new_password"]
         try:
@@ -289,7 +316,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def force_password_change(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         try:
             self._request(
@@ -309,7 +344,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def get_password_state(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         try:
             data = self._request(
@@ -328,7 +371,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def add_user_to_group(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         group_id = request.parameters["group_id"]
         try:
@@ -349,7 +400,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def remove_user_from_group(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         group_id = request.parameters["group_id"]
         try:
@@ -369,7 +428,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def get_user_groups(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         params = {}
         if request.parameters.get("cursor"):
@@ -404,7 +471,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def get_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters.get("user_id", "").strip()
         username = request.parameters.get("username", "").strip()
         if not user_id and not username:
@@ -438,7 +513,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def create_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         body = {
             "username": p["username"],
@@ -477,7 +560,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def update_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters["user_id"]
         p = request.parameters
         body = {}
@@ -512,7 +603,15 @@ class PingOne:
     # ------------------------------------------------------------------
     def delete_user(self, request: RequestBody) -> ResponseBody:
         cp = request.connectionParameters
-        auth_base, api_base, env_id, client_id, client_secret, timeout, verify_ssl, proxies = self._conn(cp)
+        tld = _region_to_tld(cp["region"])
+        auth_base = f"https://auth.pingone.{tld}"
+        api_base = f"https://api.pingone.{tld}"
+        env_id = cp["environment_id"]
+        client_id = cp["client_id"]
+        client_secret = cp["client_secret"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         user_id = request.parameters.get("user_id", "").strip()
         username = request.parameters.get("username", "").strip()
         if not user_id and not username:
