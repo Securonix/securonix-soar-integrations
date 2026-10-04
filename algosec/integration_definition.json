@@ -1,0 +1,901 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "AlgoSec ASMS server base URL (e.g., https://algosec.example.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Username",
+      "name": "username",
+      "desc": "AlgoSec (ASMS) username for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Password",
+      "name": "password",
+      "desc": "AlgoSec (ASMS) password for authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Whether to verify the AlgoSec server SSL certificate (default false; AlgoSec appliances often use self-signed certificates)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "AlgoSec (ASMS) integration allows you to retrieve firewall devices, policy rules, risky rules, NAT rules, network and service objects, reports, and business applications from AFA and AppViz. It supports traffic simulation queries, route lookups, risk profile retrieval, and risk checks, and enables active remediation by creating FireFlow traffic and object change requests and retrieving their status.",
+  "functions": [
+    {
+      "label": "Get Devices",
+      "name": "get_devices",
+      "type": "Investigate",
+      "desc": "Retrieve the list of firewall devices managed by AlgoSec Firewall Analyzer (AFA)",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of managed devices",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Devices with Policy",
+      "name": "get_devices_with_policy",
+      "type": "Investigate",
+      "desc": "Retrieve the list of devices along with their policy details from AFA",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of devices with policy details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Device Rules",
+      "name": "get_device_rules",
+      "type": "Investigate",
+      "desc": "Retrieve all rules in a device's or group's policy from AFA",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The display name of the device, group, or matrix",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Entity Type",
+          "name": "entity_type",
+          "desc": "Type of entity: FIREWALL (default), group, or matrix",
+          "type": "String",
+          "values": ["FIREWALL", "group", "matrix"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of policy rules for the device",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Risky Rules",
+      "name": "get_risky_rules",
+      "type": "Investigate",
+      "desc": "Retrieve risky rules for a specified device from AFA",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The display name of the device or group",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Entity Type",
+          "name": "entity_type",
+          "desc": "Type of entity: FIREWALL (default) or GROUP",
+          "type": "String",
+          "values": ["FIREWALL", "GROUP"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of risky rules for the device",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get NAT Rules",
+      "name": "get_nat_rules",
+      "type": "Investigate",
+      "desc": "Retrieve NAT rules information for a specified device from AFA",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The device tree (database) name of the firewall device",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of NAT rules for the device",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Network Objects",
+      "name": "get_network_objects",
+      "type": "Investigate",
+      "desc": "Retrieve matching network objects from AFA by name, optionally filtered by device",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The device name to filter network objects for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Query",
+          "name": "query",
+          "desc": "Name substring to match network objects by original name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of network objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Service Objects",
+      "name": "get_service_objects",
+      "type": "Investigate",
+      "desc": "Retrieve service objects of a device or group from AFA",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The display name of the device or group to retrieve service objects for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Entity Type",
+          "name": "entity_type",
+          "desc": "Type of entity: FIREWALL (default) or GROUP",
+          "type": "String",
+          "values": ["FIREWALL", "GROUP"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of service objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Reports",
+      "name": "get_reports",
+      "type": "Investigate",
+      "desc": "Retrieve all reports for a device from AFA, optionally from a specific date",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The device tree (database) name to retrieve reports for",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "From Date",
+          "name": "from_date",
+          "desc": "The date from which to show reports (format yyyy-mm-dd)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Report data",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Applications",
+      "name": "get_applications",
+      "type": "Investigate",
+      "desc": "Retrieve business applications from AlgoSec AppViz",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Page Number",
+          "name": "page_number",
+          "desc": "Page number for paginated results",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of business applications",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Run Traffic Simulation Query",
+      "name": "run_traffic_simulation",
+      "type": "NetworkSecurity",
+      "desc": "Perform a traffic simulation query to determine whether traffic from a source to a destination is allowed",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Service",
+          "name": "service",
+          "desc": "Service/port for the query (e.g., tcp/443)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The device tree (database) name to scope the simulation to",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Traffic simulation query results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Find Route",
+      "name": "find_route",
+      "type": "NetworkSecurity",
+      "desc": "Find the network route between a source and a destination",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Device Name",
+          "name": "device_name",
+          "desc": "The device tree (database) name to scope the route lookup to",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Route details between source and destination",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Retrieve Risk Profile List",
+      "name": "get_risk_profiles",
+      "type": "PolicyManagement",
+      "desc": "Retrieve the list of risk profiles from AFA",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of risk profiles",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Run a Risk Check",
+      "name": "run_risk_check",
+      "type": "PolicyManagement",
+      "desc": "Run a risk check for traffic between a source and destination against a risk profile",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Service",
+          "name": "service",
+          "desc": "Service/port for the risk check (e.g., tcp/443)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Risk Profile",
+          "name": "risk_profile",
+          "desc": "Name of the risk profile to evaluate against",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Risk check results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Create Traffic Change Request",
+      "name": "create_traffic_change_request",
+      "type": "Remediation",
+      "desc": "Create a FireFlow traffic change request to allow or block traffic between a source and destination",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Template",
+          "name": "template",
+          "desc": "FireFlow ticket template name (e.g., Basic Change Traffic Request)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination IP address or subnet",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Service",
+          "name": "service",
+          "desc": "Service/port for the change (e.g., tcp/443)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Action",
+          "name": "action",
+          "desc": "Traffic action: Allow (default) or Drop",
+          "type": "String",
+          "values": ["Allow", "Drop"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Application",
+          "name": "application",
+          "desc": "Application name (default: any)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "User",
+          "name": "user",
+          "desc": "User name (default: any)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created change request details (including ticket ID)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Create Object Change Request",
+      "name": "create_object_change_request",
+      "type": "Remediation",
+      "desc": "Create a FireFlow object change request to add or modify a network object",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Template",
+          "name": "template",
+          "desc": "FireFlow ticket template name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Object Name",
+          "name": "object_name",
+          "desc": "Name of the network object",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Content",
+          "name": "content",
+          "desc": "The object content (IP, subnet, or range)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Object Type",
+          "name": "object_type",
+          "desc": "Type of the object: Host (default), Network, or Range",
+          "type": "String",
+          "values": ["Host", "Network", "Range"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Devices",
+          "name": "devices",
+          "desc": "Comma-separated list of device database names to apply the object to",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created object change request details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Change Request Status",
+      "name": "get_change_request_status",
+      "type": "PolicyManagement",
+      "desc": "Retrieve the details and status of a FireFlow change request by its ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Change Request ID",
+          "name": "change_request_id",
+          "desc": "The ID of the FireFlow change request",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Change request details and status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

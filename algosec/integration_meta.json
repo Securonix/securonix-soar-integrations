@@ -1,0 +1,16 @@
+{
+  "name": "algosec",
+  "type": "python",
+  "clazz": "app.algosec",
+  "label": "AlgoSec",
+  "native": false,
+  "testUrl": "",
+  "category": "Network Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "AlgoSec (ASMS) integration allows you to retrieve firewall devices, policy rules, risky rules, NAT rules, network and service objects, reports, and business applications from AFA and AppViz. It supports traffic simulation queries, route lookups, risk profile retrieval, and risk checks, and enables active remediation by creating FireFlow traffic and object change requests and retrieving their status."
+}
