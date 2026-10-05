@@ -12,6 +12,7 @@ except ImportError:
 
 DEFAULT_TIMEOUT = 30
 API_PATH = "/app/xdr/api/xdr/v1"
+_token_cache = {}
 
 
 def _get_timeout(cp: dict) -> int:
@@ -75,27 +76,67 @@ def _decode_jwt_exp(token: str):
         return None
 
 
-class CheckpointXdr:
+def _get_token(gateway_url: str, client_id: str, access_key: str,
+               timeout: int, verify_ssl: bool, proxies) -> str:
+    cache_key = (gateway_url, client_id)
+    cached = _token_cache.get(cache_key)
+    if cached and time.time() < cached["expiry"] - 30:
+        return cached["token"]
 
-    def __init__(self) -> None:
-        self.logger = logging.getLogger()
-        self._token_cache: dict = {}
+    token_url = f"{gateway_url}/auth/external"
+    try:
+        resp = requests.post(
+            token_url,
+            json={"clientId": client_id, "accessKey": access_key},
+            timeout=timeout,
+            verify=verify_ssl,
+            proxies=proxies,
+        )
+    except requests.exceptions.ConnectionError:
+        raise Exception(
+            "Unable to connect to CheckPoint XDR. Please verify gateway_url and network connectivity."
+        )
+    except requests.exceptions.Timeout:
+        raise Exception("Connection to CheckPoint XDR timed out.")
 
-    def _get_token(self, gateway_url: str, client_id: str, access_key: str,
-                   timeout: int, verify_ssl: bool, proxies) -> str:
-        cache_key = (gateway_url, client_id)
-        cached = self._token_cache.get(cache_key)
-        if cached and time.time() < cached["expiry"] - 30:
-            return cached["token"]
+    if resp.status_code == 401:
+        raise Exception("Authentication failed. Please verify client_id and access_key.")
+    if resp.status_code != 200:
+        raise Exception(f"Authentication failed: HTTP {resp.status_code}")
 
-        token_url = f"{gateway_url}/auth/external"
+    data = resp.json()
+    token = (data.get("data") or {}).get("token") or data.get("token")
+    if not token:
+        raise Exception("Authentication response missing token.")
+
+    exp = _decode_jwt_exp(token)
+    expires_in = (exp - time.time()) if exp else 3600
+    _token_cache[cache_key] = {"token": token, "expiry": time.time() + expires_in}
+    return token
+
+
+def _invalidate_token(gateway_url: str, client_id: str):
+    _token_cache.pop((gateway_url, client_id), None)
+
+
+def _do_request(gateway_url: str, client_id: str, access_key: str,
+                method: str, path: str, timeout: int, verify_ssl: bool, proxies,
+                resource_hint: str = "", **kwargs):
+    url = f"{gateway_url}{API_PATH}{path}"
+
+    def _do(token):
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        }
         try:
-            resp = requests.post(
-                token_url,
-                json={"clientId": client_id, "accessKey": access_key},
+            return requests.request(
+                method, url,
+                headers=headers,
                 timeout=timeout,
                 verify=verify_ssl,
                 proxies=proxies,
+                **kwargs,
             )
         except requests.exceptions.ConnectionError:
             raise Exception(
@@ -104,63 +145,25 @@ class CheckpointXdr:
         except requests.exceptions.Timeout:
             raise Exception("Connection to CheckPoint XDR timed out.")
 
-        if resp.status_code == 401:
-            raise Exception("Authentication failed. Please verify client_id and access_key.")
-        if resp.status_code != 200:
-            raise Exception(f"Authentication failed: HTTP {resp.status_code}")
+    token = _get_token(gateway_url, client_id, access_key, timeout, verify_ssl, proxies)
+    resp = _do(token)
 
-        data = resp.json()
-        token = (data.get("data") or {}).get("token") or data.get("token")
-        if not token:
-            raise Exception("Authentication response missing token.")
-
-        exp = _decode_jwt_exp(token)
-        expires_in = (exp - time.time()) if exp else 3600
-        self._token_cache[cache_key] = {"token": token, "expiry": time.time() + expires_in}
-        return token
-
-    def _invalidate_token(self, gateway_url: str, client_id: str):
-        self._token_cache.pop((gateway_url, client_id), None)
-
-    def _request(self, gateway_url: str, client_id: str, access_key: str,
-                 method: str, path: str, timeout: int, verify_ssl: bool, proxies,
-                 resource_hint: str = "", **kwargs):
-        url = f"{gateway_url}{API_PATH}{path}"
-
-        def _do(token):
-            headers = {
-                "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json",
-            }
-            try:
-                return requests.request(
-                    method, url,
-                    headers=headers,
-                    timeout=timeout,
-                    verify=verify_ssl,
-                    proxies=proxies,
-                    **kwargs,
-                )
-            except requests.exceptions.ConnectionError:
-                raise Exception(
-                    "Unable to connect to CheckPoint XDR. Please verify gateway_url and network connectivity."
-                )
-            except requests.exceptions.Timeout:
-                raise Exception("Connection to CheckPoint XDR timed out.")
-
-        token = self._get_token(gateway_url, client_id, access_key, timeout, verify_ssl, proxies)
+    if resp.status_code == 401:
+        _invalidate_token(gateway_url, client_id)
+        token = _get_token(gateway_url, client_id, access_key, timeout, verify_ssl, proxies)
         resp = _do(token)
 
-        if resp.status_code == 401:
-            self._invalidate_token(gateway_url, client_id)
-            token = self._get_token(gateway_url, client_id, access_key, timeout, verify_ssl, proxies)
-            resp = _do(token)
+    _handle_response_errors(resp, resource_hint)
 
-        _handle_response_errors(resp, resource_hint)
+    if resp.status_code == 204 or not resp.content:
+        return {}
+    return resp.json()
 
-        if resp.status_code == 204 or not resp.content:
-            return {}
-        return resp.json()
+
+class CheckpointXdr:
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger()
 
     # ------------------------------------------------------------------
     # FR-1: test_connection (hidden from UI)
@@ -174,11 +177,11 @@ class CheckpointXdr:
         verify_ssl = _get_verify_ssl(cp)
         proxies = _get_proxies(cp)
         try:
-            self._request(gateway_url, client_id, access_key, "GET", "/version",
-                          timeout, verify_ssl, proxies)
+            _do_request(gateway_url, client_id, access_key, "GET", "/version",
+                        timeout, verify_ssl, proxies)
             return {"status": "success", "message": "Connected to CheckPoint XDR successfully."}
         except Exception:
-            self.logger.error("Exception while testing CheckPoint XDR connection", exc_info=True)
+            logging.getLogger().error("Exception while testing CheckPoint XDR connection", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -205,11 +208,11 @@ class CheckpointXdr:
         if p.get("offset") is not None:
             params["offset"] = int(p["offset"])
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET", "/incidents",
-                                 timeout, verify_ssl, proxies, params=params)
+            data = _do_request(gateway_url, client_id, access_key, "GET", "/incidents",
+                               timeout, verify_ssl, proxies, params=params)
             return {"status": "success", "incidents": data}
         except Exception:
-            self.logger.error("error while running action 'get_incidents'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_incidents'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -225,12 +228,12 @@ class CheckpointXdr:
         proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET",
-                                 f"/incidents/{incident_id}", timeout, verify_ssl, proxies,
-                                 resource_hint=f"incident {incident_id}")
+            data = _do_request(gateway_url, client_id, access_key, "GET",
+                               f"/incidents/{incident_id}", timeout, verify_ssl, proxies,
+                               resource_hint=f"incident {incident_id}")
             return {"status": "success", "incident": data}
         except Exception:
-            self.logger.error("error while running action 'get_incident_by_id'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_incident_by_id'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -258,12 +261,12 @@ class CheckpointXdr:
         if p.get("follow_up") is not None:
             body["followUp"] = bool(p["follow_up"])
         try:
-            data = self._request(gateway_url, client_id, access_key, "PUT",
-                                 f"/incidents/{incident_id}", timeout, verify_ssl, proxies,
-                                 resource_hint=f"incident {incident_id}", json=body)
+            data = _do_request(gateway_url, client_id, access_key, "PUT",
+                               f"/incidents/{incident_id}", timeout, verify_ssl, proxies,
+                               resource_hint=f"incident {incident_id}", json=body)
             return {"status": "success", "incident": data}
         except Exception:
-            self.logger.error("error while running action 'update_incident'", exc_info=True)
+            logging.getLogger().error("error while running action 'update_incident'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -279,12 +282,12 @@ class CheckpointXdr:
         proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET",
-                                 f"/incidents/{incident_id}/comments", timeout, verify_ssl, proxies,
-                                 resource_hint=f"incident {incident_id}")
+            data = _do_request(gateway_url, client_id, access_key, "GET",
+                               f"/incidents/{incident_id}/comments", timeout, verify_ssl, proxies,
+                               resource_hint=f"incident {incident_id}")
             return {"status": "success", "comments": data}
         except Exception:
-            self.logger.error("error while running action 'get_incident_comments'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_incident_comments'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -301,13 +304,13 @@ class CheckpointXdr:
         p = request.parameters
         incident_id = p["incident_id"]
         try:
-            self._request(gateway_url, client_id, access_key, "POST",
-                          f"/incidents/{incident_id}/comments", timeout, verify_ssl, proxies,
-                          resource_hint=f"incident {incident_id}",
-                          json={"comment": p["comment"]})
+            _do_request(gateway_url, client_id, access_key, "POST",
+                        f"/incidents/{incident_id}/comments", timeout, verify_ssl, proxies,
+                        resource_hint=f"incident {incident_id}",
+                        json={"comment": p["comment"]})
             return {"status": "success", "message": "Comment added successfully."}
         except Exception:
-            self.logger.error("error while running action 'add_incident_comment'", exc_info=True)
+            logging.getLogger().error("error while running action 'add_incident_comment'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -339,8 +342,8 @@ class CheckpointXdr:
             if val:
                 params[param_name] = val if isinstance(val, list) else [val]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET", "/auditlogs",
-                                 timeout, verify_ssl, proxies, params=params)
+            data = _do_request(gateway_url, client_id, access_key, "GET", "/auditlogs",
+                               timeout, verify_ssl, proxies, params=params)
             return {
                 "status": "success",
                 "limit": data.get("limit"),
@@ -350,7 +353,7 @@ class CheckpointXdr:
                 "results": data.get("results", data),
             }
         except Exception:
-            self.logger.error("error while running action 'get_audit_logs'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_audit_logs'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -371,11 +374,11 @@ class CheckpointXdr:
         if p.get("expiration_date"):
             body["expirationDate"] = p["expiration_date"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "POST", "/exclusions",
-                                 timeout, verify_ssl, proxies, json=body)
+            data = _do_request(gateway_url, client_id, access_key, "POST", "/exclusions",
+                               timeout, verify_ssl, proxies, json=body)
             return {"status": "success", "exclusion": data}
         except Exception:
-            self.logger.error("error while running action 'create_exclusion'", exc_info=True)
+            logging.getLogger().error("error while running action 'create_exclusion'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -400,11 +403,11 @@ class CheckpointXdr:
         if p.get("to_date"):
             params["toDate"] = p["to_date"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET", "/exclusions",
-                                 timeout, verify_ssl, proxies, params=params)
+            data = _do_request(gateway_url, client_id, access_key, "GET", "/exclusions",
+                               timeout, verify_ssl, proxies, params=params)
             return {"status": "success", "exclusions": data}
         except Exception:
-            self.logger.error("error while running action 'get_exclusions'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_exclusions'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -420,12 +423,12 @@ class CheckpointXdr:
         proxies = _get_proxies(cp)
         exclusion_id = request.parameters["exclusion_id"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET",
-                                 f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
-                                 resource_hint=f"exclusion {exclusion_id}")
+            data = _do_request(gateway_url, client_id, access_key, "GET",
+                               f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
+                               resource_hint=f"exclusion {exclusion_id}")
             return {"status": "success", "exclusion": data}
         except Exception:
-            self.logger.error("error while running action 'get_exclusion_by_id'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_exclusion_by_id'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -447,12 +450,12 @@ class CheckpointXdr:
         if p.get("expiration_date"):
             body["expirationDate"] = p["expiration_date"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "PUT",
-                                 f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
-                                 resource_hint=f"exclusion {exclusion_id}", json=body)
+            data = _do_request(gateway_url, client_id, access_key, "PUT",
+                               f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
+                               resource_hint=f"exclusion {exclusion_id}", json=body)
             return {"status": "success", "exclusion": data}
         except Exception:
-            self.logger.error("error while running action 'update_exclusion'", exc_info=True)
+            logging.getLogger().error("error while running action 'update_exclusion'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -468,12 +471,12 @@ class CheckpointXdr:
         proxies = _get_proxies(cp)
         exclusion_id = request.parameters["exclusion_id"]
         try:
-            self._request(gateway_url, client_id, access_key, "DELETE",
-                          f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
-                          resource_hint=f"exclusion {exclusion_id}")
+            _do_request(gateway_url, client_id, access_key, "DELETE",
+                        f"/exclusions/{exclusion_id}", timeout, verify_ssl, proxies,
+                        resource_hint=f"exclusion {exclusion_id}")
             return {"status": "success", "message": "Exclusion deleted successfully."}
         except Exception:
-            self.logger.error("error while running action 'delete_exclusion'", exc_info=True)
+            logging.getLogger().error("error while running action 'delete_exclusion'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -489,12 +492,12 @@ class CheckpointXdr:
         proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET",
-                                 f"/responses/{incident_id}", timeout, verify_ssl, proxies,
-                                 resource_hint=f"incident {incident_id}")
+            data = _do_request(gateway_url, client_id, access_key, "GET",
+                               f"/responses/{incident_id}", timeout, verify_ssl, proxies,
+                               resource_hint=f"incident {incident_id}")
             return {"status": "success", "responses": data}
         except Exception:
-            self.logger.error("error while running action 'get_responses_by_incident'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_responses_by_incident'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -514,12 +517,12 @@ class CheckpointXdr:
         if isinstance(response_ids, str):
             response_ids = [response_ids]
         try:
-            data = self._request(gateway_url, client_id, access_key, "POST",
-                                 f"/responses/action/{action}", timeout, verify_ssl, proxies,
-                                 json={"responsesIds": response_ids})
+            data = _do_request(gateway_url, client_id, access_key, "POST",
+                               f"/responses/action/{action}", timeout, verify_ssl, proxies,
+                               json={"responsesIds": response_ids})
             return {"status": "success", "result": data}
         except Exception:
-            self.logger.error("error while running action 'execute_response_action'", exc_info=True)
+            logging.getLogger().error("error while running action 'execute_response_action'", exc_info=True)
             raise
 
     # ------------------------------------------------------------------
@@ -534,9 +537,9 @@ class CheckpointXdr:
         verify_ssl = _get_verify_ssl(cp)
         proxies = _get_proxies(cp)
         try:
-            data = self._request(gateway_url, client_id, access_key, "GET", "/datasources",
-                                 timeout, verify_ssl, proxies)
+            data = _do_request(gateway_url, client_id, access_key, "GET", "/datasources",
+                               timeout, verify_ssl, proxies)
             return {"status": "success", "data_sources": data}
         except Exception:
-            self.logger.error("error while running action 'get_data_sources'", exc_info=True)
+            logging.getLogger().error("error while running action 'get_data_sources'", exc_info=True)
             raise
