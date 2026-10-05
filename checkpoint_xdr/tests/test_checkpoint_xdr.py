@@ -58,32 +58,36 @@ def _err(status, body=None):
 # ------------------------------------------------------------------
 class TestGetToken:
     def test_success_and_cache(self):
-        xdr = CheckpointXdr()
+        import app.checkpoint_xdr as mod
+        mod._token_cache.clear()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()) as mock_post:
-            t1 = xdr._get_token("https://gw", "cid", "key", 30, True, None)
-            t2 = xdr._get_token("https://gw", "cid", "key", 30, True, None)
+            t1 = mod._get_token("https://gw", "cid", "key", 30, True, None)
+            t2 = mod._get_token("https://gw", "cid", "key", 30, True, None)
         assert t1 == _JWT
         assert mock_post.call_count == 1  # second call served from cache
 
     def test_401_raises(self):
-        xdr = CheckpointXdr()
+        import app.checkpoint_xdr as mod
+        mod._token_cache.clear()
         with patch("app.checkpoint_xdr.requests.post", return_value=_err(401)):
             with pytest.raises(Exception, match="Authentication failed"):
-                xdr._get_token("https://gw", "cid", "key", 30, True, None)
+                mod._get_token("https://gw", "cid", "key", 30, True, None)
 
     def test_connection_error_raises(self):
         import requests as req
-        xdr = CheckpointXdr()
+        import app.checkpoint_xdr as mod
+        mod._token_cache.clear()
         with patch("app.checkpoint_xdr.requests.post", side_effect=req.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
-                xdr._get_token("https://gw", "cid", "key", 30, True, None)
+                mod._get_token("https://gw", "cid", "key", 30, True, None)
 
     def test_timeout_raises(self):
         import requests as req
-        xdr = CheckpointXdr()
+        import app.checkpoint_xdr as mod
+        mod._token_cache.clear()
         with patch("app.checkpoint_xdr.requests.post", side_effect=req.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
-                xdr._get_token("https://gw", "cid", "key", 30, True, None)
+                mod._get_token("https://gw", "cid", "key", 30, True, None)
 
 
 # ------------------------------------------------------------------
