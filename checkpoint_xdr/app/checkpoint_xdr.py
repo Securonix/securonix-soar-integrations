@@ -87,7 +87,7 @@ def _build_array_params(params: dict, key: str, values) -> None:
                 params[key] = [params[key], v]
 
 
-class CheckPointXDR:
+class CheckpointXdr:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()

@@ -2,7 +2,7 @@ import json
 import pytest
 from unittest.mock import patch, MagicMock
 from pykson import Pykson
-from app.checkpoint_xdr import CheckPointXDR
+from app.checkpoint_xdr import CheckpointXdr
 from app.model.request_body import RequestBody
 
 pykson = Pykson()
@@ -58,7 +58,7 @@ def _err(status, body=None):
 # ------------------------------------------------------------------
 class TestGetToken:
     def test_success_and_cache(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()) as mock_post:
             t1 = xdr._get_token("https://gw", "cid", "key", 30, True, None)
             t2 = xdr._get_token("https://gw", "cid", "key", 30, True, None)
@@ -66,21 +66,21 @@ class TestGetToken:
         assert mock_post.call_count == 1  # second call served from cache
 
     def test_401_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_err(401)):
             with pytest.raises(Exception, match="Authentication failed"):
                 xdr._get_token("https://gw", "cid", "key", 30, True, None)
 
     def test_connection_error_raises(self):
         import requests as req
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", side_effect=req.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
                 xdr._get_token("https://gw", "cid", "key", 30, True, None)
 
     def test_timeout_raises(self):
         import requests as req
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", side_effect=req.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
                 xdr._get_token("https://gw", "cid", "key", 30, True, None)
@@ -91,7 +91,7 @@ class TestGetToken:
 # ------------------------------------------------------------------
 class TestRetry:
     def test_401_retry_reacquires_token(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         token_resp = _token_resp()
         first_401 = _err(401)
         second_ok = _ok({"id": "inc1"})
@@ -106,7 +106,7 @@ class TestRetry:
 # ------------------------------------------------------------------
 class TestTestConnection:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"version": "1.0"})):
             result = xdr.test_connection(CP)
@@ -115,7 +115,7 @@ class TestTestConnection:
 
     def test_connection_error(self):
         import requests as req
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", side_effect=req.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
                 xdr.test_connection(CP)
@@ -126,7 +126,7 @@ class TestTestConnection:
 # ------------------------------------------------------------------
 class TestGetIncidents:
     def test_params_mapped(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok([])) as mock_req:
             xdr.get_incidents(_make_request({
@@ -144,7 +144,7 @@ class TestGetIncidents:
         assert params["offset"] == 50
 
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         incidents = [{"id": "1"}]
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok(incidents)):
@@ -158,14 +158,14 @@ class TestGetIncidents:
 # ------------------------------------------------------------------
 class TestGetIncidentById:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "abc"})):
             result = xdr.get_incident_by_id(_make_request({"incident_id": "abc"}))
         assert result["incident"]["id"] == "abc"
 
     def test_404_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(404)):
             with pytest.raises(Exception, match="not found"):
@@ -177,7 +177,7 @@ class TestGetIncidentById:
 # ------------------------------------------------------------------
 class TestUpdateIncident:
     def test_status_required_in_body(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "1"})) as mock_req:
             xdr.update_incident(_make_request({"incident_id": "1", "status": "in progress"}))
@@ -185,7 +185,7 @@ class TestUpdateIncident:
         assert body["status"] == "in progress"
 
     def test_optional_fields_camelcase(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "1"})) as mock_req:
             xdr.update_incident(_make_request({
@@ -203,7 +203,7 @@ class TestUpdateIncident:
         assert body["followUp"] is False
 
     def test_optional_fields_absent_when_not_provided(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "1"})) as mock_req:
             xdr.update_incident(_make_request({"incident_id": "1", "status": "new"}))
@@ -217,7 +217,7 @@ class TestUpdateIncident:
 # ------------------------------------------------------------------
 class TestGetIncidentComments:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok([{"text": "hi"}])):
             result = xdr.get_incident_comments(_make_request({"incident_id": "1"}))
@@ -230,7 +230,7 @@ class TestGetIncidentComments:
 # ------------------------------------------------------------------
 class TestAddIncidentComment:
     def test_body_and_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             result = xdr.add_incident_comment(_make_request({"incident_id": "1", "comment": "test"}))
@@ -243,7 +243,7 @@ class TestAddIncidentComment:
 # ------------------------------------------------------------------
 class TestGetAuditLogs:
     def test_page_limit_params(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         api_resp = {"limit": 10, "offset": 0, "total": 5, "hasNext": False, "results": []}
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok(api_resp)) as mock_req:
@@ -255,7 +255,7 @@ class TestGetAuditLogs:
         assert result["hasNext"] is False
 
     def test_date_mapping(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.get_audit_logs(_make_request({"from_date": "2024-01-01", "to_date": "2024-01-31"}))
@@ -264,7 +264,7 @@ class TestGetAuditLogs:
         assert params["toDate"] == "2024-01-31"
 
     def test_array_params(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.get_audit_logs(_make_request({"status": ["Completed", "Failed"]}))
@@ -277,7 +277,7 @@ class TestGetAuditLogs:
 # ------------------------------------------------------------------
 class TestCreateExclusion:
     def test_required_fields(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "ex1"})) as mock_req:
             result = xdr.create_exclusion(_make_request({"exclusion_type": "ip", "value": "1.2.3.4"}))
@@ -289,7 +289,7 @@ class TestCreateExclusion:
         assert result["status"] == "success"
 
     def test_optional_fields_included(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.create_exclusion(_make_request({
@@ -308,7 +308,7 @@ class TestCreateExclusion:
 # ------------------------------------------------------------------
 class TestGetExclusions:
     def test_page_limit_from_to(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok([])) as mock_req:
             xdr.get_exclusions(_make_request({
@@ -327,14 +327,14 @@ class TestGetExclusions:
 # ------------------------------------------------------------------
 class TestGetExclusionById:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"id": "ex1"})):
             result = xdr.get_exclusion_by_id(_make_request({"exclusion_id": "ex1"}))
         assert result["exclusion"]["id"] == "ex1"
 
     def test_404_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(404)):
             with pytest.raises(Exception, match="not found"):
@@ -346,7 +346,7 @@ class TestGetExclusionById:
 # ------------------------------------------------------------------
 class TestUpdateExclusion:
     def test_only_comment_and_expiration_in_body(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.update_exclusion(_make_request({
@@ -360,7 +360,7 @@ class TestUpdateExclusion:
         assert "value" not in body
 
     def test_empty_body_when_no_optional_fields(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.update_exclusion(_make_request({"exclusion_id": "ex1"}))
@@ -368,7 +368,7 @@ class TestUpdateExclusion:
         assert body == {}
 
     def test_404_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(404)):
             with pytest.raises(Exception, match="not found"):
@@ -380,14 +380,14 @@ class TestUpdateExclusion:
 # ------------------------------------------------------------------
 class TestDeleteExclusion:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_no_content()):
             result = xdr.delete_exclusion(_make_request({"exclusion_id": "ex1"}))
         assert result["message"] == "Exclusion deleted successfully."
 
     def test_404_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(404)):
             with pytest.raises(Exception, match="not found"):
@@ -399,7 +399,7 @@ class TestDeleteExclusion:
 # ------------------------------------------------------------------
 class TestGetResponsesByIncident:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok([{"id": "r1"}])):
             result = xdr.get_responses_by_incident(_make_request({"incident_id": "inc1"}))
@@ -412,7 +412,7 @@ class TestGetResponsesByIncident:
 class TestExecuteResponseAction:
     @pytest.mark.parametrize("action", ["apply", "revert", "reject"])
     def test_action_and_body(self, action):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({"success": True})) as mock_req:
             result = xdr.execute_response_action(_make_request({
@@ -425,7 +425,7 @@ class TestExecuteResponseAction:
         assert result["status"] == "success"
 
     def test_string_response_ids_wrapped(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok({})) as mock_req:
             xdr.execute_response_action(_make_request({"action": "apply", "response_ids": "r1"}))
@@ -437,7 +437,7 @@ class TestExecuteResponseAction:
 # ------------------------------------------------------------------
 class TestGetDataSources:
     def test_success(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_ok([{"name": "ds1"}])):
             result = xdr.get_data_sources(_make_request({}))
@@ -449,14 +449,14 @@ class TestGetDataSources:
 # ------------------------------------------------------------------
 class TestErrorHandling:
     def test_403_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(403)):
             with pytest.raises(Exception, match="Authorization failed"):
                 xdr.get_data_sources(_make_request({}))
 
     def test_500_raises(self):
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", return_value=_err(500)):
             with pytest.raises(Exception, match="server error"):
@@ -464,7 +464,7 @@ class TestErrorHandling:
 
     def test_connection_error_on_api_call(self):
         import requests as req
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", side_effect=req.exceptions.ConnectionError):
             with pytest.raises(Exception, match="Unable to connect"):
@@ -472,7 +472,7 @@ class TestErrorHandling:
 
     def test_timeout_on_api_call(self):
         import requests as req
-        xdr = CheckPointXDR()
+        xdr = CheckpointXdr()
         with patch("app.checkpoint_xdr.requests.post", return_value=_token_resp()), \
              patch("app.checkpoint_xdr.requests.request", side_effect=req.exceptions.Timeout):
             with pytest.raises(Exception, match="timed out"):
