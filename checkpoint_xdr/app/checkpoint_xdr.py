@@ -65,7 +65,6 @@ def _handle_response_errors(resp, resource_hint: str = ""):
 
 
 def _decode_jwt_exp(token: str):
-    """Return the exp claim from a JWT without signature verification, or None on failure."""
     try:
         payload_b64 = token.split(".")[1]
         padding = 4 - len(payload_b64) % 4
@@ -76,26 +75,12 @@ def _decode_jwt_exp(token: str):
         return None
 
 
-def _build_array_params(params: dict, key: str, values) -> None:
-    """Add repeated query params for array inputs."""
-    if values:
-        for v in values:
-            params.setdefault(key, [])
-            if isinstance(params[key], list):
-                params[key].append(v)
-            else:
-                params[key] = [params[key], v]
-
-
 class CheckpointXdr:
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
         self._token_cache: dict = {}
 
-    # ------------------------------------------------------------------
-    # Auth helpers
-    # ------------------------------------------------------------------
     def _get_token(self, gateway_url: str, client_id: str, access_key: str,
                    timeout: int, verify_ssl: bool, proxies) -> str:
         cache_key = (gateway_url, client_id)
@@ -177,18 +162,6 @@ class CheckpointXdr:
             return {}
         return resp.json()
 
-    def _cp(self, request: RequestBody):
-        """Unpack common connection parameters."""
-        cp = request.connectionParameters
-        return (
-            cp["gateway_url"].rstrip("/"),
-            cp["client_id"],
-            cp["access_key"],
-            _get_timeout(cp),
-            _get_verify_ssl(cp),
-            _get_proxies(cp),
-        )
-
     # ------------------------------------------------------------------
     # FR-1: test_connection (hidden from UI)
     # ------------------------------------------------------------------
@@ -212,7 +185,13 @@ class CheckpointXdr:
     # FR-2: get_incidents
     # ------------------------------------------------------------------
     def get_incidents(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         params = {}
         if p.get("from_date"):
@@ -237,7 +216,13 @@ class CheckpointXdr:
     # FR-3: get_incident_by_id
     # ------------------------------------------------------------------
     def get_incident_by_id(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
             data = self._request(gateway_url, client_id, access_key, "GET",
@@ -252,7 +237,13 @@ class CheckpointXdr:
     # FR-4: update_incident
     # ------------------------------------------------------------------
     def update_incident(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         incident_id = p["incident_id"]
         body = {"status": p["status"]}
@@ -279,7 +270,13 @@ class CheckpointXdr:
     # FR-5: get_incident_comments
     # ------------------------------------------------------------------
     def get_incident_comments(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
             data = self._request(gateway_url, client_id, access_key, "GET",
@@ -294,7 +291,13 @@ class CheckpointXdr:
     # FR-6: add_incident_comment
     # ------------------------------------------------------------------
     def add_incident_comment(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         incident_id = p["incident_id"]
         try:
@@ -311,7 +314,13 @@ class CheckpointXdr:
     # FR-7: get_audit_logs
     # ------------------------------------------------------------------
     def get_audit_logs(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         params = {}
         if p.get("limit") is not None:
@@ -324,7 +333,6 @@ class CheckpointXdr:
             params["toDate"] = p["to_date"]
         if p.get("search"):
             params["search"] = p["search"]
-        # Array params — pass as lists; requests will repeat them
         for key, param_name in [("user", "user"), ("status", "status"),
                                  ("type", "type"), ("detail", "detail")]:
             val = p.get(key)
@@ -349,7 +357,13 @@ class CheckpointXdr:
     # FR-8: create_exclusion
     # ------------------------------------------------------------------
     def create_exclusion(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         body = {"type": p["exclusion_type"], "value": p["value"]}
         if p.get("comment"):
@@ -368,7 +382,13 @@ class CheckpointXdr:
     # FR-9: get_exclusions
     # ------------------------------------------------------------------
     def get_exclusions(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         params = {}
         if p.get("limit") is not None:
@@ -391,7 +411,13 @@ class CheckpointXdr:
     # FR-10: get_exclusion_by_id
     # ------------------------------------------------------------------
     def get_exclusion_by_id(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         exclusion_id = request.parameters["exclusion_id"]
         try:
             data = self._request(gateway_url, client_id, access_key, "GET",
@@ -406,7 +432,13 @@ class CheckpointXdr:
     # FR-11: update_exclusion
     # ------------------------------------------------------------------
     def update_exclusion(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         exclusion_id = p["exclusion_id"]
         body = {}
@@ -427,7 +459,13 @@ class CheckpointXdr:
     # FR-12: delete_exclusion
     # ------------------------------------------------------------------
     def delete_exclusion(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         exclusion_id = request.parameters["exclusion_id"]
         try:
             self._request(gateway_url, client_id, access_key, "DELETE",
@@ -442,7 +480,13 @@ class CheckpointXdr:
     # FR-13: get_responses_by_incident
     # ------------------------------------------------------------------
     def get_responses_by_incident(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         incident_id = request.parameters["incident_id"]
         try:
             data = self._request(gateway_url, client_id, access_key, "GET",
@@ -457,7 +501,13 @@ class CheckpointXdr:
     # FR-14: execute_response_action
     # ------------------------------------------------------------------
     def execute_response_action(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         p = request.parameters
         action = p["action"]
         response_ids = p["response_ids"]
@@ -476,7 +526,13 @@ class CheckpointXdr:
     # FR-15: get_data_sources
     # ------------------------------------------------------------------
     def get_data_sources(self, request: RequestBody) -> ResponseBody:
-        gateway_url, client_id, access_key, timeout, verify_ssl, proxies = self._cp(request)
+        cp = request.connectionParameters
+        gateway_url = cp["gateway_url"].rstrip("/")
+        client_id = cp["client_id"]
+        access_key = cp["access_key"]
+        timeout = _get_timeout(cp)
+        verify_ssl = _get_verify_ssl(cp)
+        proxies = _get_proxies(cp)
         try:
             data = self._request(gateway_url, client_id, access_key, "GET", "/datasources",
                                  timeout, verify_ssl, proxies)
