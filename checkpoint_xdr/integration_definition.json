@@ -1,0 +1,1002 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "OAuth2 client ID for the CheckPoint Infinity Portal",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Access Key",
+      "name": "access_key",
+      "desc": "OAuth2 access key (client secret) used to obtain a bearer token",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Gateway URL",
+      "name": "gateway_url",
+      "desc": "CloudInfra gateway URL for your region (e.g. https://cloudinfra-gw.portal.checkpoint.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Timeout",
+      "name": "timeout",
+      "desc": "HTTP request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Check Point XDR connector for managing incidents, exclusions, audit logs, response actions, and data sources via the Check Point Infinity XDR/XPR API.",
+  "functions": [
+    {
+      "label": "Get Incidents",
+      "name": "get_incidents",
+      "type": "Enrichment",
+      "desc": "Retrieve XDR incidents filtered by date range, with offset/limit pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "From Date",
+          "name": "from_date",
+          "desc": "Start of date range (ISO 8601). Defaults to 7 days ago.",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "To Date",
+          "name": "to_date",
+          "desc": "End of date range (ISO 8601). Defaults to today.",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Filter By",
+          "name": "filter_by",
+          "desc": "Filter incidents by createdAt or updatedAt (default: updatedAt)",
+          "type": "String",
+          "values": ["createdAt", "updatedAt"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results to return (max 1000, default 1000)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Offset",
+          "name": "offset",
+          "desc": "Number of incidents to skip for pagination (default 0)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Incidents",
+          "name": "incidents",
+          "desc": "List of incident objects",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Incident by ID",
+      "name": "get_incident_by_id",
+      "type": "Enrichment",
+      "desc": "Retrieve a single XDR incident by its ID.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Incident ID",
+          "name": "incident_id",
+          "desc": "The ID of the incident to retrieve",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Incident",
+          "name": "incident",
+          "desc": "Incident object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Incident",
+      "name": "update_incident",
+      "type": "Remediation",
+      "desc": "Update the status and assignee of an XDR incident.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Incident ID",
+          "name": "incident_id",
+          "desc": "The ID of the incident to update",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "New status for the incident",
+          "type": "String",
+          "values": ["new", "in progress", "close - handled", "close - prevented", "close - false positive", "close - known activity"],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee",
+          "name": "assignee",
+          "desc": "UUID of the user to assign the incident to (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee Name",
+          "name": "assignee_name",
+          "desc": "Display name of the assignee (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Assignee Email",
+          "name": "assignee_email",
+          "desc": "Email address of the assignee (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Is Prevented",
+          "name": "is_prevented",
+          "desc": "Mark the incident as prevented (optional)",
+          "type": "String",
+          "values": ["true", "false"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Follow Up",
+          "name": "follow_up",
+          "desc": "Mark the incident for follow-up (optional)",
+          "type": "String",
+          "values": ["true", "false"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Incident",
+          "name": "incident",
+          "desc": "Updated incident object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Incident Comments",
+      "name": "get_incident_comments",
+      "type": "Enrichment",
+      "desc": "Retrieve all comments for an XDR incident.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Incident ID",
+          "name": "incident_id",
+          "desc": "The ID of the incident",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comments",
+          "name": "comments",
+          "desc": "List of comment objects",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add Incident Comment",
+      "name": "add_incident_comment",
+      "type": "Remediation",
+      "desc": "Add a comment to an XDR incident.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Incident ID",
+          "name": "incident_id",
+          "desc": "The ID of the incident",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "The comment text to add",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Audit Logs",
+      "name": "get_audit_logs",
+      "type": "Enrichment",
+      "desc": "Retrieve XDR audit logs with optional filters and page/limit pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results per page (default 1000)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page",
+          "name": "page",
+          "desc": "Page number (default 1, minimum 1)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "From Date",
+          "name": "from_date",
+          "desc": "Start of date range (ISO 8601, optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "To Date",
+          "name": "to_date",
+          "desc": "End of date range (ISO 8601, optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Search",
+          "name": "search",
+          "desc": "Free-text search string (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "User",
+          "name": "user",
+          "desc": "Filter by user(s) — comma-separated list (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Status Filter",
+          "name": "status",
+          "desc": "Filter by status — Completed, Failed, or In progress (optional)",
+          "type": "String",
+          "values": ["Completed", "Failed", "In progress"],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Filter by audit log type(s) — comma-separated list (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Detail",
+          "name": "detail",
+          "desc": "Filter by detail(s) — comma-separated list (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of audit log entries",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Total",
+          "name": "total",
+          "desc": "Total number of matching records",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Has Next",
+          "name": "hasNext",
+          "desc": "Whether more pages are available",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Create Exclusion",
+      "name": "create_exclusion",
+      "type": "Remediation",
+      "desc": "Create a new XDR exclusion.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Exclusion Type",
+          "name": "exclusion_type",
+          "desc": "Type of exclusion",
+          "type": "String",
+          "values": ["ip-range", "ip-cidr", "ip", "host", "email", "url", "file"],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Value",
+          "name": "value",
+          "desc": "The value to exclude (e.g. IP address, hostname, URL)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "Optional comment describing the exclusion",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Expiration Date",
+          "name": "expiration_date",
+          "desc": "Optional expiration date for the exclusion (ISO 8601)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Exclusion",
+          "name": "exclusion",
+          "desc": "Created exclusion object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Exclusions",
+      "name": "get_exclusions",
+      "type": "Enrichment",
+      "desc": "Retrieve XDR exclusions with optional date filters and page/limit pagination.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results per page (1–1000, default 1000)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page",
+          "name": "page",
+          "desc": "Page number (default 1, minimum 1)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "From Date",
+          "name": "from_date",
+          "desc": "Start of date range (ISO 8601, optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "To Date",
+          "name": "to_date",
+          "desc": "End of date range (ISO 8601, optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Exclusions",
+          "name": "exclusions",
+          "desc": "List of exclusion objects",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Exclusion by ID",
+      "name": "get_exclusion_by_id",
+      "type": "Enrichment",
+      "desc": "Retrieve a single XDR exclusion by its ID.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Exclusion ID",
+          "name": "exclusion_id",
+          "desc": "The ID of the exclusion to retrieve",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Exclusion",
+          "name": "exclusion",
+          "desc": "Exclusion object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update Exclusion",
+      "name": "update_exclusion",
+      "type": "Remediation",
+      "desc": "Update the comment or expiration date of an existing XDR exclusion.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Exclusion ID",
+          "name": "exclusion_id",
+          "desc": "The ID of the exclusion to update",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Comment",
+          "name": "comment",
+          "desc": "Updated comment (optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Expiration Date",
+          "name": "expiration_date",
+          "desc": "Updated expiration date (ISO 8601, optional)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Exclusion",
+          "name": "exclusion",
+          "desc": "Updated exclusion object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Exclusion",
+      "name": "delete_exclusion",
+      "type": "Remediation",
+      "desc": "Delete an XDR exclusion by its ID.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Exclusion ID",
+          "name": "exclusion_id",
+          "desc": "The ID of the exclusion to delete",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Message",
+          "name": "message",
+          "desc": "Result message",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Responses by Incident",
+      "name": "get_responses_by_incident",
+      "type": "Enrichment",
+      "desc": "Retrieve available response actions for an XDR incident.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Incident ID",
+          "name": "incident_id",
+          "desc": "The ID of the incident",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Responses",
+          "name": "responses",
+          "desc": "List of response objects",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Execute Response Action",
+      "name": "execute_response_action",
+      "type": "Remediation",
+      "desc": "Apply, revert, or reject one or more XDR response actions.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Action",
+          "name": "action",
+          "desc": "The action to execute",
+          "type": "String",
+          "values": ["apply", "revert", "reject"],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Response IDs",
+          "name": "response_ids",
+          "desc": "List of response IDs to act on (comma-separated string or array)",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Result",
+          "name": "result",
+          "desc": "Action-specific result object",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Data Sources",
+      "name": "get_data_sources",
+      "type": "Enrichment",
+      "desc": "Retrieve all configured data sources in CheckPoint XDR.",
+      "sampleOutput": "",
+      "inParameters": [],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Data Sources",
+          "name": "data_sources",
+          "desc": "List of data source objects",
+          "type": "String",
+          "values": [],
+          "nested": false,
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
