@@ -1,0 +1,16 @@
+{
+  "name": "checkpoint_xdr",
+  "type": "python",
+  "clazz": "app.checkpoint_xdr",
+  "label": "Check Point XDR",
+  "native": false,
+  "testUrl": "",
+  "category": "Endpoint Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Check Point XDR connector for managing incidents, exclusions, audit logs, response actions, and data sources via the Check Point Infinity XDR/XPR API."
+}
