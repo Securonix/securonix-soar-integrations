@@ -105,6 +105,17 @@ def _make_request(config: dict, method: str, endpoint: str, json_body=None, para
                     time.sleep(BACKOFF_FACTOR ** (attempt + 1))
                     continue
                 raise Exception(f"Netskope server error (HTTP {resp.status_code}).")
+            if resp.status_code >= 400:
+                error_detail = ""
+                try:
+                    err = resp.json()
+                    error_detail = str(err.get("error", "") or err.get("message", ""))
+                except Exception:
+                    pass
+                raise Exception(
+                    f"Request failed (HTTP {resp.status_code}): {error_detail}"
+                    if error_detail else f"Request failed (HTTP {resp.status_code})."
+                )
             if resp.status_code == 204:
                 return {}
             return resp.json()
@@ -113,6 +124,28 @@ def _make_request(config: dict, method: str, endpoint: str, json_body=None, para
         except requests.exceptions.Timeout:
             raise Exception("Connection to Netskope timed out.")
     raise Exception("Max retries exceeded.")
+
+
+def _confirm_deploy(deploy_result: dict, profile_id: str) -> None:
+    """Raise if the deploy response indicates the profile was not processed."""
+    if not isinstance(deploy_result, dict):
+        return
+    api_status = (deploy_result.get("status") or "").lower()
+    if api_status and api_status not in ("success", "ok", "deployed", "applied"):
+        raise Exception(f"Deploy failed for profile {profile_id}: {deploy_result.get('message') or api_status}")
+    deployed_ids = deploy_result.get("applied") or deploy_result.get("ids") or deploy_result.get("deployed_ids") or []
+    if deployed_ids and profile_id not in deployed_ids:
+        raise Exception(f"Deploy response did not confirm profile {profile_id}. Deployed: {deployed_ids}")
+
+
+def _parse_ioc_values(raw: object, field_name: str) -> list:
+    if isinstance(raw, list):
+        values = [str(v).strip() for v in raw if str(v).strip()]
+    else:
+        values = [v.strip() for v in str(raw or "").split(",") if v.strip()]
+    if not values:
+        raise Exception(f"{field_name} must contain at least one value.")
+    return values
 
 
 def _append_urllist_and_deploy(config: dict, list_id: int, items: list, url_type: str) -> dict:
@@ -407,6 +440,110 @@ class Netskope():
             return _append_urllist_and_deploy(config, list_id, ips, "exact")
         except Exception as e:
             self.logger.error("Error in block_ip", exc_info=e)
+            raise Exception(str(e))
+
+    def get_destination_profiles(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = _get_config(request.connectionParameters)
+            data = _make_request(config, "GET", "/api/v2/profiles/destinations")
+            profiles = data.get("elements", data)
+            return {"status": "success", "profiles": profiles}
+        except Exception as e:
+            self.logger.error("Error in get_destination_profiles", exc_info=e)
+            raise Exception(str(e))
+
+    def add_destination_profile_values(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = _get_config(request.connectionParameters)
+            params = request.parameters
+
+            profile_id = (params.get("profile_id") or "").strip()
+            if not profile_id:
+                raise Exception("profile_id is required.")
+
+            values = _parse_ioc_values(params.get("values"), "values")
+
+            append_result = _make_request(
+                config, "POST",
+                f"/api/v2/profiles/destinations/{profile_id}/values",
+                json_body={"operation": {"op": "append", "values": values}},
+            )
+            if isinstance(append_result, dict):
+                api_status = (append_result.get("status") or "").lower()
+                if api_status and api_status not in ("success", "ok", "applied"):
+                    raise Exception(f"Netskope rejected append: {append_result.get('message') or api_status}")
+            deploy_result = _make_request(
+                config, "POST",
+                "/api/v2/profiles/destinations/deploy",
+                json_body={"ids": [profile_id]},
+            )
+            _confirm_deploy(deploy_result, profile_id)
+            return {
+                "status": "success",
+                "profile_id": profile_id,
+                "values_added": values,
+                "readback": append_result,
+                "deploy_result": deploy_result,
+            }
+        except Exception as e:
+            self.logger.error("Error in add_destination_profile_values", exc_info=e)
+            raise Exception(str(e))
+
+    def remove_destination_profile_values(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = _get_config(request.connectionParameters)
+            params = request.parameters
+
+            profile_id = (params.get("profile_id") or "").strip()
+            if not profile_id:
+                raise Exception("profile_id is required.")
+
+            values = _parse_ioc_values(params.get("values"), "values")
+
+            remove_result = _make_request(
+                config, "POST",
+                f"/api/v2/profiles/destinations/{profile_id}/values",
+                json_body={"operation": {"op": "remove", "values": values}},
+            )
+            if isinstance(remove_result, dict):
+                api_status = (remove_result.get("status") or "").lower()
+                if api_status and api_status not in ("success", "ok", "applied"):
+                    raise Exception(f"Netskope rejected remove: {remove_result.get('message') or api_status}")
+            deploy_result = _make_request(
+                config, "POST",
+                "/api/v2/profiles/destinations/deploy",
+                json_body={"ids": [profile_id]},
+            )
+            _confirm_deploy(deploy_result, profile_id)
+            return {
+                "status": "success",
+                "profile_id": profile_id,
+                "values_removed": values,
+                "readback": remove_result,
+                "deploy_result": deploy_result,
+            }
+        except Exception as e:
+            self.logger.error("Error in remove_destination_profile_values", exc_info=e)
+            raise Exception(str(e))
+
+    def deploy_destination_profile(self, request: RequestBody) -> ResponseBody:
+        try:
+            config = _get_config(request.connectionParameters)
+            params = request.parameters
+
+            profile_id = (params.get("profile_id") or "").strip()
+            if not profile_id:
+                raise Exception("profile_id is required.")
+
+            result = _make_request(
+                config, "POST",
+                "/api/v2/profiles/destinations/deploy",
+                json_body={"ids": [profile_id]},
+            )
+            _confirm_deploy(result, profile_id)
+            return {"status": "success", "profile_id": profile_id, "deploy_result": result}
+        except Exception as e:
+            self.logger.error("Error in deploy_destination_profile", exc_info=e)
             raise Exception(str(e))
 
     def block_file_hash(self, request: RequestBody) -> ResponseBody:

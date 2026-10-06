@@ -542,6 +542,229 @@
         ]
       },
       {
+        "label": "Get Destination Profiles",
+        "name": "get_destination_profiles",
+        "type": "Enrichment",
+        "desc": "Retrieve all Netskope Destination Profiles",
+        "sampleOutput": "",
+        "inParameters": [],
+        "outParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Profiles",
+            "name": "profiles",
+            "desc": "List of Destination Profile objects",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Add Destination Profile Values",
+        "name": "add_destination_profile_values",
+        "type": "Containment",
+        "desc": "Append IOC values (IPs, domains, URLs) to an existing Destination Profile and deploy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the Destination Profile to update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Values",
+            "name": "values",
+            "desc": "Comma-separated list of IOC values (IPs, domains, or URLs) to append",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the updated Destination Profile",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Values Added",
+            "name": "values_added",
+            "desc": "List of IOC values appended to the profile",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Deploy Result",
+            "name": "deploy_result",
+            "desc": "Raw API response from the deploy call",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Remove Destination Profile Values",
+        "name": "remove_destination_profile_values",
+        "type": "Containment",
+        "desc": "Remove IOC values from an existing Destination Profile and deploy",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the Destination Profile to update",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Values",
+            "name": "values",
+            "desc": "Comma-separated list of IOC values to remove",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the updated Destination Profile",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Values Removed",
+            "name": "values_removed",
+            "desc": "List of IOC values removed from the profile",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Deploy Result",
+            "name": "deploy_result",
+            "desc": "Raw API response from the deploy call",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ]
+      },
+      {
+        "label": "Deploy Destination Profile",
+        "name": "deploy_destination_profile",
+        "type": "Containment",
+        "desc": "Deploy pending changes for a Destination Profile",
+        "sampleOutput": "",
+        "inParameters": [
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the Destination Profile to deploy",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          }
+        ],
+        "outParameters": [
+          {
+            "label": "Status",
+            "name": "status",
+            "desc": "Operation status (success/error)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Profile ID",
+            "name": "profile_id",
+            "desc": "ID of the deployed Destination Profile",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+          },
+          {
+            "label": "Deploy Result",
+            "name": "deploy_result",
+            "desc": "Raw API response from the deploy call",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+          }
+        ]
+      },
+      {
         "label": "Block File Hash",
         "name": "block_file_hash",
         "type": "Containment",
