@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from app.netskope import Netskope, _get_config
+from app.netskope import Netskope, _get_config, _parse_ioc_values, _confirm_deploy
 
 
 def _mock_request_body(connection_params=None, parameters=None):
@@ -354,6 +354,360 @@ class TestErrorHandling:
         ns = Netskope()
         with pytest.raises(Exception, match="Validation error.*Invalid query syntax"):
             ns.get_alerts(_mock_request_body())
+
+    @patch("app.netskope.requests.request")
+    def test_400_error(self, mock_req):
+        mock_resp = MagicMock()
+        mock_resp.status_code = 400
+        mock_resp.json.return_value = {"message": "Bad request body"}
+        mock_req.return_value = mock_resp
+
+        ns = Netskope()
+        with pytest.raises(Exception, match=r"Request failed \(HTTP 400\).*Bad request body"):
+            ns.get_alerts(_mock_request_body())
+
+    @patch("app.netskope.requests.request")
+    def test_409_error_no_body(self, mock_req):
+        mock_resp = MagicMock()
+        mock_resp.status_code = 409
+        mock_resp.json.side_effect = ValueError("no json")
+        mock_req.return_value = mock_resp
+
+        ns = Netskope()
+        with pytest.raises(Exception, match=r"Request failed \(HTTP 409\)"):
+            ns.get_alerts(_mock_request_body())
+
+
+class TestParseIocValues:
+
+    def test_comma_string(self):
+        assert _parse_ioc_values("a.com,b.com", "values") == ["a.com", "b.com"]
+
+    def test_list_input(self):
+        assert _parse_ioc_values(["a.com", "b.com"], "values") == ["a.com", "b.com"]
+
+    def test_strips_whitespace(self):
+        assert _parse_ioc_values(" a.com , b.com ", "values") == ["a.com", "b.com"]
+
+    def test_empty_raises(self):
+        with pytest.raises(Exception, match="values must contain at least one value"):
+            _parse_ioc_values("", "values")
+
+    def test_none_raises(self):
+        with pytest.raises(Exception, match="values must contain at least one value"):
+            _parse_ioc_values(None, "values")
+
+
+class TestConfirmDeploy:
+
+    def test_passes_on_success_status(self):
+        _confirm_deploy({"status": "success", "ids": ["p1"]}, "p1")  # no exception
+
+    def test_passes_on_ok_status(self):
+        _confirm_deploy({"status": "ok"}, "p1")  # no exception
+
+    def test_passes_on_deployed_status(self):
+        _confirm_deploy({"status": "deployed"}, "p1")  # no exception
+
+    def test_passes_on_applied_status(self):
+        _confirm_deploy({"status": "applied", "applied": ["p1"]}, "p1")  # no exception
+
+    def test_checks_applied_field_for_profile_id(self):
+        _confirm_deploy({"status": "applied", "applied": ["p1", "p2"]}, "p1")  # no exception
+
+    def test_raises_when_profile_id_missing_from_applied(self):
+        with pytest.raises(Exception, match="did not confirm profile p1"):
+            _confirm_deploy({"status": "applied", "applied": ["p2"]}, "p1")
+
+    def test_passes_when_no_status_field(self):
+        _confirm_deploy({}, "p1")  # no exception
+
+    def test_passes_when_ids_absent(self):
+        _confirm_deploy({"status": "success"}, "p1")  # no exception
+
+    def test_raises_on_failed_status(self):
+        with pytest.raises(Exception, match="Deploy failed for profile p1"):
+            _confirm_deploy({"status": "error", "message": "quota exceeded"}, "p1")
+
+    def test_raises_when_profile_id_missing_from_ids(self):
+        with pytest.raises(Exception, match="did not confirm profile p1"):
+            _confirm_deploy({"status": "success", "ids": ["p2", "p3"]}, "p1")
+
+    def test_passes_non_dict(self):
+        _confirm_deploy(None, "p1")  # no exception
+
+
+class TestGetDestinationProfiles:
+
+    @patch("app.netskope.requests.request")
+    def test_success(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"elements": [{"id": "p1", "name": "BlockProfile"}]},
+        )
+        ns = Netskope()
+        result = ns.get_destination_profiles(_mock_request_body())
+        assert result["status"] == "success"
+        assert result["profiles"] == [{"id": "p1", "name": "BlockProfile"}]
+        assert "/api/v2/profiles/destinations" in mock_req.call_args.kwargs["url"]
+
+    @patch("app.netskope.requests.request")
+    def test_falls_back_to_result_key(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"other": [{"id": "p2"}]},
+        )
+        ns = Netskope()
+        result = ns.get_destination_profiles(_mock_request_body())
+        assert result["profiles"] == {"other": [{"id": "p2"}]}
+
+    @patch("app.netskope.requests.request")
+    def test_auth_failure(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=401)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Authentication failed"):
+            ns.get_destination_profiles(_mock_request_body())
+
+
+class TestAddDestinationProfileValues:
+
+    @patch("app.netskope.requests.request")
+    def test_success_comma_string(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=200, json=lambda: {"status": "ok"})
+        ns = Netskope()
+        params = {"profile_id": "prof-1", "values": "evil.com,1.2.3.4"}
+        result = ns.add_destination_profile_values(_mock_request_body(parameters=params))
+        assert result["status"] == "success"
+        assert result["profile_id"] == "prof-1"
+        assert result["values_added"] == ["evil.com", "1.2.3.4"]
+        assert "readback" in result
+        assert mock_req.call_count == 2
+        append_call, deploy_call = mock_req.call_args_list
+        assert "/api/v2/profiles/destinations/prof-1/values" in append_call.kwargs["url"]
+        assert append_call.kwargs["json"] == {"operation": {"op": "append", "values": ["evil.com", "1.2.3.4"]}}
+        assert "/api/v2/profiles/destinations/deploy" in deploy_call.kwargs["url"]
+        assert deploy_call.kwargs["json"] == {"ids": ["prof-1"]}
+
+    @patch("app.netskope.requests.request")
+    def test_success_list_input(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=200, json=lambda: {})
+        ns = Netskope()
+        params = {"profile_id": "prof-2", "values": ["bad.net", "10.0.0.1"]}
+        result = ns.add_destination_profile_values(_mock_request_body(parameters=params))
+        assert result["status"] == "success"
+        assert result["values_added"] == ["bad.net", "10.0.0.1"]
+
+    @patch("app.netskope.requests.request")
+    def test_success_applied_status(self, mock_req):
+        append_resp = MagicMock(status_code=200, json=lambda: {"status": "applied"})
+        deploy_resp = MagicMock(status_code=200, json=lambda: {"status": "applied", "applied": ["prof-1"]})
+        mock_req.side_effect = [append_resp, deploy_resp]
+        ns = Netskope()
+        result = ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "prof-1", "values": "evil.com"}))
+        assert result["status"] == "success"
+
+    def test_missing_profile_id(self):
+        ns = Netskope()
+        with pytest.raises(Exception, match="profile_id is required"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"values": "evil.com"}))
+
+    def test_empty_values(self):
+        ns = Netskope()
+        with pytest.raises(Exception, match="values must contain at least one value"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": ""}))
+
+    @patch("app.netskope.requests.request")
+    def test_auth_failure(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=403)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Authentication failed"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    def test_profile_not_found(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=404)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Resource not found"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "bad-id", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    @patch("app.netskope.time.sleep")
+    def test_deploy_server_error(self, mock_sleep, mock_req):
+        mock_200 = MagicMock(status_code=200, json=lambda: {})
+        mock_500 = MagicMock(status_code=500)
+        mock_req.side_effect = [mock_200, mock_500, mock_500, mock_500]
+        ns = Netskope()
+        with pytest.raises(Exception, match="Netskope server error"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    def test_api_level_error_on_append(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"status": "error", "message": "profile locked"},
+        )
+        ns = Netskope()
+        with pytest.raises(Exception, match="Netskope rejected append.*profile locked"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    def test_deploy_confirmation_missing_profile(self, mock_req):
+        append_resp = MagicMock(status_code=200, json=lambda: {"status": "success"})
+        deploy_resp = MagicMock(status_code=200, json=lambda: {"status": "success", "ids": ["other-id"]})
+        mock_req.side_effect = [append_resp, deploy_resp]
+        ns = Netskope()
+        with pytest.raises(Exception, match="did not confirm profile p1"):
+            ns.add_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+
+class TestRemoveDestinationProfileValues:
+
+    @patch("app.netskope.requests.request")
+    def test_success(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=200, json=lambda: {"status": "ok"})
+        ns = Netskope()
+        params = {"profile_id": "prof-1", "values": "evil.com,1.2.3.4"}
+        result = ns.remove_destination_profile_values(_mock_request_body(parameters=params))
+        assert result["status"] == "success"
+        assert result["profile_id"] == "prof-1"
+        assert result["values_removed"] == ["evil.com", "1.2.3.4"]
+        assert "readback" in result
+        assert mock_req.call_count == 2
+        remove_call, deploy_call = mock_req.call_args_list
+        assert "/api/v2/profiles/destinations/prof-1/values" in remove_call.kwargs["url"]
+        assert remove_call.kwargs["json"] == {"operation": {"op": "remove", "values": ["evil.com", "1.2.3.4"]}}
+        assert "/api/v2/profiles/destinations/deploy" in deploy_call.kwargs["url"]
+        assert deploy_call.kwargs["json"] == {"ids": ["prof-1"]}
+
+    @patch("app.netskope.requests.request")
+    def test_success_list_input(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=200, json=lambda: {})
+        ns = Netskope()
+        params = {"profile_id": "prof-3", "values": ["bad.net"]}
+        result = ns.remove_destination_profile_values(_mock_request_body(parameters=params))
+        assert result["status"] == "success"
+        assert result["values_removed"] == ["bad.net"]
+
+    @patch("app.netskope.requests.request")
+    def test_success_applied_status(self, mock_req):
+        remove_resp = MagicMock(status_code=200, json=lambda: {"status": "applied"})
+        deploy_resp = MagicMock(status_code=200, json=lambda: {"status": "applied", "applied": ["prof-1"]})
+        mock_req.side_effect = [remove_resp, deploy_resp]
+        ns = Netskope()
+        result = ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "prof-1", "values": "evil.com"}))
+        assert result["status"] == "success"
+
+    def test_missing_profile_id(self):
+        ns = Netskope()
+        with pytest.raises(Exception, match="profile_id is required"):
+            ns.remove_destination_profile_values(_mock_request_body(parameters={"values": "evil.com"}))
+
+    def test_empty_values(self):
+        ns = Netskope()
+        with pytest.raises(Exception, match="values must contain at least one value"):
+            ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": ""}))
+
+    @patch("app.netskope.requests.request")
+    def test_auth_failure(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=401)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Authentication failed"):
+            ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    @patch("app.netskope.time.sleep")
+    def test_rate_limit_retry(self, mock_sleep, mock_req):
+        mock_429 = MagicMock(status_code=429, headers={"Retry-After": "2"})
+        mock_200 = MagicMock(status_code=200, json=lambda: {})
+        mock_req.side_effect = [mock_429, mock_200, mock_200]
+        ns = Netskope()
+        result = ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+        assert result["status"] == "success"
+        mock_sleep.assert_called_once_with(2)
+
+    @patch("app.netskope.requests.request")
+    def test_api_level_error_on_remove(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"status": "error", "message": "value not found"},
+        )
+        ns = Netskope()
+        with pytest.raises(Exception, match="Netskope rejected remove.*value not found"):
+            ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+    @patch("app.netskope.requests.request")
+    def test_deploy_confirmation_missing_profile(self, mock_req):
+        remove_resp = MagicMock(status_code=200, json=lambda: {"status": "success"})
+        deploy_resp = MagicMock(status_code=200, json=lambda: {"status": "success", "ids": ["other-id"]})
+        mock_req.side_effect = [remove_resp, deploy_resp]
+        ns = Netskope()
+        with pytest.raises(Exception, match="did not confirm profile p1"):
+            ns.remove_destination_profile_values(_mock_request_body(parameters={"profile_id": "p1", "values": "evil.com"}))
+
+
+class TestDeployDestinationProfile:
+
+    @patch("app.netskope.requests.request")
+    def test_success(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"status": "deployed"},
+        )
+        ns = Netskope()
+        params = {"profile_id": "prof-1"}
+        result = ns.deploy_destination_profile(_mock_request_body(parameters=params))
+        assert result["status"] == "success"
+        assert result["profile_id"] == "prof-1"
+        assert result["deploy_result"] == {"status": "deployed"}
+        assert "/api/v2/profiles/destinations/deploy" in mock_req.call_args.kwargs["url"]
+        assert mock_req.call_args.kwargs["json"] == {"ids": ["prof-1"]}
+
+    def test_missing_profile_id(self):
+        ns = Netskope()
+        with pytest.raises(Exception, match="profile_id is required"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={}))
+
+    @patch("app.netskope.requests.request")
+    def test_auth_failure(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=401)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Authentication failed"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={"profile_id": "p1"}))
+
+    @patch("app.netskope.requests.request")
+    @patch("app.netskope.time.sleep")
+    def test_server_error(self, mock_sleep, mock_req):
+        mock_req.return_value = MagicMock(status_code=503)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Netskope server error"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={"profile_id": "p1"}))
+
+    @patch("app.netskope.requests.request")
+    def test_profile_not_found(self, mock_req):
+        mock_req.return_value = MagicMock(status_code=404)
+        ns = Netskope()
+        with pytest.raises(Exception, match="Resource not found"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={"profile_id": "bad-id"}))
+
+    @patch("app.netskope.requests.request")
+    def test_deploy_api_level_failure(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"status": "error", "message": "no pending changes"},
+        )
+        ns = Netskope()
+        with pytest.raises(Exception, match="Deploy failed for profile p1.*no pending changes"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={"profile_id": "p1"}))
+
+    @patch("app.netskope.requests.request")
+    def test_deploy_confirmation_missing_profile(self, mock_req):
+        mock_req.return_value = MagicMock(
+            status_code=200,
+            json=lambda: {"status": "success", "ids": ["other-id"]},
+        )
+        ns = Netskope()
+        with pytest.raises(Exception, match="did not confirm profile p1"):
+            ns.deploy_destination_profile(_mock_request_body(parameters={"profile_id": "p1"}))
 
 
 class TestBlockUrl:
