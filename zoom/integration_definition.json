@@ -1,0 +1,873 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Account ID",
+      "name": "account_id",
+      "desc": "Zoom Server-to-Server OAuth app Account ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "Zoom Server-to-Server OAuth app Client ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "Zoom Server-to-Server OAuth app Client Secret",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Whether to verify the Zoom server SSL certificate (default true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Zoom integration allows you to retrieve users, user settings, permissions, and presence status; list and inspect meetings and past meeting participants; and pull security audit reports (sign in/out activity, operation logs, active/inactive hosts). It also supports remediation actions: activating or deactivating a user, revoking a user's SSO token to force sign-out, and deleting a meeting. Authentication is via Server-to-Server OAuth.",
+  "functions": [
+    {
+      "label": "List Users",
+      "name": "list_users",
+      "type": "Investigate",
+      "desc": "Retrieve the list of users on the Zoom account",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Filter users by status: active, inactive, or pending",
+          "type": "String",
+          "values": ["active", "inactive", "pending"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of users",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User",
+      "name": "get_user",
+      "type": "Investigate",
+      "desc": "Retrieve details for a specific user",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "User details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User Settings",
+      "name": "get_user_settings",
+      "type": "Investigate",
+      "desc": "Retrieve a user's settings",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "User settings",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User Permissions",
+      "name": "get_user_permissions",
+      "type": "Investigate",
+      "desc": "Retrieve a user's permissions",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "User permissions",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get User Presence Status",
+      "name": "get_user_presence_status",
+      "type": "Investigate",
+      "desc": "Retrieve a user's presence status",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "User presence status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "List Meetings",
+      "name": "list_meetings",
+      "type": "Investigate",
+      "desc": "List meetings for a specific user",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Meeting type: scheduled, live, or upcoming",
+          "type": "String",
+          "values": ["scheduled", "live", "upcoming"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of meetings",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Meeting",
+      "name": "get_meeting",
+      "type": "Investigate",
+      "desc": "Retrieve details for a specific meeting",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Meeting ID",
+          "name": "meeting_id",
+          "desc": "The meeting ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Meeting details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Past Meeting Details",
+      "name": "get_past_meeting_details",
+      "type": "Investigate",
+      "desc": "Retrieve details for a past meeting",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Meeting ID",
+          "name": "meeting_id",
+          "desc": "The meeting ID or UUID of the past meeting",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Past meeting details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Past Meeting Participants",
+      "name": "get_past_meeting_participants",
+      "type": "Investigate",
+      "desc": "Retrieve the participant list for a past meeting",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Meeting ID",
+          "name": "meeting_id",
+          "desc": "The meeting ID or UUID of the past meeting",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of past meeting participants",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Sign In / Sign Out Activity Report",
+      "name": "get_signin_signout_activity",
+      "type": "Investigate",
+      "desc": "Retrieve the sign in / sign out activity report (requires a Zoom Business/Enterprise or higher plan)",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "From",
+          "name": "from",
+          "desc": "Start date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "To",
+          "name": "to",
+          "desc": "End date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Sign in / sign out activity report",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Operation Logs Report",
+      "name": "get_operation_logs",
+      "type": "Investigate",
+      "desc": "Retrieve the operation logs report (admin actions) for a date range",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "From",
+          "name": "from",
+          "desc": "Start date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "To",
+          "name": "to",
+          "desc": "End date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Category Type",
+          "name": "category_type",
+          "desc": "Filter logs by category (e.g., user, account, billing)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Operation logs report",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Active/Inactive Host Report",
+      "name": "get_active_inactive_hosts",
+      "type": "Investigate",
+      "desc": "Retrieve the active or inactive host report for a date range",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "From",
+          "name": "from",
+          "desc": "Start date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "To",
+          "name": "to",
+          "desc": "End date in yyyy-mm-dd format",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "Report type: active or inactive",
+          "type": "String",
+          "values": ["active", "inactive"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 30, max 300)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Next Page Token",
+          "name": "next_page_token",
+          "desc": "Pagination token to retrieve the next page of results",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Active/inactive host report",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Update User Status",
+      "name": "update_user_status",
+      "type": "Remediation",
+      "desc": "Activate or deactivate a Zoom user",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Action",
+          "name": "action",
+          "desc": "Action to perform: activate or deactivate",
+          "type": "String",
+          "values": ["activate", "deactivate"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Confirmation of the status change",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Revoke User SSO Token",
+      "name": "revoke_user_sso_token",
+      "type": "Remediation",
+      "desc": "Revoke a user's SSO token, forcing the user to sign out of all devices",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "User ID",
+          "name": "user_id",
+          "desc": "The user's ID or email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Confirmation of the token revocation",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Meeting",
+      "name": "delete_meeting",
+      "type": "Remediation",
+      "desc": "Delete a Zoom meeting",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Meeting ID",
+          "name": "meeting_id",
+          "desc": "The meeting ID to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Occurrence ID",
+          "name": "occurrence_id",
+          "desc": "The occurrence ID to delete a specific occurrence of a recurring meeting",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Notify Hosts",
+          "name": "notify_hosts",
+          "desc": "Whether to notify the host and alternative hosts that the meeting was cancelled (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Confirmation of the meeting deletion",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
