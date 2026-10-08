@@ -1,0 +1,261 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Customer Key",
+      "name": "customer_key",
+      "desc": "Cisco Umbrella Enforcement API customer key",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Umbrella Enforcement API base URL (default: https://s-platform.api.opendns.com/1.0)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Timeout",
+      "name": "timeout",
+      "desc": "HTTP request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Cisco Umbrella Enforcement connector for response actions. Submit a threat event to block a malicious domain via the Umbrella Enforcement API, list the domains currently in the enforcement block list, and remove a domain from the block list. Authentication is via a customer key.",
+  "functions": [
+    {
+      "label": "Block Domain / Submit Threat Event",
+      "name": "add_domain_event",
+      "type": "Containment",
+      "desc": "Submit a threat event to the Umbrella Enforcement API to block a malicious domain. Umbrella validates the domain and adds it to the organization's enforcement block list for DNS blocking.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Destination Domain",
+          "name": "dst_domain",
+          "desc": "The malicious destination domain to block (e.g., internetbadguys.com)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination URL",
+          "name": "dst_url",
+          "desc": "The destination URL associated with the event (e.g., https://internetbadguys.com/a-bad-url)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Event Severity",
+          "name": "event_severity",
+          "desc": "The partner threat level or rating (e.g., severe, high, bad)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Event Type",
+          "name": "event_type",
+          "desc": "Common name or classification of the threat",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Event Description",
+          "name": "event_description",
+          "desc": "Variant or other descriptor of the event type",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination IP",
+          "name": "dst_ip",
+          "desc": "The destination IP of the domain in IPv4 dotted-decimal notation (e.g., 8.8.8.8)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "src",
+          "desc": "IP or hostname of the infected device",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Disable Destination Safeguards",
+          "name": "disable_dst_safeguards",
+          "desc": "If true, bypasses Umbrella Investigate validation of the domain (riskier). Default false.",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "The created event ID returned by Umbrella",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "List Blocked Domains",
+      "name": "list_blocked_domains",
+      "type": "Enrichment",
+      "desc": "Return the domains currently present in the Umbrella Enforcement block list.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Number of domains to return per page (default and maximum: 200)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page",
+          "name": "page",
+          "desc": "The page number to start reading in the collection",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of blocked domains",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Remove Blocked Domain",
+      "name": "delete_blocked_domain",
+      "type": "Containment",
+      "desc": "Remove a domain from the Umbrella Enforcement block list. Useful for false-positive remediation or unblocking legitimate domains.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "The domain name or numeric domain ID to remove from the block list. Domain IDs can be obtained from List Blocked Domains.",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Confirmation of the domain removal",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

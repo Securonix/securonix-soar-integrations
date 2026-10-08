@@ -1,0 +1,16 @@
+{
+  "name": "cisco_umbrella_enforcement",
+  "type": "python",
+  "clazz": "app.cisco_umbrella_enforcement",
+  "label": "Cisco Umbrella Enforcement",
+  "native": false,
+  "testUrl": "",
+  "category": "Network Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Cisco Umbrella Enforcement connector for response actions. Submit a threat event to block a malicious domain via the Umbrella Enforcement API, list the domains currently in the enforcement block list, and remove a domain from the block list. Authentication is via a customer key."
+}
