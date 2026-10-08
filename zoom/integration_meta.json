@@ -1,0 +1,16 @@
+{
+  "name": "zoom",
+  "type": "python",
+  "clazz": "app.zoom",
+  "label": "Zoom",
+  "native": false,
+  "testUrl": "",
+  "category": "Collaboration and Identity",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Zoom integration allows you to retrieve users, user settings, permissions, and presence status; list and inspect meetings and past meeting participants; and pull security audit reports (sign in/out activity, operation logs, active/inactive hosts). It also supports remediation actions: activating or deactivating a user, revoking a user's SSO token to force sign-out, and deleting a meeting. Authentication is via Server-to-Server OAuth."
+}
