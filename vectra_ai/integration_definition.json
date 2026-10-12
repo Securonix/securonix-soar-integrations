@@ -1,0 +1,3020 @@
+{
+    "connectionParameters": [
+        {
+            "label": "API Host",
+            "name": "api_host",
+            "desc": "Vectra brain FQDN or IP address (e.g., https://vectra.mycompany.com)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Client ID",
+            "name": "client_id",
+            "desc": "OAuth2 client ID for Vectra API authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "Client Secret",
+            "name": "client_secret",
+            "desc": "OAuth2 client secret for Vectra API authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "label": "Verify SSL",
+            "name": "verify_ssl",
+            "desc": "Verify SSL certificate when connecting to Vectra API",
+            "type": "Boolean",
+            "values": [
+                {"label": "True", "value": "true"},
+                {"label": "False", "value": "false"}
+            ],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Retrieve a paginated list of detections with optional filtering by category, state, threat score, and other criteria",
+            "label": "Get Detections",
+            "name": "get_detections",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 123, \"detection\": \"C2 Beacon\", \"src_ip\": \"192.168.1.100\", \"threat\": 85, \"certainty\": 90}]}}",
+            "inParameters": [
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Field to order results by (e.g., last_timestamp, -threat, -certainty)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Detection Category",
+                    "name": "detection_category",
+                    "desc": "Filter by detection category (command, botnet, reconnaissance, lateral, exfiltration, info)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Command & Control", "value": "command"},
+                        {"label": "Botnet", "value": "botnet"},
+                        {"label": "Reconnaissance", "value": "reconnaissance"},
+                        {"label": "Lateral Movement", "value": "lateral"},
+                        {"label": "Exfiltration", "value": "exfiltration"},
+                        {"label": "Info", "value": "info"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "State",
+                    "name": "state",
+                    "desc": "Filter by detection state (active, closed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Active", "value": "active"},
+                        {"label": "Closed", "value": "closed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Minimum Threat Score",
+                    "name": "threat",
+                    "desc": "Minimum threat score filter (0-100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Minimum Certainty Score",
+                    "name": "certainty",
+                    "desc": "Minimum certainty score filter (0-100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Is Targeting Key Asset",
+                    "name": "is_targeting_key_asset",
+                    "desc": "Filter for detections targeting key assets",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Is Triaged",
+                    "name": "is_triaged",
+                    "desc": "Filter for triaged detections",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Created Timestamp (Start)",
+                    "name": "created_timestamp_gte",
+                    "desc": "Start date for detection creation (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Created Timestamp (End)",
+                    "name": "created_timestamp_lte",
+                    "desc": "End date for detection creation (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include in response",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude from response",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier (small, regular, detailed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of detections matching the criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Detections",
+                    "name": "results",
+                    "desc": "List of detection objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single detection by its ID with full details",
+            "label": "Get Detection by ID",
+            "name": "get_detection_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 123, \"detection\": \"C2 Beacon\", \"src_ip\": \"192.168.1.100\", \"threat\": 85, \"certainty\": 90, \"state\": \"active\"}}",
+            "inParameters": [
+                {
+                    "label": "Detection ID",
+                    "name": "detection_id",
+                    "desc": "The unique identifier of the detection",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Detection",
+                    "name": "results",
+                    "desc": "Detailed detection object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of accounts with optional filtering",
+            "label": "Get Accounts",
+            "name": "get_accounts",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 456, \"name\": \"john.doe\", \"threat\": 75, \"certainty\": 85}]}}",
+            "inParameters": [
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Field to order results by",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "State",
+                    "name": "state",
+                    "desc": "Filter by account state (active, closed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Active", "value": "active"},
+                        {"label": "Closed", "value": "closed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Minimum Threat Score",
+                    "name": "threat",
+                    "desc": "Minimum threat score filter",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier (small, regular, detailed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of accounts matching the criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Accounts",
+                    "name": "results",
+                    "desc": "List of account objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single account by its ID with full details",
+            "label": "Get Account by ID",
+            "name": "get_account_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 456, \"name\": \"john.doe\", \"threat\": 75, \"certainty\": 85, \"state\": \"active\"}}",
+            "inParameters": [
+                {
+                    "label": "Account ID",
+                    "name": "account_id",
+                    "desc": "The unique identifier of the account",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Account",
+                    "name": "results",
+                    "desc": "Detailed account object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of hosts with optional filtering",
+            "label": "Get Hosts",
+            "name": "get_hosts",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 789, \"name\": \"workstation-100\", \"threat\": 60, \"certainty\": 70}]}}",
+            "inParameters": [
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Field to order results by",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "State",
+                    "name": "state",
+                    "desc": "Filter by host state (active, closed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Active", "value": "active"},
+                        {"label": "Closed", "value": "closed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Minimum Threat Score",
+                    "name": "threat",
+                    "desc": "Minimum threat score filter",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier (small, regular, detailed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of hosts matching the criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Hosts",
+                    "name": "results",
+                    "desc": "List of host objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single host by its ID with full details",
+            "label": "Get Host by ID",
+            "name": "get_host_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 789, \"name\": \"workstation-100\", \"threat\": 60, \"certainty\": 70, \"state\": \"active\"}}",
+            "inParameters": [
+                {
+                    "label": "Host ID",
+                    "name": "host_id",
+                    "desc": "The unique identifier of the host",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier (small, regular, detailed)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Host",
+                    "name": "results",
+                    "desc": "Detailed host object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of entities (hosts and accounts) with optional type filtering",
+            "label": "Get Entities",
+            "name": "get_entities",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 2, \"results\": [{\"id\": 789, \"type\": \"host\", \"name\": \"workstation-100\"}, {\"id\": 456, \"type\": \"account\", \"name\": \"john.doe\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Field to order results by",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Filter by entity type (host, account)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Host", "value": "host"},
+                        {"label": "Account", "value": "account"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of entities matching the criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Entities",
+                    "name": "results",
+                    "desc": "List of entity objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single entity by its ID with type specified",
+            "label": "Get Entity by ID",
+            "name": "get_entity_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 789, \"type\": \"host\", \"name\": \"workstation-100\", \"threat\": 60}}",
+            "inParameters": [
+                {
+                    "label": "Entity ID",
+                    "name": "entity_id",
+                    "desc": "The unique identifier of the entity",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Entity type (host or account)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Host", "value": "host"},
+                        {"label": "Account", "value": "account"}
+                    ],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Entity",
+                    "name": "results",
+                    "desc": "Detailed entity object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Advanced detection search with multiple filter criteria including IP, account, category, and date ranges",
+            "label": "Search Detections by Criteria",
+            "name": "search_detections_by_criteria",
+            "type": "Analyze",
+            "sampleOutput": "{\"status\": \"success\", \"results\": [{\"id\": 123, \"detection\": \"C2 Beacon\", \"src_ip\": \"192.168.1.100\", \"threat\": 85}]}}",
+            "inParameters": [
+                {
+                    "label": "Source IP",
+                    "name": "src_ip",
+                    "desc": "Source IP address to filter detections",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Source Account",
+                    "name": "src_account",
+                    "desc": "Source account name to filter detections",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Detection Category",
+                    "name": "detection_category",
+                    "desc": "Filter by detection category",
+                    "type": "String",
+                    "values": [
+                        {"label": "Command & Control", "value": "command"},
+                        {"label": "Botnet", "value": "botnet"},
+                        {"label": "Reconnaissance", "value": "reconnaissance"},
+                        {"label": "Lateral Movement", "value": "lateral"},
+                        {"label": "Exfiltration", "value": "exfiltration"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Minimum Threat Score",
+                    "name": "threat_gte",
+                    "desc": "Minimum threat score filter (0-100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Created Timestamp (Start)",
+                    "name": "created_timestamp_gte",
+                    "desc": "Start date for detection creation (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Is Targeting Key Asset",
+                    "name": "is_targeting_key_asset",
+                    "desc": "Filter for detections targeting key assets",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags",
+                    "name": "tags",
+                    "desc": "Comma-separated list of tags to filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "External Reference ID",
+                    "name": "external_reference_id",
+                    "desc": "External ticket ID to correlate with detections",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Detections",
+                    "name": "results",
+                    "desc": "List of matching detection objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Mark one or more detections as fixed, indicating remedial action was taken",
+            "label": "Mark Detection(s) as Fixed",
+            "name": "mark_detection_fixed",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Successfully marked 2 detections as fixed\"}",
+            "inParameters": [
+                {
+                    "label": "Detection ID List",
+                    "name": "detection_id_list",
+                    "desc": "Comma-separated list of detection IDs to mark as fixed",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "External Reference ID",
+                    "name": "external_reference_id",
+                    "desc": "Optional external ticket reference ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Investigation Status",
+                    "name": "investigation_status",
+                    "desc": "Status for workflow automation",
+                    "type": "String",
+                    "values": [
+                        {"label": "Open", "value": "open"},
+                        {"label": "Acknowledged", "value": "acknowledged"},
+                        {"label": "Escalated", "value": "escalated"},
+                        {"label": "Paused", "value": "paused"},
+                        {"label": "Closed", "value": "closed"},
+                        {"label": "Expired", "value": "expired"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message with count of updated detections",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Updated Count",
+                    "name": "updated_count",
+                    "desc": "Number of detections marked as fixed",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Close an account and its associated detections, marking them as benign or remediated",
+            "label": "Close Account",
+            "name": "close_account",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Successfully closed account 456 as remediated\", \"detections_closed\": [1, 2, 3]}",
+            "inParameters": [
+                {
+                    "label": "Account ID",
+                    "name": "account_id",
+                    "desc": "The unique identifier of the account to close",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Reason",
+                    "name": "reason",
+                    "desc": "Reason for closing the account",
+                    "type": "String",
+                    "values": [
+                        {"label": "Remediated", "value": "remediated"},
+                        {"label": "Benign", "value": "benign"}
+                    ],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message indicating account was closed",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Detections Closed",
+                    "name": "detections_closed",
+                    "desc": "List of detection IDs that were closed",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Mark a host as a key asset or remove the key asset flag",
+            "label": "Set Host as Key Asset",
+            "name": "set_host_as_key_asset",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Successfully updated host 789 as key asset\"}",
+            "inParameters": [
+                {
+                    "label": "Host ID",
+                    "name": "host_id",
+                    "desc": "The unique identifier of the host",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Key Asset",
+                    "name": "key_asset",
+                    "desc": "Set to true to mark as key asset, false to remove flag",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message indicating key asset status was updated",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of posture findings for security posture management",
+            "label": "Get Findings",
+            "name": "get_findings",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": \"finding-123\", \"finding_type_uid\": \"network-exfil\", \"severity\": \"high\", \"status\": \"active\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Results per page (max 5000)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Order by field (e.g., -severity for descending)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Finding Type UID",
+                    "name": "finding_type_uid",
+                    "desc": "Filter by finding type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "First Seen (Start)",
+                    "name": "first_seen_gte",
+                    "desc": "Start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "First Seen (End)",
+                    "name": "first_seen_lte",
+                    "desc": "End date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Last Seen (Start)",
+                    "name": "last_seen_gte",
+                    "desc": "Last seen start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Last Seen (End)",
+                    "name": "last_seen_lte",
+                    "desc": "Last seen end date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Filter by status",
+                    "type": "String",
+                    "values": [
+                        {"label": "All", "value": "all"},
+                        {"label": "Active", "value": "active"},
+                        {"label": "Inactive", "value": "inactive"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Filter by category",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Severity",
+                    "name": "severity",
+                    "desc": "Filter by severity",
+                    "type": "String",
+                    "values": [
+                        {"label": "Low", "value": "low"},
+                        {"label": "Medium", "value": "medium"},
+                        {"label": "High", "value": "high"},
+                        {"label": "Critical", "value": "critical"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Filter by resolution",
+                    "type": "String",
+                    "values": [
+                        {"label": "Open", "value": "open"},
+                        {"label": "In Progress", "value": "in_progress"},
+                        {"label": "Remediated", "value": "remediated"},
+                        {"label": "Risk Accepted", "value": "risk_accepted"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of findings matching criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Findings",
+                    "name": "results",
+                    "desc": "List of findings objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a single finding by its ID",
+            "label": "Get Finding by ID",
+            "name": "get_finding_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": \"finding-123\", \"finding_type_uid\": \"network-exfil\", \"severity\": \"high\", \"status\": \"active\"}}",
+            "inParameters": [
+                {
+                    "label": "Finding ID",
+                    "name": "finding_id",
+                    "desc": "The unique identifier of the finding",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Finding",
+                    "name": "results",
+                    "desc": "Detailed finding object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get entity findings associated with a specific finding",
+            "label": "Get Host Findings for Finding",
+            "name": "get_host_findings",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"entity_id\": \"host-123\", \"first_seen\": \"2026-01-01T00:00:00Z\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Finding ID",
+                    "name": "finding_id",
+                    "desc": "The unique identifier of the finding",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Order by field (e.g., -updated_at)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "First Seen (Start)",
+                    "name": "first_seen_gte",
+                    "desc": "Start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "First Seen (End)",
+                    "name": "first_seen_lte",
+                    "desc": "End date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Last Seen (Start)",
+                    "name": "last_seen_gte",
+                    "desc": "Last seen start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Last Seen (End)",
+                    "name": "last_seen_lte",
+                    "desc": "Last seen end date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of entity findings",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Entity Findings",
+                    "name": "results",
+                    "desc": "List of entity findings objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of assignment outcomes for labeling resolution outcomes",
+            "label": "Get Assignment Outcomes",
+            "name": "get_assignment_outcomes",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 1, \"title\": \"Benign Detection\", \"category\": \"triage\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of assignment outcomes",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignment Outcomes",
+                    "name": "results",
+                    "desc": "List of assignment outcomes objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a new assignment outcome for labeling resolution outcomes",
+            "label": "Create Assignment Outcome",
+            "name": "create_assignment_outcome",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"title\": \"Benign Detection\", \"category\": \"triage\"}}",
+            "inParameters": [
+                {
+                    "label": "Title",
+                    "name": "title",
+                    "desc": "Title of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Category of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Description of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Assignment Outcome",
+                    "name": "results",
+                    "desc": "Created assignment outcome object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of assignments for analyst workflow management",
+            "label": "Get Assignments",
+            "name": "get_assignments",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 1, \"account_id\": 123, \"assignee\": \"analyst1\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Accounts",
+                    "name": "accounts",
+                    "desc": "Filter by account IDs (comma-separated)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignees",
+                    "name": "assignees",
+                    "desc": "Filter by assignee usernames",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Created After",
+                    "name": "created_after",
+                    "desc": "Filter by creation date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Hosts",
+                    "name": "hosts",
+                    "desc": "Filter by host IDs (comma-separated)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Filter by resolution",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolved",
+                    "name": "resolved",
+                    "desc": "Filter by resolved status (true/false)",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of assignments",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignments",
+                    "name": "results",
+                    "desc": "List of assignments objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a single assignment by its ID",
+            "label": "Get Assignment by ID",
+            "name": "get_assignment_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"account_id\": 123, \"assignee\": \"analyst1\", \"assigned_date\": \"2026-01-01T00:00:00Z\"}}",
+            "inParameters": [
+                {
+                    "label": "Assignment ID",
+                    "name": "assignment_id",
+                    "desc": "The unique identifier of the assignment",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Assignment",
+                    "name": "results",
+                    "desc": "Detailed assignment object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get detection events from a checkpoint for event stream processing",
+            "label": "Get Detection Events",
+            "name": "get_detection_events",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 1, \"detection_id\": 123, \"event_type\": \"NEW_DETECTION\"}]}}",
+            "inParameters": [
+                {
+                    "label": "From",
+                    "name": "from",
+                    "desc": "Checkpoint ID to start from",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Account UID",
+                    "name": "account_uid",
+                    "desc": "Filter by account UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event Timestamp (Start)",
+                    "name": "event_timestamp_gte",
+                    "desc": "Start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event Timestamp (End)",
+                    "name": "event_timestamp_lte",
+                    "desc": "End date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Detection ID",
+                    "name": "detection_id",
+                    "desc": "Filter by detection ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event ID",
+                    "name": "id",
+                    "desc": "Filter by event ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include Info Category",
+                    "name": "include_info_category",
+                    "desc": "Include INFO detections",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include Triaged",
+                    "name": "include_triaged",
+                    "desc": "Include triaged detections",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Max results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Order by field",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Event type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include All Process Context",
+                    "name": "include_all_process_context",
+                    "desc": "Include process context",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Change Type",
+                    "name": "change_type",
+                    "desc": "Change type filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Entity ID",
+                    "name": "entity_id",
+                    "desc": "Filter by entity ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Entity UID",
+                    "name": "entity_uid",
+                    "desc": "Filter by entity UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "External Reference ID",
+                    "name": "external_reference_id",
+                    "desc": "Filter by external reference",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Investigation Status",
+                    "name": "investigation_status",
+                    "desc": "Filter by investigation status",
+                    "type": "String",
+                    "values": [
+                        {"label": "Open", "value": "open"},
+                        {"label": "Acknowledged", "value": "acknowledged"},
+                        {"label": "Escalated", "value": "escalated"},
+                        {"label": "Paused", "value": "paused"},
+                        {"label": "Closed", "value": "closed"},
+                        {"label": "Expired", "value": "expired"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Unresolved Priority",
+                    "name": "unresolved_priority",
+                    "desc": "Filter by unresolved priority",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of detection events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Events",
+                    "name": "results",
+                    "desc": "List of detection event objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a single detection by marking it as fixed with optional remediation actions",
+            "label": "Update Detection by ID",
+            "name": "get_detection_by_id_patch",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"_meta\": {\"level\": \"Success\", \"message\": \"Successfully marked detections\"}}",
+            "inParameters": [
+                {
+                    "label": "Detection ID",
+                    "name": "detection_id",
+                    "desc": "The unique identifier of the detection",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Mark as Fixed",
+                    "name": "mark_as_fixed",
+                    "desc": "Flag to mark/unmark detection as fixed",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note",
+                    "name": "note",
+                    "desc": "Note to overwrite on the detection",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note ID",
+                    "name": "note_id",
+                    "desc": "Note ID to overwrite",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Triage As",
+                    "name": "triage_as",
+                    "desc": "Label for one-time triage of the detection",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "External Reference ID",
+                    "name": "external_reference_id",
+                    "desc": "Customer-specified identifier to correlate with external systems",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Investigation Status",
+                    "name": "investigation_status",
+                    "desc": "Status for workflow automation",
+                    "type": "String",
+                    "values": [
+                        {"label": "Open", "value": "open"},
+                        {"label": "Acknowledged", "value": "acknowledged"},
+                        {"label": "Escalated", "value": "escalated"},
+                        {"label": "Paused", "value": "paused"},
+                        {"label": "Closed", "value": "closed"},
+                        {"label": "Expired", "value": "expired"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Meta Level",
+                    "name": "_meta.level",
+                    "desc": "Success flag for patch",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Meta Message",
+                    "name": "_meta.message",
+                    "desc": "Operation message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a single entity (host or account) by ID with remediation actions",
+            "label": "Update Entity by ID",
+            "name": "patch_single_entity",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"_meta\": {\"level\": \"Success\", \"message\": \"Successfully updated entity\"}}",
+            "inParameters": [
+                {
+                    "label": "Entity ID",
+                    "name": "entity_id",
+                    "desc": "The unique identifier of the entity",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Mark as Fixed",
+                    "name": "mark_as_fixed",
+                    "desc": "Flag to mark/unmark entity as fixed",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note",
+                    "name": "note",
+                    "desc": "Note to overwrite on the entity",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Note ID",
+                    "name": "note_id",
+                    "desc": "Note ID to overwrite",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "External Reference ID",
+                    "name": "external_reference_id",
+                    "desc": "Customer-specified identifier to correlate with external systems",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Investigation Status",
+                    "name": "investigation_status",
+                    "desc": "Status for workflow automation",
+                    "type": "String",
+                    "values": [
+                        {"label": "Open", "value": "open"},
+                        {"label": "Acknowledged", "value": "acknowledged"},
+                        {"label": "Escalated", "value": "escalated"},
+                        {"label": "Paused", "value": "paused"},
+                        {"label": "Closed", "value": "closed"},
+                        {"label": "Expired", "value": "expired"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Meta Level",
+                    "name": "_meta.level",
+                    "desc": "Success flag for patch",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Meta Message",
+                    "name": "_meta.message",
+                    "desc": "Operation message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete an assignment outcome by its ID",
+            "label": "Delete Assignment Outcome",
+            "name": "delete_assignment_outcome",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Assignment outcome deleted successfully\"}",
+            "inParameters": [
+                {
+                    "label": "Assignment Outcome ID",
+                    "name": "assignment_outcome_id",
+                    "desc": "The unique identifier of the assignment outcome to delete",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing assignment outcome by its ID",
+            "label": "Update Assignment Outcome",
+            "name": "update_assignment_outcome",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"title\": \"Updated Outcome\", \"category\": \"triage\"}}",
+            "inParameters": [
+                {
+                    "label": "Assignment Outcome ID",
+                    "name": "assignment_outcome_id",
+                    "desc": "The unique identifier of the assignment outcome to update",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Title",
+                    "name": "title",
+                    "desc": "Updated title of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Updated category of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Updated description of the outcome",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignment Outcome",
+                    "name": "results",
+                    "desc": "Updated assignment outcome object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a specific assignment outcome by its ID",
+            "label": "Get Assignment Outcome by ID",
+            "name": "get_assignment_outcome_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"title\": \"Benign Detection\", \"category\": \"triage\", \"description\": \"Detection marked as benign\"}}",
+            "inParameters": [
+                {
+                    "label": "Assignment Outcome ID",
+                    "name": "assignment_outcome_id",
+                    "desc": "The unique identifier of the assignment outcome",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignment Outcome",
+                    "name": "results",
+                    "desc": "Detailed assignment outcome object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of rules for security policy management",
+            "label": "Get Rules",
+            "name": "get_rules",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 1, \"name\": \"Policy Rule\", \"type\": \"policy\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page Size",
+                    "name": "page_size",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Filter by rule name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Filter by rule type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of rules matching criteria",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Rules",
+                    "name": "results",
+                    "desc": "List of rules objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a new rule for security policy management",
+            "label": "Create Rule",
+            "name": "create_rules",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Policy Rule\", \"type\": \"policy\", \"enabled\": true}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Name of the rule",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Type of the rule (policy, alert, etc.)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Description of the rule",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Enabled",
+                    "name": "enabled",
+                    "desc": "Whether the rule is enabled",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Configuration",
+                    "name": "configuration",
+                    "desc": "Rule configuration JSON",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Rule",
+                    "name": "results",
+                    "desc": "Created rule object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing rule by its ID",
+            "label": "Update Rule",
+            "name": "update_rules",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Rule\", \"type\": \"policy\", \"enabled\": false}}",
+            "inParameters": [
+                {
+                    "label": "Rule ID",
+                    "name": "rule_id",
+                    "desc": "The unique identifier of the rule to update",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Updated name of the rule",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Updated description of the rule",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Enabled",
+                    "name": "enabled",
+                    "desc": "Whether the rule is enabled",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Configuration",
+                    "name": "configuration",
+                    "desc": "Updated rule configuration JSON",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Rule",
+                    "name": "results",
+                    "desc": "Updated rule object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a rule by its ID",
+            "label": "Delete Rule",
+            "name": "delete_rules",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Rule deleted successfully\"}",
+            "inParameters": [
+                {
+                    "label": "Rule ID",
+                    "name": "rule_id",
+                    "desc": "The unique identifier of the rule to delete",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a specific rule by its ID",
+            "label": "Get Rule by ID",
+            "name": "get_rules_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Policy Rule\", \"type\": \"policy\", \"enabled\": true, \"description\": \"Security policy rule\"}}",
+            "inParameters": [
+                {
+                    "label": "Rule ID",
+                    "name": "rule_id",
+                    "desc": "The unique identifier of the rule",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Fields",
+                    "name": "fields",
+                    "desc": "Comma-separated list of fields to include",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Exclude Fields",
+                    "name": "exclude_fields",
+                    "desc": "Comma-separated list of fields to exclude",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Rule",
+                    "name": "results",
+                    "desc": "Detailed rule object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a new assignment for analyst workflow management",
+            "label": "Create Assignment",
+            "name": "create_assignment",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"account_id\": 123, \"assignee\": \"analyst1\", \"created_date\": \"2026-01-01T00:00:00Z\"}}",
+            "inParameters": [
+                {
+                    "label": "Account ID",
+                    "name": "account_id",
+                    "desc": "ID of the account to assign",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignee",
+                    "name": "assignee",
+                    "desc": "Username of the assignee",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Host ID",
+                    "name": "host_id",
+                    "desc": "ID of the host to assign (optional)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Initial resolution status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignment",
+                    "name": "results",
+                    "desc": "Created assignment object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing assignment by its ID",
+            "label": "Update Assignment",
+            "name": "update_assignment",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"account_id\": 123, \"assignee\": \"analyst2\", \"resolved\": true}}",
+            "inParameters": [
+                {
+                    "label": "Assignment ID",
+                    "name": "assignment_id",
+                    "desc": "The unique identifier of the assignment to update",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignee",
+                    "name": "assignee",
+                    "desc": "Updated assignee username",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Updated resolution status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolved",
+                    "name": "resolved",
+                    "desc": "Whether the assignment is resolved",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Assignment",
+                    "name": "results",
+                    "desc": "Updated assignment object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete an assignment by its ID",
+            "label": "Delete Assignment",
+            "name": "delete_assignment",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"message\": \"Assignment deleted successfully\"}",
+            "inParameters": [
+                {
+                    "label": "Assignment ID",
+                    "name": "assignment_id",
+                    "desc": "The unique identifier of the assignment to delete",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Success message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve detection events for a specific detection by its ID",
+            "label": "Get Single Detection Events",
+            "name": "get_single_detection_events",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"count\": 1, \"results\": [{\"id\": 1, \"detection_id\": 123, \"event_type\": \"NEW_DETECTION\", \"timestamp\": \"2026-01-01T00:00:00Z\"}]}}",
+            "inParameters": [
+                {
+                    "label": "Detection ID",
+                    "name": "detection_id",
+                    "desc": "The unique identifier of the detection",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "From",
+                    "name": "from",
+                    "desc": "Checkpoint ID to start from",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event Timestamp (Start)",
+                    "name": "event_timestamp_gte",
+                    "desc": "Start date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event Timestamp (End)",
+                    "name": "event_timestamp_lte",
+                    "desc": "End date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Event ID",
+                    "name": "id",
+                    "desc": "Filter by event ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Limit",
+                    "name": "limit",
+                    "desc": "Max results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Ordering",
+                    "name": "ordering",
+                    "desc": "Order by field",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Event type filter",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Size",
+                    "name": "size",
+                    "desc": "Response tier",
+                    "type": "String",
+                    "values": [
+                        {"label": "Small", "value": "small"},
+                        {"label": "Regular", "value": "regular"},
+                        {"label": "Detailed", "value": "detailed"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Unresolved Priority",
+                    "name": "unresolved_priority",
+                    "desc": "Filter by unresolved priority",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Total number of detection events",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Events",
+                    "name": "results",
+                    "desc": "List of detection event objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}

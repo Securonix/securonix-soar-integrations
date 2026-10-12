@@ -1,0 +1,60 @@
+{
+  "name": "vectra_ai",
+  "type": "python",
+  "clazz": "app.vectra_ai",
+  "label": "Vectra AI",
+  "native": false,
+  "testUrl": "",
+  "category": "Data Enrichment and Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [
+    {
+      "label": "API Host",
+      "name": "api_host",
+      "desc": "Vectra brain FQDN or IP address (e.g., https://vectra.mycompany.com)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client ID",
+      "name": "client_id",
+      "desc": "OAuth2 client ID for Vectra API authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "Client Secret",
+      "name": "client_secret",
+      "desc": "OAuth2 client secret for Vectra API authentication",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificate when connecting to Vectra API",
+      "type": "Boolean",
+      "values": [
+        {"label": "True", "value": "true"},
+        {"label": "False", "value": "false"}
+      ],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Vectra AI integration enables detection of breaches using behavioral analysis and machine learning. Supports investigation of detections, accounts, hosts, and entities, plus remediation actions including marking detections as fixed, closing accounts, and setting key assets."
+}
