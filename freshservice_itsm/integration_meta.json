@@ -1,0 +1,68 @@
+{
+    "name": "freshservice_itsm",
+    "type": "python",
+    "clazz": "FreshserviceItsm",
+    "label": "Freshservice ITSM",
+    "native": false,
+    "testUrl": "",
+    "category": "ITSM",
+    "functions": [
+        "test_connection",
+        "get_tickets",
+        "get_ticket_by_id",
+        "search_tickets_by_criteria",
+        "create_ticket",
+        "update_ticket",
+        "close_ticket",
+        "resolve_ticket",
+        "delete_ticket",
+        "get_agents",
+        "get_agent_by_id",
+        "get_requesters",
+        "get_requester_by_id",
+        "get_assets",
+        "get_asset_by_id",
+        "get_locations",
+        "get_location_by_id"
+    ],
+    "isLicensed": true,
+    "pathToLogo": "logo.svg",
+    "encodedLogo": "",
+    "connectionParameters": [
+        {
+            "name": "api_host",
+            "label": "API Host",
+            "desc": "Freshservice domain URL (e.g., https://company.freshservice.com)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "name": "api_key",
+            "label": "API Key",
+            "desc": "Freshservice API key for authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "name": "verify_ssl",
+            "label": "Verify SSL",
+            "desc": "Verify SSL certificate when connecting to Freshservice API",
+            "type": "Boolean",
+            "values": [
+                {"label": "True", "value": "true"},
+                {"label": "False", "value": "false"}
+            ],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "isMultiAuthentication": false,
+    "desc": "Freshservice ITSM connector for ticket management, asset tracking, and service desk operations"
+}

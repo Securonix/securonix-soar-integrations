@@ -1,0 +1,1175 @@
+{
+    "connectionParameters": [
+        {
+            "label": "API Host",
+            "name": "api_host",
+            "desc": "Freshservice domain URL (e.g., https://company.freshservice.com)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "Freshservice API key for authentication",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "label": "Verify SSL",
+            "name": "verify_ssl",
+            "desc": "Verify SSL certificate when connecting to Freshservice API",
+            "type": "Boolean",
+            "values": [
+                {"label": "True", "value": "true"},
+                {"label": "False", "value": "false"}
+            ],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "desc": "Test connection to Freshservice API and verify API key validity",
+            "label": "Test Connection",
+            "name": "test_connection",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tickets\": [], \"total\": 0, \"page\": 1, \"per_page\": 1}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Connection status (success/error)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tickets",
+                    "name": "results",
+                    "desc": "Sample ticket data from API",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of tickets with optional filtering",
+            "label": "Get Tickets",
+            "name": "get_tickets",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tickets\": [{\"id\": 1, \"subject\": \"Test Ticket\", \"status\": 1, \"priority\": 2}], \"page\": 1, \"per_page\": 20, \"total\": 100}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page (max 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Filter",
+                    "name": "filter",
+                    "desc": "Filter name (new_and_my_open, watching, spam, deleted)",
+                    "type": "String",
+                    "values": [
+                        {"label": "New and My Open", "value": "new_and_my_open"},
+                        {"label": "Watching", "value": "watching"},
+                        {"label": "Spam", "value": "spam"},
+                        {"label": "Deleted", "value": "deleted"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query string (e.g., \"priority: 1 AND status: 2\")",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "Filter by requester ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Filter by requester email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Updated Since",
+                    "name": "updated_since",
+                    "desc": "Filter by last updated timestamp (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Filter by ticket type",
+                    "type": "String",
+                    "values": [
+                        {"label": "Incident", "value": "Incident"},
+                        {"label": "Service Request", "value": "Service Request"},
+                        {"label": "Problem", "value": "Problem"},
+                        {"label": "Change", "value": "Change"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Workspace ID",
+                    "name": "workspace_id",
+                    "desc": "Filter by workspace ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include",
+                    "name": "include",
+                    "desc": "Comma-separated list of includes (requester, stats, tags, conversations, assets, etc.)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Order Type",
+                    "name": "order_type",
+                    "desc": "Sort order (asc/desc)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Ascending", "value": "asc"},
+                        {"label": "Descending", "value": "desc"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Tickets",
+                    "name": "results",
+                    "desc": "List of ticket objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Total",
+                    "name": "total",
+                    "desc": "Total number of tickets",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single ticket by ID with optional embedded resources",
+            "label": "Get Ticket by ID",
+            "name": "get_ticket_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"subject\": \"Test Ticket\", \"status\": 1, \"priority\": 2, \"requester\": {...}}}",
+            "inParameters": [
+                {
+                    "label": "Ticket ID",
+                    "name": "ticket_id",
+                    "desc": "The unique identifier of the ticket",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include",
+                    "name": "include",
+                    "desc": "Comma-separated list of includes (requester, stats, tags, conversations, assets, etc.)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Ticket",
+                    "name": "results",
+                    "desc": "Detailed ticket object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Search tickets using Freshservice's advanced query syntax",
+            "label": "Search Tickets",
+            "name": "search_tickets_by_criteria",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tickets\": [{\"id\": 1, \"subject\": \"Test Ticket\"}], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Query string using Freshservice field names (e.g., \"priority: 1 AND status: 2 OR urgency: 3\")",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page (max 100)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Tickets",
+                    "name": "results",
+                    "desc": "List of matching ticket objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a new ticket in Freshservice",
+            "label": "Create Ticket",
+            "name": "create_ticket",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 123, \"subject\": \"New Ticket\", \"status\": 1, \"priority\": 2}}",
+            "inParameters": [
+                {
+                    "label": "Subject",
+                    "name": "subject",
+                    "desc": "Ticket subject",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Ticket description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "Requester ID (for existing requesters)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester Email",
+                    "name": "requester",
+                    "desc": "Requester email (creates new requester if not exists)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Ticket type",
+                    "type": "String",
+                    "values": [
+                        {"label": "Incident", "value": "Incident"},
+                        {"label": "Service Request", "value": "Service Request"},
+                        {"label": "Problem", "value": "Problem"},
+                        {"label": "Change", "value": "Change"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Priority",
+                    "name": "priority",
+                    "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
+                    "type": "Number",
+                    "values": [
+                        {"label": "Low", "value": "1"},
+                        {"label": "Medium", "value": "2"},
+                        {"label": "High", "value": "3"},
+                        {"label": "Urgent", "value": "4"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
+                    "type": "Number",
+                    "values": [
+                        {"label": "Open", "value": "1"},
+                        {"label": "Pending", "value": "2"},
+                        {"label": "Resolved", "value": "3"},
+                        {"label": "Closed", "value": "4"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Group ID to assign ticket to",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Agent ID",
+                    "name": "agent_id",
+                    "desc": "Agent ID to assign ticket to",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags",
+                    "name": "tags",
+                    "desc": "Comma-separated tags",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Custom Fields",
+                    "name": "custom_fields",
+                    "desc": "JSON object for custom field values",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Ticket",
+                    "name": "results",
+                    "desc": "Created ticket object with ID",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing ticket",
+            "label": "Update Ticket",
+            "name": "update_ticket",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 123, \"subject\": \"Updated Ticket\", \"status\": 2}}",
+            "inParameters": [
+                {
+                    "label": "Ticket ID",
+                    "name": "ticket_id",
+                    "desc": "The unique identifier of the ticket",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subject",
+                    "name": "subject",
+                    "desc": "Ticket subject",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Ticket description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "Requester ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Ticket type",
+                    "type": "String",
+                    "values": [
+                        {"label": "Incident", "value": "Incident"},
+                        {"label": "Service Request", "value": "Service Request"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Priority",
+                    "name": "priority",
+                    "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
+                    "type": "Number",
+                    "values": [
+                        {"label": "Low", "value": "1"},
+                        {"label": "Medium", "value": "2"},
+                        {"label": "High", "value": "3"},
+                        {"label": "Urgent", "value": "4"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
+                    "type": "Number",
+                    "values": [
+                        {"label": "Open", "value": "1"},
+                        {"label": "Pending", "value": "2"},
+                        {"label": "Resolved", "value": "3"},
+                        {"label": "Closed", "value": "4"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Group ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Agent ID",
+                    "name": "agent_id",
+                    "desc": "Agent ID to assign ticket to",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601 format)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Tags",
+                    "name": "tags",
+                    "desc": "Comma-separated tags",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Ticket",
+                    "name": "results",
+                    "desc": "Updated ticket object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Close a ticket (sets status to Closed)",
+            "label": "Close Ticket",
+            "name": "close_ticket",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 123, \"subject\": \"Closed Ticket\", \"status\": 4}}",
+            "inParameters": [
+                {
+                    "label": "Ticket ID",
+                    "name": "ticket_id",
+                    "desc": "The unique identifier of the ticket",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Resolution description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Ticket",
+                    "name": "results",
+                    "desc": "Closed ticket object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Resolve a ticket (sets status to Resolved)",
+            "label": "Resolve Ticket",
+            "name": "resolve_ticket",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 123, \"subject\": \"Resolved Ticket\", \"status\": 3}}",
+            "inParameters": [
+                {
+                    "label": "Ticket ID",
+                    "name": "ticket_id",
+                    "desc": "The unique identifier of the ticket",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution",
+                    "name": "resolution",
+                    "desc": "Resolution description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Ticket",
+                    "name": "results",
+                    "desc": "Resolved ticket object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Soft delete a ticket",
+            "label": "Delete Ticket",
+            "name": "delete_ticket",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Ticket deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "Ticket ID",
+                    "name": "ticket_id",
+                    "desc": "The unique identifier of the ticket",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of agents",
+            "label": "Get Agents",
+            "name": "get_agents",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"agents\": [{\"id\": 1, \"name\": \"John Doe\", \"email\": \"john@company.com\"}], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Filter",
+                    "name": "filter",
+                    "desc": "Filter by email, mobile_phone_number, work_phone_number, or active status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "State",
+                    "name": "state",
+                    "desc": "Filter by state (fulltime, occasional)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Fulltime", "value": "fulltime"},
+                        {"label": "Occasional", "value": "occasional"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query string",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Agents",
+                    "name": "results",
+                    "desc": "List of agent objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single agent by ID",
+            "label": "Get Agent by ID",
+            "name": "get_agent_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"John Doe\", \"email\": \"john@company.com\"}}",
+            "inParameters": [
+                {
+                    "label": "Agent ID",
+                    "name": "agent_id",
+                    "desc": "The unique identifier of the agent",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Agent",
+                    "name": "results",
+                    "desc": "Detailed agent object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of requesters (contacts)",
+            "label": "Get Requesters",
+            "name": "get_requesters",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"requesters\": [{\"id\": 1, \"name\": \"Jane Doe\", \"email\": \"jane@company.com\"}], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Filter by email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Mobile Phone",
+                    "name": "mobile_phone_number",
+                    "desc": "Filter by mobile phone number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Work Phone",
+                    "name": "work_phone_number",
+                    "desc": "Filter by work phone number",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query string",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Requesters",
+                    "name": "results",
+                    "desc": "List of requester objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single requester by ID",
+            "label": "Get Requester by ID",
+            "name": "get_requester_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Jane Doe\", \"email\": \"jane@company.com\"}}",
+            "inParameters": [
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "The unique identifier of the requester",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Requester",
+                    "name": "results",
+                    "desc": "Detailed requester object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of assets",
+            "label": "Get Assets",
+            "name": "get_assets",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"assets\": [{\"display_id\": \"AST001\", \"name\": \"Laptop-001\", \"asset_type_id\": 1}], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Order By",
+                    "name": "order_by",
+                    "desc": "Order by field (created_at, updated_at)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Order Type",
+                    "name": "order_type",
+                    "desc": "Order type (asc/desc)",
+                    "type": "String",
+                    "values": [
+                        {"label": "Ascending", "value": "asc"},
+                        {"label": "Descending", "value": "desc"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include",
+                    "name": "include",
+                    "desc": "Include type_fields for asset-specific fields",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Trashed",
+                    "name": "trashed",
+                    "desc": "Include trashed assets",
+                    "type": "Boolean",
+                    "values": [
+                        {"label": "True", "value": "true"},
+                        {"label": "False", "value": "false"}
+                    ],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Workspace ID",
+                    "name": "workspace_id",
+                    "desc": "Filter by workspace ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query string",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Assets",
+                    "name": "results",
+                    "desc": "List of asset objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single asset by display ID",
+            "label": "Get Asset by ID",
+            "name": "get_asset_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"display_id\": \"AST001\", \"name\": \"Laptop-001\", \"asset_type_id\": 1}}",
+            "inParameters": [
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "The display ID of the asset",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include",
+                    "name": "include",
+                    "desc": "Include type_fields for asset-specific fields",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Asset",
+                    "name": "results",
+                    "desc": "Detailed asset object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a paginated list of locations",
+            "label": "Get Locations",
+            "name": "get_locations",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"locations\": [{\"id\": 1, \"name\": \"Headquarters\", \"address\": \"...\"}], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number for pagination",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Number of results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query string",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Locations",
+                    "name": "results",
+                    "desc": "List of location objects",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Retrieve a single location by ID",
+            "label": "Get Location by ID",
+            "name": "get_location_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Headquarters\", \"address\": \"...\"}}",
+            "inParameters": [
+                {
+                    "label": "Location ID",
+                    "name": "location_id",
+                    "desc": "The unique identifier of the location",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Location",
+                    "name": "results",
+                    "desc": "Detailed location object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+}
