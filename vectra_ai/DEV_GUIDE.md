@@ -251,7 +251,7 @@ All list endpoints support pagination via:
 
 Supports `fields` and `exclude_fields` query parameters to control response size.
 
-## Testing Strategy
+### Testing Strategy
 
 ### Test Categories
 
@@ -270,7 +270,7 @@ coverage run -m pytest tests/test_vectra_ai.py
 coverage report -m
 ```
 
-## Integration Configuration
+### Integration Configuration
 
 ### Connection Parameters
 
@@ -292,7 +292,7 @@ coverage report -m
 }
 ```
 
-## Deployment Checklist
+### Deployment Checklist
 
 - [ ] OAuth2 credentials obtained from Vectra admin
 - [ ] API host URL configured
@@ -302,14 +302,14 @@ coverage report -m
 - [ ] Verify remediation actions work
 - [ ] Configure error notifications
 
-## Known Limitations
+### Known Limitations
 
 1. **API Versioning**: Connector supports both v3.4 and v3.5 APIs. v3.5 features are marked as "unreleased"
 2. **Pagination**: Large result sets may require multiple API calls
 3. **Rate Limiting**: API has rate limits (429 responses). Implement exponential backoff for production use.
 4. **Token Expiration**: Access tokens expire after 1 hour. Implement token refresh logic.
 
-## Future Enhancements
+### Future Enhancements
 
 - [ ] Add event stream polling for real-time detection updates
 - [ ] Add bulk remediation operations
@@ -317,126 +317,12 @@ coverage report -m
 - [ ] Add custom field mapping for external ticketing systems
 - [ ] Add health check endpoint status monitoring
 
-## Support
+### Support
 
 For API questions or issues, contact Vectra support at support@vectra.ai
 
 ### Additional SOAR Functions
 
-#### 13. get_findings
-**Description**: Get a paginated list of posture findings for security posture management
-
-**Parameters**:
-- `page` (Number): Page number for pagination
-- `page_size` (Number): Results per page (max 5000)
-- `ordering` (String): Order by field (e.g., `-severity` for descending)
-- `finding_type_uid` (String): Filter by finding type
-- `first_seen_gte` (String): Start date (ISO8601 format)
-- `first_seen_lte` (String): End date (ISO8601 format)
-- `last_seen_gte` (String): Last seen start date
-- `last_seen_lte` (String): Last seen end date
-- `status` (String): Filter by status (all, active, inactive)
-- `category` (String): Filter by category
-- `severity` (String): Filter by severity (low, medium, high, critical)
-- `size` (String): Response tier (small, regular, detailed)
-- `resolution` (String): Filter by resolution (open, in_progress, remediated, risk_accepted)
-
-**Output**: Paginated list of findings objects
-
-#### 14. get_finding_by_id
-**Description**: Get a single finding by its ID
-
-**Parameters**:
-- `finding_id` (String): Finding ID
-- `fields` (String): Fields to include
-- `exclude_fields` (String): Fields to exclude
-
-**Output**: Detailed finding object
-
-#### 15. get_host_findings
-**Description**: Get entity findings associated with a specific finding
-
-**Parameters**:
-- `finding_id` (String): Finding ID
-- `page` (Number): Page number
-- `page_size` (Number): Results per page
-- `ordering` (String): Order by field (e.g., `updated_at`, `-updated_at`)
-- `first_seen_gte` (String): Start date (ISO8601 format)
-- `first_seen_lte` (String): End date (ISO8601 format)
-- `last_seen_gte` (String): Last seen start date
-- `last_seen_lte` (String): Last seen end date
-
-**Output**: Paginated list of entity findings
-
-#### 16. get_assignment_outcomes
-**Description**: Get a paginated list of assignment outcomes
-
-**Parameters**:
-- `page` (Number): Page number
-- `page_size` (Number): Results per page
-
-**Output**: Paginated list of assignment outcomes
-
-#### 17. create_assignment_outcome
-**Description**: Create a new assignment outcome for labeling resolution outcomes
-
-**Parameters**:
-- `title` (String): Title of the outcome
-- `category` (String): Category of the outcome
-- `description` (String): Description of the outcome
-
-**Output**: Created assignment outcome object
-
-#### 18. get_assignments
-**Description**: Get a paginated list of assignments for analyst workflow management
-
-**Parameters**:
-- `page` (Number): Page number
-- `page_size` (Number): Results per page
-- `accounts` (String): Filter by account IDs (comma-separated)
-- `assignees` (String): Filter by assignee usernames
-- `created_after` (String): Filter by creation date (ISO8601 format)
-- `hosts` (String): Filter by host IDs (comma-separated)
-- `resolution` (String): Filter by resolution
-- `resolved` (String): Filter by resolved status (true/false)
-
-**Output**: Paginated list of assignments
-
-#### 19. get_assignment_by_id
-**Description**: Get a single assignment by its ID
-
-**Parameters**:
-- `assignment_id` (Number): Assignment ID
-
-**Output**: Detailed assignment object
-
-#### 20. get_detection_events
-**Description**: Get detection events from a checkpoint for event stream processing
-
-**Parameters**:
-- `from` (Number): Checkpoint ID to start from
-- `account_uid` (String): Filter by account UID
-- `event_timestamp_gte` (String): Start date (ISO8601 format)
-- `event_timestamp_lte` (String): End date (ISO8601 format)
-- `detection_id` (Number): Filter by detection ID
-- `id` (Number): Filter by event ID
-- `include_info_category` (Boolean): Include INFO detections
-- `include_triaged` (Boolean): Include triaged detections
-- `limit` (Number): Max results per page
-- `ordering` (String): Order by field
-- `type` (String): Event type
-- `include_all_process_context` (Boolean): Include process context
-- `change_type` (String): Change type filter
-- `entity_id` (Number): Filter by entity ID
-- `entity_uid` (String): Filter by entity UID
-- `external_reference_id` (String): Filter by external reference
-- `investigation_status` (String): Filter by investigation status
-- `size` (String): Response tier
-- `unresolved_priority` (Boolean): Filter by unresolved priority
-
-**Output**: Detection events list
-
-## Implementation Details
 #### 21. get_detection_by_id_patch
 **Description**: Retrieve a single detection by ID using the PATCH method (alternative endpoint)
 
@@ -597,5 +483,3 @@ For API questions or issues, contact Vectra support at support@vectra.ai
 - `size` (String): Response tier
 
 **Output**: Detection events list
-
-## Implementation Details
