@@ -1,1 +1,14 @@
-{"verdict": "CHANGES_REQUESTED", "findings": ["Documentation gap - 71 implemented functions lack documentation in DEV_GUIDE.md", "Incorrect parameter passing for PUT functions - update_service_catalog_item and update_service_item use _build_query_params for query parameters instead of data=", "Missing test coverage - Plan states all 27 tests pass but test file only covers original 17 functions", "Inconsistent error messages - Some functions have custom validation errors while others rely on generic _handle_error response"], "reviewDoc": "/Users/pkamble/Documents/SOAR/Integrations/securonix-soar-integrations/freshservice_itsm/.agents/tasks/review.md"}
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "issue": "Duplicate function definitions in integration_definition.json",
+      "description": "71 newly added endpoints have duplicate entries with empty parameter definitions; these duplicates must be removed to ensure SOAR receives complete function signatures."
+    },
+    {
+      "issue": "Parameter documentation error in update_change",
+      "description": "The docstring for update_change references 实施者_id (Chinese characters) instead of implementer_id in the parameters list."
+    }
+  ],
+  "reviewDoc": "/Users/pkamble/Documents/SOAR/Integrations/securonix-soar-integrations/freshservice_itsm/.agents/tasks/review.md"
+}
