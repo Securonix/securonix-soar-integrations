@@ -26,8 +26,14 @@
             "desc": "Verify SSL certificate when connecting to Freshservice API",
             "type": "Boolean",
             "values": [
-                {"label": "True", "value": "true"},
-                {"label": "False", "value": "false"}
+                {
+                    "label": "True",
+                    "value": "true"
+                },
+                {
+                    "label": "False",
+                    "value": "false"
+                }
             ],
             "isSecret": false,
             "optional": true,
@@ -98,10 +104,22 @@
                     "desc": "Filter name (new_and_my_open, watching, spam, deleted)",
                     "type": "String",
                     "values": [
-                        {"label": "New and My Open", "value": "new_and_my_open"},
-                        {"label": "Watching", "value": "watching"},
-                        {"label": "Spam", "value": "spam"},
-                        {"label": "Deleted", "value": "deleted"}
+                        {
+                            "label": "New and My Open",
+                            "value": "new_and_my_open"
+                        },
+                        {
+                            "label": "Watching",
+                            "value": "watching"
+                        },
+                        {
+                            "label": "Spam",
+                            "value": "spam"
+                        },
+                        {
+                            "label": "Deleted",
+                            "value": "deleted"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -153,10 +171,22 @@
                     "desc": "Filter by ticket type",
                     "type": "String",
                     "values": [
-                        {"label": "Incident", "value": "Incident"},
-                        {"label": "Service Request", "value": "Service Request"},
-                        {"label": "Problem", "value": "Problem"},
-                        {"label": "Change", "value": "Change"}
+                        {
+                            "label": "Incident",
+                            "value": "Incident"
+                        },
+                        {
+                            "label": "Service Request",
+                            "value": "Service Request"
+                        },
+                        {
+                            "label": "Problem",
+                            "value": "Problem"
+                        },
+                        {
+                            "label": "Change",
+                            "value": "Change"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -188,8 +218,14 @@
                     "desc": "Sort order (asc/desc)",
                     "type": "String",
                     "values": [
-                        {"label": "Ascending", "value": "asc"},
-                        {"label": "Descending", "value": "desc"}
+                        {
+                            "label": "Ascending",
+                            "value": "asc"
+                        },
+                        {
+                            "label": "Descending",
+                            "value": "desc"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -364,10 +400,22 @@
                     "desc": "Ticket type",
                     "type": "String",
                     "values": [
-                        {"label": "Incident", "value": "Incident"},
-                        {"label": "Service Request", "value": "Service Request"},
-                        {"label": "Problem", "value": "Problem"},
-                        {"label": "Change", "value": "Change"}
+                        {
+                            "label": "Incident",
+                            "value": "Incident"
+                        },
+                        {
+                            "label": "Service Request",
+                            "value": "Service Request"
+                        },
+                        {
+                            "label": "Problem",
+                            "value": "Problem"
+                        },
+                        {
+                            "label": "Change",
+                            "value": "Change"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -379,10 +427,22 @@
                     "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
                     "type": "Number",
                     "values": [
-                        {"label": "Low", "value": "1"},
-                        {"label": "Medium", "value": "2"},
-                        {"label": "High", "value": "3"},
-                        {"label": "Urgent", "value": "4"}
+                        {
+                            "label": "Low",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "2"
+                        },
+                        {
+                            "label": "High",
+                            "value": "3"
+                        },
+                        {
+                            "label": "Urgent",
+                            "value": "4"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -394,10 +454,22 @@
                     "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
                     "type": "Number",
                     "values": [
-                        {"label": "Open", "value": "1"},
-                        {"label": "Pending", "value": "2"},
-                        {"label": "Resolved", "value": "3"},
-                        {"label": "Closed", "value": "4"}
+                        {
+                            "label": "Open",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Pending",
+                            "value": "2"
+                        },
+                        {
+                            "label": "Resolved",
+                            "value": "3"
+                        },
+                        {
+                            "label": "Closed",
+                            "value": "4"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -520,8 +592,14 @@
                     "desc": "Ticket type",
                     "type": "String",
                     "values": [
-                        {"label": "Incident", "value": "Incident"},
-                        {"label": "Service Request", "value": "Service Request"}
+                        {
+                            "label": "Incident",
+                            "value": "Incident"
+                        },
+                        {
+                            "label": "Service Request",
+                            "value": "Service Request"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -533,10 +611,22 @@
                     "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
                     "type": "Number",
                     "values": [
-                        {"label": "Low", "value": "1"},
-                        {"label": "Medium", "value": "2"},
-                        {"label": "High", "value": "3"},
-                        {"label": "Urgent", "value": "4"}
+                        {
+                            "label": "Low",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Medium",
+                            "value": "2"
+                        },
+                        {
+                            "label": "High",
+                            "value": "3"
+                        },
+                        {
+                            "label": "Urgent",
+                            "value": "4"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -548,10 +638,22 @@
                     "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
                     "type": "Number",
                     "values": [
-                        {"label": "Open", "value": "1"},
-                        {"label": "Pending", "value": "2"},
-                        {"label": "Resolved", "value": "3"},
-                        {"label": "Closed", "value": "4"}
+                        {
+                            "label": "Open",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Pending",
+                            "value": "2"
+                        },
+                        {
+                            "label": "Resolved",
+                            "value": "3"
+                        },
+                        {
+                            "label": "Closed",
+                            "value": "4"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -767,8 +869,14 @@
                     "desc": "Filter by state (fulltime, occasional)",
                     "type": "String",
                     "values": [
-                        {"label": "Fulltime", "value": "fulltime"},
-                        {"label": "Occasional", "value": "occasional"}
+                        {
+                            "label": "Fulltime",
+                            "value": "fulltime"
+                        },
+                        {
+                            "label": "Occasional",
+                            "value": "occasional"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -984,8 +1092,14 @@
                     "desc": "Order type (asc/desc)",
                     "type": "String",
                     "values": [
-                        {"label": "Ascending", "value": "asc"},
-                        {"label": "Descending", "value": "desc"}
+                        {
+                            "label": "Ascending",
+                            "value": "asc"
+                        },
+                        {
+                            "label": "Descending",
+                            "value": "desc"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1007,8 +1121,14 @@
                     "desc": "Include trashed assets",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        {
+                            "label": "True",
+                            "value": "true"
+                        },
+                        {
+                            "label": "False",
+                            "value": "false"
+                        }
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1164,6 +1284,3903 @@
                     "name": "results",
                     "desc": "Detailed location object",
                     "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Catalog Items",
+            "label": "Get Service Catalog Items",
+            "name": "get_service_catalog_items",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Catalog Item By Id",
+            "label": "Get Service Catalog Item By Id",
+            "name": "get_service_catalog_item_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Service Catalog Item Id",
+                    "name": "service_catalog_item_id",
+                    "desc": "The service catalog item id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Catalog Categories",
+            "label": "Get Service Catalog Categories",
+            "name": "get_service_catalog_categories",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Catalog Category By Id",
+            "label": "Get Service Catalog Category By Id",
+            "name": "get_service_catalog_category_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Service Catalog Category Id",
+                    "name": "service_catalog_category_id",
+                    "desc": "The service catalog category id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Articles",
+            "label": "Get Solution Articles",
+            "name": "get_solution_articles",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Article By Id",
+            "label": "Get Solution Article By Id",
+            "name": "get_solution_article_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Solution Article Id",
+                    "name": "solution_article_id",
+                    "desc": "The solution article id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Categories",
+            "label": "Get Solution Categories",
+            "name": "get_solution_categories",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Category By Id",
+            "label": "Get Solution Category By Id",
+            "name": "get_solution_category_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Solution Category Id",
+                    "name": "solution_category_id",
+                    "desc": "The solution category id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Folders",
+            "label": "Get Solution Folders",
+            "name": "get_solution_folders",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Folder By Id",
+            "label": "Get Solution Folder By Id",
+            "name": "get_solution_folder_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Solution Folder Id",
+                    "name": "solution_folder_id",
+                    "desc": "The solution folder id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Solution Folder",
+            "label": "Create Solution Folder",
+            "name": "create_solution_folder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Solution Folder",
+            "label": "Update Solution Folder",
+            "name": "update_solution_folder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Folder",
+            "label": "Delete Solution Folder",
+            "name": "delete_solution_folder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore Solution Folder",
+            "label": "Restore Solution Folder",
+            "name": "restore_solution_folder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Solution Category",
+            "label": "Create Solution Category",
+            "name": "create_solution_category",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Solution Category",
+            "label": "Update Solution Category",
+            "name": "update_solution_category",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Category",
+            "label": "Delete Solution Category",
+            "name": "delete_solution_category",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore Solution Category",
+            "label": "Restore Solution Category",
+            "name": "restore_solution_category",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Solution Article",
+            "label": "Create Solution Article",
+            "name": "create_solution_article",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Solution Article",
+            "label": "Update Solution Article",
+            "name": "update_solution_article",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Article",
+            "label": "Delete Solution Article",
+            "name": "delete_solution_article",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore Solution Article",
+            "label": "Restore Solution Article",
+            "name": "restore_solution_article",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Bulk Restore Solution Articles",
+            "label": "Bulk Restore Solution Articles",
+            "name": "bulk_restore_solution_articles",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Cabs",
+            "label": "Get Cabs",
+            "name": "get_cabs",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Cab By Id",
+            "label": "Get Cab By Id",
+            "name": "get_cab_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Cab Id",
+                    "name": "cab_id",
+                    "desc": "The cab id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Cab",
+            "label": "Create Cab",
+            "name": "create_cab",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Cab",
+            "label": "Update Cab",
+            "name": "update_cab",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Cab",
+            "label": "Delete Cab",
+            "name": "delete_cab",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Changes",
+            "label": "Get Changes",
+            "name": "get_changes",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Change By Id",
+            "label": "Get Change By Id",
+            "name": "get_change_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Change Id",
+                    "name": "change_id",
+                    "desc": "The change id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Change",
+            "label": "Create Change",
+            "name": "create_change",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Change",
+            "label": "Update Change",
+            "name": "update_change",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Change",
+            "label": "Delete Change",
+            "name": "delete_change",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Releases",
+            "label": "Get Releases",
+            "name": "get_releases",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Release By Id",
+            "label": "Get Release By Id",
+            "name": "get_release_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Release Id",
+                    "name": "release_id",
+                    "desc": "The release id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Release",
+            "label": "Create Release",
+            "name": "create_release",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Release",
+            "label": "Update Release",
+            "name": "update_release",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Release",
+            "label": "Delete Release",
+            "name": "delete_release",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Announcements",
+            "label": "Get Announcements",
+            "name": "get_announcements",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Announcement By Id",
+            "label": "Get Announcement By Id",
+            "name": "get_announcement_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Announcement Id",
+                    "name": "announcement_id",
+                    "desc": "The announcement id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Announcement",
+            "label": "Create Announcement",
+            "name": "create_announcement",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Announcement",
+            "label": "Update Announcement",
+            "name": "update_announcement",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Announcement",
+            "label": "Delete Announcement",
+            "name": "delete_announcement",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Applications",
+            "label": "Get Applications",
+            "name": "get_applications",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Application By Id",
+            "label": "Get Application By Id",
+            "name": "get_application_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Application Id",
+                    "name": "application_id",
+                    "desc": "The application id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Sla Policies",
+            "label": "Get Sla Policies",
+            "name": "get_sla_policies",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Sla Policy By Id",
+            "label": "Get Sla Policy By Id",
+            "name": "get_sla_policy_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Sla Policy Id",
+                    "name": "sla_policy_id",
+                    "desc": "The sla policy id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Contracts",
+            "label": "Get Contracts",
+            "name": "get_contracts",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Contract By Id",
+            "label": "Get Contract By Id",
+            "name": "get_contract_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Contract Id",
+                    "name": "contract_id",
+                    "desc": "The contract id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Canned Responses",
+            "label": "Get Canned Responses",
+            "name": "get_canned_responses",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Canned Response By Id",
+            "label": "Get Canned Response By Id",
+            "name": "get_canned_response_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Canned Response Id",
+                    "name": "canned_response_id",
+                    "desc": "The canned response id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Canned Response Folders",
+            "label": "Get Canned Response Folders",
+            "name": "get_canned_response_folders",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Canned Response Folder By Id",
+            "label": "Get Canned Response Folder By Id",
+            "name": "get_canned_response_folder_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Canned Response Folder Id",
+                    "name": "canned_response_folder_id",
+                    "desc": "The canned response folder id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Agent Fields",
+            "label": "Get Agent Fields",
+            "name": "get_agent_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Agent Field By Id",
+            "label": "Get Agent Field By Id",
+            "name": "get_agent_field_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Agent Field Id",
+                    "name": "agent_field_id",
+                    "desc": "The agent field id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Requester Fields",
+            "label": "Get Requester Fields",
+            "name": "get_requester_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Requester Field By Id",
+            "label": "Get Requester Field By Id",
+            "name": "get_requester_field_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Requester Field Id",
+                    "name": "requester_field_id",
+                    "desc": "The requester field id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Items",
+            "label": "Get Service Items",
+            "name": "get_service_items",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Item By Id",
+            "label": "Get Service Item By Id",
+            "name": "get_service_item_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Service Item Id",
+                    "name": "service_item_id",
+                    "desc": "The service item id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Requests",
+            "label": "Get Service Requests",
+            "name": "get_service_requests",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Request By Id",
+            "label": "Get Service Request By Id",
+            "name": "get_service_request_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Service Request Id",
+                    "name": "service_request_id",
+                    "desc": "The service request id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add Service Request Item",
+            "label": "Add Service Request Item",
+            "name": "add_service_request_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Cancel Service Request",
+            "label": "Cancel Service Request",
+            "name": "cancel_service_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Approvals",
+            "label": "Get Approvals",
+            "name": "get_approvals",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Approval By Id",
+            "label": "Get Approval By Id",
+            "name": "get_approval_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Approval Id",
+                    "name": "approval_id",
+                    "desc": "The approval id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Approve Request",
+            "label": "Approve Request",
+            "name": "approve_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Reject Request",
+            "label": "Reject Request",
+            "name": "reject_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Delegations",
+            "label": "Get Delegations",
+            "name": "get_delegations",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Delegation By Id",
+            "label": "Get Delegation By Id",
+            "name": "get_delegation_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Delegation Id",
+                    "name": "delegation_id",
+                    "desc": "The delegation id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Delegation",
+            "label": "Create Delegation",
+            "name": "create_delegation",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Delegation",
+            "label": "Update Delegation",
+            "name": "update_delegation",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Delegation",
+            "label": "Delete Delegation",
+            "name": "delete_delegation",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Journey Requests",
+            "label": "Get Journey Requests",
+            "name": "get_journey_requests",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Journey Request By Id",
+            "label": "Get Journey Request By Id",
+            "name": "get_journey_request_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Journey Request Id",
+                    "name": "journey_request_id",
+                    "desc": "The journey request id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Journey Request",
+            "label": "Create Journey Request",
+            "name": "create_journey_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Cancel Journey Request",
+            "label": "Cancel Journey Request",
+            "name": "cancel_journey_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Pm Projects",
+            "label": "Get Pm Projects",
+            "name": "get_pm_projects",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Pm Project By Id",
+            "label": "Get Pm Project By Id",
+            "name": "get_pm_project_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Pm Project Id",
+                    "name": "pm_project_id",
+                    "desc": "The pm project id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Pm Project",
+            "label": "Create Pm Project",
+            "name": "create_pm_project",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Pm Project",
+            "label": "Update Pm Project",
+            "name": "update_pm_project",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Pm Project",
+            "label": "Delete Pm Project",
+            "name": "delete_pm_project",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Pm Tasks",
+            "label": "Get Pm Tasks",
+            "name": "get_pm_tasks",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Pm Task By Id",
+            "label": "Get Pm Task By Id",
+            "name": "get_pm_task_by_id",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Pm Task Id",
+                    "name": "pm_task_id",
+                    "desc": "The pm task id",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Pm Task",
+            "label": "Create Pm Task",
+            "name": "create_pm_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Pm Task",
+            "label": "Update Pm Task",
+            "name": "update_pm_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Pm Task",
+            "label": "Delete Pm Task",
+            "name": "delete_pm_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Audit Logs",
+            "label": "Get Audit Logs",
+            "name": "get_audit_logs",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Service Catalog Item",
+            "label": "Create Service Catalog Item",
+            "name": "create_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Service Catalog Item",
+            "label": "Update Service Catalog Item",
+            "name": "update_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Service Catalog Item",
+            "label": "Delete Service Catalog Item",
+            "name": "delete_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Place Service Catalog Request",
+            "label": "Place Service Catalog Request",
+            "name": "place_service_catalog_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Archive Service Catalog Shared Field",
+            "label": "Archive Service Catalog Shared Field",
+            "name": "archive_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Unarchive Service Catalog Shared Field",
+            "label": "Unarchive Service Catalog Shared Field",
+            "name": "unarchive_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Service Catalog Shared Field",
+            "label": "Create Service Catalog Shared Field",
+            "name": "create_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Service Catalog Shared Field",
+            "label": "Update Service Catalog Shared Field",
+            "name": "update_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Service Catalog Shared Field",
+            "label": "Delete Service Catalog Shared Field",
+            "name": "delete_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Service Catalog Shared Fields",
+            "label": "Get Service Catalog Shared Fields",
+            "name": "get_service_catalog_shared_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Service Item",
+            "label": "Delete Service Item",
+            "name": "delete_service_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Service Item",
+            "label": "Update Service Item",
+            "name": "update_service_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Solution Folder Subfolders",
+            "label": "Get Solution Folder Subfolders",
+            "name": "get_solution_folder_subfolders",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Solution Subfolder",
+            "label": "Create Solution Subfolder",
+            "name": "create_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Subfolder",
+            "label": "Delete Solution Subfolder",
+            "name": "delete_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore Solution Subfolder",
+            "label": "Restore Solution Subfolder",
+            "name": "restore_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Send Solution Article For Approval",
+            "label": "Send Solution Article For Approval",
+            "name": "send_solution_article_for_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Article Forever",
+            "label": "Delete Solution Article Forever",
+            "name": "delete_solution_article_forever",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Solution Category Forever",
+            "label": "Delete Solution Category Forever",
+            "name": "delete_solution_category_forever",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Bulk Restore Solution Articles Alternate",
+            "label": "Bulk Restore Solution Articles Alternate",
+            "name": "bulk_restore_solution_articles_alternate",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Cab Approval",
+            "label": "Create Cab Approval",
+            "name": "create_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Cab Approval",
+            "label": "Update Cab Approval",
+            "name": "update_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Cab Approval",
+            "label": "Delete Cab Approval",
+            "name": "delete_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add Cab Member",
+            "label": "Add Cab Member",
+            "name": "add_cab_member",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Remove Cab Member",
+            "label": "Remove Cab Member",
+            "name": "remove_cab_member",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Cab Templates",
+            "label": "Get Cab Templates",
+            "name": "get_cab_templates",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Cab Template",
+            "label": "Create Cab Template",
+            "name": "create_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Cab Template",
+            "label": "Update Cab Template",
+            "name": "update_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Cab Template",
+            "label": "Delete Cab Template",
+            "name": "delete_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Cast Cab Vote",
+            "label": "Cast Cab Vote",
+            "name": "cast_cab_vote",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Change Approvals",
+            "label": "Get Change Approvals",
+            "name": "get_change_approvals",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Change Approval",
+            "label": "Create Change Approval",
+            "name": "create_change_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Change Approval Groups",
+            "label": "Get Change Approval Groups",
+            "name": "get_change_approval_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Change Approval Group",
+            "label": "Create Change Approval Group",
+            "name": "create_change_approval_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Change Approval Chain",
+            "label": "Get Change Approval Chain",
+            "name": "get_change_approval_chain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Change Approval Chain",
+            "label": "Create Change Approval Chain",
+            "name": "create_change_approval_chain",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Problem Form Fields",
+            "label": "Get Problem Form Fields",
+            "name": "get_problem_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Problem Tasks",
+            "label": "Get Problem Tasks",
+            "name": "get_problem_tasks",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Problem Task",
+            "label": "Create Problem Task",
+            "name": "create_problem_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Release Tasks",
+            "label": "Get Release Tasks",
+            "name": "get_release_tasks",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Release Task",
+            "label": "Create Release Task",
+            "name": "create_release_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Release Notes",
+            "label": "Get Release Notes",
+            "name": "get_release_notes",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add Release Note",
+            "label": "Add Release Note",
+            "name": "add_release_note",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Release Time Entries",
+            "label": "Get Release Time Entries",
+            "name": "get_release_time_entries",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add Release Time Entry",
+            "label": "Add Release Time Entry",
+            "name": "add_release_time_entry",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Move Release Workspace",
+            "label": "Move Release Workspace",
+            "name": "move_release_workspace",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore Release",
+            "label": "Restore Release",
+            "name": "restore_release",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Release Form Fields",
+            "label": "Get Release Form Fields",
+            "name": "get_release_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Sla Breach",
+            "label": "Update Sla Breach",
+            "name": "update_sla_breach",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Groups",
+            "label": "Get Groups",
+            "name": "get_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Group",
+            "label": "Create Group",
+            "name": "create_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Group",
+            "label": "Update Group",
+            "name": "update_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Group",
+            "label": "Delete Group",
+            "name": "delete_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Requester Groups",
+            "label": "Get Requester Groups",
+            "name": "get_requester_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Requester Group",
+            "label": "Create Requester Group",
+            "name": "create_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Requester Group",
+            "label": "Update Requester Group",
+            "name": "update_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Requester Group",
+            "label": "Delete Requester Group",
+            "name": "delete_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Departments",
+            "label": "Get Departments",
+            "name": "get_departments",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Department",
+            "label": "Create Department",
+            "name": "create_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Department",
+            "label": "Update Department",
+            "name": "update_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Department",
+            "label": "Delete Department",
+            "name": "delete_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Products",
+            "label": "Get Products",
+            "name": "get_products",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Product",
+            "label": "Create Product",
+            "name": "create_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update Product",
+            "label": "Update Product",
+            "name": "update_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete Product",
+            "label": "Delete Product",
+            "name": "delete_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Vendors",
+            "label": "Get Vendors",
+            "name": "get_vendors",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create Vendor",
+            "label": "Create Vendor",
+            "name": "create_vendor",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Bulk Create Relationships",
+            "label": "Bulk Create Relationships",
+            "name": "bulk_create_relationships",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get All Tickets",
+            "label": "Get All Tickets",
+            "name": "get_all_tickets",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Ticket Form Fields",
+            "label": "Get Ticket Form Fields",
+            "name": "get_ticket_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get Roles",
+            "label": "Get Roles",
+            "name": "get_roles",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Results",
+                    "name": "results",
+                    "desc": "Response data",
+                    "type": "Array",
                     "values": [],
                     "isSecret": false,
                     "optional": false,
