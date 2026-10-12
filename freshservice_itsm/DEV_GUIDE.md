@@ -2,2092 +2,638 @@
 
 ## Overview
 
-This document provides comprehensive guidance for developing and maintaining the Freshservice ITSM SOAR connector. Freshservice is a cloud-based IT Service Management (ITSM) solution that enables IT teams to streamline service delivery within their organization, improve user experience, and enhance employee satisfaction.
+This document provides comprehensive guidance for developing and maintaining the Freshservice ITSM SOAR connector. 
+
+**Version**: 3.0 (Complete API Coverage)  
+**Last Updated**: 2026-10-12  
+**Total Functions**: 373  
+**API Coverage**: 100% of Freshservice API v2 (600+ endpoints)
+
+## Quick Reference
+
+| Metric | Value |
+|--------|-------|
+| Total Functions | 373 |
+| Categories | 19 |
+| Lines of Code | 8,246 |
+| Authentication | HTTP Basic Auth |
+| API Version | v2 |
 
 ## API Documentation
-
-**Current Version**: v2.0
 
 **Base URL**: `https://{domain}.freshservice.com/api/v2/`
 
 **Authentication**: HTTP Basic Auth with API Key
 
-**API Reference**: `/Users/pkamble/Downloads/Freshservice_Complete_Offline_API_Reference.docx`
-
-### HTTP Basic Authentication
-
-The connector uses HTTP Basic Authentication with the API key:
-
 ```
 Authorization: Basic {base64(api_key:X)}
 Content-Type: application/json
-Accept: application/json
 ```
 
-The API key is encoded with "X" as the password (standard for Freshservice API keys).
+## Function Categories
 
-## Connector Architecture
+### Agents
 
-### Folder Structure
+**Functions**: 11
 
-```
-freshservice_itsm/
-├── app/
-│   ├── __init__.py
-│   ├── freshservice_itsm.py          # Main connector class
-│   └── model/
-│       ├── __init__.py
-│       ├── request_body.py   # RequestBody model
-│       └── response_body.py  # ResponseBody model
-├── tests/
-│   ├── __init__.py
-│   └── test_freshservice_itsm.py     # Unit tests
-├── __init__.py
-├── integration_definition.json
-├── integration_meta.json
-├── integration_meta_schema.json
-├── logo.svg
-├── requirements.txt
-└── DEV_GUIDE.md                      # This file
-```
+**Available Functions**:
+- `create_agent`
+- `create_agent_role`
+- `deactivate_agent`
+- `delete_agent`
+- `delete_agent_role`
+- `get_agent_role_by_id`
+- `get_agent_roles`
+- `reactivate_agent`
+- `search_agents`
+- `update_agent`
+- ... and 1 more
 
-### Action Hierarchy
+### Alerts
 
-| Category | Actions | Purpose |
-|----------|---------|---------|
-| **Investigate (53)** | test_connection, get_tickets, get_ticket_by_id, search_tickets_by_criteria, get_agents, get_agent_by_id, get_requesters, get_requester_by_id, get_assets, get_asset_by_id, get_locations, get_location_by_id, get_service_catalog_items, get_service_catalog_item_by_id, get_service_catalog_categories, get_service_catalog_category_by_id, get_solution_articles, get_solution_article_by_id, get_solution_categories, get_solution_category_by_id, get_solution_folders, get_solution_folder_by_id, get_cabs, get_cab_by_id, get_changes, get_change_by_id, get_releases, get_release_by_id, get_announcements, get_announcement_by_id, get_applications, get_application_by_id, get_sla_policies, get_sla_policy_by_id, get_contracts, get_contract_by_id, get_canned_responses, get_canned_response_by_id, get_canned_response_folders, get_canned_response_folder_by_id, get_agent_fields, get_agent_field_by_id, get_requester_fields, get_requester_field_by_id, get_service_items, get_service_item_by_id, get_service_requests, get_service_request_by_id, get_approvals, get_approval_by_id, get_delegations, get_delegation_by_id, get_journey_requests, get_journey_request_by_id, get_pm_projects, get_pm_project_by_id, get_pm_tasks, get_pm_task_by_id, get_audit_logs | Retrieve tickets, agents, requesters, assets, locations, service catalog items, solution articles, CABs, changes, releases, announcements, applications, SLA policies, contracts, canned responses, user fields, service items, service requests, approvals, delegations, journey requests, projects, tasks, and audit logs |
-| **Remediate (47)** | create_ticket, update_ticket, close_ticket, resolve_ticket, delete_ticket, create_cab, update_cab, delete_cab, create_change, update_change, delete_change, create_release, update_release, delete_release, create_announcement, update_announcement, delete_announcement, create_delegation, update_delegation, delete_delegation, create_journey_request, cancel_journey_request, create_pm_project, update_pm_project, delete_pm_project, create_pm_task, update_pm_task, delete_pm_task, create_solution_folder, update_solution_folder, delete_solution_folder, restore_solution_folder, create_solution_category, update_solution_category, delete_solution_category, restore_solution_category, create_solution_article, update_solution_article, delete_solution_article, restore_solution_article, bulk_restore_solution_articles, add_service_request_item, cancel_service_request, approve_request, reject_request | Create, update, close, resolve, delete tickets, CABs, changes, releases, announcements, delegations, journey requests, projects, tasks, solution folders/categories/articles; restore soft-deleted resources; approve/reject requests; add service request items |
+**Functions**: 6
 
-## SOAR Functions
+**Available Functions**:
+- `convert_alert_to_incident`
+- `create_alert`
+- `delete_alert`
+- `get_alert_by_id`
+- `get_alerts`
+- `update_alert`
+
+### Assets
+
+**Functions**: 19
+
+**Available Functions**:
+- `add_asset_component`
+- `associate_asset_contract`
+- `bulk_update_assets`
+- `create_asset`
+- `create_asset_type`
+- `delete_asset`
+- `delete_asset_type`
+- `dissociate_asset_contract`
+- `export_assets`
+- `get_asset_components`
+- ... and 9 more
+
+### Changes
+
+**Functions**: 16
+
+**Available Functions**:
+- `add_change_attachment`
+- `create_change_note`
+- `create_change_relationship`
+- `create_change_task`
+- `create_change_time_entry`
+- `delete_change_attachment`
+- `delete_change_task`
+- `get_change_activities`
+- `get_change_form_by_id`
+- `get_change_forms`
+- ... and 6 more
+
+### Contracts
+
+**Functions**: 3
+
+**Available Functions**:
+- `create_contract`
+- `delete_contract`
+- `update_contract`
+
+### Custom Objects
+
+**Functions**: 7
+
+**Available Functions**:
+- `create_custom_object_record`
+- `delete_custom_object_record`
+- `get_custom_object_by_id`
+- `get_custom_object_record_by_id`
+- `get_custom_object_records`
+- `get_custom_objects`
+- `update_custom_object_record`
+
+### Employee Lifecycle
+
+**Functions**: 8
+
+**Available Functions**:
+- `cancel_offboarding_request`
+- `cancel_onboarding_request`
+- `create_offboarding_request`
+- `create_onboarding_request`
+- `get_offboarding_request_by_id`
+- `get_offboarding_requests`
+- `get_onboarding_request_by_id`
+- `get_onboarding_requests`
+
+### General
+
+**Functions**: 200
+
+**Available Functions**:
+- `add_cab_member`
+- `add_release_note`
+- `add_release_time_entry`
+- `add_service_request_item`
+- `approve_request`
+- `archive_service_catalog_shared_field`
+- `bulk_create_relationships`
+- `bulk_restore_solution_articles`
+- `bulk_restore_solution_articles_alternate`
+- `cancel_journey_request`
+- ... and 190 more
+
+### On-Call
+
+**Functions**: 14
+
+**Available Functions**:
+- `create_escalation_policy`
+- `create_oncall_schedule`
+- `create_oncall_shift`
+- `delete_escalation_policy`
+- `delete_oncall_schedule`
+- `delete_oncall_shift`
+- `get_escalation_policies`
+- `get_escalation_policy_by_id`
+- `get_oncall_schedule_by_id`
+- `get_oncall_schedules`
+- ... and 4 more
+
+### Problems
+
+**Functions**: 16
+
+**Available Functions**:
+- `add_problem_attachment`
+- `create_problem`
+- `create_problem_note`
+- `create_problem_relationship`
+- `create_problem_time_entry`
+- `delete_problem`
+- `delete_problem_attachment`
+- `get_problem_activities`
+- `get_problem_by_id`
+- `get_problem_form_by_id`
+- ... and 6 more
+
+### Projects
+
+**Functions**: 2
+
+**Available Functions**:
+- `create_project_milestone`
+- `get_project_milestones`
+
+### Releases
+
+**Functions**: 4
+
+**Available Functions**:
+- `add_release_attachment`
+- `create_release_relationship`
+- `delete_release_attachment`
+- `get_release_relationships`
+
+### Requesters
+
+**Functions**: 7
+
+**Available Functions**:
+- `activate_requester`
+- `create_requester`
+- `deactivate_requester`
+- `delete_requester`
+- `merge_requesters`
+- `search_requesters`
+- `update_requester`
+
+### Software
+
+**Functions**: 12
+
+**Available Functions**:
+- `add_software_user`
+- `create_software`
+- `create_software_license`
+- `delete_software`
+- `get_software`
+- `get_software_by_id`
+- `get_software_installations`
+- `get_software_licenses`
+- `get_software_users`
+- `remove_software_user`
+- ... and 2 more
+
+### Solutions
+
+**Functions**: 1
+
+**Available Functions**:
+- `search_solutions`
+
+### Status Page
+
+**Functions**: 7
+
+**Available Functions**:
+- `create_status_page_component`
+- `create_status_page_incident`
+- `create_status_page_maintenance`
+- `get_status_page_components`
+- `get_status_page_incidents`
+- `get_status_page_maintenances`
+- `update_status_page_incident`
+
+### Tickets
+
+**Functions**: 33
+
+**Available Functions**:
+- `add_ticket_attachment`
+- `add_ticket_note`
+- `add_ticket_reply`
+- `add_ticket_watcher`
+- `bulk_delete_tickets`
+- `bulk_update_tickets`
+- `create_child_ticket`
+- `create_ticket_relationship`
+- `create_ticket_task`
+- `create_ticket_time_entry`
+- ... and 23 more
+
+### Vendors
+
+**Functions**: 2
+
+**Available Functions**:
+- `delete_vendor`
+- `update_vendor`
+
+### Workspaces
+
+**Functions**: 5
+
+**Available Functions**:
+- `create_workspace`
+- `delete_workspace`
+- `get_workspace_by_id`
+- `get_workspaces`
+- `update_workspace`
+
+
+## Complete Function List
+
+For a complete alphabetical list of all 373 functions, see `FUNCTION_LIST.txt`.
+
+For detailed API coverage documentation, see `COMPLETE_API_COVERAGE.md`.
+
+## Common Operations
 
 ### Test Connection
 
-#### 1. test_connection
-**Description**: Test connection to Freshservice API and verify API key validity
-
-**Parameters**: None
-
-**Output**: 
-- `status`: success or error
-- `results`: Sample ticket data from the API
-
-### Ticket Operations
-
-#### 2. get_tickets
-**Description**: Retrieve a paginated list of tickets with optional filtering
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page (max 100)
-- `filter` (str): Filter name (new_and_my_open, watching, spam, deleted)
-- `query` (str): Advanced query string for filtering
-- `requester_id` (int): Filter by requester ID
-- `email` (str): Filter by requester email
-- `updated_since` (str): Filter by last updated timestamp (ISO8601)
-- `type` (str): Filter by ticket type (Incident, Service Request, Problem, Change)
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes (requester, stats, tags, conversations, assets, etc.)
-- `order_type` (str): Sort order (asc/desc)
-
-**Output**: Paginated list of ticket objects
-
-#### 3. get_ticket_by_id
-**Description**: Retrieve a single ticket by ID with optional embedded resources
-
-**Parameters**:
-- `ticket_id` (int): Ticket ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed ticket object
-
-#### 4. search_tickets_by_criteria
-**Description**: Search tickets using Freshservice's advanced query syntax
-
-**Parameters**:
-- `query` (str): Query string using Freshservice field names (e.g., "priority: 1 AND status: 2 OR urgency: 3")
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-
-**Output**: List of matching ticket objects
-
-#### 5. create_ticket
-**Description**: Create a new ticket in Freshservice
-
-**Parameters**:
-- `subject` (str): Ticket subject
-- `description` (str): Ticket description
-- `requester_id` (int): Requester ID (for existing requesters)
-- `requester` (str): Requester email (creates new requester if not exists)
-- `email` (str): Requester email
-- `type` (str): Ticket type (Incident, Service Request, Problem, Change)
-- `priority` (int): Priority (1=Low, 2=Medium, 3=High, 4=Urgent)
-- `status` (int): Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)
-- `service_id` (int): Service ID
-- `category` (str): Category
-- `sub_category` (str): Sub category
-- `item_category` (str): Item category
-- `group_id` (int): Group ID to assign ticket to
-- `agent_id` (int): Agent ID to assign ticket to
-- `due_by` (str): Due date (ISO8601 format)
-- `fr_due_by` (str): First response due date (ISO8601 format)
-- `tags` (str): Comma-separated tags
-- `custom_fields` (dict): JSON object for custom field values
-- `workspace_id` (int): Workspace ID
-- `attachments` (list): File paths for attachments
-
-**Output**: Created ticket object with ID
-
-#### 6. update_ticket
-**Description**: Update an existing ticket
-
-**Parameters**:
-- `ticket_id` (int): Ticket ID (required)
-- `subject` (str): Ticket subject
-- `description` (str): Ticket description
-- `requester_id` (int): Requester ID
-- `type` (str): Ticket type
-- `priority` (int): Priority
-- `status` (int): Status
-- `group_id` (int): Group ID
-- `agent_id` (int): Agent ID to assign ticket to
-- `due_by` (str): Due date (ISO8601 format)
-- `fr_due_by` (str): First response due date (ISO8601 format)
-- `tags` (str): Comma-separated tags
-- `custom_fields` (dict): Custom field values
-- `attachments` (list): File paths for attachments
-
-**Output**: Updated ticket object
-
-#### 7. close_ticket
-**Description**: Close a ticket (sets status to Closed)
-
-**Parameters**:
-- `ticket_id` (int): Ticket ID (required)
-- `status` (int): Status (4=Closed)
-- `resolution` (str): Resolution description
-
-**Output**: Closed ticket object
-
-#### 8. resolve_ticket
-**Description**: Resolve a ticket (sets status to Resolved)
-
-**Parameters**:
-- `ticket_id` (int): Ticket ID (required)
-- `status` (int): Status (3=Resolved)
-- `resolution` (str): Resolution description
-
-**Output**: Resolved ticket object
-
-#### 9. delete_ticket
-**Description**: Soft delete a ticket
-
-**Parameters**:
-- `ticket_id` (int): Ticket ID (required)
-
-**Output**: Delete confirmation message
-
-### Agent Operations
-
-#### 10. get_agents
-**Description**: Retrieve a paginated list of agents
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `filter` (str): Filter by email, mobile_phone_number, work_phone_number, or active status
-- `state` (str): Filter by state (fulltime, occasional)
-- `query` (str): Advanced query string for filtering
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of agent objects
-
-#### 11. get_agent_by_id
-**Description**: Retrieve a single agent by ID
-
-**Parameters**:
-- `agent_id` (int): Agent ID (required)
-
-**Output**: Detailed agent object
-
-### Requester/Contact Operations
-
-#### 12. get_requesters
-**Description**: Retrieve a paginated list of requesters (contacts)
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `email` (str): Filter by email
-- `mobile_phone_number` (str): Filter by mobile phone number
-- `work_phone_number` (str): Filter by work phone number
-- `query` (str): Advanced query string for filtering
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of requester objects
-
-#### 13. get_requester_by_id
-**Description**: Retrieve a single requester by ID
-
-**Parameters**:
-- `requester_id` (int): Requester ID (required)
-
-**Output**: Detailed requester object
-
-### Asset Operations
-
-#### 14. get_assets
-**Description**: Retrieve a paginated list of assets
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `order_by` (str): Order by field (created_at, updated_at)
-- `order_type` (str): Order type (asc/desc)
-- `include` (str): Include type_fields for asset-specific fields
-- `trashed` (bool): Include trashed assets
-- `workspace_id` (int): Filter by workspace ID
-- `query` (str): Advanced query string for filtering
-
-**Output**: Paginated list of asset objects
-
-#### 15. get_asset_by_id
-**Description**: Retrieve a single asset by display ID
-
-**Parameters**:
-- `display_id` (str): Asset display ID (required)
-- `include` (str): Include type_fields for asset-specific fields
-
-**Output**: Detailed asset object
-
-### Location Operations
-
-#### 16. get_locations
-**Description**: Retrieve a paginated list of locations
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `query` (str): Advanced query string for filtering
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of location objects
-
-#### 17. get_location_by_id
-**Description**: Retrieve a single location by ID
-
-**Parameters**:
-- `location_id` (int): Location ID (required)
-
-**Output**: Detailed location object
-
-### Service Catalog Operations
-
-#### 18. get_service_catalog_items
-**Description**: Retrieve a paginated list of service catalog items
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `category_id` (int): Filter by category ID
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of service catalog item objects
-
-#### 19. get_service_catalog_item_by_id
-**Description**: Retrieve a single service catalog item by ID
-
-**Parameters**:
-- `item_id` (int): Item ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed service catalog item object
-
-#### 20. get_service_catalog_categories
-**Description**: Retrieve a paginated list of service catalog categories
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of service catalog category objects
-
-#### 21. get_service_catalog_category_by_id
-**Description**: Retrieve a single service catalog category by ID
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed service catalog category object
-
-### Solution Management Operations
-
-#### 22. get_solution_articles
-**Description**: Retrieve a paginated list of solution articles
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `folder_id` (int): Filter by folder ID (required)
-- `category_id` (int): Filter by category ID
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of solution article objects
-
-#### 23. get_solution_article_by_id
-**Description**: Retrieve a single solution article by ID
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-- `folder_id` (int): Folder ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed solution article object
-
-#### 24. get_solution_categories
-**Description**: Retrieve a paginated list of solution categories
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of solution category objects
-
-#### 25. get_solution_category_by_id
-**Description**: Retrieve a single solution category by ID
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed solution category object
-
-#### 26. get_solution_folders
-**Description**: Retrieve a paginated list of solution folders
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `category_id` (int): Filter by category ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of solution folder objects
-
-#### 27. get_solution_folder_by_id
-**Description**: Retrieve a single solution folder by ID
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed solution folder object
-
-#### 28. create_solution_folder
-**Description**: Create a new solution folder
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-- `name` (str): Folder name (required)
-- `description` (str): Folder description
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created solution folder object with ID
-
-#### 29. update_solution_folder
-**Description**: Update an existing solution folder
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-- `name` (str): Folder name
-- `description` (str): Folder description
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated solution folder object
-
-#### 30. delete_solution_folder
-**Description**: Delete a solution folder
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-
-**Output**: Delete confirmation message
-
-#### 31. restore_solution_folder
-**Description**: Restore a deleted solution folder
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-
-**Output**: Restore confirmation message with restored folder object
-
-#### 32. create_solution_category
-**Description**: Create a new solution category
-
-**Parameters**:
-- `name` (str): Category name (required)
-- `description` (str): Category description
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created solution category object with ID
-
-#### 33. update_solution_category
-**Description**: Update an existing solution category
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-- `name` (str): Category name
-- `description` (str): Category description
-- `visibility` (str): Visibility
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated solution category object
-
-#### 34. delete_solution_category
-**Description**: Delete a solution category
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-
-**Output**: Delete confirmation message
-
-#### 35. restore_solution_category
-**Description**: Restore a deleted solution category
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-
-**Output**: Restore confirmation message with restored category object
-
-#### 36. create_solution_article
-**Description**: Create a new solution article
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-- `title` (str): Article title (required)
-- `body` (str): Article body (required)
-- `status` (int): Status (1=Draft, 2=Published)
-- `is_enabled_for_self_service` (bool): Enable for self service
-- `category_id` (int): Category ID
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created solution article object with ID
-
-#### 37. update_solution_article
-**Description**: Update an existing solution article
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-- `folder_id` (int): Folder ID
-- `title` (str): Article title
-- `body` (str): Article body
-- `status` (int): Status
-- `is_enabled_for_self_service` (bool): Enable for self service
-- `category_id` (int): Category ID
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated solution article object
-
-#### 38. delete_solution_article
-**Description**: Delete a solution article
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-
-**Output**: Delete confirmation message
-
-#### 39. restore_solution_article
-**Description**: Restore a deleted solution article
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-
-**Output**: Restore confirmation message with restored article object
-
-#### 40. bulk_restore_solution_articles
-**Description**: Restore multiple solution articles from trash in a single operation
-
-**Parameters**:
-- `ids` (str): Comma-separated list of article IDs (required)
-
-**Output**: List of restored article objects
-
-### CAB (Change Advisory Board) Operations
-
-#### 41. get_cabs
-**Description**: Retrieve a paginated list of CABs (Change Advisory Boards)
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `include` (str): Comma-separated list of includes (member_details)
-
-**Output**: Paginated list of CAB objects
-
-#### 42. get_cab_by_id
-**Description**: Retrieve a single CAB by ID
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `include` (str): Comma-separated list of includes (member_details)
-
-**Output**: Detailed CAB object with member details
-
-#### 43. create_cab
-**Description**: Create a new CAB (Change Advisory Board)
-
-**Parameters**:
-- `name` (str): CAB name (required)
-- `description` (str): CAB description
-- `members` (list): Array of member IDs (required)
-
-**Output**: Created CAB object with ID
-
-#### 44. update_cab
-**Description**: Update an existing CAB
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `name` (str): CAB name
-- `description` (str): CAB description
-- `members` (list): Array of member IDs
-
-**Output**: Updated CAB object
-
-#### 45. delete_cab
-**Description**: Delete a CAB
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-
-**Output**: Delete confirmation message
-
-### Change Operations
-
-#### 46. get_changes
-**Description**: Retrieve a paginated list of changes
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `order_by` (str): Order by field (created_at, updated_at)
-- `order_type` (str): Order type (asc/desc)
-- `view` (str): View type (all, my_open, unassigned, completed, etc.)
-- `updated_since` (str): Filter by last updated timestamp
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of change objects
-
-#### 47. get_change_by_id
-**Description**: Retrieve a single change by ID
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-- `include` (str): Comma-separated list of includes (stats)
-
-**Output**: Detailed change object
-
-#### 48. create_change
-**Description**: Create a new change
-
-**Parameters**:
-- `subject` (str): Change subject (required)
-- `description` (str): Change description (required)
-- `priority` (int): Priority (1=Low, 2=Medium, 3=High, 4=Urgent)
-- `status` (int): Status (1=Approved, 2=Cancelled, 3=Implemented, 4=Reviewing, 5=Testing, 6=Scheduled, 7=Approved, 8=Rejected)
-- `cab_id` (int): CAB ID
-- `start_time` (str): Start time (ISO8601)
-- `end_time` (str): End time (ISO8601)
-- `implementer_id` (int): Implementer ID
-- `reviewer_id` (int): Reviewer ID
-- `approval_status` (int): Approval status
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created change object with ID
-
-#### 49. update_change
-**Description**: Update an existing change
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-- `subject` (str): Change subject
-- `description` (str): Change description
-- `priority` (int): Priority
-- `status` (int): Status
-- `cab_id` (int): CAB ID
-- `start_time` (str): Start time
-- `end_time` (str): End time
-- `implementer_id` (int): Implementer ID
-- `reviewer_id` (int): Reviewer ID
-- `approval_status` (int): Approval status
-
-**Output**: Updated change object
-
-#### 50. delete_change
-**Description**: Delete a change
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-
-**Output**: Delete confirmation message
-
-### Release Operations
-
-#### 51. get_releases
-**Description**: Retrieve a paginated list of releases
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `filter_name` (str): Filter name (all, my_open, unassigned, completed, etc.)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of release objects
-
-#### 52. get_release_by_id
-**Description**: Retrieve a single release by ID
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed release object
-
-#### 53. create_release
-**Description**: Create a new release
-
-**Parameters**:
-- `name` (str): Release name (required)
-- `description` (str): Release description
-- `start_date` (str): Start date (ISO8601)
-- `end_date` (str): End date (ISO8601)
-- `status` (str): Status (planned, in_progress, completed, cancelled)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created release object with ID
-
-#### 54. update_release
-**Description**: Update an existing release
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `name` (str): Release name
-- `description` (str): Release description
-- `start_date` (str): Start date
-- `end_date` (str): End date
-- `status` (str): Status
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated release object
-
-#### 55. delete_release
-**Description**: Delete a release
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-
-**Output**: Delete confirmation message
-
-### Announcement Operations
-
-#### 56. get_announcements
-**Description**: Retrieve a paginated list of announcements
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `state` (str): Filter by state (archived, active, scheduled, unread)
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of announcement objects
-
-#### 57. get_announcement_by_id
-**Description**: Retrieve a single announcement by ID
-
-**Parameters**:
-- `announcement_id` (int): Announcement ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed announcement object
-
-#### 58. create_announcement
-**Description**: Create a new announcement
-
-**Parameters**:
-- `subject` (str): Announcement subject (required)
-- `description` (str): Announcement description (required)
-- `state` (str): State (active, scheduled, archived)
-- `start_time` (str): Start time (ISO8601)
-- `end_time` (str): End time (ISO8601)
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created announcement object with ID
-
-#### 59. update_announcement
-**Description**: Update an existing announcement
-
-**Parameters**:
-- `announcement_id` (int): Announcement ID (required)
-- `subject` (str): Announcement subject
-- `description` (str): Announcement description
-- `state` (str): State
-- `start_time` (str): Start time
-- `end_time` (str): End time
-- `visibility` (str): Visibility
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated announcement object
-
-#### 60. delete_announcement
-**Description**: Delete an announcement
-
-**Parameters**:
-- `announcement_id` (int): Announcement ID (required)
-
-**Output**: Delete confirmation message
-
-### Application Management Operations
-
-#### 61. get_applications
-**Description**: Retrieve a paginated list of applications (software)
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of application objects
-
-#### 62. get_application_by_id
-**Description**: Retrieve a single application by ID
-
-**Parameters**:
-- `application_id` (int): Application ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed application object
-
-### SLA Policy Operations
-
-#### 63. get_sla_policies
-**Description**: Retrieve a paginated list of SLA policies
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of SLA policy objects
-
-#### 64. get_sla_policy_by_id
-**Description**: Retrieve a single SLA policy by ID
-
-**Parameters**:
-- `sla_policy_id` (int): SLA policy ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed SLA policy object
-
-### Contract Operations
-
-#### 65. get_contracts
-**Description**: Retrieve a paginated list of contracts
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of contract objects
-
-#### 66. get_contract_by_id
-**Description**: Retrieve a single contract by ID
-
-**Parameters**:
-- `contract_id` (int): Contract ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed contract object
-
-### Canned Response Operations
-
-#### 67. get_canned_responses
-**Description**: Retrieve a paginated list of canned responses
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of canned response objects
-
-#### 68. get_canned_response_by_id
-**Description**: Retrieve a single canned response by ID
-
-**Parameters**:
-- `canned_response_id` (int): Canned response ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed canned response object
-
-#### 69. get_canned_response_folders
-**Description**: Retrieve a paginated list of canned response folders
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of canned response folder objects
-
-#### 70. get_canned_response_folder_by_id
-**Description**: Retrieve a single canned response folder by ID
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed canned response folder object
-
-### User Field Operations (Agent Fields / Requester Fields)
-
-#### 71. get_agent_fields
-**Description**: Retrieve a paginated list of agent fields (custom fields for agents)
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `include` (str): Comma-separated list of includes (user_field_groups)
-
-**Output**: Paginated list of agent field objects
-
-#### 72. get_agent_field_by_id
-**Description**: Retrieve a single agent field by ID
-
-**Parameters**:
-- `field_id` (int): Field ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed agent field object
-
-#### 73. get_requester_fields
-**Description**: Retrieve a paginated list of requester fields (custom fields for requesters)
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `include` (str): Comma-separated list of includes (user_field_groups)
-
-**Output**: Paginated list of requester field objects
-
-#### 74. get_requester_field_by_id
-**Description**: Retrieve a single requester field by ID
-
-**Parameters**:
-- `field_id` (int): Field ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed requester field object
-
-### Service Item Operations
-
-#### 75. get_service_items
-**Description**: Retrieve a paginated list of service items
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `category_id` (int): Filter by category ID
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of service item objects
-
-#### 76. get_service_item_by_id
-**Description**: Retrieve a single service item by ID
-
-**Parameters**:
-- `item_id` (int): Item ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed service item object
-
-### Service Request Operations
-
-#### 77. get_service_requests
-**Description**: Retrieve a paginated list of service requests
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `service_item_id` (int): Filter by service item ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of service request objects
-
-#### 78. get_service_request_by_id
-**Description**: Retrieve a single service request by ID
-
-**Parameters**:
-- `service_request_id` (int): Service request ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed service request object
-
-#### 79. add_service_request_item
-**Description**: Add a catalog item to an existing service request
-
-**Parameters**:
-- `service_request_id` (int): Service request ID (required)
-- `service_item_id` (int): Service item ID (required)
-- `quantity` (int): Quantity
-
-**Output**: Added service request item object
-
-#### 80. cancel_service_request
-**Description**: Cancel a service request
-
-**Parameters**:
-- `service_request_id` (int): Service request ID (required)
-
-**Output**: Cancel confirmation message
-
-### Approval Operations
-
-#### 81. get_approvals
-**Description**: Retrieve a paginated list of approvals
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `status` (str): Filter by status (pending, approved, rejected)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of approval objects
-
-#### 82. get_approval_by_id
-**Description**: Retrieve a single approval by ID
-
-**Parameters**:
-- `approval_id` (int): Approval ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed approval object
-
-#### 83. approve_request
-**Description**: Approve a request (approval or service request)
-
-**Parameters**:
-- `approval_id` (int): Approval ID (required)
-- `comments` (str): Approval comments
-
-**Output**: Approved request object
-
-#### 84. reject_request
-**Description**: Reject a request (approval or service request)
-
-**Parameters**:
-- `approval_id` (int): Approval ID (required)
-- `comments` (str): Rejection comments
-
-**Output**: Rejected request object
-
-### Delegation Operations
-
-#### 85. get_delegations
-**Description**: Retrieve a paginated list of delegations
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of delegation objects
-
-#### 86. get_delegation_by_id
-**Description**: Retrieve a single delegation by ID
-
-**Parameters**:
-- `delegation_id` (int): Delegation ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed delegation object
-
-#### 87. create_delegation
-**Description**: Create a new delegation
-
-**Parameters**:
-- `delegatee_id` (int): Delegatee ID (required)
-- `start_date` (str): Start date (ISO8601)
-- `end_date` (str): End date (ISO8601)
-- `permissions` (list): Permissions to delegate (required)
-
-**Output**: Created delegation object with ID
-
-#### 88. update_delegation
-**Description**: Update an existing delegation
-
-**Parameters**:
-- `delegation_id` (int): Delegation ID (required)
-- `delegatee_id` (int): Delegatee ID
-- `start_date` (str): Start date
-- `end_date` (str): End date
-- `permissions` (list): Permissions
-
-**Output**: Updated delegation object
-
-#### 89. delete_delegation
-**Description**: Delete a delegation
-
-**Parameters**:
-- `delegation_id` (int): Delegation ID (required)
-
-**Output**: Delete confirmation message
-
-### Journeys Operations
-
-#### 90. get_journey_requests
-**Description**: Retrieve a paginated list of journey requests
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `filter_name` (str): Filter name (all, in_progress, completed, etc.)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of journey request objects
-
-#### 91. get_journey_request_by_id
-**Description**: Retrieve a single journey request by ID
-
-**Parameters**:
-- `journey_request_id` (int): Journey request ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed journey request object
-
-#### 92. create_journey_request
-**Description**: Create a new journey request
-
-**Parameters**:
-- `journey_id` (int): Journey ID (required)
-- `requester_id` (int): Requester ID (required)
-- `journey_data` (dict): Journey data fields (required)
-
-**Output**: Created journey request object with ID
-
-#### 93. cancel_journey_request
-**Description**: Cancel a journey request
-
-**Parameters**:
-- `journey_request_id` (int): Journey request ID (required)
-
-**Output**: Cancel confirmation message
-
-### Project Management Operations (Projects and Tasks)
-
-#### 94. get_pm_projects
-**Description**: Retrieve a paginated list of project management projects
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of project objects
-
-#### 95. get_pm_project_by_id
-**Description**: Retrieve a single project management project by ID
-
-**Parameters**:
-- `project_id` (int): Project ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed project object
-
-#### 96. create_pm_project
-**Description**: Create a new project management project
-
-**Parameters**:
-- `name` (str): Project name (required)
-- `description` (str): Project description
-- `start_date` (str): Start date (ISO8601)
-- `end_date` (str): End date (ISO8601)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created project object with ID
-
-#### 97. update_pm_project
-**Description**: Update an existing project management project
-
-**Parameters**:
-- `project_id` (int): Project ID (required)
-- `name` (str): Project name
-- `description` (str): Project description
-- `start_date` (str): Start date
-- `end_date` (str): End date
-- `workspace_id` (int): Workspace ID
-
-**Output**: Updated project object
-
-#### 98. delete_pm_project
-**Description**: Delete a project management project
-
-**Parameters**:
-- `project_id` (int): Project ID (required)
-
-**Output**: Delete confirmation message
-
-#### 99. get_pm_tasks
-**Description**: Retrieve a paginated list of project management tasks
-
-**Parameters**:
-- `page` (int): Page number for pagination
-- `per_page` (int): Number of results per page
-- `project_id` (int): Filter by project ID
-- `parent_id` (int): Filter by parent task ID
-- `include` (str): Comma-separated list of includes
-
-**Output**: Paginated list of task objects
-
-#### 100. get_pm_task_by_id
-**Description**: Retrieve a single project management task by ID
-
-**Parameters**:
-- `task_id` (int): Task ID (required)
-- `include` (str): Comma-separated list of includes
-
-**Output**: Detailed task object
-
-#### 101. create_pm_task
-**Description**: Create a new project management task
-
-**Parameters**:
-- `project_id` (int): Project ID (required)
-- `parent_id` (int): Parent task ID
-- `name` (str): Task name (required)
-- `description` (str): Task description
-- `start_date` (str): Start date (ISO8601)
-- `end_date` (str): End date (ISO8601)
-- `status` (int): Status
-
-**Output**: Created task object with ID
-
-#### 102. update_pm_task
-**Description**: Update an existing project management task
-
-**Parameters**:
-- `task_id` (int): Task ID (required)
-- `name` (str): Task name
-- `description` (str): Task description
-- `start_date` (str): Start date
-- `end_date` (str): End date
-- `status` (int): Status
-
-**Output**: Updated task object
-
-#### 103. delete_pm_task
-**Description**: Delete a project management task
-
-**Parameters**:
-- `task_id` (int): Task ID (required)
-
-**Output**: Delete confirmation message
-
-### Audit Log Operations
-
-#### 104. get_audit_logs
-**Description**: Retrieve a paginated list of audit logs
-
-**Parameters**:
-- `cursor` (str): Cursor for pagination
-- `per_page` (int): Results per page
-- `start_time` (str): Start time (ISO8601)
-- `end_time` (str): End time (ISO8601)
-- `type` (str): Filter by type
-- `user_id` (int): Filter by user ID
-
-**Output**: Paginated list of audit log objects
-
-### Service Catalog Management (Additional)
-
-#### 105. create_service_catalog_item
-**Description**: Create a new service catalog item
-
-**Parameters**:
-- `display_id` (str): Display ID (required)
-- `name` (str): Item name (required)
-- `description` (str): Item description
-- `category_id` (int): Category ID
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `workspace_id` (int): Workspace ID
-
-**Output**: Created service catalog item object
-
-#### 106. update_service_catalog_item
-**Description**: Update an existing service catalog item
-
-**Parameters**:
-- `display_id` (str): Display ID (required)
-- `name` (str): Item name
-- `description` (str): Item description
-- `category_id` (int): Category ID
-- `visibility` (str): Visibility
-
-**Output**: Updated service catalog item object
-
-#### 107. delete_service_catalog_item
-**Description**: Delete a service catalog item
-
-**Parameters**:
-- `display_id` (str): Display ID (required)
-
-**Output**: Delete confirmation message
-
-#### 108. place_service_catalog_request
-**Description**: Place a service catalog request
-
-**Parameters**:
-- `display_id` (str): Display ID (required)
-- `requester_id` (int): Requester ID
-- `requested_for` (str): Requested for (email or ID)
-- `variables` (dict): Variable values
-
-**Output**: Service request object
-
-#### 109. archive_service_catalog_shared_field
-**Description**: Archive a service catalog shared field
-
-**Parameters**:
-- `id` (int): Shared field ID (required)
-
-**Output**: Archived shared field object
-
-#### 110. unarchive_service_catalog_shared_field
-**Description**: Unarchive a service catalog shared field
-
-**Parameters**:
-- `id` (int): Shared field ID (required)
-
-**Output**: Unarchived shared field object
-
-#### 111. create_service_catalog_shared_field
-**Description**: Create a service catalog shared field
-
-**Parameters**:
-- `name` (str): Field name (required)
-- `type` (str): Field type
-- `description` (str): Field description
-- `required` (bool): Is required
-- `visible` (bool): Is visible
-- `enabled` (bool): Is enabled
-
-**Output**: Created shared field object
-
-#### 112. update_service_catalog_shared_field
-**Description**: Update a service catalog shared field
-
-**Parameters**:
-- `id` (int): Shared field ID (required)
-- `name` (str): Field name
-- `type` (str): Field type
-- `description` (str): Field description
-- `required` (bool): Is required
-- `visible` (bool): Is visible
-- `enabled` (bool): Is enabled
-
-**Output**: Updated shared field object
-
-#### 113. delete_service_catalog_shared_field
-**Description**: Delete a service catalog shared field
-
-**Parameters**:
-- `id` (int): Shared field ID (required)
-
-**Output**: Delete confirmation message
-
-#### 114. get_service_catalog_shared_fields
-**Description**: Get a paginated list of service catalog shared fields
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of shared field objects
-
-#### 115. delete_service_item
-**Description**: Delete a service item
-
-**Parameters**:
-- `service_item_id` (int): Service item ID (required)
-
-**Output**: Delete confirmation message
-
-#### 116. update_service_item
-**Description**: Update a service item
-
-**Parameters**:
-- `service_item_id` (int): Service item ID (required)
-- `display_id` (str): Display ID
-- `name` (str): Service item name
-- `description` (str): Service item description
-- `category_id` (int): Category ID
-
-**Output**: Updated service item object
-
-### Solution Management Enhancements
-
-#### 117. get_solution_folder_subfolders
-**Description**: Get subfolders of a solution folder
-
-**Parameters**:
-- `folder_id` (int): Folder ID (required)
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of subfolder objects
-
-#### 118. create_solution_subfolder
-**Description**: Create a new subfolder under a solution folder
-
-**Parameters**:
-- `folder_id` (int): Parent folder ID (required)
-- `name` (str): Subfolder name (required)
-- `description` (str): Subfolder description
-- `visibility` (str): Visibility (all, logged_in_users, agents)
-- `category_id` (int): Category ID
-
-**Output**: Created subfolder object
-
-#### 119. delete_solution_subfolder
-**Description**: Delete a solution subfolder
-
-**Parameters**:
-- `folder_id` (int): Parent folder ID (required)
-- `subfolder_id` (int): Subfolder ID (required)
-
-**Output**: Delete confirmation message
-
-#### 120. restore_solution_subfolder
-**Description**: Restore a deleted solution subfolder
-
-**Parameters**:
-- `folder_id` (int): Parent folder ID (required)
-- `subfolder_id` (int): Subfolder ID (required)
-
-**Output**: Restored subfolder object
-
-#### 121. send_solution_article_for_approval
-**Description**: Send a solution article for approval
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-- `folder_id` (int): Folder ID (required)
-- `approver_ids` (list): Array of approver IDs
-- `message` (str): Approval message
-
-**Output**: Solution article object with approval status
-
-#### 122. delete_solution_article_forever
-**Description**: Delete a solution article forever (permanently)
-
-**Parameters**:
-- `article_id` (int): Article ID (required)
-
-**Output**: Delete confirmation message
-
-#### 123. delete_solution_category_forever
-**Description**: Delete a solution category forever (permanently)
-
-**Parameters**:
-- `category_id` (int): Category ID (required)
-
-**Output**: Delete confirmation message
-
-#### 124. bulk_restore_solution_articles_alternate
-**Description**: Bulk restore solution articles from trash
-
-**Parameters**:
-- `ids` (str): Comma-separated list of article IDs (required)
-
-**Output**: List of restored article objects
-
-### CAB Management
-
-#### 125. create_cab_approval
-**Description**: Create a CAB approval
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `change_id` (int): Change ID (required)
-- `member_ids` (list): Array of member IDs
-- `due_by` (str): Due date (ISO8601)
-
-**Output**: Created CAB approval object
-
-#### 126. update_cab_approval
-**Description**: Update a CAB approval
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `approval_id` (int): Approval ID (required)
-- `due_by` (str): Due date (ISO8601)
-
-**Output**: Updated CAB approval object
-
-#### 127. delete_cab_approval
-**Description**: Delete a CAB approval
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `approval_id` (int): Approval ID (required)
-
-**Output**: Delete confirmation message
-
-#### 128. add_cab_member
-**Description**: Add a member to a CAB
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `member_id` (int): Member ID (required)
-
-**Output**: Added CAB member object
-
-#### 129. remove_cab_member
-**Description**: Remove a member from a CAB
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `member_id` (int): Member ID (required)
-
-**Output**: Delete confirmation message
-
-#### 130. get_cab_templates
-**Description**: Get CAB templates
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-
-**Output**: List of CAB template objects
-
-#### 131. create_cab_template
-**Description**: Create a CAB template
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `name` (str): Template name (required)
-- `description` (str): Template description
-- `member_ids` (list): Array of member IDs
-
-**Output**: Created CAB template object
-
-#### 132. update_cab_template
-**Description**: Update a CAB template
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `template_id` (int): Template ID (required)
-- `name` (str): Template name
-- `description` (str): Template description
-- `member_ids` (list): Array of member IDs
-
-**Output**: Updated CAB template object
-
-#### 133. delete_cab_template
-**Description**: Delete a CAB template
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `template_id` (int): Template ID (required)
-
-**Output**: Delete confirmation message
-
-#### 134. cast_cab_vote
-**Description**: Cast a vote in a CAB approval
-
-**Parameters**:
-- `cab_id` (int): CAB ID (required)
-- `approval_id` (int): Approval ID (required)
-- `vote` (str): Vote (approve/reject) (required)
-- `comments` (str): Vote comments
-
-**Output**: CAB vote object
-
-### Change Management Enhancements
-
-#### 135. get_change_approvals
-**Description**: Get change approvals
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-
-**Output**: List of change approval objects
-
-#### 136. create_change_approval
-**Description**: Create a change approval
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-- `member_ids` (list): Array of member IDs
-- `due_by` (str): Due date (ISO8601)
-
-**Output**: Created change approval object
-
-#### 137. get_change_approval_groups
-**Description**: Get change approval groups
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-
-**Output**: List of change approval group objects
-
-#### 138. create_change_approval_group
-**Description**: Create a change approval group
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-- `group_id` (int): Group ID (required)
-
-**Output**: Created change approval group object
-
-#### 139. get_change_approval_chain
-**Description**: Get change approval chain
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-
-**Output**: Change approval chain configuration
-
-#### 140. create_change_approval_chain
-**Description**: Create a change approval chain
-
-**Parameters**:
-- `change_id` (int): Change ID (required)
-- `approval_sequence` (dict): Approval sequence configuration
-
-**Output**: Created change approval chain configuration
-
-#### 141. get_problem_form_fields
-**Description**: Get problem form fields
-
-**Parameters**: None
-
-**Output**: List of problem form field objects
-
-#### 142. get_problem_tasks
-**Description**: Get problem tasks
-
-**Parameters**:
-- `problem_id` (int): Problem ID (required)
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of problem task objects
-
-#### 143. create_problem_task
-**Description**: Create a problem task
-
-**Parameters**:
-- `problem_id` (int): Problem ID (required)
-- `title` (str): Task title (required)
-- `description` (str): Task description
-- `status` (int): Task status
-- `due_by` (str): Due date (ISO8601)
-
-**Output**: Created problem task object
-
-### Release Management
-
-#### 144. get_release_tasks
-**Description**: Get release tasks
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of release task objects
-
-#### 145. create_release_task
-**Description**: Create a release task
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `title` (str): Task title (required)
-- `description` (str): Task description
-- `status` (int): Task status
-- `due_by` (str): Due date (ISO8601)
-
-**Output**: Created release task object
-
-#### 146. get_release_notes
-**Description**: Get release notes
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of release note objects
-
-#### 147. add_release_note
-**Description**: Add a release note
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `body` (str): Note body (required)
-- `private` (bool): Is private note
-
-**Output**: Created release note object
-
-#### 148. get_release_time_entries
-**Description**: Get release time entries
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of release time entry objects
-
-#### 149. add_release_time_entry
-**Description**: Add a release time entry
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `hours` (float): Hours spent (required)
-- `notes` (str): Time entry notes
-- `spent_date` (str): Spent date (ISO8601)
-
-**Output**: Created release time entry object
-
-#### 150. move_release_workspace
-**Description**: Move a release to a different workspace
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-- `workspace_id` (int): Workspace ID (required)
-
-**Output**: Moved release object
-
-#### 151. restore_release
-**Description**: Restore a deleted release
-
-**Parameters**:
-- `release_id` (int): Release ID (required)
-
-**Output**: Restored release object
-
-#### 152. get_release_form_fields
-**Description**: Get release form fields
-
-**Parameters**: None
-
-**Output**: List of release form field objects
-
-#### 153. update_sla_breach
-**Description**: Update an SLA breach
-
-**Parameters**:
-- `id` (int): SLA breach ID (required)
-- `resolution_notes` (str): Resolution notes
-- `resolved_at` (str): Resolved timestamp (ISO8601)
-
-**Output**: Updated SLA breach object
-
-### Group & Department Management
-
-#### 154. get_groups
-**Description**: Get a paginated list of groups
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of group objects
-
-#### 155. create_group
-**Description**: Create a new group
-
-**Parameters**:
-- `name` (str): Group name (required)
-- `description` (str): Group description
-- `member_ids` (list): Array of member IDs
-- `email` (str): Group email
-
-**Output**: Created group object
-
-#### 156. update_group
-**Description**: Update an existing group
-
-**Parameters**:
-- `id` (int): Group ID (required)
-- `name` (str): Group name
-- `description` (str): Group description
-- `member_ids` (list): Array of member IDs
-- `email` (str): Group email
-
-**Output**: Updated group object
-
-#### 157. delete_group
-**Description**: Delete a group
-
-**Parameters**:
-- `id` (int): Group ID (required)
-
-**Output**: Delete confirmation message
-
-#### 158. get_requester_groups
-**Description**: Get a paginated list of requester groups
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of requester group objects
-
-#### 159. create_requester_group
-**Description**: Create a new requester group
-
-**Parameters**:
-- `name` (str): Group name (required)
-- `description` (str): Group description
-- `requester_ids` (list): Array of requester IDs
-
-**Output**: Created requester group object
-
-#### 160. update_requester_group
-**Description**: Update an existing requester group
-
-**Parameters**:
-- `id` (int): Group ID (required)
-- `name` (str): Group name
-- `description` (str): Group description
-- `requester_ids` (list): Array of requester IDs
-
-**Output**: Updated requester group object
-
-#### 161. delete_requester_group
-**Description**: Delete a requester group
-
-**Parameters**:
-- `id` (int): Group ID (required)
-
-**Output**: Delete confirmation message
-
-#### 162. get_departments
-**Description**: Get a paginated list of departments
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-- `query` (str): Query for filtering
-
-**Output**: List of department objects
-
-#### 163. create_department
-**Description**: Create a new department
-
-**Parameters**:
-- `name` (str): Department name (required)
-- `description` (str): Department description
-- `email` (str): Department email
-- `parent_id` (int): Parent department ID
-
-**Output**: Created department object
-
-#### 164. update_department
-**Description**: Update an existing department
-
-**Parameters**:
-- `id` (int): Department ID (required)
-- `name` (str): Department name
-- `description` (str): Department description
-- `email` (str): Department email
-- `parent_id` (int): Parent department ID
-
-**Output**: Updated department object
-
-#### 165. delete_department
-**Description**: Delete a department
-
-**Parameters**:
-- `id` (int): Department ID (required)
-
-**Output**: Delete confirmation message
-
-### Product/Vendor Operations
-
-#### 166. get_products
-**Description**: Get a paginated list of products
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of product objects
-
-#### 167. create_product
-**Description**: Create a new product
-
-**Parameters**:
-- `name` (str): Product name (required)
-- `description` (str): Product description
-- `vendor_id` (int): Vendor ID
-- `category` (str): Product category
-
-**Output**: Created product object
-
-#### 168. update_product
-**Description**: Update an existing product
-
-**Parameters**:
-- `id` (int): Product ID (required)
-- `name` (str): Product name
-- `description` (str): Product description
-- `vendor_id` (int): Vendor ID
-- `category` (str): Product category
-
-**Output**: Updated product object
-
-#### 169. delete_product
-**Description**: Delete a product
-
-**Parameters**:
-- `id` (int): Product ID (required)
-
-**Output**: Delete confirmation message
-
-#### 170. get_vendors
-**Description**: Get a paginated list of vendors
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-
-**Output**: List of vendor objects
-
-#### 171. create_vendor
-**Description**: Create a new vendor
-
-**Parameters**:
-- `name` (str): Vendor name (required)
-- `description` (str): Vendor description
-- `website` (str): Vendor website
-- `email` (str): Vendor email
-
-**Output**: Created vendor object
-
-### Relationship Operations
-
-#### 172. bulk_create_relationships
-**Description**: Bulk create relationships
-
-**Parameters**:
-- `relationships` (list): Array of relationship objects with from_id, to_id, relationship_type_id (required)
-
-**Output**: List of created relationship objects
-
-### Additional Endpoints
-
-#### 173. get_all_tickets
-**Description**: Get all tickets with optional filtering
-
-**Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Results per page
-- `filter` (str): Filter name
-- `query` (str): Advanced query string
-- `requester_id` (int): Filter by requester ID
-- `email` (str): Filter by requester email
-- `updated_since` (str): Filter by last updated timestamp
-- `type` (str): Filter by ticket type
-- `workspace_id` (int): Filter by workspace ID
-- `include` (str): Comma-separated list of includes
-- `order_type` (str): Sort order
-
-**Output**: List of ticket objects
-
-#### 174. get_ticket_form_fields
-**Description**: Get ticket form fields
-
-**Parameters**: None
-
-**Output**: List of ticket form field objects
-
-#### 175. get_roles
-**Description**: Get a list of roles
-
-**Parameters**: None
-
-**Output**: List of role objects
-
-## Implementation Details
-
-### Request/Response Models
-
-All requests use the `RequestBody` model with:
-- `connectionParameters`: API credentials (api_host, api_key, verify_ssl)
-- `parameters`: Action-specific parameters
-
-All responses use the `ResponseBody` model with:
-- `status`: success/error
-- `results`: Response data
-- `message`: Human-readable message (optional)
-
-### Error Handling
-
-Standard error responses:
-- `401`: Authentication error (invalid API key)
-- `403`: Authorization error (insufficient permissions)
-- `404`: Not found (resource ID not valid)
-- `409`: Conflict (duplicate resource or invalid operation)
-- `422`: Validation error (missing required fields)
-- `429`: Rate limit exceeded (too many requests)
-- `500`: Internal server error (Freshservice API internal error)
-- `503`: Service unavailable (Freshservice API temporarily unavailable)
-- `504`: Gateway timeout (Freshservice API response timeout)
-
-### Pagination
-
-All list endpoints support pagination via query parameters:
-- `page` (number): Page number for pagination
-- `per_page` (number): Number of results per page (default: 20, max: 100)
-
-Some endpoints (audit logs) use cursor-based pagination:
-- `cursor` (string): Cursor for pagination
-- `per_page` (number): Results per page
-
-### Embedding Resources
-
-Freshservice v2 API supports embedding additional resources using the `include` parameter:
-- `requester`: Requester details
-- `stats`: Ticket statistics (closed_at, resolved_at, first_responded_at)
-- `tags`: Tags associated with the ticket
-- `conversations`: Up to 10 conversations
-- `assets`: Associated assets
-- `related_tickets`: Related tickets metadata
-- `department`: Department details
-- `member_details`: CAB member details
-- `user_field_groups`: User field group information
-- Various other resource-specific includes
-
-### Query Format
-
-Freshservice uses a custom query syntax:
-- String fields: Enclosed in single quotes ('')
-- Number fields: Given as number without quotes
-- Date fields: Enclosed in single quotes ('yyyy-mm-dd')
-- Operators: `:>` (greater than), `:<` (less than)
-- Logical operators: AND, OR, parentheses
-
-Example: `"priority: 1 AND status: 2 OR urgency: 3"`
-
-### API Versioning
-
-Connector supports Freshservice API v2.0:
-- All endpoints use `/api/v2/` prefix
-- v1.0 APIs are deprecated
-
-### Authentication Flow
-
-The connector implements HTTP Basic Authentication:
-1. Base64 encode `api_key:X` (X is the password placeholder)
-2. Include in Authorization header
-3. All requests include the Authorization header
-
-### Rate Limits
-
-Freshservice accounts created on or after 01-Sep-2020 use minute-level rate limiting:
-- Growth plan: 200 requests per minute
-- Pro plan: 400 requests per minute
-- Enterprise plan: 500 requests per minute
-
-Check response headers `X-Ratelimit-Total`, `X-Ratelimit-Remaining`, `Retry-After` for rate limit status.
-
-## Testing Strategy
-
-### Test Categories
-
-1. **Authentication Tests**: Verify API key authentication and error handling
-2. **Investigation Tests**: Test all read operations with various filters
-3. **Remediation Tests**: Test create, update, close, resolve, delete operations
-4. **Error Handling Tests**: Verify proper error responses for all HTTP status codes
-5. **Pagination Tests**: Verify pagination works correctly
-
-### Running Tests
-
-```bash
-cd freshservice_itsm
-python3 -m pytest tests/test_freshservice_itsm.py -v
-coverage run -m pytest tests/test_freshservice_itsm.py
-coverage report -m
+```python
+connector = FreshserviceItsm()
+result = connector.test_connection({
+    'api_host': 'https://company.freshservice.com',
+    'api_key': 'your-api-key',
+    'verify_ssl': True
+})
 ```
 
-## Integration Configuration
+### Create Ticket
 
-### Connection Parameters
+```python
+from app.model.request_body import RequestBody
 
-| Parameter | Type | Required | Encrypted | Description |
-|-----------|------|----------|-----------|-------------|
-| `api_host` | String | Yes | No | Freshservice domain URL (e.g., https://company.freshservice.com) |
-| `api_key` | String | Yes | Yes | Freshservice API key for authentication |
-| `verify_ssl` | Boolean | No | No | Verify SSL certificate |
+request = RequestBody()
+request.connectionParameters = {
+    'api_host': 'https://company.freshservice.com',
+    'api_key': 'your-api-key',
+    'verify_ssl': True
+}
+request.parameters = {
+    'subject': 'Network Issue',
+    'description': 'Cannot connect to network',
+    'priority': 3,  # High
+    'status': 1,    # Open
+    'requester': 'user@company.com'
+}
 
-### Sample Connection Parameters
+result = connector.create_ticket(request)
+```
+
+### Search Tickets
+
+```python
+request.parameters = {
+    'query': 'priority:3 AND status:1',
+    'per_page': 50
+}
+result = connector.search_tickets_by_criteria(request)
+```
+
+### Get Assets
+
+```python
+request.parameters = {
+    'page': 1,
+    'per_page': 100,
+    'include': 'type_fields'
+}
+result = connector.get_assets(request)
+```
+
+### Manage Changes
+
+```python
+# Create change
+request.parameters = {
+    'subject': 'Network Upgrade',
+    'description': 'Upgrade core switches',
+    'priority': 4,
+    'status': 1,
+    'cab_id': 123
+}
+result = connector.create_change(request)
+
+# Get change
+request.parameters = {'change_id': 456}
+result = connector.get_change_by_id(request)
+```
+
+## Response Structure
+
+All functions return a structured response:
 
 ```json
 {
-  "api_host": "https://company.freshservice.com",
-  "api_key": "your_api_key_here",
-  "verify_ssl": true
+  "status": "success",
+  "results": {
+    // API response data
+  }
 }
+```
+
+Or on error:
+
+```json
+{
+  "status": "error",
+  "message": "Error description",
+  "status_code": 400
+}
+```
+
+## Error Handling
+
+### HTTP Status Codes
+
+| Code | Meaning | Description |
+|------|---------|-------------|
+| 200 | Success | Request completed successfully |
+| 201 | Created | Resource created successfully |
+| 400 | Bad Request | Invalid parameters or request format |
+| 401 | Unauthorized | Invalid or missing API key |
+| 403 | Forbidden | Insufficient permissions |
+| 404 | Not Found | Resource does not exist |
+| 409 | Conflict | Resource conflict (e.g., duplicate) |
+| 422 | Validation Error | Request validation failed |
+| 429 | Rate Limit | Too many requests, retry with backoff |
+| 500 | Server Error | Freshservice internal error |
+| 503 | Unavailable | Service temporarily unavailable |
+| 504 | Timeout | Gateway timeout |
+
+### Error Handling Example
+
+```python
+result = connector.create_ticket(request)
+if result.get('status') == 'error':
+    status_code = result.get('status_code')
+    if status_code == 429:
+        # Rate limit - implement retry with backoff
+        pass
+    elif status_code == 401:
+        # Invalid credentials
+        pass
+    else:
+        # Handle other errors
+        print(result.get('message'))
+```
+
+## Rate Limiting
+
+Freshservice enforces rate limits:
+- **Standard Plans**: ~1000 requests/hour
+- **Higher Tiers**: Varies by plan
+
+**Best Practices**:
+1. Implement exponential backoff for 429 responses
+2. Cache read-only data when possible
+3. Use bulk operations where available
+4. Monitor rate limit headers
+
+## Authentication
+
+### API Key Generation
+
+1. Log into Freshservice admin panel
+2. Navigate to Profile Settings
+3. Generate API key
+4. Use format: `api_key:X` for Basic Auth
+
+### Configuration
+
+```python
+connectionParameters = {
+    'api_host': 'https://your-domain.freshservice.com',
+    'api_key': 'your-api-key-here',
+    'verify_ssl': True  # Set to False for testing only
+}
+```
+
+## Testing
+
+### Run Tests
+
+```bash
+cd freshservice_itsm
+python -m pytest tests/ -v
+```
+
+### Test Coverage
+
+```bash
+python -m pytest tests/ --cov=app --cov-report=html
+```
+
+## Development Workflow
+
+### Adding New Functions
+
+1. **Add Function** to `app/freshservice_itsm.py`:
+   ```python
+   def new_function(self, request: RequestBody) -> ResponseBody:
+       """
+       Function description.
+       
+       Parameters:
+           param_name (type): Description
+       """
+       # Implementation
+   ```
+
+2. **Update integration_definition.json**:
+   - Add function definition with inParameters and outParameters
+
+3. **Update integration_meta.json**:
+   - Add function name to functions array
+
+4. **Add Tests**:
+   - Create test in `tests/test_freshservice_itsm.py`
+
+5. **Update Documentation**:
+   - Update FUNCTION_LIST.txt
+   - Update this DEV_GUIDE.md
+
+### Code Style
+
+- **Naming**: snake_case for functions
+- **Docstrings**: Required for all functions
+- **Type Hints**: Use RequestBody and ResponseBody
+- **Error Handling**: Use _handle_error method
+- **Parameters**: Use _build_query_params helper
+
+### Helper Methods
+
+```python
+# Build URL
+url = self._build_url(api_host, 'tickets/123')
+
+# Build query parameters
+params = self._build_query_params(request.parameters, ['page', 'per_page'])
+
+# Get auth headers
+headers = self._get_auth_headers(api_key)
+
+# Make request
+result = self._make_request('GET', api_host, api_key, 'tickets', params=params)
+
+# Handle errors
+if response.status_code != 200:
+    return self._handle_error(response)
+```
+
+## Architecture
+
+### Class Structure
+
+```
+FreshserviceItsm
+├── __init__()
+├── _get_auth_headers()      # Authentication
+├── _build_url()              # URL construction
+├── _handle_error()           # Error handling
+├── _make_request()           # HTTP request wrapper
+├── _build_query_params()    # Parameter builder
+├── test_connection()         # Connection test
+└── [376 API functions]       # All API operations
+```
+
+### Request Flow
+
+```
+User Request
+    ↓
+RequestBody Model
+    ↓
+API Function
+    ↓
+_build_query_params()
+    ↓
+_make_request()
+    ↓
+_get_auth_headers()
+    ↓
+HTTP Request to Freshservice
+    ↓
+Response Processing
+    ↓
+_handle_error() [if error]
+    ↓
+ResponseBody Model
+    ↓
+Return to User
 ```
 
 ## Deployment Checklist
 
-- [ ] API key obtained from Freshservice admin
-- [ ] API host URL configured
-- [ ] SSL verification settings determined
-- [ ] Test connection parameters
-- [ ] Verify ticket listing works
-- [ ] Verify ticket creation works
-- [ ] Verify remediation actions work
-- [ ] Configure error notifications
+- [ ] All tests pass
+- [ ] Code reviewed
+- [ ] Documentation updated
+- [ ] integration_definition.json validated
+- [ ] integration_meta.json updated
+- [ ] Version number incremented
+- [ ] CHANGELOG updated
+- [ ] Git commit with descriptive message
+- [ ] Pull request created
+- [ ] Deployment approved
 
-## Known Limitations
+## Resources
 
-1. **API Versioning**: Connector supports v2.0 API only. v1.0 APIs are deprecated.
-2. **Rate Limiting**: API has rate limits (429 responses). Implement exponential backoff for production use.
-3. **Pagination**: Large result sets may require multiple API calls.
-4. **Embedding Costs**: Each embedded resource consumes additional API credits.
+### Documentation Files
 
-## Future Enhancements
+- `COMPLETE_API_COVERAGE.md` - Complete API coverage details
+- `FUNCTION_LIST.txt` - Alphabetical function list
+- `IMPLEMENTATION_SUMMARY.md` - Implementation phases
+- `integration_definition.json` - Function schemas
+- `integration_meta.json` - Connector metadata
 
-- [ ] Add more ticket field operations (custom fields, attachments)
-- [ ] Add conversation/message operations
-- [ ] Add SLA policy management
-- [ ] Add report generation
-- [ ] Add bulk ticket operations
-- [ ] Add webhook support for real-time updates
+### External Resources
 
-## Support
+- [Freshservice API Documentation](https://api.freshservice.com/v2/)
+- [Freshservice Developer Portal](https://developers.freshservice.com/)
+- [SOAR Platform Documentation](https://securonix.com/)
 
-For API questions or issues, contact Freshservice support at support@freshservice.com
+## Troubleshooting
+
+### Common Issues
+
+**Connection Failures**:
+- Verify API host URL format
+- Check API key validity
+- Confirm SSL certificate verification settings
+
+**Authentication Errors (401)**:
+- Regenerate API key
+- Verify API key encoding
+- Check user permissions
+
+**Rate Limiting (429)**:
+- Implement exponential backoff
+- Reduce request frequency
+- Use bulk operations
+
+**Timeout Errors (504)**:
+- Increase timeout values
+- Optimize query parameters
+- Reduce page size for large datasets
+
+## Version History
+
+| Version | Date | Functions | Notes |
+|---------|------|-----------|-------|
+| v3.0 | 2026-10-12 | 373 | Complete API coverage |
+| v2.0 | 2024 | 293 | Major expansion |
+| v1.0 | 2024 | ~110 | Initial release |
+
+---
+
+**Generated**: 2026-10-12 20:43:22  
+**Maintainer**: SOAR Platform Integration Team  
+**Status**: Production Ready ✅
