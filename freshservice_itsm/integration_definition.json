@@ -5187,6 +5187,3427 @@
                     "encrypted": false
                 }
             ]
+        },
+        {
+            "desc": "Create a new service catalog item",
+            "label": "Create Service Catalog Item",
+            "name": "create_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Service\"}}",
+            "inParameters": [
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "Display ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Item name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Item description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category ID",
+                    "name": "category_id",
+                    "desc": "Category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Visibility",
+                    "name": "visibility",
+                    "desc": "Visibility (all, logged_in_users, agents)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Workspace ID",
+                    "name": "workspace_id",
+                    "desc": "Workspace ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Service Catalog Item",
+                    "name": "results",
+                    "desc": "Created service catalog item object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing service catalog item",
+            "label": "Update Service Catalog Item",
+            "name": "update_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Service\"}}",
+            "inParameters": [
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "Display ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Item name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Item description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category ID",
+                    "name": "category_id",
+                    "desc": "Category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Visibility",
+                    "name": "visibility",
+                    "desc": "Visibility",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Service Catalog Item",
+                    "name": "results",
+                    "desc": "Updated service catalog item object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a service catalog item",
+            "label": "Delete Service Catalog Item",
+            "name": "delete_service_catalog_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Service catalog item deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "Display ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Place a service catalog request",
+            "label": "Place Service Catalog Request",
+            "name": "place_service_catalog_request",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"display_id\": \"SCI001\"}}",
+            "inParameters": [
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "Display ID (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "Requester ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requested For",
+                    "name": "requested_for",
+                    "desc": "Requested for (email or ID)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Variables",
+                    "name": "variables",
+                    "desc": "Variable values",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Service Request",
+                    "name": "results",
+                    "desc": "Service request object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Archive a service catalog shared field",
+            "label": "Archive Service Catalog Shared Field",
+            "name": "archive_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Field\", \"archived\": true}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Shared field ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Shared Field",
+                    "name": "results",
+                    "desc": "Archived shared field object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Unarchive a service catalog shared field",
+            "label": "Unarchive Service Catalog Shared Field",
+            "name": "unarchive_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Field\", \"archived\": false}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Shared field ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Shared Field",
+                    "name": "results",
+                    "desc": "Unarchived shared field object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Create a service catalog shared field",
+            "label": "Create Service Catalog Shared Field",
+            "name": "create_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Field\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Field name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Field type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Field description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Required",
+                    "name": "required",
+                    "desc": "Is required",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Visible",
+                    "name": "visible",
+                    "desc": "Is visible",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Enabled",
+                    "name": "enabled",
+                    "desc": "Is enabled",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Shared Field",
+                    "name": "results",
+                    "desc": "Created shared field object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a service catalog shared field",
+            "label": "Update Service Catalog Shared Field",
+            "name": "update_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Field\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Shared field ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Field name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Field type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Field description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Required",
+                    "name": "required",
+                    "desc": "Is required",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Visible",
+                    "name": "visible",
+                    "desc": "Is visible",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Enabled",
+                    "name": "enabled",
+                    "desc": "Is enabled",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Shared Field",
+                    "name": "results",
+                    "desc": "Updated shared field object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a service catalog shared field",
+            "label": "Delete Service Catalog Shared Field",
+            "name": "delete_service_catalog_shared_field",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Shared field deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Shared field ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of service catalog shared fields",
+            "label": "Get Service Catalog Shared Fields",
+            "name": "get_service_catalog_shared_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"shared_fields\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Shared Fields",
+                "name": "List of shared field objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Delete a service item",
+            "label": "Delete Service Item",
+            "name": "delete_service_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Service item deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "Service Item ID",
+                    "name": "service_item_id",
+                    "desc": "Service item ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a service item",
+            "label": "Update Service Item",
+            "name": "update_service_item",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Service\"}}",
+            "inParameters": [
+                {
+                    "label": "Service Item ID",
+                    "name": "service_item_id",
+                    "desc": "Service item ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Display ID",
+                    "name": "display_id",
+                    "desc": "Display ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Service item name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Service item description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category ID",
+                    "name": "category_id",
+                    "desc": "Category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Service Item",
+                    "name": "results",
+                    "desc": "Updated service item object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get subfolders of a solution folder",
+            "label": "Get Solution Folder Subfolders",
+            "name": "get_solution_folder_subfolders",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"folders\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "desc": "Folder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Folders",
+                "name": "List of subfolder objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new subfolder under a solution folder",
+            "label": "Create Solution Subfolder",
+            "name": "create_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Subfolder\"}}",
+            "inParameters": [
+                {
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "desc": "Parent folder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Subfolder name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Subfolder description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Visibility",
+                    "name": "visibility",
+                    "desc": "Visibility (all, logged_in_users, agents)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category ID",
+                    "name": "category_id",
+                    "desc": "Category ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Solution Subfolder",
+                    "name": "results",
+                    "desc": "Created subfolder object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a solution subfolder",
+            "label": "Delete Solution Subfolder",
+            "name": "delete_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Subfolder deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "desc": "Parent folder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subfolder ID",
+                    "name": "subfolder_id",
+                    "desc": "Subfolder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore a deleted solution subfolder",
+            "label": "Restore Solution Subfolder",
+            "name": "restore_solution_subfolder",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Restored Subfolder\"}}",
+            "inParameters": [
+                {
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "desc": "Parent folder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subfolder ID",
+                    "name": "subfolder_id",
+                    "desc": "Subfolder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Solution Subfolder",
+                    "name": "results",
+                    "desc": "Restored subfolder object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Send a solution article for approval",
+            "label": "Send Solution Article for Approval",
+            "name": "send_solution_article_for_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"status\": \"pending_approval\"}}",
+            "inParameters": [
+                {
+                    "label": "Article ID",
+                    "name": "article_id",
+                    "desc": "Article ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Folder ID",
+                    "name": "folder_id",
+                    "desc": "Folder ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Approver IDs",
+                    "name": "approver_ids",
+                    "desc": "Array of approver IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Approval message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Solution Article",
+                    "name": "results",
+                    "desc": "Solution article object with approval status",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a solution article forever (permanently)",
+            "label": "Delete Solution Article Forever",
+            "name": "delete_solution_article_forever",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Article deleted forever\"}}",
+            "inParameters": [
+                {
+                    "label": "Article ID",
+                    "name": "article_id",
+                    "desc": "Article ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a solution category forever (permanently)",
+            "label": "Delete Solution Category Forever",
+            "name": "delete_solution_category_forever",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Category deleted forever\"}}",
+            "inParameters": [
+                {
+                    "label": "Category ID",
+                    "name": "category_id",
+                    "desc": "Category ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Bulk restore solution articles from trash",
+            "label": "Bulk Restore Solution Articles",
+            "name": "bulk_restore_solution_articles_alternate",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"articles\": []}}",
+            "inParameters": [
+                {
+                    "label": "IDs",
+                    "name": "ids",
+                    "desc": "Comma-separated list of article IDs (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Articles",
+                "name": "List of restored article objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a CAB approval",
+            "label": "Create CAB Approval",
+            "name": "create_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"status\": \"pending\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Approval",
+                    "name": "results",
+                    "desc": "Created CAB approval object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a CAB approval",
+            "label": "Update CAB Approval",
+            "name": "update_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"due_by\": \"2024-01-01\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Approval ID",
+                    "name": "approval_id",
+                    "desc": "Approval ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Approval",
+                    "name": "results",
+                    "desc": "Updated CAB approval object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a CAB approval",
+            "label": "Delete CAB Approval",
+            "name": "delete_cab_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"CAB approval deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Approval ID",
+                    "name": "approval_id",
+                    "desc": "Approval ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Add a member to a CAB",
+            "label": "Add CAB Member",
+            "name": "add_cab_member",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"member_id\": 123}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member ID",
+                    "name": "member_id",
+                    "desc": "Member ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Member",
+                    "name": "results",
+                    "desc": "Added CAB member object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Remove a member from a CAB",
+            "label": "Remove CAB Member",
+            "name": "remove_cab_member",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Member removed\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member ID",
+                    "name": "member_id",
+                    "desc": "Member ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get CAB templates",
+            "label": "Get CAB Templates",
+            "name": "get_cab_templates",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"templates\": []}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Templates",
+                "name": "List of CAB template objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a CAB template",
+            "label": "Create CAB Template",
+            "name": "create_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Template\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Template name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Template description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Template",
+                    "name": "results",
+                    "desc": "Created CAB template object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update a CAB template",
+            "label": "Update CAB Template",
+            "name": "update_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Template\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Template ID",
+                    "name": "template_id",
+                    "desc": "Template ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Template name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Template description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Template",
+                    "name": "results",
+                    "desc": "Updated CAB template object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a CAB template",
+            "label": "Delete CAB Template",
+            "name": "delete_cab_template",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"CAB template deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Template ID",
+                    "name": "template_id",
+                    "desc": "Template ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Cast a vote in a CAB approval",
+            "label": "Cast CAB Vote",
+            "name": "cast_cab_vote",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"vote\": \"approve\"}}",
+            "inParameters": [
+                {
+                    "label": "CAB ID",
+                    "name": "cab_id",
+                    "desc": "CAB ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Approval ID",
+                    "name": "approval_id",
+                    "desc": "Approval ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Vote",
+                    "name": "vote",
+                    "desc": "Vote (approve/reject) (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Comments",
+                    "name": "comments",
+                    "desc": "Vote comments",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "CAB Vote",
+                    "name": "results",
+                    "desc": "CAB vote object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get change approvals",
+            "label": "Get Change Approvals",
+            "name": "get_change_approvals",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"approvals\": []}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Approvals",
+                "name": "List of change approval objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a change approval",
+            "label": "Create Change Approval",
+            "name": "create_change_approval",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"status\": \"pending\"}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Change Approval",
+                    "name": "results",
+                    "desc": "Created change approval object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get change approval groups",
+            "label": "Get Change Approval Groups",
+            "name": "get_change_approval_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"approval_groups\": []}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Approval Groups",
+                "name": "List of change approval group objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a change approval group",
+            "label": "Create Change Approval Group",
+            "name": "create_change_approval_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"group_id\": 123}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Group ID",
+                    "name": "group_id",
+                    "desc": "Group ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Change Approval Group",
+                    "name": "results",
+                    "desc": "Created change approval group object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get change approval chain",
+            "label": "Get Change Approval Chain",
+            "name": "get_change_approval_chain",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"approval_chain\": {}}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Approval Chain",
+                "name": "Change approval chain configuration",
+                "desc": "",
+                "type": "Object",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a change approval chain",
+            "label": "Create Change Approval Chain",
+            "name": "create_change_approval_chain",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"approval_chain\": {}}}",
+            "inParameters": [
+                {
+                    "label": "Change ID",
+                    "name": "change_id",
+                    "desc": "Change ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Approval Sequence",
+                    "name": "approval_sequence",
+                    "desc": "Approval sequence configuration",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Approval Chain",
+                "name": "Created change approval chain configuration",
+                "desc": "",
+                "type": "Object",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Get problem form fields",
+            "label": "Get Problem Form Fields",
+            "name": "get_problem_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"form_fields\": []}}",
+            "inParameters": [],
+            "outParameters": {
+                "label": "Form Fields",
+                "name": "List of problem form field objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Get problem tasks",
+            "label": "Get Problem Tasks",
+            "name": "get_problem_tasks",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tasks\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Problem ID",
+                    "name": "problem_id",
+                    "desc": "Problem ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Tasks",
+                "name": "List of problem task objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a problem task",
+            "label": "Create Problem Task",
+            "name": "create_problem_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"title\": \"New Task\"}}",
+            "inParameters": [
+                {
+                    "label": "Problem ID",
+                    "name": "problem_id",
+                    "desc": "Problem ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Title",
+                    "name": "title",
+                    "desc": "Task title (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Task description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Task status",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Problem Task",
+                    "name": "results",
+                    "desc": "Created problem task object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get release tasks",
+            "label": "Get Release Tasks",
+            "name": "get_release_tasks",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tasks\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Tasks",
+                "name": "List of release task objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a release task",
+            "label": "Create Release Task",
+            "name": "create_release_task",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"title\": \"New Task\"}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Title",
+                    "name": "title",
+                    "desc": "Task title (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Task description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Task status",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Due By",
+                    "name": "due_by",
+                    "desc": "Due date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Release Task",
+                    "name": "results",
+                    "desc": "Created release task object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get release notes",
+            "label": "Get Release Notes",
+            "name": "get_release_notes",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"notes\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Notes",
+                "name": "List of release note objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Add a release note",
+            "label": "Add Release Note",
+            "name": "add_release_note",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"body\": \"Note content\"}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Body",
+                    "name": "body",
+                    "desc": "Note body (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Private",
+                    "name": "private",
+                    "desc": "Is private note",
+                    "type": "Boolean",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Release Note",
+                    "name": "results",
+                    "desc": "Created release note object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get release time entries",
+            "label": "Get Release Time Entries",
+            "name": "get_release_time_entries",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"time_entries\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Time Entries",
+                "name": "List of release time entry objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Add a release time entry",
+            "label": "Add Release Time Entry",
+            "name": "add_release_time_entry",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"hours\": 2.5}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Hours",
+                    "name": "hours",
+                    "desc": "Hours spent (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Notes",
+                    "name": "notes",
+                    "desc": "Time entry notes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Spent Date",
+                    "name": "spent_date",
+                    "desc": "Spent date (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Release Time Entry",
+                    "name": "results",
+                    "desc": "Created release time entry object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Move a release to a different workspace",
+            "label": "Move Release Workspace",
+            "name": "move_release_workspace",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"workspace_id\": 2}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Workspace ID",
+                    "name": "workspace_id",
+                    "desc": "Workspace ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Release",
+                    "name": "results",
+                    "desc": "Moved release object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Restore a deleted release",
+            "label": "Restore Release",
+            "name": "restore_release",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"status\": \"active\"}}",
+            "inParameters": [
+                {
+                    "label": "Release ID",
+                    "name": "release_id",
+                    "desc": "Release ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Release",
+                    "name": "results",
+                    "desc": "Restored release object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get release form fields",
+            "label": "Get Release Form Fields",
+            "name": "get_release_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"form_fields\": []}}",
+            "inParameters": [],
+            "outParameters": {
+                "label": "Form Fields",
+                "name": "List of release form field objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Update an SLA breach",
+            "label": "Update SLA Breach",
+            "name": "update_sla_breach",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"resolution_notes\": \"Resolved\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "SLA breach ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolution Notes",
+                    "name": "resolution_notes",
+                    "desc": "Resolution notes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Resolved At",
+                    "name": "resolved_at",
+                    "desc": "Resolved timestamp (ISO8601)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "SLA Breach",
+                    "name": "results",
+                    "desc": "Updated SLA breach object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of groups",
+            "label": "Get Groups",
+            "name": "get_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"groups\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Groups",
+                "name": "List of group objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new group",
+            "label": "Create Group",
+            "name": "create_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Group\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Group name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Group description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Group email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Group",
+                    "name": "results",
+                    "desc": "Created group object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing group",
+            "label": "Update Group",
+            "name": "update_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Group\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Group ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Group name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Group description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Member IDs",
+                    "name": "member_ids",
+                    "desc": "Array of member IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Group email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Group",
+                    "name": "results",
+                    "desc": "Updated group object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a group",
+            "label": "Delete Group",
+            "name": "delete_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Group deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Group ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of requester groups",
+            "label": "Get Requester Groups",
+            "name": "get_requester_groups",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"requester_groups\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Requester Groups",
+                "name": "List of requester group objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new requester group",
+            "label": "Create Requester Group",
+            "name": "create_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Requester Group\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Group name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Group description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester IDs",
+                    "name": "requester_ids",
+                    "desc": "Array of requester IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Requester Group",
+                    "name": "results",
+                    "desc": "Created requester group object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing requester group",
+            "label": "Update Requester Group",
+            "name": "update_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Requester Group\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Group ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Group name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Group description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester IDs",
+                    "name": "requester_ids",
+                    "desc": "Array of requester IDs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Requester Group",
+                    "name": "results",
+                    "desc": "Updated requester group object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a requester group",
+            "label": "Delete Requester Group",
+            "name": "delete_requester_group",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Requester group deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Group ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of departments",
+            "label": "Get Departments",
+            "name": "get_departments",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"departments\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Query for filtering",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Departments",
+                "name": "List of department objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new department",
+            "label": "Create Department",
+            "name": "create_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Department\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Department name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Department description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Department email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Parent ID",
+                    "name": "parent_id",
+                    "desc": "Parent department ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Department",
+                    "name": "results",
+                    "desc": "Created department object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing department",
+            "label": "Update Department",
+            "name": "update_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Department\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Department ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Department name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Department description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Department email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Parent ID",
+                    "name": "parent_id",
+                    "desc": "Parent department ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Department",
+                    "name": "results",
+                    "desc": "Updated department object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a department",
+            "label": "Delete Department",
+            "name": "delete_department",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Department deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Department ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of products",
+            "label": "Get Products",
+            "name": "get_products",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"products\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Products",
+                "name": "List of product objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new product",
+            "label": "Create Product",
+            "name": "create_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Product\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Product name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Product description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Vendor ID",
+                    "name": "vendor_id",
+                    "desc": "Vendor ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Product category",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Product",
+                    "name": "results",
+                    "desc": "Created product object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Update an existing product",
+            "label": "Update Product",
+            "name": "update_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"Updated Product\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Product ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Product name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Product description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Vendor ID",
+                    "name": "vendor_id",
+                    "desc": "Vendor ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Category",
+                    "name": "category",
+                    "desc": "Product category",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Product",
+                    "name": "results",
+                    "desc": "Updated product object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Delete a product",
+            "label": "Delete Product",
+            "name": "delete_product",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"message\": \"Product deleted\"}}",
+            "inParameters": [
+                {
+                    "label": "ID",
+                    "name": "id",
+                    "desc": "Product ID (required)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Message",
+                    "name": "results",
+                    "desc": "Delete confirmation message",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Get a paginated list of vendors",
+            "label": "Get Vendors",
+            "name": "get_vendors",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"vendors\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Vendors",
+                "name": "List of vendor objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Create a new vendor",
+            "label": "Create Vendor",
+            "name": "create_vendor",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"id\": 1, \"name\": \"New Vendor\"}}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Vendor name (required)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Description",
+                    "name": "description",
+                    "desc": "Vendor description",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Website",
+                    "name": "website",
+                    "desc": "Vendor website",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Vendor email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Vendor",
+                    "name": "results",
+                    "desc": "Created vendor object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "desc": "Bulk create relationships",
+            "label": "Bulk Create Relationships",
+            "name": "bulk_create_relationships",
+            "type": "Remediate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"relationships\": []}}",
+            "inParameters": [
+                {
+                    "label": "Relationships",
+                    "name": "relationships",
+                    "desc": "Array of relationship objects (required)",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Relationships",
+                "name": "List of created relationship objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Get all tickets with optional filtering",
+            "label": "Get All Tickets",
+            "name": "get_all_tickets",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"tickets\": [], \"page\": 1, \"per_page\": 20}}",
+            "inParameters": [
+                {
+                    "label": "Page",
+                    "name": "page",
+                    "desc": "Page number",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Per Page",
+                    "name": "per_page",
+                    "desc": "Results per page",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Filter",
+                    "name": "filter",
+                    "desc": "Filter name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Query",
+                    "name": "query",
+                    "desc": "Advanced query",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Requester ID",
+                    "name": "requester_id",
+                    "desc": "Filter by requester ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Email",
+                    "name": "email",
+                    "desc": "Filter by requester email",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Updated Since",
+                    "name": "updated_since",
+                    "desc": "Filter by last updated timestamp",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Filter by ticket type",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Workspace ID",
+                    "name": "workspace_id",
+                    "desc": "Filter by workspace ID",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Include",
+                    "name": "include",
+                    "desc": "Comma-separated list of includes",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Order Type",
+                    "name": "order_type",
+                    "desc": "Sort order",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": {
+                "label": "Tickets",
+                "name": "List of ticket objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Get ticket form fields",
+            "label": "Get Ticket Form Fields",
+            "name": "get_ticket_form_fields",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"form_fields\": []}}",
+            "inParameters": [],
+            "outParameters": {
+                "label": "Form Fields",
+                "name": "List of ticket form field objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
+        },
+        {
+            "desc": "Get a list of roles",
+            "label": "Get Roles",
+            "name": "get_roles",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\": \"success\", \"results\": {\"roles\": []}}",
+            "inParameters": [],
+            "outParameters": {
+                "label": "Roles",
+                "name": "List of role objects",
+                "desc": "",
+                "type": "Array",
+                "values": [],
+                "isSecret": false,
+                "optional": true,
+                "encrypted": false
+            }
         }
     ]
 }

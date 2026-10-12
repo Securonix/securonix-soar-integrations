@@ -1226,6 +1226,719 @@ freshservice_itsm/
 
 **Output**: Paginated list of audit log objects
 
+### Service Catalog Management (Additional)
+
+#### 105. create_service_catalog_item
+**Description**: Create a new service catalog item
+
+**Parameters**:
+- `display_id` (str): Display ID (required)
+- `name` (str): Item name (required)
+- `description` (str): Item description
+- `category_id` (int): Category ID
+- `visibility` (str): Visibility (all, logged_in_users, agents)
+- `workspace_id` (int): Workspace ID
+
+**Output**: Created service catalog item object
+
+#### 106. update_service_catalog_item
+**Description**: Update an existing service catalog item
+
+**Parameters**:
+- `display_id` (str): Display ID (required)
+- `name` (str): Item name
+- `description` (str): Item description
+- `category_id` (int): Category ID
+- `visibility` (str): Visibility
+
+**Output**: Updated service catalog item object
+
+#### 107. delete_service_catalog_item
+**Description**: Delete a service catalog item
+
+**Parameters**:
+- `display_id` (str): Display ID (required)
+
+**Output**: Delete confirmation message
+
+#### 108. place_service_catalog_request
+**Description**: Place a service catalog request
+
+**Parameters**:
+- `display_id` (str): Display ID (required)
+- `requester_id` (int): Requester ID
+- `requested_for` (str): Requested for (email or ID)
+- `variables` (dict): Variable values
+
+**Output**: Service request object
+
+#### 109. archive_service_catalog_shared_field
+**Description**: Archive a service catalog shared field
+
+**Parameters**:
+- `id` (int): Shared field ID (required)
+
+**Output**: Archived shared field object
+
+#### 110. unarchive_service_catalog_shared_field
+**Description**: Unarchive a service catalog shared field
+
+**Parameters**:
+- `id` (int): Shared field ID (required)
+
+**Output**: Unarchived shared field object
+
+#### 111. create_service_catalog_shared_field
+**Description**: Create a service catalog shared field
+
+**Parameters**:
+- `name` (str): Field name (required)
+- `type` (str): Field type
+- `description` (str): Field description
+- `required` (bool): Is required
+- `visible` (bool): Is visible
+- `enabled` (bool): Is enabled
+
+**Output**: Created shared field object
+
+#### 112. update_service_catalog_shared_field
+**Description**: Update a service catalog shared field
+
+**Parameters**:
+- `id` (int): Shared field ID (required)
+- `name` (str): Field name
+- `type` (str): Field type
+- `description` (str): Field description
+- `required` (bool): Is required
+- `visible` (bool): Is visible
+- `enabled` (bool): Is enabled
+
+**Output**: Updated shared field object
+
+#### 113. delete_service_catalog_shared_field
+**Description**: Delete a service catalog shared field
+
+**Parameters**:
+- `id` (int): Shared field ID (required)
+
+**Output**: Delete confirmation message
+
+#### 114. get_service_catalog_shared_fields
+**Description**: Get a paginated list of service catalog shared fields
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of shared field objects
+
+#### 115. delete_service_item
+**Description**: Delete a service item
+
+**Parameters**:
+- `service_item_id` (int): Service item ID (required)
+
+**Output**: Delete confirmation message
+
+#### 116. update_service_item
+**Description**: Update a service item
+
+**Parameters**:
+- `service_item_id` (int): Service item ID (required)
+- `display_id` (str): Display ID
+- `name` (str): Service item name
+- `description` (str): Service item description
+- `category_id` (int): Category ID
+
+**Output**: Updated service item object
+
+### Solution Management Enhancements
+
+#### 117. get_solution_folder_subfolders
+**Description**: Get subfolders of a solution folder
+
+**Parameters**:
+- `folder_id` (int): Folder ID (required)
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of subfolder objects
+
+#### 118. create_solution_subfolder
+**Description**: Create a new subfolder under a solution folder
+
+**Parameters**:
+- `folder_id` (int): Parent folder ID (required)
+- `name` (str): Subfolder name (required)
+- `description` (str): Subfolder description
+- `visibility` (str): Visibility (all, logged_in_users, agents)
+- `category_id` (int): Category ID
+
+**Output**: Created subfolder object
+
+#### 119. delete_solution_subfolder
+**Description**: Delete a solution subfolder
+
+**Parameters**:
+- `folder_id` (int): Parent folder ID (required)
+- `subfolder_id` (int): Subfolder ID (required)
+
+**Output**: Delete confirmation message
+
+#### 120. restore_solution_subfolder
+**Description**: Restore a deleted solution subfolder
+
+**Parameters**:
+- `folder_id` (int): Parent folder ID (required)
+- `subfolder_id` (int): Subfolder ID (required)
+
+**Output**: Restored subfolder object
+
+#### 121. send_solution_article_for_approval
+**Description**: Send a solution article for approval
+
+**Parameters**:
+- `article_id` (int): Article ID (required)
+- `folder_id` (int): Folder ID (required)
+- `approver_ids` (list): Array of approver IDs
+- `message` (str): Approval message
+
+**Output**: Solution article object with approval status
+
+#### 122. delete_solution_article_forever
+**Description**: Delete a solution article forever (permanently)
+
+**Parameters**:
+- `article_id` (int): Article ID (required)
+
+**Output**: Delete confirmation message
+
+#### 123. delete_solution_category_forever
+**Description**: Delete a solution category forever (permanently)
+
+**Parameters**:
+- `category_id` (int): Category ID (required)
+
+**Output**: Delete confirmation message
+
+#### 124. bulk_restore_solution_articles_alternate
+**Description**: Bulk restore solution articles from trash
+
+**Parameters**:
+- `ids` (str): Comma-separated list of article IDs (required)
+
+**Output**: List of restored article objects
+
+### CAB Management
+
+#### 125. create_cab_approval
+**Description**: Create a CAB approval
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `change_id` (int): Change ID (required)
+- `member_ids` (list): Array of member IDs
+- `due_by` (str): Due date (ISO8601)
+
+**Output**: Created CAB approval object
+
+#### 126. update_cab_approval
+**Description**: Update a CAB approval
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `approval_id` (int): Approval ID (required)
+- `due_by` (str): Due date (ISO8601)
+
+**Output**: Updated CAB approval object
+
+#### 127. delete_cab_approval
+**Description**: Delete a CAB approval
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `approval_id` (int): Approval ID (required)
+
+**Output**: Delete confirmation message
+
+#### 128. add_cab_member
+**Description**: Add a member to a CAB
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `member_id` (int): Member ID (required)
+
+**Output**: Added CAB member object
+
+#### 129. remove_cab_member
+**Description**: Remove a member from a CAB
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `member_id` (int): Member ID (required)
+
+**Output**: Delete confirmation message
+
+#### 130. get_cab_templates
+**Description**: Get CAB templates
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+
+**Output**: List of CAB template objects
+
+#### 131. create_cab_template
+**Description**: Create a CAB template
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `name` (str): Template name (required)
+- `description` (str): Template description
+- `member_ids` (list): Array of member IDs
+
+**Output**: Created CAB template object
+
+#### 132. update_cab_template
+**Description**: Update a CAB template
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `template_id` (int): Template ID (required)
+- `name` (str): Template name
+- `description` (str): Template description
+- `member_ids` (list): Array of member IDs
+
+**Output**: Updated CAB template object
+
+#### 133. delete_cab_template
+**Description**: Delete a CAB template
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `template_id` (int): Template ID (required)
+
+**Output**: Delete confirmation message
+
+#### 134. cast_cab_vote
+**Description**: Cast a vote in a CAB approval
+
+**Parameters**:
+- `cab_id` (int): CAB ID (required)
+- `approval_id` (int): Approval ID (required)
+- `vote` (str): Vote (approve/reject) (required)
+- `comments` (str): Vote comments
+
+**Output**: CAB vote object
+
+### Change Management Enhancements
+
+#### 135. get_change_approvals
+**Description**: Get change approvals
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+
+**Output**: List of change approval objects
+
+#### 136. create_change_approval
+**Description**: Create a change approval
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+- `member_ids` (list): Array of member IDs
+- `due_by` (str): Due date (ISO8601)
+
+**Output**: Created change approval object
+
+#### 137. get_change_approval_groups
+**Description**: Get change approval groups
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+
+**Output**: List of change approval group objects
+
+#### 138. create_change_approval_group
+**Description**: Create a change approval group
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+- `group_id` (int): Group ID (required)
+
+**Output**: Created change approval group object
+
+#### 139. get_change_approval_chain
+**Description**: Get change approval chain
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+
+**Output**: Change approval chain configuration
+
+#### 140. create_change_approval_chain
+**Description**: Create a change approval chain
+
+**Parameters**:
+- `change_id` (int): Change ID (required)
+- `approval_sequence` (dict): Approval sequence configuration
+
+**Output**: Created change approval chain configuration
+
+#### 141. get_problem_form_fields
+**Description**: Get problem form fields
+
+**Parameters**: None
+
+**Output**: List of problem form field objects
+
+#### 142. get_problem_tasks
+**Description**: Get problem tasks
+
+**Parameters**:
+- `problem_id` (int): Problem ID (required)
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of problem task objects
+
+#### 143. create_problem_task
+**Description**: Create a problem task
+
+**Parameters**:
+- `problem_id` (int): Problem ID (required)
+- `title` (str): Task title (required)
+- `description` (str): Task description
+- `status` (int): Task status
+- `due_by` (str): Due date (ISO8601)
+
+**Output**: Created problem task object
+
+### Release Management
+
+#### 144. get_release_tasks
+**Description**: Get release tasks
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of release task objects
+
+#### 145. create_release_task
+**Description**: Create a release task
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `title` (str): Task title (required)
+- `description` (str): Task description
+- `status` (int): Task status
+- `due_by` (str): Due date (ISO8601)
+
+**Output**: Created release task object
+
+#### 146. get_release_notes
+**Description**: Get release notes
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of release note objects
+
+#### 147. add_release_note
+**Description**: Add a release note
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `body` (str): Note body (required)
+- `private` (bool): Is private note
+
+**Output**: Created release note object
+
+#### 148. get_release_time_entries
+**Description**: Get release time entries
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of release time entry objects
+
+#### 149. add_release_time_entry
+**Description**: Add a release time entry
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `hours` (float): Hours spent (required)
+- `notes` (str): Time entry notes
+- `spent_date` (str): Spent date (ISO8601)
+
+**Output**: Created release time entry object
+
+#### 150. move_release_workspace
+**Description**: Move a release to a different workspace
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+- `workspace_id` (int): Workspace ID (required)
+
+**Output**: Moved release object
+
+#### 151. restore_release
+**Description**: Restore a deleted release
+
+**Parameters**:
+- `release_id` (int): Release ID (required)
+
+**Output**: Restored release object
+
+#### 152. get_release_form_fields
+**Description**: Get release form fields
+
+**Parameters**: None
+
+**Output**: List of release form field objects
+
+#### 153. update_sla_breach
+**Description**: Update an SLA breach
+
+**Parameters**:
+- `id` (int): SLA breach ID (required)
+- `resolution_notes` (str): Resolution notes
+- `resolved_at` (str): Resolved timestamp (ISO8601)
+
+**Output**: Updated SLA breach object
+
+### Group & Department Management
+
+#### 154. get_groups
+**Description**: Get a paginated list of groups
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of group objects
+
+#### 155. create_group
+**Description**: Create a new group
+
+**Parameters**:
+- `name` (str): Group name (required)
+- `description` (str): Group description
+- `member_ids` (list): Array of member IDs
+- `email` (str): Group email
+
+**Output**: Created group object
+
+#### 156. update_group
+**Description**: Update an existing group
+
+**Parameters**:
+- `id` (int): Group ID (required)
+- `name` (str): Group name
+- `description` (str): Group description
+- `member_ids` (list): Array of member IDs
+- `email` (str): Group email
+
+**Output**: Updated group object
+
+#### 157. delete_group
+**Description**: Delete a group
+
+**Parameters**:
+- `id` (int): Group ID (required)
+
+**Output**: Delete confirmation message
+
+#### 158. get_requester_groups
+**Description**: Get a paginated list of requester groups
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of requester group objects
+
+#### 159. create_requester_group
+**Description**: Create a new requester group
+
+**Parameters**:
+- `name` (str): Group name (required)
+- `description` (str): Group description
+- `requester_ids` (list): Array of requester IDs
+
+**Output**: Created requester group object
+
+#### 160. update_requester_group
+**Description**: Update an existing requester group
+
+**Parameters**:
+- `id` (int): Group ID (required)
+- `name` (str): Group name
+- `description` (str): Group description
+- `requester_ids` (list): Array of requester IDs
+
+**Output**: Updated requester group object
+
+#### 161. delete_requester_group
+**Description**: Delete a requester group
+
+**Parameters**:
+- `id` (int): Group ID (required)
+
+**Output**: Delete confirmation message
+
+#### 162. get_departments
+**Description**: Get a paginated list of departments
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+- `query` (str): Query for filtering
+
+**Output**: List of department objects
+
+#### 163. create_department
+**Description**: Create a new department
+
+**Parameters**:
+- `name` (str): Department name (required)
+- `description` (str): Department description
+- `email` (str): Department email
+- `parent_id` (int): Parent department ID
+
+**Output**: Created department object
+
+#### 164. update_department
+**Description**: Update an existing department
+
+**Parameters**:
+- `id` (int): Department ID (required)
+- `name` (str): Department name
+- `description` (str): Department description
+- `email` (str): Department email
+- `parent_id` (int): Parent department ID
+
+**Output**: Updated department object
+
+#### 165. delete_department
+**Description**: Delete a department
+
+**Parameters**:
+- `id` (int): Department ID (required)
+
+**Output**: Delete confirmation message
+
+### Product/Vendor Operations
+
+#### 166. get_products
+**Description**: Get a paginated list of products
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of product objects
+
+#### 167. create_product
+**Description**: Create a new product
+
+**Parameters**:
+- `name` (str): Product name (required)
+- `description` (str): Product description
+- `vendor_id` (int): Vendor ID
+- `category` (str): Product category
+
+**Output**: Created product object
+
+#### 168. update_product
+**Description**: Update an existing product
+
+**Parameters**:
+- `id` (int): Product ID (required)
+- `name` (str): Product name
+- `description` (str): Product description
+- `vendor_id` (int): Vendor ID
+- `category` (str): Product category
+
+**Output**: Updated product object
+
+#### 169. delete_product
+**Description**: Delete a product
+
+**Parameters**:
+- `id` (int): Product ID (required)
+
+**Output**: Delete confirmation message
+
+#### 170. get_vendors
+**Description**: Get a paginated list of vendors
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+
+**Output**: List of vendor objects
+
+#### 171. create_vendor
+**Description**: Create a new vendor
+
+**Parameters**:
+- `name` (str): Vendor name (required)
+- `description` (str): Vendor description
+- `website` (str): Vendor website
+- `email` (str): Vendor email
+
+**Output**: Created vendor object
+
+### Relationship Operations
+
+#### 172. bulk_create_relationships
+**Description**: Bulk create relationships
+
+**Parameters**:
+- `relationships` (list): Array of relationship objects with from_id, to_id, relationship_type_id (required)
+
+**Output**: List of created relationship objects
+
+### Additional Endpoints
+
+#### 173. get_all_tickets
+**Description**: Get all tickets with optional filtering
+
+**Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Results per page
+- `filter` (str): Filter name
+- `query` (str): Advanced query string
+- `requester_id` (int): Filter by requester ID
+- `email` (str): Filter by requester email
+- `updated_since` (str): Filter by last updated timestamp
+- `type` (str): Filter by ticket type
+- `workspace_id` (int): Filter by workspace ID
+- `include` (str): Comma-separated list of includes
+- `order_type` (str): Sort order
+
+**Output**: List of ticket objects
+
+#### 174. get_ticket_form_fields
+**Description**: Get ticket form fields
+
+**Parameters**: None
+
+**Output**: List of ticket form field objects
+
+#### 175. get_roles
+**Description**: Get a list of roles
+
+**Parameters**: None
+
+**Output**: List of role objects
+
 ## Implementation Details
 
 ### Request/Response Models
