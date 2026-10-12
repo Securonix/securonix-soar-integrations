@@ -6585,3 +6585,1662 @@ class FreshserviceItsm:
             data=params,
             verify_ssl=request.connectionParameters.get('verify_ssl', True)
         )
+
+    # =========================================================
+    # Ticket Attachments Operations
+    # =========================================================
+
+    def get_ticket_attachments(self, request: RequestBody) -> ResponseBody:
+        """
+        Get attachments for a ticket.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+        """
+        ticket_id = request.parameters['ticket_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/attachments',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def add_ticket_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Add an attachment to a ticket.
+        Note: Requires multipart/form-data handling.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+            attachment (file): File to attach
+        """
+        ticket_id = request.parameters['ticket_id']
+        # Note: Implementation requires multipart/form-data support
+        return {
+            "status": "error",
+            "message": "Attachment upload requires multipart/form-data handling - to be implemented"
+        }
+
+    def delete_ticket_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a ticket attachment.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+            attachment_id (int): Attachment ID
+        """
+        ticket_id = request.parameters['ticket_id']
+        attachment_id = request.parameters['attachment_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/attachments/{attachment_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Problem Attachments Operations
+    # =========================================================
+
+    def add_problem_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Add an attachment to a problem.
+
+        Parameters:
+            problem_id (int): Problem ID
+            attachment (file): File to attach
+        """
+        problem_id = request.parameters['problem_id']
+        # Note: Implementation requires multipart/form-data support
+        return {
+            "status": "error",
+            "message": "Attachment upload requires multipart/form-data handling - to be implemented"
+        }
+
+    def delete_problem_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a problem attachment.
+
+        Parameters:
+            problem_id (int): Problem ID
+            attachment_id (int): Attachment ID
+        """
+        problem_id = request.parameters['problem_id']
+        attachment_id = request.parameters['attachment_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'problems/{problem_id}/attachments/{attachment_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Change Attachments Operations
+    # =========================================================
+
+    def add_change_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Add an attachment to a change.
+
+        Parameters:
+            change_id (int): Change ID
+            attachment (file): File to attach
+        """
+        change_id = request.parameters['change_id']
+        # Note: Implementation requires multipart/form-data support
+        return {
+            "status": "error",
+            "message": "Attachment upload requires multipart/form-data handling - to be implemented"
+        }
+
+    def delete_change_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a change attachment.
+
+        Parameters:
+            change_id (int): Change ID
+            attachment_id (int): Attachment ID
+        """
+        change_id = request.parameters['change_id']
+        attachment_id = request.parameters['attachment_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'changes/{change_id}/attachments/{attachment_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Release Attachments Operations
+    # =========================================================
+
+    def add_release_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Add an attachment to a release.
+
+        Parameters:
+            release_id (int): Release ID
+            attachment (file): File to attach
+        """
+        release_id = request.parameters['release_id']
+        # Note: Implementation requires multipart/form-data support
+        return {
+            "status": "error",
+            "message": "Attachment upload requires multipart/form-data handling - to be implemented"
+        }
+
+    def delete_release_attachment(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a release attachment.
+
+        Parameters:
+            release_id (int): Release ID
+            attachment_id (int): Attachment ID
+        """
+        release_id = request.parameters['release_id']
+        attachment_id = request.parameters['attachment_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'releases/{release_id}/attachments/{attachment_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Activities Operations
+    # =========================================================
+
+    def get_ticket_activities(self, request: RequestBody) -> ResponseBody:
+        """
+        Get activities (audit trail) for a ticket.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        ticket_id = request.parameters['ticket_id']
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/activities',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_problem_activities(self, request: RequestBody) -> ResponseBody:
+        """
+        Get activities for a problem.
+
+        Parameters:
+            problem_id (int): Problem ID
+        """
+        problem_id = request.parameters['problem_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'problems/{problem_id}/activities',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_change_activities(self, request: RequestBody) -> ResponseBody:
+        """
+        Get activities for a change.
+
+        Parameters:
+            change_id (int): Change ID
+        """
+        change_id = request.parameters['change_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'changes/{change_id}/activities',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Ticket Watchers Operations
+    # =========================================================
+
+    def get_ticket_watchers(self, request: RequestBody) -> ResponseBody:
+        """
+        Get watchers for a ticket.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+        """
+        ticket_id = request.parameters['ticket_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/watchers',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def add_ticket_watcher(self, request: RequestBody) -> ResponseBody:
+        """
+        Add a watcher to a ticket.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+            user_id (int): User ID to add as watcher
+        """
+        ticket_id = request.parameters['ticket_id']
+        params = self._build_query_params(request.parameters, ['user_id'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/watchers',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def remove_ticket_watcher(self, request: RequestBody) -> ResponseBody:
+        """
+        Remove a watcher from a ticket.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+            watcher_id (int): Watcher ID to remove
+        """
+        ticket_id = request.parameters['ticket_id']
+        watcher_id = request.parameters['watcher_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/watchers/{watcher_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Software Users Operations
+    # =========================================================
+
+    def get_software_users(self, request: RequestBody) -> ResponseBody:
+        """
+        Get users for a software application.
+
+        Parameters:
+            application_id (int): Application/Software ID
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        application_id = request.parameters['application_id']
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/users',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def add_software_user(self, request: RequestBody) -> ResponseBody:
+        """
+        Add a user to a software application.
+
+        Parameters:
+            application_id (int): Application ID
+            user_id (int): User ID
+        """
+        application_id = request.parameters['application_id']
+        params = self._build_query_params(request.parameters, ['user_id'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/users',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def remove_software_user(self, request: RequestBody) -> ResponseBody:
+        """
+        Remove a user from a software application.
+
+        Parameters:
+            application_id (int): Application ID
+            user_id (int): User ID
+        """
+        application_id = request.parameters['application_id']
+        user_id = request.parameters['user_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/users/{user_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Software Installations Operations
+    # =========================================================
+
+    def get_software_installations(self, request: RequestBody) -> ResponseBody:
+        """
+        Get installations for a software application.
+
+        Parameters:
+            application_id (int): Application ID
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        application_id = request.parameters['application_id']
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/installations',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Software Licenses Operations
+    # =========================================================
+
+    def get_software_licenses(self, request: RequestBody) -> ResponseBody:
+        """
+        Get licenses for a software application.
+
+        Parameters:
+            application_id (int): Application ID
+        """
+        application_id = request.parameters['application_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/licenses',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_software_license(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a software license.
+
+        Parameters:
+            application_id (int): Application ID
+            license_key (str): License key
+            license_type (str): License type
+            total_count (int): Total license count
+        """
+        application_id = request.parameters['application_id']
+        params = self._build_query_params(request.parameters, [
+            'license_key', 'license_type', 'total_count'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/licenses',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_software_license(self, request: RequestBody) -> ResponseBody:
+        """
+        Update a software license.
+
+        Parameters:
+            application_id (int): Application ID
+            license_id (int): License ID
+            license_key (str): License key
+            license_type (str): License type
+            total_count (int): Total license count
+        """
+        application_id = request.parameters['application_id']
+        license_id = request.parameters['license_id']
+        params = self._build_query_params(request.parameters, [
+            'license_key', 'license_type', 'total_count'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'applications/{application_id}/licenses/{license_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Asset Components Operations
+    # =========================================================
+
+    def get_asset_components(self, request: RequestBody) -> ResponseBody:
+        """
+        Get components for an asset.
+
+        Parameters:
+            display_id (str): Asset display ID
+        """
+        display_id = request.parameters['display_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'assets/{display_id}/components',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def add_asset_component(self, request: RequestBody) -> ResponseBody:
+        """
+        Add a component to an asset.
+
+        Parameters:
+            display_id (str): Asset display ID
+            component_id (str): Component asset ID
+        """
+        display_id = request.parameters['display_id']
+        params = self._build_query_params(request.parameters, ['component_id'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'assets/{display_id}/components',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Asset Contracts Operations
+    # =========================================================
+
+    def associate_asset_contract(self, request: RequestBody) -> ResponseBody:
+        """
+        Associate a contract with an asset.
+
+        Parameters:
+            display_id (str): Asset display ID
+            contract_id (int): Contract ID
+        """
+        display_id = request.parameters['display_id']
+        params = self._build_query_params(request.parameters, ['contract_id'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'assets/{display_id}/contracts',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def dissociate_asset_contract(self, request: RequestBody) -> ResponseBody:
+        """
+        Dissociate a contract from an asset.
+
+        Parameters:
+            display_id (str): Asset display ID
+            contract_id (int): Contract ID
+        """
+        display_id = request.parameters['display_id']
+        contract_id = request.parameters['contract_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'assets/{display_id}/contracts/{contract_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Devices Operations
+    # =========================================================
+
+    def get_devices(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a paginated list of devices (discovered assets).
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'devices',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_device_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single device by ID.
+
+        Parameters:
+            device_id (int): Device ID
+        """
+        device_id = request.parameters['device_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'devices/{device_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Cloud Resources Operations
+    # =========================================================
+
+    def get_cloud_resources(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a paginated list of cloud resources.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'cloud_resources',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_cloud_resource_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single cloud resource by ID.
+
+        Parameters:
+            resource_id (str): Cloud resource ID
+        """
+        resource_id = request.parameters['resource_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'cloud_resources/{resource_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Asset Lifecycle Events Operations
+    # =========================================================
+
+    def get_asset_lifecycle_events(self, request: RequestBody) -> ResponseBody:
+        """
+        Get lifecycle events for an asset.
+
+        Parameters:
+            display_id (str): Asset display ID
+        """
+        display_id = request.parameters['display_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'assets/{display_id}/lifecycle_events',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Email Configs Operations
+    # =========================================================
+
+    def get_email_configs(self, request: RequestBody) -> ResponseBody:
+        """
+        Get email configurations (mailboxes).
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'email_configs',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_email_config(self, request: RequestBody) -> ResponseBody:
+        """
+        Create an email configuration.
+
+        Parameters:
+            name (str): Email config name
+            email (str): Email address
+            server_type (str): Server type (imap, pop3)
+            server_host (str): Server host
+            server_port (int): Server port
+        """
+        params = self._build_query_params(request.parameters, [
+            'name', 'email', 'server_type', 'server_host', 'server_port'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'email_configs',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Canned Response CRUD Operations
+    # =========================================================
+
+    def create_canned_response(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a new canned response.
+
+        Parameters:
+            title (str): Canned response title
+            content (str): Response content
+            folder_id (int): Folder ID
+            visibility (str): Visibility (all, agents)
+        """
+        params = self._build_query_params(request.parameters, [
+            'title', 'content', 'folder_id', 'visibility'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'canned_responses',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_canned_response(self, request: RequestBody) -> ResponseBody:
+        """
+        Update an existing canned response.
+
+        Parameters:
+            canned_response_id (int): Canned response ID
+            title (str): Canned response title
+            content (str): Response content
+            visibility (str): Visibility
+        """
+        canned_response_id = request.parameters['canned_response_id']
+        params = self._build_query_params(request.parameters, [
+            'title', 'content', 'visibility'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'canned_responses/{canned_response_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def delete_canned_response(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a canned response.
+
+        Parameters:
+            canned_response_id (int): Canned response ID
+        """
+        canned_response_id = request.parameters['canned_response_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'canned_responses/{canned_response_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # SLA Policy CRUD Operations
+    # =========================================================
+
+    def create_sla_policy(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a new SLA policy.
+
+        Parameters:
+            name (str): SLA policy name
+            description (str): Description
+            is_default (bool): Default policy flag
+            sla_target (dict): SLA target configuration
+        """
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'is_default', 'sla_target'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'sla_policies',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_sla_policy(self, request: RequestBody) -> ResponseBody:
+        """
+        Update an existing SLA policy.
+
+        Parameters:
+            sla_policy_id (int): SLA policy ID
+            name (str): SLA policy name
+            description (str): Description
+            is_default (bool): Default policy flag
+            sla_target (dict): SLA target configuration
+        """
+        sla_policy_id = request.parameters['sla_policy_id']
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'is_default', 'sla_target'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'sla_policies/{sla_policy_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def delete_sla_policy(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete an SLA policy.
+
+        Parameters:
+            sla_policy_id (int): SLA policy ID
+        """
+        sla_policy_id = request.parameters['sla_policy_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'sla_policies/{sla_policy_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Ticket Advanced Operations (Merge, Split, Restore)
+    # =========================================================
+
+    def merge_tickets(self, request: RequestBody) -> ResponseBody:
+        """
+        Merge multiple tickets into one.
+
+        Parameters:
+            primary_ticket_id (int): Primary ticket ID (target)
+            secondary_ticket_ids (list): List of ticket IDs to merge
+        """
+        primary_ticket_id = request.parameters['primary_ticket_id']
+        params = self._build_query_params(request.parameters, ['secondary_ticket_ids'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{primary_ticket_id}/merge',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def split_ticket(self, request: RequestBody) -> ResponseBody:
+        """
+        Split a ticket into multiple tickets.
+
+        Parameters:
+            ticket_id (int): Ticket ID to split
+            split_items (list): List of split ticket details
+        """
+        ticket_id = request.parameters['ticket_id']
+        params = self._build_query_params(request.parameters, ['split_items'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/split',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def restore_ticket(self, request: RequestBody) -> ResponseBody:
+        """
+        Restore a deleted ticket from trash.
+
+        Parameters:
+            ticket_id (int): Ticket ID
+        """
+        ticket_id = request.parameters['ticket_id']
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'tickets/{ticket_id}/restore',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Relationships Operations
+    # =========================================================
+
+    def get_problem_relationships(self, request: RequestBody) -> ResponseBody:
+        """
+        Get relationships for a problem.
+
+        Parameters:
+            problem_id (int): Problem ID
+        """
+        problem_id = request.parameters['problem_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'problems/{problem_id}/relationships',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_problem_relationship(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a relationship for a problem.
+
+        Parameters:
+            problem_id (int): Problem ID
+            related_id (int): Related entity ID
+            relationship_type (str): Relationship type
+        """
+        problem_id = request.parameters['problem_id']
+        params = self._build_query_params(request.parameters, [
+            'related_id', 'relationship_type'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'problems/{problem_id}/relationships',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_change_relationships(self, request: RequestBody) -> ResponseBody:
+        """
+        Get relationships for a change.
+
+        Parameters:
+            change_id (int): Change ID
+        """
+        change_id = request.parameters['change_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'changes/{change_id}/relationships',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_change_relationship(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a relationship for a change.
+
+        Parameters:
+            change_id (int): Change ID
+            related_id (int): Related entity ID
+            relationship_type (str): Relationship type
+        """
+        change_id = request.parameters['change_id']
+        params = self._build_query_params(request.parameters, [
+            'related_id', 'relationship_type'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'changes/{change_id}/relationships',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_release_relationships(self, request: RequestBody) -> ResponseBody:
+        """
+        Get relationships for a release.
+
+        Parameters:
+            release_id (int): Release ID
+        """
+        release_id = request.parameters['release_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'releases/{release_id}/relationships',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_release_relationship(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a relationship for a release.
+
+        Parameters:
+            release_id (int): Release ID
+            related_id (int): Related entity ID
+            relationship_type (str): Relationship type
+        """
+        release_id = request.parameters['release_id']
+        params = self._build_query_params(request.parameters, [
+            'related_id', 'relationship_type'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'releases/{release_id}/relationships',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Requester Activation Operations
+    # =========================================================
+
+    def activate_requester(self, request: RequestBody) -> ResponseBody:
+        """
+        Activate a requester.
+
+        Parameters:
+            requester_id (int): Requester ID
+        """
+        requester_id = request.parameters['requester_id']
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'requesters/{requester_id}/activate',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def deactivate_requester(self, request: RequestBody) -> ResponseBody:
+        """
+        Deactivate a requester.
+
+        Parameters:
+            requester_id (int): Requester ID
+        """
+        requester_id = request.parameters['requester_id']
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'requesters/{requester_id}/deactivate',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def merge_requesters(self, request: RequestBody) -> ResponseBody:
+        """
+        Merge requesters.
+
+        Parameters:
+            primary_requester_id (int): Primary requester ID
+            secondary_requester_id (int): Secondary requester ID to merge
+        """
+        primary_requester_id = request.parameters['primary_requester_id']
+        params = self._build_query_params(request.parameters, ['secondary_requester_id'])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'requesters/{primary_requester_id}/merge',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Vendor CRUD Operations
+    # =========================================================
+
+    def create_vendor(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a new vendor.
+
+        Parameters:
+            name (str): Vendor name
+            description (str): Description
+            primary_email (str): Primary email
+            address (dict): Address details
+            contact_name (str): Contact name
+            phone (str): Phone number
+        """
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'primary_email', 'address', 'contact_name', 'phone'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'vendors',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_vendor(self, request: RequestBody) -> ResponseBody:
+        """
+        Update an existing vendor.
+
+        Parameters:
+            vendor_id (int): Vendor ID
+            name (str): Vendor name
+            description (str): Description
+            primary_email (str): Primary email
+            contact_name (str): Contact name
+            phone (str): Phone number
+        """
+        vendor_id = request.parameters['vendor_id']
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'primary_email', 'contact_name', 'phone'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'vendors/{vendor_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def delete_vendor(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a vendor.
+
+        Parameters:
+            vendor_id (int): Vendor ID
+        """
+        vendor_id = request.parameters['vendor_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'vendors/{vendor_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Product CRUD Operations (Complement existing get_products)
+    # =========================================================
+
+    def create_product(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a new product.
+
+        Parameters:
+            name (str): Product name
+            description (str): Description
+            manufacturer (str): Manufacturer name
+            asset_type_id (int): Asset type ID
+            status (str): Status
+        """
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'manufacturer', 'asset_type_id', 'status'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'products',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_product(self, request: RequestBody) -> ResponseBody:
+        """
+        Update an existing product.
+
+        Parameters:
+            product_id (int): Product ID
+            name (str): Product name
+            description (str): Description
+            manufacturer (str): Manufacturer name
+            status (str): Status
+        """
+        product_id = request.parameters['product_id']
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'manufacturer', 'status'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'products/{product_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def delete_product(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a product.
+
+        Parameters:
+            product_id (int): Product ID
+        """
+        product_id = request.parameters['product_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'products/{product_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Search Operations
+    # =========================================================
+
+    def search_assets(self, request: RequestBody) -> ResponseBody:
+        """
+        Search assets using advanced query.
+
+        Parameters:
+            query (str): Search query
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['query', 'page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'search/assets',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def search_solutions(self, request: RequestBody) -> ResponseBody:
+        """
+        Search solution articles.
+
+        Parameters:
+            query (str): Search query
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['query', 'page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'search/solutions',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def search_requesters(self, request: RequestBody) -> ResponseBody:
+        """
+        Search requesters.
+
+        Parameters:
+            query (str): Search query
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['query', 'page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'search/requesters',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def search_agents(self, request: RequestBody) -> ResponseBody:
+        """
+        Search agents.
+
+        Parameters:
+            query (str): Search query
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['query', 'page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'search/agents',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Bulk Operations
+    # =========================================================
+
+    def bulk_update_tickets(self, request: RequestBody) -> ResponseBody:
+        """
+        Bulk update multiple tickets.
+
+        Parameters:
+            ticket_ids (list): List of ticket IDs
+            properties (dict): Properties to update
+        """
+        params = self._build_query_params(request.parameters, ['ticket_ids', 'properties'])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'tickets/bulk_update',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def bulk_delete_tickets(self, request: RequestBody) -> ResponseBody:
+        """
+        Bulk delete multiple tickets.
+
+        Parameters:
+            ticket_ids (list): List of ticket IDs
+        """
+        params = self._build_query_params(request.parameters, ['ticket_ids'])
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'tickets/bulk_delete',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def bulk_update_assets(self, request: RequestBody) -> ResponseBody:
+        """
+        Bulk update multiple assets.
+
+        Parameters:
+            asset_ids (list): List of asset display IDs
+            properties (dict): Properties to update
+        """
+        params = self._build_query_params(request.parameters, ['asset_ids', 'properties'])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'assets/bulk_update',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Agent Role CRUD Operations
+    # =========================================================
+
+    def create_agent_role(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a new agent role.
+
+        Parameters:
+            name (str): Role name
+            description (str): Description
+            scopes (dict): Role scopes and permissions
+        """
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'scopes'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'roles',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def update_agent_role(self, request: RequestBody) -> ResponseBody:
+        """
+        Update an existing agent role.
+
+        Parameters:
+            role_id (int): Role ID
+            name (str): Role name
+            description (str): Description
+            scopes (dict): Role scopes and permissions
+        """
+        role_id = request.parameters['role_id']
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'scopes'
+        ])
+        return self._make_request(
+            'PUT',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'roles/{role_id}',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def delete_agent_role(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete an agent role.
+
+        Parameters:
+            role_id (int): Role ID
+        """
+        role_id = request.parameters['role_id']
+        return self._make_request(
+            'DELETE',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'roles/{role_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Department Detail Operations
+    # =========================================================
+
+    def get_department_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single department by ID.
+
+        Parameters:
+            department_id (int): Department ID
+        """
+        department_id = request.parameters['department_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'departments/{department_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Form Operations
+    # =========================================================
+
+    def get_ticket_forms(self, request: RequestBody) -> ResponseBody:
+        """
+        Get ticket forms.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'ticket_forms',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_ticket_form_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single ticket form by ID.
+
+        Parameters:
+            form_id (int): Form ID
+        """
+        form_id = request.parameters['form_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'ticket_forms/{form_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_problem_forms(self, request: RequestBody) -> ResponseBody:
+        """
+        Get problem forms.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'problem_forms',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_problem_form_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single problem form by ID.
+
+        Parameters:
+            form_id (int): Form ID
+        """
+        form_id = request.parameters['form_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'problem_forms/{form_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_change_forms(self, request: RequestBody) -> ResponseBody:
+        """
+        Get change forms.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'change_forms',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_change_form_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single change form by ID.
+
+        Parameters:
+            form_id (int): Form ID
+        """
+        form_id = request.parameters['form_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'change_forms/{form_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_asset_forms(self, request: RequestBody) -> ResponseBody:
+        """
+        Get asset forms.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'asset_forms',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def get_asset_form_by_id(self, request: RequestBody) -> ResponseBody:
+        """
+        Get a single asset form by ID.
+
+        Parameters:
+            form_id (int): Form ID
+        """
+        form_id = request.parameters['form_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'asset_forms/{form_id}',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Export Operations
+    # =========================================================
+
+    def export_tickets(self, request: RequestBody) -> ResponseBody:
+        """
+        Export tickets to CSV/Excel.
+
+        Parameters:
+            filter (str): Filter criteria
+            format (str): Export format (csv, xlsx)
+        """
+        params = self._build_query_params(request.parameters, ['filter', 'format'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'tickets/export',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def export_assets(self, request: RequestBody) -> ResponseBody:
+        """
+        Export assets to CSV/Excel.
+
+        Parameters:
+            filter (str): Filter criteria
+            format (str): Export format (csv, xlsx)
+        """
+        params = self._build_query_params(request.parameters, ['filter', 'format'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'assets/export',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Project Milestones Operations
+    # =========================================================
+
+    def get_project_milestones(self, request: RequestBody) -> ResponseBody:
+        """
+        Get milestones for a project.
+
+        Parameters:
+            project_id (int): Project ID
+        """
+        project_id = request.parameters['project_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'pm/projects/{project_id}/milestones',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_project_milestone(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a milestone for a project.
+
+        Parameters:
+            project_id (int): Project ID
+            name (str): Milestone name
+            description (str): Description
+            due_date (str): Due date (ISO8601)
+        """
+        project_id = request.parameters['project_id']
+        params = self._build_query_params(request.parameters, [
+            'name', 'description', 'due_date'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'pm/projects/{project_id}/milestones',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Change Impact Analysis Operations
+    # =========================================================
+
+    def get_change_impact_analysis(self, request: RequestBody) -> ResponseBody:
+        """
+        Get impact analysis for a change.
+
+        Parameters:
+            change_id (int): Change ID
+        """
+        change_id = request.parameters['change_id']
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            f'changes/{change_id}/impact_analysis',
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    # =========================================================
+    # Scheduled Maintenance Operations
+    # =========================================================
+
+    def get_scheduled_maintenances(self, request: RequestBody) -> ResponseBody:
+        """
+        Get scheduled maintenance windows.
+
+        Parameters:
+            page (int): Page number
+            per_page (int): Results per page
+        """
+        params = self._build_query_params(request.parameters, ['page', 'per_page'])
+        return self._make_request(
+            'GET',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'scheduled_maintenances',
+            params=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
+
+    def create_scheduled_maintenance(self, request: RequestBody) -> ResponseBody:
+        """
+        Create a scheduled maintenance window.
+
+        Parameters:
+            title (str): Maintenance title
+            description (str): Description
+            start_time (str): Start time (ISO8601)
+            end_time (str): End time (ISO8601)
+            maintenance_type (str): Maintenance type
+        """
+        params = self._build_query_params(request.parameters, [
+            'title', 'description', 'start_time', 'end_time', 'maintenance_type'
+        ])
+        return self._make_request(
+            'POST',
+            request.connectionParameters['api_host'],
+            request.connectionParameters['api_key'],
+            'scheduled_maintenances',
+            data=params,
+            verify_ssl=request.connectionParameters.get('verify_ssl', True)
+        )
