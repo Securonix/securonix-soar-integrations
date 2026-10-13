@@ -419,6 +419,128 @@
       ]
     },
     {
+      "label": "Modify Address Book",
+      "name": "modify_address_book",
+      "type": "Containment",
+      "desc": "Modify a Cloud Firewall address book (for example, update its address list).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group UUID",
+          "name": "group_uuid",
+          "desc": "The unique ID of the address book to modify",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Address List",
+          "name": "address_list",
+          "desc": "Comma-separated list of addresses",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Modify Mode",
+          "name": "modify_mode",
+          "desc": "How to apply the address list: Cover (replace), Append, or Delete",
+          "type": "String",
+          "values": ["Cover", "Append", "Delete"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Group Name",
+          "name": "group_name",
+          "desc": "New name for the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "New description for the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Modification result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Address Book",
+      "name": "delete_address_book",
+      "type": "Containment",
+      "desc": "Delete a Cloud Firewall address book.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group UUID",
+          "name": "group_uuid",
+          "desc": "The unique ID of the address book to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Deletion result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
       "label": "Describe Control Policies",
       "name": "describe_control_policy",
       "type": "Enrichment",
@@ -674,6 +796,87 @@
           "label": "Results",
           "name": "results",
           "desc": "Alarm event details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Handle Security Events",
+      "name": "handle_security_events",
+      "type": "Remediation",
+      "desc": "Handle (dispose of) one or more Security Center security/alert events, for example to block, ignore, or quarantine.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Security Event IDs",
+          "name": "security_event_ids",
+          "desc": "Comma-separated list of security event IDs to handle",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Operation Code",
+          "name": "operation_code",
+          "desc": "The handling operation to apply (e.g., block, kill_and_quarantine, ignore, manual_handled)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Operation Params",
+          "name": "operation_params",
+          "desc": "Operation parameters in JSON format, if required by the operation code",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Remark",
+          "name": "remark",
+          "desc": "A remark/note for the handling action",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Mark Batch",
+          "name": "mark_batch",
+          "desc": "Whether to apply the operation to all events of the same type (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Handling result",
           "type": "String",
           "values": [],
           "isSecret": false,

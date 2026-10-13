@@ -58,13 +58,15 @@ Client build pattern:
 
 ## 3. Scoped connector actions (8)
 
-### Cloud Firewall — Remediate (4)
+### Cloud Firewall — Remediate (6)
 | Action | SDK operation |
 |---|---|
 | Add Control Policy (block/allow/monitor traffic) | `AddControlPolicy` |
 | Modify Control Policy | `ModifyControlPolicy` |
 | Delete Control Policy | `DeleteControlPolicy` |
 | Add Address Book (group of IPs/domains) | `AddAddressBook` |
+| Modify Address Book | `ModifyAddressBook` |
+| Delete Address Book | `DeleteAddressBook` |
 
 ### Cloud Firewall — Investigate (2)
 | Action | SDK operation |
@@ -78,9 +80,14 @@ Client build pattern:
 | Describe Alarm Events | `DescribeSuspEvents` |
 | Describe Alarm Event Detail | `DescribeAlarmEventDetail` |
 
-**Total: 8 functions** — block/unblock + audit (Cloud Firewall) and alert
-investigation (Security Center). Mirrors the read + act shape of the peer
-cloud connectors.
+### Security Center — Remediate (1)
+| Action | SDK operation |
+|---|---|
+| Handle Security Events | `HandleSecurityEvents` |
+
+**Total: 11 functions** — block/unblock + audit (Cloud Firewall) and alert
+investigation + handling (Security Center). Mirrors the read + act shape of the
+peer cloud connectors.
 
 ### Explicitly out of scope (unless requested)
 - WAF, Anti-DDoS, and other product APIs
@@ -99,9 +106,15 @@ cloud connectors.
 - **DeleteControlPolicy** (required): `AclUuid`, `Direction`.
 - **DescribeControlPolicy** (required): `Direction`; optional paging
   (`CurrentPage`, `PageSize`) and filters (`Source`, `Destination`).
-- **AddAddressBook** (required): `GroupType` (ip/domain/port/...),
-  `GroupName`, `AddressList`, `Description`.
-- **DescribeAddressBook**: optional `GroupType`, paging.
+- **AddAddressBook** (required): `group_type` (ip/domain/port/...),
+  `group_name`, `address_list`, `description`.
+- **ModifyAddressBook** (required): `group_uuid`, `address_list`; optional
+  `modify_mode` (Cover/Append/Delete), `group_name`, `description`.
+- **DeleteAddressBook** (required): `group_uuid`.
+- **DescribeAddressBook**: optional `group_type`, paging.
+- **HandleSecurityEvents** (Sas, required): `security_event_ids` (List[str] —
+  the connector accepts a comma-separated string and converts it),
+  `operation_code`; optional `operation_params`, `remark`, `mark_batch`.
 - **DescribeSuspEvents** (Sas): optional filters (`name`, `dealed`, `levels`),
   paging (`current_page`, `page_size`), `lang`. (This is the current list-alerts
   operation; the older `DescribeAlarmEventList` does not exist in SDK 10.2.1.)

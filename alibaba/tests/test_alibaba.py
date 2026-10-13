@@ -61,7 +61,7 @@ def _install_sdk_stubs():
 
 _install_sdk_stubs()
 
-from app.alibaba_cloud import AlibabaCloud  # noqa: E402
+from app.alibaba import Alibaba  # noqa: E402
 
 
 CONNECTION_PARAMS = {
@@ -85,16 +85,16 @@ def mock_resp(data: dict):
     return resp
 
 
-class TestAlibabaCloud(unittest.TestCase):
+class TestAlibaba(unittest.TestCase):
 
     def setUp(self):
-        self.connector = AlibabaCloud()
+        self.connector = Alibaba()
 
     # ---------------------------------------------------------------
     # test_connection
     # ---------------------------------------------------------------
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_connection_success(self, mock_build):
         client = MagicMock()
         client.describe_control_policy.return_value = mock_resp({"TotalCount": 0})
@@ -103,7 +103,7 @@ class TestAlibabaCloud(unittest.TestCase):
         self.assertEqual(result["status"], "success")
         self.assertIn("Connected to Alibaba Cloud successfully", result["message"])
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_connection_failure(self, mock_build):
         mock_build.side_effect = Exception("InvalidAccessKeyId")
         with self.assertRaises(Exception) as ctx:
@@ -113,7 +113,7 @@ class TestAlibabaCloud(unittest.TestCase):
     def test_connection_missing_credential(self):
         with self.assertRaises(Exception) as ctx:
             # Missing access_key_secret and region_id -> builder raises before SDK use
-            from app.alibaba_cloud import _get_credentials
+            from app.alibaba import _get_credentials
             _get_credentials({"access_key_id": "x"})
         self.assertIn("Missing required connection parameter", str(ctx.exception))
 
@@ -121,7 +121,7 @@ class TestAlibabaCloud(unittest.TestCase):
     # Cloud Firewall — remediate
     # ---------------------------------------------------------------
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_add_control_policy_success(self, mock_build):
         client = MagicMock()
         client.add_control_policy.return_value = mock_resp({"AclUuid": "uuid-1"})
@@ -136,7 +136,7 @@ class TestAlibabaCloud(unittest.TestCase):
         self.assertEqual(result["results"]["AclUuid"], "uuid-1")
         client.add_control_policy.assert_called_once()
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_add_control_policy_missing_required(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
@@ -145,7 +145,7 @@ class TestAlibabaCloud(unittest.TestCase):
             }))
         self.assertIn("Missing required parameter", str(ctx.exception))
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_modify_control_policy_success(self, mock_build):
         client = MagicMock()
         client.modify_control_policy.return_value = mock_resp({"RequestId": "r1"})
@@ -155,14 +155,14 @@ class TestAlibabaCloud(unittest.TestCase):
         }))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_modify_control_policy_missing_uuid(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
             self.connector.modify_control_policy(make_request({"direction": "in"}))
         self.assertIn("Missing required parameter: acl_uuid", str(ctx.exception))
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_delete_control_policy_success(self, mock_build):
         client = MagicMock()
         client.delete_control_policy.return_value = mock_resp({"RequestId": "r1"})
@@ -172,14 +172,14 @@ class TestAlibabaCloud(unittest.TestCase):
         }))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_delete_control_policy_missing(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
             self.connector.delete_control_policy(make_request({"acl_uuid": "u"}))
         self.assertIn("Missing required parameter: direction", str(ctx.exception))
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_add_address_book_success(self, mock_build):
         client = MagicMock()
         client.add_address_book.return_value = mock_resp({"GroupUuid": "g1"})
@@ -191,7 +191,7 @@ class TestAlibabaCloud(unittest.TestCase):
         self.assertEqual(result["status"], "success")
         self.assertEqual(result["results"]["GroupUuid"], "g1")
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_add_address_book_missing(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
@@ -204,7 +204,7 @@ class TestAlibabaCloud(unittest.TestCase):
     # Cloud Firewall — investigate
     # ---------------------------------------------------------------
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_describe_control_policy_success(self, mock_build):
         client = MagicMock()
         client.describe_control_policy.return_value = mock_resp({"Policys": [], "TotalCount": 0})
@@ -212,14 +212,14 @@ class TestAlibabaCloud(unittest.TestCase):
         result = self.connector.describe_control_policy(make_request({"direction": "in"}))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_describe_control_policy_missing_direction(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
             self.connector.describe_control_policy(make_request({}))
         self.assertIn("Missing required parameter: direction", str(ctx.exception))
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_describe_address_book_success(self, mock_build):
         client = MagicMock()
         client.describe_address_book.return_value = mock_resp({"Acls": []})
@@ -227,7 +227,7 @@ class TestAlibabaCloud(unittest.TestCase):
         result = self.connector.describe_address_book(make_request({"group_type": "ip"}))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_describe_address_book_no_params(self, mock_build):
         client = MagicMock()
         client.describe_address_book.return_value = mock_resp({"Acls": []})
@@ -239,7 +239,7 @@ class TestAlibabaCloud(unittest.TestCase):
     # Security Center — investigate
     # ---------------------------------------------------------------
 
-    @patch("app.alibaba_cloud._build_sas_client")
+    @patch("app.alibaba._build_sas_client")
     def test_describe_alarm_events_success(self, mock_build):
         client = MagicMock()
         client.describe_susp_events.return_value = mock_resp({"PageInfo": {}, "SuspEvents": []})
@@ -248,7 +248,7 @@ class TestAlibabaCloud(unittest.TestCase):
         self.assertEqual(result["status"], "success")
         client.describe_susp_events.assert_called_once()
 
-    @patch("app.alibaba_cloud._build_sas_client")
+    @patch("app.alibaba._build_sas_client")
     def test_describe_alarm_events_no_params(self, mock_build):
         client = MagicMock()
         client.describe_susp_events.return_value = mock_resp({"SuspEvents": []})
@@ -256,7 +256,7 @@ class TestAlibabaCloud(unittest.TestCase):
         result = self.connector.describe_alarm_events(make_request({}))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_sas_client")
+    @patch("app.alibaba._build_sas_client")
     def test_describe_alarm_event_detail_success(self, mock_build):
         client = MagicMock()
         client.describe_alarm_event_detail.return_value = mock_resp({"AlarmEvent": {"id": 1}})
@@ -266,7 +266,7 @@ class TestAlibabaCloud(unittest.TestCase):
         }))
         self.assertEqual(result["status"], "success")
 
-    @patch("app.alibaba_cloud._build_sas_client")
+    @patch("app.alibaba._build_sas_client")
     def test_describe_alarm_event_detail_missing(self, mock_build):
         mock_build.return_value = MagicMock()
         with self.assertRaises(Exception) as ctx:
@@ -274,10 +274,78 @@ class TestAlibabaCloud(unittest.TestCase):
         self.assertIn("Missing required parameter: alarm_unique_info", str(ctx.exception))
 
     # ---------------------------------------------------------------
+    # Cloud Firewall — modify / delete address book
+    # ---------------------------------------------------------------
+
+    @patch("app.alibaba._build_cloudfw_client")
+    def test_modify_address_book_success(self, mock_build):
+        client = MagicMock()
+        client.modify_address_book.return_value = mock_resp({"GroupUuid": "g1"})
+        mock_build.return_value = client
+        result = self.connector.modify_address_book(make_request({
+            "group_uuid": "g1", "address_list": "1.1.1.1,2.2.2.2", "modify_mode": "Append",
+        }))
+        self.assertEqual(result["status"], "success")
+        client.modify_address_book.assert_called_once()
+
+    @patch("app.alibaba._build_cloudfw_client")
+    def test_modify_address_book_missing(self, mock_build):
+        mock_build.return_value = MagicMock()
+        with self.assertRaises(Exception) as ctx:
+            self.connector.modify_address_book(make_request({"group_uuid": "g1"}))
+        self.assertIn("Missing required parameter: address_list", str(ctx.exception))
+
+    @patch("app.alibaba._build_cloudfw_client")
+    def test_delete_address_book_success(self, mock_build):
+        client = MagicMock()
+        client.delete_address_book.return_value = mock_resp({"RequestId": "r1"})
+        mock_build.return_value = client
+        result = self.connector.delete_address_book(make_request({"group_uuid": "g1"}))
+        self.assertEqual(result["status"], "success")
+
+    @patch("app.alibaba._build_cloudfw_client")
+    def test_delete_address_book_missing(self, mock_build):
+        mock_build.return_value = MagicMock()
+        with self.assertRaises(Exception) as ctx:
+            self.connector.delete_address_book(make_request({}))
+        self.assertIn("Missing required parameter: group_uuid", str(ctx.exception))
+
+    # ---------------------------------------------------------------
+    # Security Center — handle security events (remediate)
+    # ---------------------------------------------------------------
+
+    @patch("app.alibaba._build_sas_client")
+    def test_handle_security_events_success(self, mock_build):
+        client = MagicMock()
+        client.handle_security_events.return_value = mock_resp({"RequestId": "r1"})
+        mock_build.return_value = client
+        result = self.connector.handle_security_events(make_request({
+            "security_event_ids": "101,102", "operation_code": "ignore",
+        }))
+        self.assertEqual(result["status"], "success")
+        # confirm the comma-separated IDs were converted to a list for the SDK
+        args, _ = client.handle_security_events.call_args
+        self.assertEqual(args[0].security_event_ids, ["101", "102"])
+
+    @patch("app.alibaba._build_sas_client")
+    def test_handle_security_events_missing_code(self, mock_build):
+        mock_build.return_value = MagicMock()
+        with self.assertRaises(Exception) as ctx:
+            self.connector.handle_security_events(make_request({"security_event_ids": "101"}))
+        self.assertIn("Missing required parameter: operation_code", str(ctx.exception))
+
+    @patch("app.alibaba._build_sas_client")
+    def test_handle_security_events_missing_ids(self, mock_build):
+        mock_build.return_value = MagicMock()
+        with self.assertRaises(Exception) as ctx:
+            self.connector.handle_security_events(make_request({"operation_code": "ignore"}))
+        self.assertIn("Missing required parameter: security_event_ids", str(ctx.exception))
+
+    # ---------------------------------------------------------------
     # error propagation from the SDK call
     # ---------------------------------------------------------------
 
-    @patch("app.alibaba_cloud._build_cloudfw_client")
+    @patch("app.alibaba._build_cloudfw_client")
     def test_sdk_error_propagates(self, mock_build):
         client = MagicMock()
         client.describe_control_policy.side_effect = Exception("Throttling.User")

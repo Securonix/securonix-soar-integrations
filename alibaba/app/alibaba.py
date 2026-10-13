@@ -82,7 +82,7 @@ def _to_dict(resp):
     return {"response": str(resp)}
 
 
-class AlibabaCloud:
+class Alibaba:
     """
     Alibaba Cloud (Aliyun) SOAR connector.
 
@@ -228,6 +228,54 @@ class AlibabaCloud:
             self.logger.error("Exception in add_address_book", exc_info=e)
             raise Exception(str(e))
 
+    def modify_address_book(self, request: RequestBody) -> ResponseBody:
+        """
+        Modify a Cloud Firewall address book (e.g., update its address list).
+        Required: group_uuid, address_list (comma-separated).
+        Optional: group_name, description, modify_mode (Cover/Append/Delete).
+        """
+        from alibabacloud_cloudfw20171207 import models as m
+        p = request.parameters
+        try:
+            client = _build_cloudfw_client(request.connectionParameters)
+            req = m.ModifyAddressBookRequest(
+                group_uuid=_param(p, "group_uuid"),
+                address_list=_param(p, "address_list"),
+            )
+            if p.get("group_name"):
+                req.group_name = p["group_name"]
+            if p.get("description"):
+                req.description = p["description"]
+            if p.get("modify_mode"):
+                req.modify_mode = p["modify_mode"]
+            resp = client.modify_address_book(req)
+            data = _to_dict(resp)
+            self.logger.debug("Alibaba modify_address_book response: %s", data)
+            return {"status": "success", "results": data}
+        except Exception as e:
+            self.logger.error("Exception in modify_address_book", exc_info=e)
+            raise Exception(str(e))
+
+    def delete_address_book(self, request: RequestBody) -> ResponseBody:
+        """
+        Delete a Cloud Firewall address book.
+        Required: group_uuid.
+        """
+        from alibabacloud_cloudfw20171207 import models as m
+        p = request.parameters
+        try:
+            client = _build_cloudfw_client(request.connectionParameters)
+            req = m.DeleteAddressBookRequest(
+                group_uuid=_param(p, "group_uuid"),
+            )
+            resp = client.delete_address_book(req)
+            data = _to_dict(resp)
+            self.logger.debug("Alibaba delete_address_book response: %s", data)
+            return {"status": "success", "results": data}
+        except Exception as e:
+            self.logger.error("Exception in delete_address_book", exc_info=e)
+            raise Exception(str(e))
+
     # ==================================================================
     # Cloud Firewall — Investigate
     # ==================================================================
@@ -337,4 +385,44 @@ class AlibabaCloud:
             return {"status": "success", "results": data}
         except Exception as e:
             self.logger.error("Exception in describe_alarm_event_detail", exc_info=e)
+            raise Exception(str(e))
+
+    # ==================================================================
+    # Security Center — Remediate
+    # ==================================================================
+
+    def handle_security_events(self, request: RequestBody) -> ResponseBody:
+        """
+        Handle (dispose of) one or more Security Center security/alert events.
+        Required: security_event_ids (comma-separated IDs), operation_code
+            (the handling operation, e.g. block, kill_process, ignore).
+        Optional: operation_params, remark, mark_batch (true/false).
+        """
+        from alibabacloud_sas20181203 import models as m
+        p = request.parameters
+        try:
+            client = _build_sas_client(request.connectionParameters)
+            # security_event_ids is a List[str] in the SDK; accept a comma-separated
+            # string or an already-provided list.
+            raw_ids = _param(p, "security_event_ids")
+            if isinstance(raw_ids, list):
+                event_ids = [str(x).strip() for x in raw_ids if str(x).strip()]
+            else:
+                event_ids = [x.strip() for x in str(raw_ids).split(",") if x.strip()]
+            req = m.HandleSecurityEventsRequest(
+                security_event_ids=event_ids,
+                operation_code=_param(p, "operation_code"),
+            )
+            if p.get("operation_params"):
+                req.operation_params = p["operation_params"]
+            if p.get("remark"):
+                req.remark = p["remark"]
+            if p.get("mark_batch") is not None and str(p.get("mark_batch")) != "":
+                req.mark_batch = str(p["mark_batch"])
+            resp = client.handle_security_events(req)
+            data = _to_dict(resp)
+            self.logger.debug("Alibaba handle_security_events response: %s", data)
+            return {"status": "success", "results": data}
+        except Exception as e:
+            self.logger.error("Exception in handle_security_events", exc_info=e)
             raise Exception(str(e))

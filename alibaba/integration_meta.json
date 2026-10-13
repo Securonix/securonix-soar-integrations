@@ -1,8 +1,8 @@
 {
-  "name": "alibaba_cloud",
+  "name": "alibaba",
   "type": "python",
-  "clazz": "app.alibaba_cloud",
-  "label": "Alibaba Cloud",
+  "clazz": "app.alibaba",
+  "label": "Alibaba",
   "native": false,
   "testUrl": "",
   "category": "Cloud Security",
