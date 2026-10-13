@@ -1,0 +1,16 @@
+{
+  "name": "alibaba_cloud",
+  "type": "python",
+  "clazz": "app.alibaba_cloud",
+  "label": "Alibaba Cloud",
+  "native": false,
+  "testUrl": "",
+  "category": "Cloud Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Alibaba Cloud (Aliyun) integration for security response and investigation. Manage Cloud Firewall access-control policies (block/allow/monitor traffic) and address books, audit existing policies and address books, and investigate Security Center alarm (alert) events. Authentication is via an AccessKey pair with request signing handled by the official Alibaba Cloud SDK."
+}

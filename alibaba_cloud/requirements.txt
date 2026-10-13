@@ -1,0 +1,6 @@
+alibabacloud_tea_openapi==0.4.6
+alibabacloud_cloudfw20171207==9.4.4
+alibabacloud_sas20181203==10.2.1
+pykson==0.9.9
+pytest==8.3.5
+coverage==7.8.0
