@@ -251,7 +251,6 @@ All list endpoints support pagination via:
 
 Supports `fields` and `exclude_fields` query parameters to control response size.
 
-### Testing Strategy
 
 ### Test Categories
 
