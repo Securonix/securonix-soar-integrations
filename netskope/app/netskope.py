@@ -470,7 +470,7 @@ class Netskope():
             values = _parse_ioc_values(params.get("values"), "values")
 
             append_result = _make_request(
-                config, "POST",
+                config, "PATCH",
                 f"/api/v2/profiles/destinations/{profile_id}/values",
                 json_body={"operation": {"op": "append", "values": values}},
             )
@@ -507,7 +507,7 @@ class Netskope():
             values = _parse_ioc_values(params.get("values"), "values")
 
             remove_result = _make_request(
-                config, "POST",
+                config, "PATCH",
                 f"/api/v2/profiles/destinations/{profile_id}/values",
                 json_body={"operation": {"op": "remove", "values": values}},
             )
