@@ -8,7 +8,7 @@
   "category": "Network Security",
   "functions": [],
   "isLicensed": true,
-  "pathToLogo": "",
+  "pathToLogo": "algosec/logo.svg",
   "encodedLogo": "",
   "connectionParameters": [],
   "isMultiAuthentication": false,

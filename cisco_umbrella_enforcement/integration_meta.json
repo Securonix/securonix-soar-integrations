@@ -8,7 +8,7 @@
   "category": "Network Security",
   "functions": [],
   "isLicensed": true,
-  "pathToLogo": "",
+  "pathToLogo": "cisco_umbrella_enforcement/logo.svg",
   "encodedLogo": "",
   "connectionParameters": [],
   "isMultiAuthentication": false,
