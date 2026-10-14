@@ -8,7 +8,7 @@
   "category": "Cloud Security",
   "functions": [],
   "isLicensed": true,
-  "pathToLogo": "",
+  "pathToLogo": "alibaba/logo.svg",
   "encodedLogo": "",
   "connectionParameters": [],
   "isMultiAuthentication": false,
