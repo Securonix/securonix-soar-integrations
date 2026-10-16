@@ -1,0 +1,6 @@
+<svg width="500" height="140" viewBox="0 0 500 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="140" fill="#ffffff"/>
+  <rect x="24" y="42" width="56" height="56" rx="12" fill="#FF6A00"/>
+  <path d="M38 70 h12 M62 70 h4 M50 58 v24" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+  <text x="100" y="86" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" fill="#FF6A00">Alibaba</text>
+</svg>

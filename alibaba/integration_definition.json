@@ -1,0 +1,889 @@
+{
+  "connectionParameters": [
+    {
+      "label": "AccessKey ID",
+      "name": "access_key_id",
+      "desc": "Alibaba Cloud RAM user AccessKey ID",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "AccessKey Secret",
+      "name": "access_key_secret",
+      "desc": "Alibaba Cloud RAM user AccessKey Secret",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Region ID",
+      "name": "region_id",
+      "desc": "Alibaba Cloud region ID (e.g., cn-hangzhou)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Alibaba Cloud (Aliyun) integration for security response and investigation. Manage Cloud Firewall access-control policies (block/allow/monitor traffic) and address books, audit existing policies and address books, and investigate Security Center alarm (alert) events. Authentication is via an AccessKey pair with request signing handled by the official Alibaba Cloud SDK.",
+  "functions": [
+    {
+      "label": "Add Control Policy",
+      "name": "add_control_policy",
+      "type": "Containment",
+      "desc": "Create a Cloud Firewall access-control policy to block, allow, or monitor traffic.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "ACL Action",
+          "name": "acl_action",
+          "desc": "Action for matching traffic: accept, drop, or log",
+          "type": "String",
+          "values": ["accept", "drop", "log"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Direction",
+          "name": "direction",
+          "desc": "Traffic direction: in or out",
+          "type": "String",
+          "values": ["in", "out"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source address (e.g., CIDR, address book name, or domain depending on source type)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Source Type",
+          "name": "source_type",
+          "desc": "Type of the source: net, group, or location",
+          "type": "String",
+          "values": ["net", "group", "location"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination address (CIDR, domain, address book name, etc.)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Destination Type",
+          "name": "destination_type",
+          "desc": "Type of the destination: net, group, domain, or location",
+          "type": "String",
+          "values": ["net", "group", "domain", "location"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Protocol",
+          "name": "proto",
+          "desc": "Protocol: ANY, TCP, UDP, or ICMP",
+          "type": "String",
+          "values": ["ANY", "TCP", "UDP", "ICMP"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "Description of the policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "New Order",
+          "name": "new_order",
+          "desc": "Priority order of the policy (-1 places it last)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Application Name",
+          "name": "application_name",
+          "desc": "Application name the policy applies to (e.g., ANY, HTTP, HTTPS)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination Port",
+          "name": "dest_port",
+          "desc": "Destination port or port range",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created policy details, including the ACL UUID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Modify Control Policy",
+      "name": "modify_control_policy",
+      "type": "Containment",
+      "desc": "Modify an existing Cloud Firewall access-control policy.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "ACL UUID",
+          "name": "acl_uuid",
+          "desc": "The unique ID of the access-control policy to modify",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Direction",
+          "name": "direction",
+          "desc": "Traffic direction: in or out",
+          "type": "String",
+          "values": ["in", "out"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "ACL Action",
+          "name": "acl_action",
+          "desc": "Action for matching traffic: accept, drop, or log",
+          "type": "String",
+          "values": ["accept", "drop", "log"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Source address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Source Type",
+          "name": "source_type",
+          "desc": "Type of the source: net, group, or location",
+          "type": "String",
+          "values": ["net", "group", "location"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Destination address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination Type",
+          "name": "destination_type",
+          "desc": "Type of the destination: net, group, domain, or location",
+          "type": "String",
+          "values": ["net", "group", "domain", "location"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Protocol",
+          "name": "proto",
+          "desc": "Protocol: ANY, TCP, UDP, or ICMP",
+          "type": "String",
+          "values": ["ANY", "TCP", "UDP", "ICMP"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "Description of the policy",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Modification result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Control Policy",
+      "name": "delete_control_policy",
+      "type": "Containment",
+      "desc": "Delete a Cloud Firewall access-control policy.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "ACL UUID",
+          "name": "acl_uuid",
+          "desc": "The unique ID of the access-control policy to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Direction",
+          "name": "direction",
+          "desc": "Traffic direction: in or out",
+          "type": "String",
+          "values": ["in", "out"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Deletion result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add Address Book",
+      "name": "add_address_book",
+      "type": "Containment",
+      "desc": "Create a Cloud Firewall address book (a reusable group of IP addresses, domains, or ports).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group Type",
+          "name": "group_type",
+          "desc": "Address book type: ip, ipv6, domain, port, or tag",
+          "type": "String",
+          "values": ["ip", "ipv6", "domain", "port", "tag"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Group Name",
+          "name": "group_name",
+          "desc": "Name of the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "Description of the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Address List",
+          "name": "address_list",
+          "desc": "Comma-separated list of addresses to include (IPs, CIDRs, domains, or ports)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created address book details, including the group UUID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Modify Address Book",
+      "name": "modify_address_book",
+      "type": "Containment",
+      "desc": "Modify a Cloud Firewall address book (for example, update its address list).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group UUID",
+          "name": "group_uuid",
+          "desc": "The unique ID of the address book to modify",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Address List",
+          "name": "address_list",
+          "desc": "Comma-separated list of addresses",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Modify Mode",
+          "name": "modify_mode",
+          "desc": "How to apply the address list: Cover (replace), Append, or Delete",
+          "type": "String",
+          "values": ["Cover", "Append", "Delete"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Group Name",
+          "name": "group_name",
+          "desc": "New name for the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Description",
+          "name": "description",
+          "desc": "New description for the address book",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Modification result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete Address Book",
+      "name": "delete_address_book",
+      "type": "Containment",
+      "desc": "Delete a Cloud Firewall address book.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group UUID",
+          "name": "group_uuid",
+          "desc": "The unique ID of the address book to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Deletion result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Describe Control Policies",
+      "name": "describe_control_policy",
+      "type": "Enrichment",
+      "desc": "Retrieve Cloud Firewall access-control policies (paged).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Direction",
+          "name": "direction",
+          "desc": "Traffic direction: in or out",
+          "type": "String",
+          "values": ["in", "out"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Source",
+          "name": "source",
+          "desc": "Filter by source address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Destination",
+          "name": "destination",
+          "desc": "Filter by destination address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Current Page",
+          "name": "current_page",
+          "desc": "Page number to return (default 1)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 10)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of access-control policies",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Describe Address Books",
+      "name": "describe_address_book",
+      "type": "Enrichment",
+      "desc": "Retrieve Cloud Firewall address books (paged).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group Type",
+          "name": "group_type",
+          "desc": "Filter by address book type: ip, ipv6, domain, port, or tag",
+          "type": "String",
+          "values": ["ip", "ipv6", "domain", "port", "tag"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Current Page",
+          "name": "current_page",
+          "desc": "Page number to return (default 1)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 10)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of address books",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Describe Alarm Events",
+      "name": "describe_alarm_events",
+      "type": "Enrichment",
+      "desc": "Retrieve Security Center suspicious (alert) events via DescribeSuspEvents (paged).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Event Name",
+          "name": "name",
+          "desc": "Filter by alert/suspicious event name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Dealt",
+          "name": "dealed",
+          "desc": "Filter by handling status: Y (handled) or N (unhandled)",
+          "type": "String",
+          "values": ["Y", "N"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Levels",
+          "name": "levels",
+          "desc": "Filter by severity level: serious, suspicious, or remind",
+          "type": "String",
+          "values": ["serious", "suspicious", "remind"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Current Page",
+          "name": "current_page",
+          "desc": "Page number to return (default 1)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of records per page (default 20)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of alarm events",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Describe Alarm Event Detail",
+      "name": "describe_alarm_event_detail",
+      "type": "Enrichment",
+      "desc": "Retrieve the details of a specific Security Center alarm (alert) event.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Alarm Unique Info",
+          "name": "alarm_unique_info",
+          "desc": "The unique identifier of the alarm event (from Describe Alarm Events)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Alarm event details",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Handle Security Events",
+      "name": "handle_security_events",
+      "type": "Remediation",
+      "desc": "Handle (dispose of) one or more Security Center security/alert events, for example to block, ignore, or quarantine.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Security Event IDs",
+          "name": "security_event_ids",
+          "desc": "Comma-separated list of security event IDs to handle",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Operation Code",
+          "name": "operation_code",
+          "desc": "The handling operation to apply (e.g., block, kill_and_quarantine, ignore, manual_handled)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Operation Params",
+          "name": "operation_params",
+          "desc": "Operation parameters in JSON format, if required by the operation code",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Remark",
+          "name": "remark",
+          "desc": "A remark/note for the handling action",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Mark Batch",
+          "name": "mark_batch",
+          "desc": "Whether to apply the operation to all events of the same type (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Handling result",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
