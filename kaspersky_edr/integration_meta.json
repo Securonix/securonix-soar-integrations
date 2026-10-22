@@ -1,0 +1,16 @@
+{
+  "name": "kaspersky_edr",
+  "type": "python",
+  "clazz": "app.kaspersky_edr",
+  "label": "Kaspersky EDR",
+  "native": false,
+  "testUrl": "",
+  "category": "Endpoint Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Kaspersky EDR (Threat Response) integration. Perform EDR response actions on endpoints managed by Kaspersky Security Center (KSC): isolate a host, prevent execution of a file, quarantine or delete a file, retrieve a file, terminate a process, start a process, run an IOC scan, and run a malware scan. Actions are delivered via the KSC Open API HostGroup.AddIncident method over direct HTTPS/JSON. Authentication is via a KSC user account (session-based)."
+}

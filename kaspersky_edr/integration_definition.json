@@ -1,0 +1,727 @@
+{
+  "connectionParameters": [
+    {
+      "label": "KSC Host",
+      "name": "ksc_host",
+      "desc": "Kaspersky Security Center Administration Server address (hostname or IP)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "KSC Port",
+      "name": "ksc_port",
+      "desc": "Administration Server Open API port (default: 13299)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "KSC User",
+      "name": "ksc_user",
+      "desc": "Kaspersky Security Center internal user account name",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "KSC Password",
+      "name": "ksc_password",
+      "desc": "Kaspersky Security Center user account password",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify the KSC server SSL certificate (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Kaspersky EDR (Threat Response) integration. Perform EDR response actions on endpoints managed by Kaspersky Security Center (KSC): isolate a host, prevent execution of a file, quarantine or delete a file, retrieve a file, terminate a process, start a process, run an IOC scan, and run a malware scan. Actions are delivered via the KSC Open API HostGroup.AddIncident method over direct HTTPS/JSON. Authentication is via a KSC user account (session-based).",
+  "functions": [
+    {
+      "label": "Isolate Host",
+      "name": "isolate_host",
+      "type": "Containment",
+      "desc": "Isolate a host from the network, or turn off isolation.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Action",
+          "name": "action",
+          "desc": "Network isolation mode: 1 to turn on isolation, 0 to turn off",
+          "type": "String",
+          "values": ["1", "0"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Incident Area",
+          "name": "response_event_incident_area",
+          "desc": "Name of the application creating the response (default: Securonix SOAR)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Prevent Execution",
+      "name": "prevent_execution",
+      "type": "Containment",
+      "desc": "Prevent a file from running on a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Hash (MD5)",
+          "name": "hash",
+          "desc": "MD5 hash of the file to prevent from running",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Path to the file to prevent from running",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Case Sensitive",
+          "name": "case_sensitive",
+          "desc": "Case sensitivity when searching for the file name (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Quarantine File",
+      "name": "quarantine_file",
+      "type": "Containment",
+      "desc": "Move a file to Quarantine on a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Path to the file to quarantine",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "MD5 Hash",
+          "name": "md5hash",
+          "desc": "MD5 hash of the file to quarantine",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "SHA256 Hash",
+          "name": "sha256hash",
+          "desc": "SHA256 hash of the file to quarantine",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Delete File",
+      "name": "delete_file",
+      "type": "Containment",
+      "desc": "Delete a file on a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Path to the file to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "MD5 Hash",
+          "name": "md5hash",
+          "desc": "MD5 hash of the file to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "SHA256 Hash",
+          "name": "sha256hash",
+          "desc": "SHA256 hash of the file to delete",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Search In Subfolders",
+          "name": "search_in_subfolders",
+          "desc": "Recursively search subfolders for the file (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get File",
+      "name": "get_file",
+      "type": "Investigate",
+      "desc": "Retrieve a file from a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Path to the file to retrieve",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "MD5 Hash",
+          "name": "md5hash",
+          "desc": "MD5 hash of the file to retrieve",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "SHA256 Hash",
+          "name": "sha256hash",
+          "desc": "SHA256 hash of the file to retrieve",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Terminate Process",
+      "name": "terminate_process",
+      "type": "Containment",
+      "desc": "Terminate the process of a file on a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Path to the file whose process should be terminated",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "MD5 Hash",
+          "name": "md5hash",
+          "desc": "MD5 hash of the file whose process should be terminated",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "SHA256 Hash",
+          "name": "sha256hash",
+          "desc": "SHA256 hash of the file whose process should be terminated",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Case Sensitive",
+          "name": "case_sensitive",
+          "desc": "Case sensitivity when searching for the file name (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Start Process",
+      "name": "start_process",
+      "type": "Remediation",
+      "desc": "Start a process on a host.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Executable Path",
+          "name": "executable_path",
+          "desc": "Path to the executable file used to start the process",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Arguments",
+          "name": "arguments",
+          "desc": "Additional command line arguments for starting the process",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Working Folder",
+          "name": "working_folder",
+          "desc": "Path to the working folder of the process",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "IOC Scan",
+      "name": "ioc_scan",
+      "type": "Investigate",
+      "desc": "Run an IOC scan on a host, optionally isolating the host and quarantining detected objects.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IOC",
+          "name": "ioc",
+          "desc": "Base64-encoded ZIP archive containing the IOC files to scan with",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Isolate Host",
+          "name": "isolate_host",
+          "desc": "Isolate the host from the network if an indicator of compromise is detected (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Scan Critical Areas",
+          "name": "scan_critical_areas",
+          "desc": "Run a Critical Areas Scan if an indicator of compromise is detected (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Quarantine Object",
+          "name": "quarantine_object",
+          "desc": "Quarantine the malicious object if an indicator of compromise is detected (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Malware Scan",
+      "name": "on_demand_scan",
+      "type": "Investigate",
+      "desc": "Run a malware (on-demand) scan on a host for the specified files/folders and scan scope.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Target Host",
+          "name": "target_host",
+          "desc": "ID of the target computer in Kaspersky Security Center",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Path",
+          "name": "path",
+          "desc": "Space-delimited list of files and folders to scan",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Scan Type",
+          "name": "scan_type",
+          "desc": "Scan scope: a ScanObjectType name (e.g. Folder, SystemMemory, AllFixedDrives) or its integer id",
+          "type": "String",
+          "values": [
+            "SystemMemory",
+            "StartupObjectsAndRunningProcesses",
+            "DiskBootSectors",
+            "SystemBackupStorage",
+            "Email",
+            "Folder",
+            "AllRemovableDrives",
+            "AllNetworkDrives",
+            "AllFixedDrives"
+          ],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Recursive",
+          "name": "recursive",
+          "desc": "Recursive scanning mode (true/false)",
+          "type": "String",
+          "values": ["true", "false"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Created incident ID and task",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
