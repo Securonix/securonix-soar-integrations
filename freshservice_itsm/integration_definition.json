@@ -52,7 +52,6 @@
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID"
                 }
             ],
@@ -85,14 +84,12 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 },
                 {
                     "name": "component_id",
                     "label": "Component Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Component asset ID"
                 }
             ],
@@ -166,14 +163,12 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "attachment",
                     "label": "Attachment",
                     "type": "String",
-                    "required": false,
                     "desc": "File to attach"
                 }
             ],
@@ -206,14 +201,12 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "attachment",
                     "label": "Attachment",
                     "type": "String",
-                    "required": false,
                     "desc": "File to attach"
                 }
             ],
@@ -246,14 +239,12 @@
                     "name": "release_id",
                     "label": "Release Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Release ID"
                 },
                 {
                     "name": "attachment",
                     "label": "Attachment",
                     "type": "String",
-                    "required": false,
                     "desc": "File to attach"
                 }
             ],
@@ -418,14 +409,12 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 },
                 {
                     "name": "user_id",
                     "label": "User Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "User ID"
                 }
             ],
@@ -458,14 +447,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "attachment",
                     "label": "Attachment",
                     "type": "String",
-                    "required": false,
                     "desc": "File to attach"
                 }
             ],
@@ -498,28 +485,24 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "body",
                     "label": "Body",
                     "type": "String",
-                    "required": false,
                     "desc": "Note content"
                 },
                 {
                     "name": "private",
                     "label": "Private",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Make note private"
                 },
                 {
                     "name": "notify_emails",
                     "label": "Notify Emails",
                     "type": "Array",
-                    "required": false,
                     "desc": "Email addresses to notify"
                 }
             ],
@@ -552,35 +535,30 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "body",
                     "label": "Body",
                     "type": "String",
-                    "required": false,
                     "desc": "Reply content"
                 },
                 {
                     "name": "from_email",
                     "label": "From Email",
                     "type": "String",
-                    "required": false,
                     "desc": "From email address"
                 },
                 {
                     "name": "cc_emails",
                     "label": "Cc Emails",
                     "type": "Array",
-                    "required": false,
                     "desc": "CC email addresses"
                 },
                 {
                     "name": "bcc_emails",
                     "label": "Bcc Emails",
                     "type": "Array",
-                    "required": false,
                     "desc": "BCC email addresses"
                 }
             ],
@@ -613,14 +591,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "user_id",
                     "label": "User Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "User ID to add as watcher"
                 }
             ],
@@ -704,14 +680,12 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 },
                 {
                     "name": "contract_id",
                     "label": "Contract Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Contract ID"
                 }
             ],
@@ -773,7 +747,6 @@
                     "name": "ticket_ids",
                     "label": "Ticket Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "List of ticket IDs"
                 }
             ],
@@ -855,14 +828,12 @@
                     "name": "asset_ids",
                     "label": "Asset Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "List of asset display IDs"
                 },
                 {
                     "name": "properties",
                     "label": "Properties",
                     "type": "Object",
-                    "required": false,
                     "desc": "Properties to update"
                 }
             ],
@@ -895,14 +866,12 @@
                     "name": "ticket_ids",
                     "label": "Ticket Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "List of ticket IDs"
                 },
                 {
                     "name": "properties",
                     "label": "Properties",
                     "type": "Object",
-                    "required": false,
                     "desc": "Properties to update"
                 }
             ],
@@ -955,7 +924,6 @@
                     "name": "offboarding_request_id",
                     "label": "Offboarding Request Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Offboarding request ID"
                 }
             ],
@@ -988,7 +956,6 @@
                     "name": "onboarding_request_id",
                     "label": "Onboarding Request Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Onboarding request ID"
                 }
             ],
@@ -1143,7 +1110,6 @@
                     "name": "alert_id",
                     "label": "Alert Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Alert ID"
                 }
             ],
@@ -1176,119 +1142,102 @@
                     "name": "first_name",
                     "label": "First Name",
                     "type": "String",
-                    "required": false,
                     "desc": "First name"
                 },
                 {
                     "name": "last_name",
                     "label": "Last Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Last name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "job_title",
                     "label": "Job Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Job title"
                 },
                 {
                     "name": "work_phone_number",
                     "label": "Work Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Work phone number"
                 },
                 {
                     "name": "mobile_phone_number",
                     "label": "Mobile Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Mobile phone number"
                 },
                 {
                     "name": "department_ids",
                     "label": "Department Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Department IDs"
                 },
                 {
                     "name": "reporting_manager_id",
                     "label": "Reporting Manager Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Reporting manager ID"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 },
                 {
                     "name": "language",
                     "label": "Language",
                     "type": "String",
-                    "required": false,
                     "desc": "Language"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "background_information",
                     "label": "Background Information",
                     "type": "String",
-                    "required": false,
                     "desc": "Background information"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 },
                 {
                     "name": "roles",
                     "label": "Roles",
                     "type": "Array",
-                    "required": false,
                     "desc": "Role IDs"
                 },
                 {
                     "name": "group_ids",
                     "label": "Group Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Group IDs"
                 },
                 {
                     "name": "member_of",
                     "label": "Member Of",
                     "type": "Array",
-                    "required": false,
                     "desc": "Member of groups"
                 },
                 {
                     "name": "observer_of",
                     "label": "Observer Of",
                     "type": "Array",
-                    "required": false,
                     "desc": "Observer of groups"
                 }
             ],
@@ -1321,21 +1270,18 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Role name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "scopes",
                     "label": "Scopes",
                     "type": "Object",
-                    "required": false,
                     "desc": "Role scopes and permissions"
                 }
             ],
@@ -1368,35 +1314,30 @@
                     "name": "subject",
                     "label": "Subject",
                     "type": "String",
-                    "required": false,
                     "desc": "Alert subject"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Alert description"
                 },
                 {
                     "name": "priority",
                     "label": "Priority",
                     "type": "Number",
-                    "required": false,
                     "desc": "Priority"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "source",
                     "label": "Source",
                     "type": "String",
-                    "required": false,
                     "desc": "Alert source"
                 }
             ],
@@ -1449,98 +1390,84 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset name"
                 },
                 {
                     "name": "asset_type_id",
                     "label": "Asset Type Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Asset type ID"
                 },
                 {
                     "name": "asset_tag",
                     "label": "Asset Tag",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset tag"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "impact",
                     "label": "Impact",
                     "type": "String",
-                    "required": false,
                     "desc": "Impact (low, medium, high)"
                 },
                 {
                     "name": "author_type",
                     "label": "Author Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Author type"
                 },
                 {
                     "name": "usage_type",
                     "label": "Usage Type",
                     "type": "Number",
-                    "required": false,
                     "desc": "Usage type"
                 },
                 {
                     "name": "user_id",
                     "label": "User Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned user ID"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 },
                 {
                     "name": "assigned_on",
                     "label": "Assigned On",
                     "type": "String",
-                    "required": false,
                     "desc": "Assigned date (ISO8601)"
                 },
                 {
                     "name": "type_fields",
                     "label": "Type Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Type-specific fields"
                 }
             ],
@@ -1573,28 +1500,24 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset type name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "parent_asset_type_id",
                     "label": "Parent Asset Type Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Parent asset type ID"
                 },
                 {
                     "name": "visible",
                     "label": "Visible",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Visibility flag"
                 }
             ],
@@ -1769,28 +1692,24 @@
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Canned response title"
                 },
                 {
                     "name": "content",
                     "label": "Content",
                     "type": "String",
-                    "required": false,
                     "desc": "Response content"
                 },
                 {
                     "name": "folder_id",
                     "label": "Folder Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Folder ID"
                 },
                 {
                     "name": "visibility",
                     "label": "Visibility",
                     "type": "String",
-                    "required": false,
                     "desc": "Visibility (all, agents)"
                 }
             ],
@@ -1974,21 +1893,18 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "body",
                     "label": "Body",
                     "type": "String",
-                    "required": false,
                     "desc": "Note content"
                 },
                 {
                     "name": "notify_emails",
                     "label": "Notify Emails",
                     "type": "Array",
-                    "required": false,
                     "desc": "Email addresses to notify"
                 }
             ],
@@ -2021,21 +1937,18 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "related_id",
                     "label": "Related Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Related entity ID"
                 },
                 {
                     "name": "relationship_type",
                     "label": "Relationship Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Relationship type"
                 }
             ],
@@ -2068,49 +1981,42 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Task title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Task description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "due_date",
                     "label": "Due Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date (ISO8601)"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -2143,42 +2049,36 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time (ISO8601)"
                 },
                 {
                     "name": "time_spent",
                     "label": "Time Spent",
                     "type": "String",
-                    "required": false,
                     "desc": "Time spent"
                 },
                 {
                     "name": "billable",
                     "label": "Billable",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Billable flag"
                 },
                 {
                     "name": "note",
                     "label": "Note",
                     "type": "String",
-                    "required": false,
                     "desc": "Time entry note"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -2211,56 +2111,48 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Parent ticket ID"
                 },
                 {
                     "name": "subject",
                     "label": "Subject",
                     "type": "String",
-                    "required": false,
                     "desc": "Child ticket subject"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Child ticket description"
                 },
                 {
                     "name": "priority",
                     "label": "Priority",
                     "type": "Number",
-                    "required": false,
                     "desc": "Priority"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "type",
                     "label": "Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Ticket type"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -2293,105 +2185,90 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 },
                 {
                     "name": "contract_number",
                     "label": "Contract Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract number"
                 },
                 {
                     "name": "contract_type",
                     "label": "Contract Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract type (lease, maintenance, purchase, software_license, warranty)"
                 },
                 {
                     "name": "contract_term",
                     "label": "Contract Term",
                     "type": "Object",
-                    "required": false,
                     "desc": "Contract term details"
                 },
                 {
                     "name": "cost",
                     "label": "Cost",
                     "type": "Number",
-                    "required": false,
                     "desc": "Cost"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status (draft, in_review, expired, active, rejected)"
                 },
                 {
                     "name": "approver_id",
                     "label": "Approver Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Approver ID"
                 },
                 {
                     "name": "administrator_id",
                     "label": "Administrator Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Administrator ID"
                 },
                 {
                     "name": "start_date",
                     "label": "Start Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Start date (ISO8601)"
                 },
                 {
                     "name": "end_date",
                     "label": "End Date",
                     "type": "String",
-                    "required": false,
                     "desc": "End date (ISO8601)"
                 },
                 {
                     "name": "notify_expiry",
                     "label": "Notify Expiry",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Notify on expiry"
                 },
                 {
                     "name": "notify_before",
                     "label": "Notify Before",
                     "type": "Number",
-                    "required": false,
                     "desc": "Notify before (in days)"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 }
             ],
@@ -2424,14 +2301,12 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 },
                 {
                     "name": "data",
                     "label": "Data",
                     "type": "Object",
-                    "required": false,
                     "desc": "Record data (fields and values)"
                 }
             ],
@@ -2545,35 +2420,30 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Email config name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "server_type",
                     "label": "Server Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Server type (imap, pop3)"
                 },
                 {
                     "name": "server_host",
                     "label": "Server Host",
                     "type": "String",
-                    "required": false,
                     "desc": "Server host"
                 },
                 {
                     "name": "server_port",
                     "label": "Server Port",
                     "type": "Number",
-                    "required": false,
                     "desc": "Server port"
                 }
             ],
@@ -2606,21 +2476,18 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Policy name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "escalation_rules",
                     "label": "Escalation Rules",
                     "type": "Array",
-                    "required": false,
                     "desc": "Escalation rules"
                 }
             ],
@@ -2734,35 +2601,30 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Location name"
                 },
                 {
                     "name": "address",
                     "label": "Address",
                     "type": "Object",
-                    "required": false,
                     "desc": "Address details"
                 },
                 {
                     "name": "contact_name",
                     "label": "Contact Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Contact name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "phone",
                     "label": "Phone",
                     "type": "String",
-                    "required": false,
                     "desc": "Phone number"
                 }
             ],
@@ -2795,28 +2657,24 @@
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID (employee being offboarded)"
                 },
                 {
                     "name": "lookup_id",
                     "label": "Lookup Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Offboarding template ID"
                 },
                 {
                     "name": "fields",
                     "label": "Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Additional fields"
                 },
                 {
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Associated ticket ID"
                 }
             ],
@@ -2849,70 +2707,60 @@
                     "name": "first_name",
                     "label": "First Name",
                     "type": "String",
-                    "required": false,
                     "desc": "First name"
                 },
                 {
                     "name": "last_name",
                     "label": "Last Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Last name"
                 },
                 {
                     "name": "job_title",
                     "label": "Job Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Job title"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "reporting_manager_id",
                     "label": "Reporting Manager Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Reporting manager ID"
                 },
                 {
                     "name": "lookup_id",
                     "label": "Lookup Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Onboarding template ID"
                 },
                 {
                     "name": "fields",
                     "label": "Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Additional fields"
                 },
                 {
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Associated ticket ID"
                 }
             ],
@@ -2945,21 +2793,18 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Schedule name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 }
             ],
@@ -2992,56 +2837,48 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Shift name"
                 },
                 {
                     "name": "agent_ids",
                     "label": "Agent Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Agent IDs on the shift"
                 },
                 {
                     "name": "rotation_type",
                     "label": "Rotation Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Rotation type (daily, weekly, custom)"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time (ISO8601)"
                 },
                 {
                     "name": "end_time",
                     "label": "End Time",
                     "type": "String",
-                    "required": false,
                     "desc": "End time (ISO8601)"
                 },
                 {
                     "name": "restricted",
                     "label": "Restricted",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Restricted to specific days"
                 },
                 {
                     "name": "restriction",
                     "label": "Restriction",
                     "type": "Object",
-                    "required": false,
                     "desc": "Restriction details"
                 }
             ],
@@ -3114,91 +2951,78 @@
                     "name": "subject",
                     "label": "Subject",
                     "type": "String",
-                    "required": false,
                     "desc": "Problem subject"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Problem description"
                 },
                 {
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID"
                 },
                 {
                     "name": "priority",
                     "label": "Priority",
                     "type": "Number",
-                    "required": false,
                     "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "impact",
                     "label": "Impact",
                     "type": "Number",
-                    "required": false,
                     "desc": "Impact (1=Low, 2=Medium, 3=High)"
                 },
                 {
                     "name": "due_by",
                     "label": "Due By",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date (ISO8601)"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 },
                 {
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 },
                 {
                     "name": "category",
                     "label": "Category",
                     "type": "String",
-                    "required": false,
                     "desc": "Category"
                 },
                 {
                     "name": "sub_category",
                     "label": "Sub Category",
                     "type": "String",
-                    "required": false,
                     "desc": "Sub category"
                 },
                 {
                     "name": "item_category",
                     "label": "Item Category",
                     "type": "String",
-                    "required": false,
                     "desc": "Item category"
                 }
             ],
@@ -3231,21 +3055,18 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "body",
                     "label": "Body",
                     "type": "String",
-                    "required": false,
                     "desc": "Note content"
                 },
                 {
                     "name": "notify_emails",
                     "label": "Notify Emails",
                     "type": "Array",
-                    "required": false,
                     "desc": "Email addresses to notify"
                 }
             ],
@@ -3278,21 +3099,18 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "related_id",
                     "label": "Related Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Related entity ID"
                 },
                 {
                     "name": "relationship_type",
                     "label": "Relationship Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Relationship type"
                 }
             ],
@@ -3396,42 +3214,36 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time (ISO8601)"
                 },
                 {
                     "name": "time_spent",
                     "label": "Time Spent",
                     "type": "String",
-                    "required": false,
                     "desc": "Time spent"
                 },
                 {
                     "name": "billable",
                     "label": "Billable",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Billable flag"
                 },
                 {
                     "name": "note",
                     "label": "Note",
                     "type": "String",
-                    "required": false,
                     "desc": "Time entry note"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -3525,28 +3337,24 @@
                     "name": "project_id",
                     "label": "Project Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Project ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Milestone name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "due_date",
                     "label": "Due Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date (ISO8601)"
                 }
             ],
@@ -3579,112 +3387,96 @@
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Purchase order name"
                 },
                 {
                     "name": "po_number",
                     "label": "Po Number",
                     "type": "String",
-                    "required": false,
                     "desc": "PO number"
                 },
                 {
                     "name": "vendor_details",
                     "label": "Vendor Details",
                     "type": "String",
-                    "required": false,
                     "desc": "Vendor details"
                 },
                 {
                     "name": "expected_delivery_date",
                     "label": "Expected Delivery Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Expected delivery date (ISO8601)"
                 },
                 {
                     "name": "created_date",
                     "label": "Created Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Created date (ISO8601)"
                 },
                 {
                     "name": "shipping_address",
                     "label": "Shipping Address",
                     "type": "String",
-                    "required": false,
                     "desc": "Shipping address"
                 },
                 {
                     "name": "billing_same_as_shipping",
                     "label": "Billing Same As Shipping",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Billing same as shipping"
                 },
                 {
                     "name": "billing_address",
                     "label": "Billing Address",
                     "type": "String",
-                    "required": false,
                     "desc": "Billing address"
                 },
                 {
                     "name": "currency_code",
                     "label": "Currency Code",
                     "type": "String",
-                    "required": false,
                     "desc": "Currency code"
                 },
                 {
                     "name": "conversion_rate",
                     "label": "Conversion Rate",
                     "type": "Number",
-                    "required": false,
                     "desc": "Conversion rate"
                 },
                 {
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 },
                 {
                     "name": "discount_percentage",
                     "label": "Discount Percentage",
                     "type": "Number",
-                    "required": false,
                     "desc": "Discount percentage"
                 },
                 {
                     "name": "tax_percentage",
                     "label": "Tax Percentage",
                     "type": "Number",
-                    "required": false,
                     "desc": "Tax percentage"
                 },
                 {
                     "name": "shipping_cost",
                     "label": "Shipping Cost",
                     "type": "Number",
-                    "required": false,
                     "desc": "Shipping cost"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 }
             ],
@@ -3737,21 +3529,18 @@
                     "name": "release_id",
                     "label": "Release Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Release ID"
                 },
                 {
                     "name": "related_id",
                     "label": "Related Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Related entity ID"
                 },
                 {
                     "name": "relationship_type",
                     "label": "Relationship Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Relationship type"
                 }
             ],
@@ -3855,91 +3644,78 @@
                     "name": "first_name",
                     "label": "First Name",
                     "type": "String",
-                    "required": false,
                     "desc": "First name"
                 },
                 {
                     "name": "last_name",
                     "label": "Last Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Last name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "primary_email",
                     "label": "Primary Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Primary email"
                 },
                 {
                     "name": "work_phone_number",
                     "label": "Work Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Work phone number"
                 },
                 {
                     "name": "mobile_phone_number",
                     "label": "Mobile Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Mobile phone number"
                 },
                 {
                     "name": "department_ids",
                     "label": "Department Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Department IDs"
                 },
                 {
                     "name": "reporting_manager_id",
                     "label": "Reporting Manager Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Reporting manager ID"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 },
                 {
                     "name": "language",
                     "label": "Language",
                     "type": "String",
-                    "required": false,
                     "desc": "Language"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "background_information",
                     "label": "Background Information",
                     "type": "String",
-                    "required": false,
                     "desc": "Background information"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 }
             ],
@@ -4023,35 +3799,30 @@
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Maintenance title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time (ISO8601)"
                 },
                 {
                     "name": "end_time",
                     "label": "End Time",
                     "type": "String",
-                    "required": false,
                     "desc": "End time (ISO8601)"
                 },
                 {
                     "name": "maintenance_type",
                     "label": "Maintenance Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Maintenance type"
                 }
             ],
@@ -4246,28 +4017,24 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "SLA policy name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "is_default",
                     "label": "Is Default",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Default policy flag"
                 },
                 {
                     "name": "sla_target",
                     "label": "Sla Target",
                     "type": "Object",
-                    "required": false,
                     "desc": "SLA target configuration"
                 }
             ],
@@ -4300,42 +4067,36 @@
                     "name": "application_name",
                     "label": "Application Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Software name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "application_type",
                     "label": "Application Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Application type"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status (managed, ignored, needs_review, restricted)"
                 },
                 {
                     "name": "publisher_id",
                     "label": "Publisher Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Publisher/vendor ID"
                 },
                 {
                     "name": "notes",
                     "label": "Notes",
                     "type": "String",
-                    "required": false,
                     "desc": "Notes"
                 }
             ],
@@ -4368,28 +4129,24 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 },
                 {
                     "name": "license_key",
                     "label": "License Key",
                     "type": "String",
-                    "required": false,
                     "desc": "License key"
                 },
                 {
                     "name": "license_type",
                     "label": "License Type",
                     "type": "String",
-                    "required": false,
                     "desc": "License type"
                 },
                 {
                     "name": "total_count",
                     "label": "Total Count",
                     "type": "Number",
-                    "required": false,
                     "desc": "Total license count"
                 }
             ],
@@ -4553,21 +4310,18 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Component name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Component description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status (operational, degraded_performance, partial_outage, major_outage)"
                 }
             ],
@@ -4600,28 +4354,24 @@
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Incident title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Incident description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status (investigating, identified, monitoring, resolved)"
                 },
                 {
                     "name": "affected_components",
                     "label": "Affected Components",
                     "type": "Array",
-                    "required": false,
                     "desc": "Affected component IDs"
                 }
             ],
@@ -4654,35 +4404,30 @@
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Maintenance title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Maintenance description"
                 },
                 {
                     "name": "scheduled_start_time",
                     "label": "Scheduled Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Scheduled start time (ISO8601)"
                 },
                 {
                     "name": "scheduled_end_time",
                     "label": "Scheduled End Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Scheduled end time (ISO8601)"
                 },
                 {
                     "name": "affected_components",
                     "label": "Affected Components",
                     "type": "Array",
-                    "required": false,
                     "desc": "Affected component IDs"
                 }
             ],
@@ -4907,21 +4652,18 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "related_ticket_id",
                     "label": "Related Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Related ticket ID"
                 },
                 {
                     "name": "relationship_type",
                     "label": "Relationship Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Relationship type (parent, child, related, depends_on, blocks)"
                 }
             ],
@@ -4954,56 +4696,48 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Task title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Task description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status (1=Open, 2=In Progress, 3=Completed)"
                 },
                 {
                     "name": "due_date",
                     "label": "Due Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date (ISO8601)"
                 },
                 {
                     "name": "notify_before",
                     "label": "Notify Before",
                     "type": "Number",
-                    "required": false,
                     "desc": "Notify before (in hours)"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -5036,42 +4770,36 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time (ISO8601)"
                 },
                 {
                     "name": "time_spent",
                     "label": "Time Spent",
                     "type": "String",
-                    "required": false,
                     "desc": "Time spent (e.g., '01:30')"
                 },
                 {
                     "name": "billable",
                     "label": "Billable",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Billable flag"
                 },
                 {
                     "name": "note",
                     "label": "Note",
                     "type": "String",
-                    "required": false,
                     "desc": "Time entry note"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -5165,14 +4893,12 @@
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Workspace name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Workspace description"
                 }
             ],
@@ -5205,7 +4931,6 @@
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -5238,7 +4963,6 @@
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID"
                 }
             ],
@@ -5271,7 +4995,6 @@
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -5304,7 +5027,6 @@
                     "name": "role_id",
                     "label": "Role Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Role ID"
                 }
             ],
@@ -5337,7 +5059,6 @@
                     "name": "alert_id",
                     "label": "Alert Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Alert ID"
                 }
             ],
@@ -5390,7 +5111,6 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 }
             ],
@@ -5423,7 +5143,6 @@
                     "name": "asset_type_id",
                     "label": "Asset Type Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Asset type ID"
                 }
             ],
@@ -5558,7 +5277,6 @@
                     "name": "canned_response_id",
                     "label": "Canned Response Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Canned response ID"
                 }
             ],
@@ -5611,14 +5329,12 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "attachment_id",
                     "label": "Attachment Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Attachment ID"
                 }
             ],
@@ -5651,14 +5367,12 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "task_id",
                     "label": "Task Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Task ID"
                 }
             ],
@@ -5691,7 +5405,6 @@
                     "name": "contract_id",
                     "label": "Contract Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Contract ID"
                 }
             ],
@@ -5724,14 +5437,12 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 },
                 {
                     "name": "record_id",
                     "label": "Record Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Record ID"
                 }
             ],
@@ -5815,7 +5526,6 @@
                     "name": "policy_id",
                     "label": "Policy Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Escalation policy ID"
                 }
             ],
@@ -5879,7 +5589,6 @@
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 }
             ],
@@ -5912,7 +5621,6 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 }
             ],
@@ -5945,14 +5653,12 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 },
                 {
                     "name": "shift_id",
                     "label": "Shift Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Shift ID"
                 }
             ],
@@ -6025,7 +5731,6 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 }
             ],
@@ -6058,14 +5763,12 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "attachment_id",
                     "label": "Attachment Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Attachment ID"
                 }
             ],
@@ -6129,7 +5832,6 @@
                     "name": "purchase_order_id",
                     "label": "Purchase Order Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Purchase order ID"
                 }
             ],
@@ -6182,14 +5884,12 @@
                     "name": "release_id",
                     "label": "Release Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Release ID"
                 },
                 {
                     "name": "attachment_id",
                     "label": "Attachment Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Attachment ID"
                 }
             ],
@@ -6222,7 +5922,6 @@
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID"
                 }
             ],
@@ -6379,7 +6078,6 @@
                     "name": "sla_policy_id",
                     "label": "Sla Policy Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "SLA policy ID"
                 }
             ],
@@ -6412,7 +6110,6 @@
                     "name": "software_id",
                     "label": "Software Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Software ID"
                 }
             ],
@@ -6639,14 +6336,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "attachment_id",
                     "label": "Attachment Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Attachment ID"
                 }
             ],
@@ -6679,14 +6374,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "conversation_id",
                     "label": "Conversation Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Conversation ID"
                 }
             ],
@@ -6719,14 +6412,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "relationship_id",
                     "label": "Relationship Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Relationship ID"
                 }
             ],
@@ -6759,14 +6450,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "task_id",
                     "label": "Task Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Task ID"
                 }
             ],
@@ -6799,14 +6488,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "time_entry_id",
                     "label": "Time Entry Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Time entry ID"
                 }
             ],
@@ -6839,7 +6526,6 @@
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 }
             ],
@@ -6872,7 +6558,6 @@
                     "name": "workspace_id",
                     "label": "Workspace Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Workspace ID"
                 }
             ],
@@ -6905,14 +6590,12 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 },
                 {
                     "name": "contract_id",
                     "label": "Contract Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Contract ID"
                 }
             ],
@@ -6945,14 +6628,12 @@
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter criteria"
                 },
                 {
                     "name": "format",
                     "label": "Format",
                     "type": "String",
-                    "required": false,
                     "desc": "Export format (csv, xlsx)"
                 }
             ],
@@ -6985,14 +6666,12 @@
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter criteria"
                 },
                 {
                     "name": "format",
                     "label": "Format",
                     "type": "String",
-                    "required": false,
                     "desc": "Export format (csv, xlsx)"
                 }
             ],
@@ -7118,7 +6797,6 @@
                     "name": "role_id",
                     "label": "Role Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Role ID"
                 }
             ],
@@ -7151,14 +6829,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -7271,7 +6947,6 @@
                     "name": "alert_id",
                     "label": "Alert Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Alert ID"
                 }
             ],
@@ -7304,21 +6979,18 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 },
                 {
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter name"
                 }
             ],
@@ -7707,7 +7379,6 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 }
             ],
@@ -7740,7 +7411,6 @@
                     "name": "form_id",
                     "label": "Form Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Form ID"
                 }
             ],
@@ -7773,14 +7443,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -7813,7 +7481,6 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 }
             ],
@@ -7846,7 +7513,6 @@
                     "name": "asset_type_id",
                     "label": "Asset Type Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Asset type ID"
                 }
             ],
@@ -7879,14 +7545,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -8069,14 +7733,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -8109,7 +7771,6 @@
                     "name": "business_hours_id",
                     "label": "Business Hours Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Business hours ID"
                 }
             ],
@@ -8357,7 +8018,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8508,7 +8168,6 @@
                     "name": "form_id",
                     "label": "Form Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Form ID"
                 }
             ],
@@ -8541,14 +8200,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -8581,7 +8238,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8614,7 +8270,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8647,7 +8302,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8680,7 +8334,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8713,7 +8366,6 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 }
             ],
@@ -8777,7 +8429,6 @@
                     "name": "resource_id",
                     "label": "Resource Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Cloud resource ID"
                 }
             ],
@@ -8810,14 +8461,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -8912,7 +8561,6 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 }
             ],
@@ -8945,14 +8593,12 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 },
                 {
                     "name": "record_id",
                     "label": "Record Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Record ID"
                 }
             ],
@@ -8985,21 +8631,18 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9032,14 +8675,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9134,7 +8775,6 @@
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 }
             ],
@@ -9216,7 +8856,6 @@
                     "name": "device_id",
                     "label": "Device Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Device ID"
                 }
             ],
@@ -9249,14 +8888,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9289,14 +8926,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9329,14 +8964,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9369,7 +9002,6 @@
                     "name": "policy_id",
                     "label": "Policy Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Escalation policy ID"
                 }
             ],
@@ -9585,7 +9217,6 @@
                     "name": "offboarding_request_id",
                     "label": "Offboarding Request Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Offboarding request ID"
                 }
             ],
@@ -9618,21 +9249,18 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 },
                 {
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter name"
                 }
             ],
@@ -9665,7 +9293,6 @@
                     "name": "onboarding_request_id",
                     "label": "Onboarding Request Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Onboarding request ID"
                 }
             ],
@@ -9698,21 +9325,18 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 },
                 {
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter name"
                 }
             ],
@@ -9745,7 +9369,6 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 }
             ],
@@ -9778,14 +9401,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -9818,7 +9439,6 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 }
             ],
@@ -9975,7 +9595,6 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 }
             ],
@@ -10008,14 +9627,12 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "include",
                     "label": "Include",
                     "type": "String",
-                    "required": false,
                     "desc": "Comma-separated list of includes"
                 }
             ],
@@ -10048,7 +9665,6 @@
                     "name": "form_id",
                     "label": "Form Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Form ID"
                 }
             ],
@@ -10099,14 +9715,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -10139,7 +9753,6 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 }
             ],
@@ -10172,7 +9785,6 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 }
             ],
@@ -10254,7 +9866,6 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 }
             ],
@@ -10287,28 +9898,24 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 },
                 {
                     "name": "filter",
                     "label": "Filter",
                     "type": "String",
-                    "required": false,
                     "desc": "Filter name"
                 },
                 {
                     "name": "include",
                     "label": "Include",
                     "type": "String",
-                    "required": false,
                     "desc": "Comma-separated list of includes"
                 }
             ],
@@ -10380,7 +9987,6 @@
                     "name": "project_id",
                     "label": "Project Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Project ID"
                 }
             ],
@@ -10413,7 +10019,6 @@
                     "name": "purchase_order_id",
                     "label": "Purchase Order Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Purchase order ID"
                 }
             ],
@@ -10446,14 +10051,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -10584,7 +10187,6 @@
                     "name": "release_id",
                     "label": "Release Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Release ID"
                 }
             ],
@@ -10977,14 +10579,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11366,14 +10966,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11406,7 +11004,6 @@
                     "name": "software_id",
                     "label": "Software Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Software ID"
                 }
             ],
@@ -11439,21 +11036,18 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11486,7 +11080,6 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 }
             ],
@@ -11519,21 +11112,18 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application/Software ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11801,14 +11391,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11841,14 +11429,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11881,14 +11467,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11921,21 +11505,18 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -11968,7 +11549,6 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 }
             ],
@@ -12042,21 +11622,18 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -12089,7 +11666,6 @@
                     "name": "form_id",
                     "label": "Form Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Form ID"
                 }
             ],
@@ -12140,14 +11716,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -12180,7 +11754,6 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 }
             ],
@@ -12213,7 +11786,6 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 }
             ],
@@ -12246,21 +11818,18 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -12293,7 +11862,6 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 }
             ],
@@ -12549,7 +12117,6 @@
                     "name": "workspace_id",
                     "label": "Workspace Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Workspace ID"
                 }
             ],
@@ -12582,14 +12149,12 @@
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -12622,14 +12187,12 @@
                     "name": "primary_requester_id",
                     "label": "Primary Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Primary requester ID"
                 },
                 {
                     "name": "secondary_requester_id",
                     "label": "Secondary Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Secondary requester ID to merge"
                 }
             ],
@@ -12662,14 +12225,12 @@
                     "name": "primary_ticket_id",
                     "label": "Primary Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Primary ticket ID (target)"
                 },
                 {
                     "name": "secondary_ticket_ids",
                     "label": "Secondary Ticket Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "List of ticket IDs to merge"
                 }
             ],
@@ -12743,14 +12304,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "workspace_id",
                     "label": "Workspace Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Target workspace ID"
                 }
             ],
@@ -12844,7 +12403,6 @@
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 }
             ],
@@ -12938,14 +12496,12 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 },
                 {
                     "name": "user_id",
                     "label": "User Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "User ID"
                 }
             ],
@@ -12978,14 +12534,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "watcher_id",
                     "label": "Watcher Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Watcher ID to remove"
                 }
             ],
@@ -13059,7 +12613,6 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 }
             ],
@@ -13224,7 +12777,6 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 }
             ],
@@ -13257,21 +12809,18 @@
                     "name": "query",
                     "label": "Query",
                     "type": "String",
-                    "required": false,
                     "desc": "Search query"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -13304,21 +12853,18 @@
                     "name": "query",
                     "label": "Query",
                     "type": "String",
-                    "required": false,
                     "desc": "Search query"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -13351,21 +12897,18 @@
                     "name": "query",
                     "label": "Query",
                     "type": "String",
-                    "required": false,
                     "desc": "Search query"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -13398,21 +12941,18 @@
                     "name": "query",
                     "label": "Query",
                     "type": "String",
-                    "required": false,
                     "desc": "Search query"
                 },
                 {
                     "name": "page",
                     "label": "Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Page number"
                 },
                 {
                     "name": "per_page",
                     "label": "Per Page",
                     "type": "Number",
-                    "required": false,
                     "desc": "Results per page"
                 }
             ],
@@ -13557,14 +13097,12 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID to split"
                 },
                 {
                     "name": "split_items",
                     "label": "Split Items",
                     "type": "Array",
-                    "required": false,
                     "desc": "List of split ticket details"
                 }
             ],
@@ -13658,126 +13196,108 @@
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Agent ID"
                 },
                 {
                     "name": "first_name",
                     "label": "First Name",
                     "type": "String",
-                    "required": false,
                     "desc": "First name"
                 },
                 {
                     "name": "last_name",
                     "label": "Last Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Last name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "job_title",
                     "label": "Job Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Job title"
                 },
                 {
                     "name": "work_phone_number",
                     "label": "Work Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Work phone number"
                 },
                 {
                     "name": "mobile_phone_number",
                     "label": "Mobile Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Mobile phone number"
                 },
                 {
                     "name": "department_ids",
                     "label": "Department Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Department IDs"
                 },
                 {
                     "name": "reporting_manager_id",
                     "label": "Reporting Manager Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Reporting manager ID"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 },
                 {
                     "name": "language",
                     "label": "Language",
                     "type": "String",
-                    "required": false,
                     "desc": "Language"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "background_information",
                     "label": "Background Information",
                     "type": "String",
-                    "required": false,
                     "desc": "Background information"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 },
                 {
                     "name": "roles",
                     "label": "Roles",
                     "type": "Array",
-                    "required": false,
                     "desc": "Role IDs"
                 },
                 {
                     "name": "group_ids",
                     "label": "Group Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Group IDs"
                 },
                 {
                     "name": "member_of",
                     "label": "Member Of",
                     "type": "Array",
-                    "required": false,
                     "desc": "Member of groups"
                 },
                 {
                     "name": "observer_of",
                     "label": "Observer Of",
                     "type": "Array",
-                    "required": false,
                     "desc": "Observer of groups"
                 }
             ],
@@ -13810,28 +13330,24 @@
                     "name": "role_id",
                     "label": "Role Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Role ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Role name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "scopes",
                     "label": "Scopes",
                     "type": "Object",
-                    "required": false,
                     "desc": "Role scopes and permissions"
                 }
             ],
@@ -13864,35 +13380,30 @@
                     "name": "alert_id",
                     "label": "Alert Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Alert ID"
                 },
                 {
                     "name": "subject",
                     "label": "Subject",
                     "type": "String",
-                    "required": false,
                     "desc": "Alert subject"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Alert description"
                 },
                 {
                     "name": "priority",
                     "label": "Priority",
                     "type": "Number",
-                    "required": false,
                     "desc": "Priority"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 }
             ],
@@ -13945,84 +13456,72 @@
                     "name": "display_id",
                     "label": "Display Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset display ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "asset_tag",
                     "label": "Asset Tag",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset tag"
                 },
                 {
                     "name": "impact",
                     "label": "Impact",
                     "type": "String",
-                    "required": false,
                     "desc": "Impact"
                 },
                 {
                     "name": "usage_type",
                     "label": "Usage Type",
                     "type": "Number",
-                    "required": false,
                     "desc": "Usage type"
                 },
                 {
                     "name": "user_id",
                     "label": "User Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned user ID"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "department_id",
                     "label": "Department Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Department ID"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 },
                 {
                     "name": "type_fields",
                     "label": "Type Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Type-specific fields"
                 }
             ],
@@ -14055,28 +13554,24 @@
                     "name": "asset_type_id",
                     "label": "Asset Type Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Asset type ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Asset type name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "visible",
                     "label": "Visible",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Visibility flag"
                 }
             ],
@@ -14251,28 +13746,24 @@
                     "name": "canned_response_id",
                     "label": "Canned Response Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Canned response ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Canned response title"
                 },
                 {
                     "name": "content",
                     "label": "Content",
                     "type": "String",
-                    "required": false,
                     "desc": "Response content"
                 },
                 {
                     "name": "visibility",
                     "label": "Visibility",
                     "type": "String",
-                    "required": false,
                     "desc": "Visibility"
                 }
             ],
@@ -14325,56 +13816,48 @@
                     "name": "change_id",
                     "label": "Change Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Change ID"
                 },
                 {
                     "name": "task_id",
                     "label": "Task Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Task ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Task title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Task description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "due_date",
                     "label": "Due Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -14407,84 +13890,72 @@
                     "name": "contract_id",
                     "label": "Contract Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Contract ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 },
                 {
                     "name": "contract_number",
                     "label": "Contract Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract number"
                 },
                 {
                     "name": "contract_type",
                     "label": "Contract Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Contract type"
                 },
                 {
                     "name": "cost",
                     "label": "Cost",
                     "type": "Number",
-                    "required": false,
                     "desc": "Cost"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "start_date",
                     "label": "Start Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Start date"
                 },
                 {
                     "name": "end_date",
                     "label": "End Date",
                     "type": "String",
-                    "required": false,
                     "desc": "End date"
                 },
                 {
                     "name": "notify_expiry",
                     "label": "Notify Expiry",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Notify on expiry"
                 },
                 {
                     "name": "notify_before",
                     "label": "Notify Before",
                     "type": "Number",
-                    "required": false,
                     "desc": "Notify before"
                 }
             ],
@@ -14517,21 +13988,18 @@
                     "name": "object_id",
                     "label": "Object Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Custom object ID"
                 },
                 {
                     "name": "record_id",
                     "label": "Record Id",
                     "type": "String",
-                    "required": false,
                     "desc": "Record ID"
                 },
                 {
                     "name": "data",
                     "label": "Data",
                     "type": "Object",
-                    "required": false,
                     "desc": "Updated record data"
                 }
             ],
@@ -14655,28 +14123,24 @@
                     "name": "policy_id",
                     "label": "Policy Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Escalation policy ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Policy name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "escalation_rules",
                     "label": "Escalation Rules",
                     "type": "Array",
-                    "required": false,
                     "desc": "Escalation rules"
                 }
             ],
@@ -14780,42 +14244,36 @@
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Location name"
                 },
                 {
                     "name": "address",
                     "label": "Address",
                     "type": "Object",
-                    "required": false,
                     "desc": "Address details"
                 },
                 {
                     "name": "contact_name",
                     "label": "Contact Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Contact name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "phone",
                     "label": "Phone",
                     "type": "String",
-                    "required": false,
                     "desc": "Phone number"
                 }
             ],
@@ -14848,28 +14306,24 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Schedule name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 }
             ],
@@ -14902,49 +14356,42 @@
                     "name": "schedule_id",
                     "label": "Schedule Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Schedule ID"
                 },
                 {
                     "name": "shift_id",
                     "label": "Shift Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Shift ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Shift name"
                 },
                 {
                     "name": "agent_ids",
                     "label": "Agent Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Agent IDs"
                 },
                 {
                     "name": "rotation_type",
                     "label": "Rotation Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Rotation type"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time"
                 },
                 {
                     "name": "end_time",
                     "label": "End Time",
                     "type": "String",
-                    "required": false,
                     "desc": "End time"
                 }
             ],
@@ -15017,63 +14464,54 @@
                     "name": "problem_id",
                     "label": "Problem Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Problem ID"
                 },
                 {
                     "name": "subject",
                     "label": "Subject",
                     "type": "String",
-                    "required": false,
                     "desc": "Problem subject"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Problem description"
                 },
                 {
                     "name": "priority",
                     "label": "Priority",
                     "type": "Number",
-                    "required": false,
                     "desc": "Priority"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "impact",
                     "label": "Impact",
                     "type": "Number",
-                    "required": false,
                     "desc": "Impact"
                 },
                 {
                     "name": "due_by",
                     "label": "Due By",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -15177,77 +14615,66 @@
                     "name": "purchase_order_id",
                     "label": "Purchase Order Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Purchase order ID"
                 },
                 {
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Purchase order name"
                 },
                 {
                     "name": "po_number",
                     "label": "Po Number",
                     "type": "String",
-                    "required": false,
                     "desc": "PO number"
                 },
                 {
                     "name": "vendor_details",
                     "label": "Vendor Details",
                     "type": "String",
-                    "required": false,
                     "desc": "Vendor details"
                 },
                 {
                     "name": "expected_delivery_date",
                     "label": "Expected Delivery Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Expected delivery date"
                 },
                 {
                     "name": "shipping_address",
                     "label": "Shipping Address",
                     "type": "String",
-                    "required": false,
                     "desc": "Shipping address"
                 },
                 {
                     "name": "billing_address",
                     "label": "Billing Address",
                     "type": "String",
-                    "required": false,
                     "desc": "Billing address"
                 },
                 {
                     "name": "discount_percentage",
                     "label": "Discount Percentage",
                     "type": "Number",
-                    "required": false,
                     "desc": "Discount percentage"
                 },
                 {
                     "name": "tax_percentage",
                     "label": "Tax Percentage",
                     "type": "Number",
-                    "required": false,
                     "desc": "Tax percentage"
                 },
                 {
                     "name": "shipping_cost",
                     "label": "Shipping Cost",
                     "type": "Number",
-                    "required": false,
                     "desc": "Shipping cost"
                 }
             ],
@@ -15300,91 +14727,78 @@
                     "name": "requester_id",
                     "label": "Requester Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Requester ID"
                 },
                 {
                     "name": "first_name",
                     "label": "First Name",
                     "type": "String",
-                    "required": false,
                     "desc": "First name"
                 },
                 {
                     "name": "last_name",
                     "label": "Last Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Last name"
                 },
                 {
                     "name": "email",
                     "label": "Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Email address"
                 },
                 {
                     "name": "work_phone_number",
                     "label": "Work Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Work phone number"
                 },
                 {
                     "name": "mobile_phone_number",
                     "label": "Mobile Phone Number",
                     "type": "String",
-                    "required": false,
                     "desc": "Mobile phone number"
                 },
                 {
                     "name": "department_ids",
                     "label": "Department Ids",
                     "type": "Array",
-                    "required": false,
                     "desc": "Department IDs"
                 },
                 {
                     "name": "reporting_manager_id",
                     "label": "Reporting Manager Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Reporting manager ID"
                 },
                 {
                     "name": "time_zone",
                     "label": "Time Zone",
                     "type": "String",
-                    "required": false,
                     "desc": "Time zone"
                 },
                 {
                     "name": "language",
                     "label": "Language",
                     "type": "String",
-                    "required": false,
                     "desc": "Language"
                 },
                 {
                     "name": "location_id",
                     "label": "Location Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Location ID"
                 },
                 {
                     "name": "background_information",
                     "label": "Background Information",
                     "type": "String",
-                    "required": false,
                     "desc": "Background information"
                 },
                 {
                     "name": "custom_fields",
                     "label": "Custom Fields",
                     "type": "Object",
-                    "required": false,
                     "desc": "Custom field values"
                 }
             ],
@@ -15762,35 +15176,30 @@
                     "name": "sla_policy_id",
                     "label": "Sla Policy Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "SLA policy ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "SLA policy name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "is_default",
                     "label": "Is Default",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Default policy flag"
                 },
                 {
                     "name": "sla_target",
                     "label": "Sla Target",
                     "type": "Object",
-                    "required": false,
                     "desc": "SLA target configuration"
                 }
             ],
@@ -15823,49 +15232,42 @@
                     "name": "software_id",
                     "label": "Software Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Software ID"
                 },
                 {
                     "name": "application_name",
                     "label": "Application Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Software name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "application_type",
                     "label": "Application Type",
                     "type": "String",
-                    "required": false,
                     "desc": "Application type"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "publisher_id",
                     "label": "Publisher Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Publisher/vendor ID"
                 },
                 {
                     "name": "notes",
                     "label": "Notes",
                     "type": "String",
-                    "required": false,
                     "desc": "Notes"
                 }
             ],
@@ -15898,35 +15300,30 @@
                     "name": "application_id",
                     "label": "Application Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Application ID"
                 },
                 {
                     "name": "license_id",
                     "label": "License Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "License ID"
                 },
                 {
                     "name": "license_key",
                     "label": "License Key",
                     "type": "String",
-                    "required": false,
                     "desc": "License key"
                 },
                 {
                     "name": "license_type",
                     "label": "License Type",
                     "type": "String",
-                    "required": false,
                     "desc": "License type"
                 },
                 {
                     "name": "total_count",
                     "label": "Total Count",
                     "type": "Number",
-                    "required": false,
                     "desc": "Total license count"
                 }
             ],
@@ -16019,35 +15416,30 @@
                     "name": "incident_id",
                     "label": "Incident Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Incident ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Incident title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Incident description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "String",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "affected_components",
                     "label": "Affected Components",
                     "type": "Array",
-                    "required": false,
                     "desc": "Affected component IDs"
                 }
             ],
@@ -16254,21 +15646,18 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "conversation_id",
                     "label": "Conversation Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Conversation ID"
                 },
                 {
                     "name": "body",
                     "label": "Body",
                     "type": "String",
-                    "required": false,
                     "desc": "Updated content"
                 }
             ],
@@ -16301,63 +15690,54 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "task_id",
                     "label": "Task Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Task ID"
                 },
                 {
                     "name": "title",
                     "label": "Title",
                     "type": "String",
-                    "required": false,
                     "desc": "Task title"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Task description"
                 },
                 {
                     "name": "status",
                     "label": "Status",
                     "type": "Number",
-                    "required": false,
                     "desc": "Status"
                 },
                 {
                     "name": "due_date",
                     "label": "Due Date",
                     "type": "String",
-                    "required": false,
                     "desc": "Due date"
                 },
                 {
                     "name": "notify_before",
                     "label": "Notify Before",
                     "type": "Number",
-                    "required": false,
                     "desc": "Notify before"
                 },
                 {
                     "name": "agent_id",
                     "label": "Agent Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned agent ID"
                 },
                 {
                     "name": "group_id",
                     "label": "Group Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Assigned group ID"
                 }
             ],
@@ -16390,42 +15770,36 @@
                     "name": "ticket_id",
                     "label": "Ticket Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Ticket ID"
                 },
                 {
                     "name": "time_entry_id",
                     "label": "Time Entry Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Time entry ID"
                 },
                 {
                     "name": "start_time",
                     "label": "Start Time",
                     "type": "String",
-                    "required": false,
                     "desc": "Start time"
                 },
                 {
                     "name": "time_spent",
                     "label": "Time Spent",
                     "type": "String",
-                    "required": false,
                     "desc": "Time spent"
                 },
                 {
                     "name": "billable",
                     "label": "Billable",
                     "type": "Boolean",
-                    "required": false,
                     "desc": "Billable flag"
                 },
                 {
                     "name": "note",
                     "label": "Note",
                     "type": "String",
-                    "required": false,
                     "desc": "Time entry note"
                 }
             ],
@@ -16458,42 +15832,36 @@
                     "name": "vendor_id",
                     "label": "Vendor Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Vendor ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Vendor name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Description"
                 },
                 {
                     "name": "primary_email",
                     "label": "Primary Email",
                     "type": "String",
-                    "required": false,
                     "desc": "Primary email"
                 },
                 {
                     "name": "contact_name",
                     "label": "Contact Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Contact name"
                 },
                 {
                     "name": "phone",
                     "label": "Phone",
                     "type": "String",
-                    "required": false,
                     "desc": "Phone number"
                 }
             ],
@@ -16526,21 +15894,18 @@
                     "name": "workspace_id",
                     "label": "Workspace Id",
                     "type": "Number",
-                    "required": false,
                     "desc": "Workspace ID"
                 },
                 {
                     "name": "name",
                     "label": "Name",
                     "type": "String",
-                    "required": false,
                     "desc": "Workspace name"
                 },
                 {
                     "name": "description",
                     "label": "Description",
                     "type": "String",
-                    "required": false,
                     "desc": "Workspace description"
                 }
             ],
