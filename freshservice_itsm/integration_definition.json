@@ -26,14 +26,8 @@
             "desc": "Verify SSL certificate when connecting to Freshservice API",
             "type": "Boolean",
             "values": [
-                {
-                    "label": "True",
-                    "value": "true"
-                },
-                {
-                    "label": "False",
-                    "value": "false"
-                }
+                "true",
+                "false"
             ],
             "isSecret": false,
             "optional": true,
@@ -7325,22 +7319,10 @@
                     "desc": "Ticket type",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Incident",
-                            "value": "Incident"
-                        },
-                        {
-                            "label": "Service Request",
-                            "value": "Service Request"
-                        },
-                        {
-                            "label": "Problem",
-                            "value": "Problem"
-                        },
-                        {
-                            "label": "Change",
-                            "value": "Change"
-                        }
+                        "Incident",
+                        "Service Request",
+                        "Problem",
+                        "Change"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -7354,22 +7336,10 @@
                     "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
                     "type": "Number",
                     "values": [
-                        {
-                            "label": "Low",
-                            "value": "1"
-                        },
-                        {
-                            "label": "Medium",
-                            "value": "2"
-                        },
-                        {
-                            "label": "High",
-                            "value": "3"
-                        },
-                        {
-                            "label": "Urgent",
-                            "value": "4"
-                        }
+                        "1",
+                        "2",
+                        "3",
+                        "4"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -7383,22 +7353,10 @@
                     "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
                     "type": "Number",
                     "values": [
-                        {
-                            "label": "Open",
-                            "value": "1"
-                        },
-                        {
-                            "label": "Pending",
-                            "value": "2"
-                        },
-                        {
-                            "label": "Resolved",
-                            "value": "3"
-                        },
-                        {
-                            "label": "Closed",
-                            "value": "4"
-                        }
+                        "1",
+                        "2",
+                        "3",
+                        "4"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -11079,14 +11037,8 @@
                     "desc": "Filter by state (fulltime, occasional)",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Fulltime",
-                            "value": "fulltime"
-                        },
-                        {
-                            "label": "Occasional",
-                            "value": "occasional"
-                        }
+                        "fulltime",
+                        "occasional"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -12090,14 +12042,8 @@
                     "desc": "Order type (asc/desc)",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Ascending",
-                            "value": "asc"
-                        },
-                        {
-                            "label": "Descending",
-                            "value": "desc"
-                        }
+                        "asc",
+                        "desc"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -12123,14 +12069,8 @@
                     "desc": "Include trashed assets",
                     "type": "Boolean",
                     "values": [
-                        {
-                            "label": "True",
-                            "value": "true"
-                        },
-                        {
-                            "label": "False",
-                            "value": "false"
-                        }
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -18312,22 +18252,10 @@
                     "desc": "Filter name (new_and_my_open, watching, spam, deleted)",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "New and My Open",
-                            "value": "new_and_my_open"
-                        },
-                        {
-                            "label": "Watching",
-                            "value": "watching"
-                        },
-                        {
-                            "label": "Spam",
-                            "value": "spam"
-                        },
-                        {
-                            "label": "Deleted",
-                            "value": "deleted"
-                        }
+                        "new_and_my_open",
+                        "watching",
+                        "spam",
+                        "deleted"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -18389,22 +18317,10 @@
                     "desc": "Filter by ticket type",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Incident",
-                            "value": "Incident"
-                        },
-                        {
-                            "label": "Service Request",
-                            "value": "Service Request"
-                        },
-                        {
-                            "label": "Problem",
-                            "value": "Problem"
-                        },
-                        {
-                            "label": "Change",
-                            "value": "Change"
-                        }
+                        "Incident",
+                        "Service Request",
+                        "Problem",
+                        "Change"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -18442,14 +18358,8 @@
                     "desc": "Sort order (asc/desc)",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Ascending",
-                            "value": "asc"
-                        },
-                        {
-                            "label": "Descending",
-                            "value": "desc"
-                        }
+                        "asc",
+                        "desc"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -23932,14 +23842,8 @@
                     "desc": "Ticket type",
                     "type": "String",
                     "values": [
-                        {
-                            "label": "Incident",
-                            "value": "Incident"
-                        },
-                        {
-                            "label": "Service Request",
-                            "value": "Service Request"
-                        }
+                        "Incident",
+                        "Service Request"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -23953,22 +23857,10 @@
                     "desc": "Priority (1=Low, 2=Medium, 3=High, 4=Urgent)",
                     "type": "Number",
                     "values": [
-                        {
-                            "label": "Low",
-                            "value": "1"
-                        },
-                        {
-                            "label": "Medium",
-                            "value": "2"
-                        },
-                        {
-                            "label": "High",
-                            "value": "3"
-                        },
-                        {
-                            "label": "Urgent",
-                            "value": "4"
-                        }
+                        "1",
+                        "2",
+                        "3",
+                        "4"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -23982,22 +23874,10 @@
                     "desc": "Status (1=Open, 2=Pending, 3=Resolved, 4=Closed)",
                     "type": "Number",
                     "values": [
-                        {
-                            "label": "Open",
-                            "value": "1"
-                        },
-                        {
-                            "label": "Pending",
-                            "value": "2"
-                        },
-                        {
-                            "label": "Resolved",
-                            "value": "3"
-                        },
-                        {
-                            "label": "Closed",
-                            "value": "4"
-                        }
+                        "1",
+                        "2",
+                        "3",
+                        "4"
                     ],
                     "isSecret": false,
                     "optional": true,
