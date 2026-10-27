@@ -44,9 +44,6 @@
         {
             "name": "activate_requester",
             "label": "Activate Requester",
-            "description": "Activate a requester.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "requester_id",
@@ -71,14 +68,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Activate a requester.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_asset_component",
             "label": "Add Asset Component",
-            "description": "Add a component to an asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -109,7 +106,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add a component to an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Add a member to a CAB",
@@ -155,9 +155,6 @@
         {
             "name": "add_change_attachment",
             "label": "Add Change Attachment",
-            "description": "Add an attachment to a change.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -188,14 +185,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add an attachment to a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_problem_attachment",
             "label": "Add Problem Attachment",
-            "description": "Add an attachment to a problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -226,14 +223,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add an attachment to a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_release_attachment",
             "label": "Add Release Attachment",
-            "description": "Add an attachment to a release.",
-            "category": "Remediate",
-            "subCategory": "Releases",
             "inParameters": [
                 {
                     "name": "release_id",
@@ -264,7 +261,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add an attachment to a release.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Add a release note",
@@ -401,9 +401,6 @@
         {
             "name": "add_software_user",
             "label": "Add Software User",
-            "description": "Add a user to a software application.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -434,14 +431,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add a user to a software application.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_ticket_attachment",
             "label": "Add Ticket Attachment",
-            "description": "Add an attachment to a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -472,14 +469,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add an attachment to a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_ticket_note",
             "label": "Add Ticket Note",
-            "description": "Add a note to a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -522,14 +519,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add a note to a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_ticket_reply",
             "label": "Add Ticket Reply",
-            "description": "Add a reply to a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -578,14 +575,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add a reply to a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "add_ticket_watcher",
             "label": "Add Ticket Watcher",
-            "description": "Add a watcher to a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -616,7 +613,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Add a watcher to a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Approve Request",
@@ -672,9 +672,6 @@
         {
             "name": "associate_asset_contract",
             "label": "Associate Asset Contract",
-            "description": "Associate a contract with an asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -705,7 +702,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Associate a contract with an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Bulk create relationships",
@@ -739,9 +739,6 @@
         {
             "name": "bulk_delete_tickets",
             "label": "Bulk Delete Tickets",
-            "description": "Bulk delete multiple tickets.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_ids",
@@ -766,7 +763,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Bulk delete multiple tickets.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Bulk Restore Solution Articles",
@@ -820,9 +820,6 @@
         {
             "name": "bulk_update_assets",
             "label": "Bulk Update Assets",
-            "description": "Bulk update multiple assets.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "asset_ids",
@@ -853,14 +850,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Bulk update multiple assets.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "bulk_update_tickets",
             "label": "Bulk Update Tickets",
-            "description": "Bulk update multiple tickets.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_ids",
@@ -891,7 +888,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Bulk update multiple tickets.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Cancel Journey Request",
@@ -916,9 +916,6 @@
         {
             "name": "cancel_offboarding_request",
             "label": "Cancel Offboarding Request",
-            "description": "Cancel an offboarding request.",
-            "category": "Remediate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "offboarding_request_id",
@@ -943,14 +940,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Cancel an offboarding request.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "cancel_onboarding_request",
             "label": "Cancel Onboarding Request",
-            "description": "Cancel an onboarding request.",
-            "category": "Remediate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "onboarding_request_id",
@@ -975,7 +972,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Cancel an onboarding request.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Cancel Service Request",
@@ -1102,9 +1102,6 @@
         {
             "name": "convert_alert_to_incident",
             "label": "Convert Alert To Incident",
-            "description": "Convert an alert to an incident (ticket).",
-            "category": "Remediate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "alert_id",
@@ -1129,14 +1126,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Convert an alert to an incident (ticket).",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_agent",
             "label": "Create Agent",
-            "description": "Create a new agent.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "first_name",
@@ -1257,14 +1254,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new agent.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_agent_role",
             "label": "Create Agent Role",
-            "description": "Create a new agent role.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "name",
@@ -1301,14 +1298,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new agent role.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_alert",
             "label": "Create Alert",
-            "description": "Create a new alert.",
-            "category": "Remediate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "subject",
@@ -1357,7 +1354,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new alert.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Announcement",
@@ -1382,9 +1382,6 @@
         {
             "name": "create_asset",
             "label": "Create Asset",
-            "description": "Create a new asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "name",
@@ -1487,14 +1484,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_asset_type",
             "label": "Create Asset Type",
-            "description": "Create a new asset type.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "name",
@@ -1537,7 +1534,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new asset type.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Cab",
@@ -1684,9 +1684,6 @@
         {
             "name": "create_canned_response",
             "label": "Create Canned Response",
-            "description": "Create a new canned response.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "title",
@@ -1729,7 +1726,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new canned response.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Change",
@@ -1885,9 +1885,6 @@
         {
             "name": "create_change_note",
             "label": "Create Change Note",
-            "description": "Create a note for a change.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -1924,14 +1921,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a note for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_change_relationship",
             "label": "Create Change Relationship",
-            "description": "Create a relationship for a change.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -1968,14 +1965,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a relationship for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_change_task",
             "label": "Create Change Task",
-            "description": "Create a task for a change.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -2036,14 +2033,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a task for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_change_time_entry",
             "label": "Create Change Time Entry",
-            "description": "Create a time entry for a change.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -2098,14 +2095,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a time entry for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_child_ticket",
             "label": "Create Child Ticket",
-            "description": "Create a child ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -2172,14 +2169,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a child ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_contract",
             "label": "Create Contract",
-            "description": "Create a new contract.",
-            "category": "Remediate",
-            "subCategory": "Contracts",
             "inParameters": [
                 {
                     "name": "name",
@@ -2288,14 +2285,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new contract.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_custom_object_record",
             "label": "Create Custom Object Record",
-            "description": "Create a new custom object record.",
-            "category": "Remediate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -2326,7 +2323,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new custom object record.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Delegation",
@@ -2412,9 +2412,6 @@
         {
             "name": "create_email_config",
             "label": "Create Email Config",
-            "description": "Create an email configuration.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "name",
@@ -2463,14 +2460,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create an email configuration.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_escalation_policy",
             "label": "Create Escalation Policy",
-            "description": "Create a new escalation policy.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "name",
@@ -2507,7 +2504,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new escalation policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new group",
@@ -2593,9 +2593,6 @@
         {
             "name": "create_location",
             "label": "Create Location",
-            "description": "Create a new location.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "name",
@@ -2644,14 +2641,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new location.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_offboarding_request",
             "label": "Create Offboarding Request",
-            "description": "Create a new employee offboarding request.",
-            "category": "Remediate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "requester_id",
@@ -2694,14 +2691,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new employee offboarding request.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_onboarding_request",
             "label": "Create Onboarding Request",
-            "description": "Create a new employee onboarding request.",
-            "category": "Remediate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "first_name",
@@ -2780,14 +2777,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new employee onboarding request.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_oncall_schedule",
             "label": "Create Oncall Schedule",
-            "description": "Create a new on-call schedule.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "name",
@@ -2824,14 +2821,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new on-call schedule.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_oncall_shift",
             "label": "Create Oncall Shift",
-            "description": "Create a new shift in an on-call schedule.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -2898,7 +2895,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new shift in an on-call schedule.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Pm Project",
@@ -2943,9 +2943,6 @@
         {
             "name": "create_problem",
             "label": "Create Problem",
-            "description": "Create a new problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "subject",
@@ -3042,14 +3039,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_problem_note",
             "label": "Create Problem Note",
-            "description": "Create a note for a problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -3086,14 +3083,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a note for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_problem_relationship",
             "label": "Create Problem Relationship",
-            "description": "Create a relationship for a problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -3130,7 +3127,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a relationship for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a problem task",
@@ -3206,9 +3206,6 @@
         {
             "name": "create_problem_time_entry",
             "label": "Create Problem Time Entry",
-            "description": "Create a time entry for a problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -3263,7 +3260,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a time entry for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new product",
@@ -3329,9 +3329,6 @@
         {
             "name": "create_project_milestone",
             "label": "Create Project Milestone",
-            "description": "Create a milestone for a project.",
-            "category": "Remediate",
-            "subCategory": "Projects",
             "inParameters": [
                 {
                     "name": "project_id",
@@ -3374,14 +3371,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a milestone for a project.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_purchase_order",
             "label": "Create Purchase Order",
-            "description": "Create a new purchase order.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "vendor_id",
@@ -3496,7 +3493,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new purchase order.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Release",
@@ -3521,9 +3521,6 @@
         {
             "name": "create_release_relationship",
             "label": "Create Release Relationship",
-            "description": "Create a relationship for a release.",
-            "category": "Remediate",
-            "subCategory": "Releases",
             "inParameters": [
                 {
                     "name": "release_id",
@@ -3560,7 +3557,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a relationship for a release.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a release task",
@@ -3636,9 +3636,6 @@
         {
             "name": "create_requester",
             "label": "Create Requester",
-            "description": "Create a new requester (contact).",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "first_name",
@@ -3735,7 +3732,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new requester (contact).",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new requester group",
@@ -3791,9 +3791,6 @@
         {
             "name": "create_scheduled_maintenance",
             "label": "Create Scheduled Maintenance",
-            "description": "Create a scheduled maintenance window.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "title",
@@ -3842,7 +3839,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a scheduled maintenance window.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new service catalog item",
@@ -4009,9 +4009,6 @@
         {
             "name": "create_sla_policy",
             "label": "Create Sla Policy",
-            "description": "Create a new SLA policy.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "name",
@@ -4054,14 +4051,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new SLA policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_software",
             "label": "Create Software",
-            "description": "Create a new software.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_name",
@@ -4116,14 +4113,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new software.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_software_license",
             "label": "Create Software License",
-            "description": "Create a software license.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -4166,7 +4163,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a software license.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create Solution Article",
@@ -4302,9 +4302,6 @@
         {
             "name": "create_status_page_component",
             "label": "Create Status Page Component",
-            "description": "Create a status page component.",
-            "category": "Remediate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "name",
@@ -4341,14 +4338,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a status page component.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_status_page_incident",
             "label": "Create Status Page Incident",
-            "description": "Create a status page incident.",
-            "category": "Remediate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "title",
@@ -4391,14 +4388,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a status page incident.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_status_page_maintenance",
             "label": "Create Status Page Maintenance",
-            "description": "Create a status page scheduled maintenance.",
-            "category": "Remediate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "title",
@@ -4447,7 +4444,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a status page scheduled maintenance.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new ticket in Freshservice",
@@ -4644,9 +4644,6 @@
         {
             "name": "create_ticket_relationship",
             "label": "Create Ticket Relationship",
-            "description": "Create a relationship between tickets.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -4683,14 +4680,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a relationship between tickets.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_ticket_task",
             "label": "Create Ticket Task",
-            "description": "Create a task for a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -4757,14 +4754,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a task for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "create_ticket_time_entry",
             "label": "Create Ticket Time Entry",
-            "description": "Create a time entry for a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -4819,7 +4816,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a time entry for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Create a new vendor",
@@ -4885,9 +4885,6 @@
         {
             "name": "create_workspace",
             "label": "Create Workspace",
-            "description": "Create a new workspace.",
-            "category": "Remediate",
-            "subCategory": "Workspaces",
             "inParameters": [
                 {
                     "name": "name",
@@ -4918,14 +4915,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Create a new workspace.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "deactivate_agent",
             "label": "Deactivate Agent",
-            "description": "Deactivate an agent.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "agent_id",
@@ -4950,14 +4947,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Deactivate an agent.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "deactivate_requester",
             "label": "Deactivate Requester",
-            "description": "Deactivate a requester.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "requester_id",
@@ -4982,14 +4979,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Deactivate a requester.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_agent",
             "label": "Delete Agent",
-            "description": "Delete an agent.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "agent_id",
@@ -5014,14 +5011,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an agent.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_agent_role",
             "label": "Delete Agent Role",
-            "description": "Delete an agent role.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "role_id",
@@ -5046,14 +5043,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an agent role.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_alert",
             "label": "Delete Alert",
-            "description": "Delete an alert.",
-            "category": "Remediate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "alert_id",
@@ -5078,7 +5075,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an alert.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Announcement",
@@ -5103,9 +5103,6 @@
         {
             "name": "delete_asset",
             "label": "Delete Asset",
-            "description": "Delete (trash) an asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -5130,14 +5127,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete (trash) an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_asset_type",
             "label": "Delete Asset Type",
-            "description": "Delete an asset type.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "asset_type_id",
@@ -5162,7 +5159,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an asset type.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Cab",
@@ -5269,9 +5269,6 @@
         {
             "name": "delete_canned_response",
             "label": "Delete Canned Response",
-            "description": "Delete a canned response.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "canned_response_id",
@@ -5296,7 +5293,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a canned response.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Change",
@@ -5321,9 +5321,6 @@
         {
             "name": "delete_change_attachment",
             "label": "Delete Change Attachment",
-            "description": "Delete a change attachment.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -5354,14 +5351,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a change attachment.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_change_task",
             "label": "Delete Change Task",
-            "description": "Delete a change task.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -5392,14 +5389,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a change task.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_contract",
             "label": "Delete Contract",
-            "description": "Delete a contract.",
-            "category": "Remediate",
-            "subCategory": "Contracts",
             "inParameters": [
                 {
                     "name": "contract_id",
@@ -5424,14 +5421,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a contract.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_custom_object_record",
             "label": "Delete Custom Object Record",
-            "description": "Delete a custom object record.",
-            "category": "Remediate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -5462,7 +5459,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a custom object record.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Delegation",
@@ -5518,9 +5518,6 @@
         {
             "name": "delete_escalation_policy",
             "label": "Delete Escalation Policy",
-            "description": "Delete an escalation policy.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "policy_id",
@@ -5545,7 +5542,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an escalation policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete a group",
@@ -5581,9 +5581,6 @@
         {
             "name": "delete_location",
             "label": "Delete Location",
-            "description": "Delete a location.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "location_id",
@@ -5608,14 +5605,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a location.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_oncall_schedule",
             "label": "Delete Oncall Schedule",
-            "description": "Delete an on-call schedule.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -5640,14 +5637,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an on-call schedule.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_oncall_shift",
             "label": "Delete Oncall Shift",
-            "description": "Delete an on-call shift.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -5678,7 +5675,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an on-call shift.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Pm Project",
@@ -5723,9 +5723,6 @@
         {
             "name": "delete_problem",
             "label": "Delete Problem",
-            "description": "Delete a problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -5750,14 +5747,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_problem_attachment",
             "label": "Delete Problem Attachment",
-            "description": "Delete a problem attachment.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -5788,7 +5785,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a problem attachment.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete a product",
@@ -5824,9 +5824,6 @@
         {
             "name": "delete_purchase_order",
             "label": "Delete Purchase Order",
-            "description": "Delete a purchase order.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "purchase_order_id",
@@ -5851,7 +5848,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a purchase order.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Release",
@@ -5876,9 +5876,6 @@
         {
             "name": "delete_release_attachment",
             "label": "Delete Release Attachment",
-            "description": "Delete a release attachment.",
-            "category": "Remediate",
-            "subCategory": "Releases",
             "inParameters": [
                 {
                     "name": "release_id",
@@ -5909,14 +5906,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a release attachment.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_requester",
             "label": "Delete Requester",
-            "description": "Delete a requester.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "requester_id",
@@ -5941,7 +5938,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a requester.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete a requester group",
@@ -6070,9 +6070,6 @@
         {
             "name": "delete_sla_policy",
             "label": "Delete Sla Policy",
-            "description": "Delete an SLA policy.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "sla_policy_id",
@@ -6097,14 +6094,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete an SLA policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_software",
             "label": "Delete Software",
-            "description": "Delete a software.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "software_id",
@@ -6129,7 +6126,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a software.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Delete Solution Article",
@@ -6328,9 +6328,6 @@
         {
             "name": "delete_ticket_attachment",
             "label": "Delete Ticket Attachment",
-            "description": "Delete a ticket attachment.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -6361,14 +6358,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a ticket attachment.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_ticket_conversation",
             "label": "Delete Ticket Conversation",
-            "description": "Delete a ticket conversation.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -6399,14 +6396,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a ticket conversation.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_ticket_relationship",
             "label": "Delete Ticket Relationship",
-            "description": "Delete a ticket relationship.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -6437,14 +6434,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a ticket relationship.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_ticket_task",
             "label": "Delete Ticket Task",
-            "description": "Delete a ticket task.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -6475,14 +6472,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a ticket task.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_ticket_time_entry",
             "label": "Delete Ticket Time Entry",
-            "description": "Delete a ticket time entry.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -6513,14 +6510,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a ticket time entry.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_vendor",
             "label": "Delete Vendor",
-            "description": "Delete a vendor.",
-            "category": "Remediate",
-            "subCategory": "Vendors",
             "inParameters": [
                 {
                     "name": "vendor_id",
@@ -6545,14 +6542,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a vendor.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "delete_workspace",
             "label": "Delete Workspace",
-            "description": "Delete a workspace.",
-            "category": "Remediate",
-            "subCategory": "Workspaces",
             "inParameters": [
                 {
                     "name": "workspace_id",
@@ -6577,14 +6574,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Delete a workspace.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "dissociate_asset_contract",
             "label": "Dissociate Asset Contract",
-            "description": "Dissociate a contract from an asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -6615,14 +6612,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Dissociate a contract from an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "export_assets",
             "label": "Export Assets",
-            "description": "Export assets to CSV/Excel.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "filter",
@@ -6653,14 +6650,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Export assets to CSV/Excel.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "export_tickets",
             "label": "Export Tickets",
-            "description": "Export tickets to CSV/Excel.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "filter",
@@ -6691,7 +6688,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Export tickets to CSV/Excel.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Retrieve a single agent by ID",
@@ -6789,9 +6789,6 @@
         {
             "name": "get_agent_role_by_id",
             "label": "Get Agent Role By Id",
-            "description": "Get a single agent role by ID.",
-            "category": "Investigate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "role_id",
@@ -6816,14 +6813,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single agent role by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_agent_roles",
             "label": "Get Agent Roles",
-            "description": "Get a list of agent roles.",
-            "category": "Investigate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "page",
@@ -6854,7 +6851,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a list of agent roles.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Retrieve a paginated list of agents",
@@ -6939,9 +6939,6 @@
         {
             "name": "get_alert_by_id",
             "label": "Get Alert By Id",
-            "description": "Get a single alert by ID.",
-            "category": "Investigate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "alert_id",
@@ -6966,14 +6963,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single alert by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_alerts",
             "label": "Get Alerts",
-            "description": "Get a paginated list of alerts.",
-            "category": "Investigate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "page",
@@ -7010,7 +7007,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of alerts.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get all tickets with optional filtering",
@@ -7371,9 +7371,6 @@
         {
             "name": "get_asset_components",
             "label": "Get Asset Components",
-            "description": "Get components for an asset.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -7398,14 +7395,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get components for an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_asset_form_by_id",
             "label": "Get Asset Form By Id",
-            "description": "Get a single asset form by ID.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "form_id",
@@ -7430,14 +7427,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single asset form by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_asset_forms",
             "label": "Get Asset Forms",
-            "description": "Get asset forms.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "page",
@@ -7468,14 +7465,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get asset forms.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_asset_lifecycle_events",
             "label": "Get Asset Lifecycle Events",
-            "description": "Get lifecycle events for an asset.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -7500,14 +7497,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get lifecycle events for an asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_asset_type_by_id",
             "label": "Get Asset Type By Id",
-            "description": "Get a single asset type by ID.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "asset_type_id",
@@ -7532,14 +7529,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single asset type by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_asset_types",
             "label": "Get Asset Types",
-            "description": "Get a paginated list of asset types.",
-            "category": "Investigate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "page",
@@ -7570,7 +7567,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of asset types.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Retrieve a paginated list of assets",
@@ -7725,9 +7725,6 @@
         {
             "name": "get_business_hours",
             "label": "Get Business Hours",
-            "description": "Get a list of business hours configurations.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -7758,14 +7755,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a list of business hours configurations.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_business_hours_by_id",
             "label": "Get Business Hours By Id",
-            "description": "Get a single business hours configuration by ID.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "business_hours_id",
@@ -7790,7 +7787,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single business hours configuration by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Cab By Id",
@@ -8010,9 +8010,6 @@
         {
             "name": "get_change_activities",
             "label": "Get Change Activities",
-            "description": "Get activities for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8037,7 +8034,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get activities for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get change approval chain",
@@ -8160,9 +8160,6 @@
         {
             "name": "get_change_form_by_id",
             "label": "Get Change Form By Id",
-            "description": "Get a single change form by ID.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "form_id",
@@ -8187,14 +8184,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single change form by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_forms",
             "label": "Get Change Forms",
-            "description": "Get change forms.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "page",
@@ -8225,14 +8222,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get change forms.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_impact_analysis",
             "label": "Get Change Impact Analysis",
-            "description": "Get impact analysis for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8257,14 +8254,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get impact analysis for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_notes",
             "label": "Get Change Notes",
-            "description": "Get notes for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8289,14 +8286,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get notes for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_relationships",
             "label": "Get Change Relationships",
-            "description": "Get relationships for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8321,14 +8318,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get relationships for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_tasks",
             "label": "Get Change Tasks",
-            "description": "Get tasks for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8353,14 +8350,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get tasks for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_change_time_entries",
             "label": "Get Change Time Entries",
-            "description": "Get time entries for a change.",
-            "category": "Investigate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -8385,7 +8382,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get time entries for a change.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Changes",
@@ -8421,9 +8421,6 @@
         {
             "name": "get_cloud_resource_by_id",
             "label": "Get Cloud Resource By Id",
-            "description": "Get a single cloud resource by ID.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "resource_id",
@@ -8448,14 +8445,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single cloud resource by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_cloud_resources",
             "label": "Get Cloud Resources",
-            "description": "Get a paginated list of cloud resources.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -8486,7 +8483,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of cloud resources.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Contract By Id",
@@ -8553,9 +8553,6 @@
         {
             "name": "get_custom_object_by_id",
             "label": "Get Custom Object By Id",
-            "description": "Get a single custom object by ID.",
-            "category": "Investigate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -8580,14 +8577,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single custom object by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_custom_object_record_by_id",
             "label": "Get Custom Object Record By Id",
-            "description": "Get a single custom object record by ID.",
-            "category": "Investigate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -8618,14 +8615,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single custom object record by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_custom_object_records",
             "label": "Get Custom Object Records",
-            "description": "Get records for a custom object.",
-            "category": "Investigate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -8662,14 +8659,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get records for a custom object.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_custom_objects",
             "label": "Get Custom Objects",
-            "description": "Get a paginated list of custom objects.",
-            "category": "Investigate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "page",
@@ -8700,7 +8697,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of custom objects.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Delegation By Id",
@@ -8767,9 +8767,6 @@
         {
             "name": "get_department_by_id",
             "label": "Get Department By Id",
-            "description": "Get a single department by ID.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "department_id",
@@ -8794,7 +8791,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single department by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get a paginated list of departments",
@@ -8848,9 +8848,6 @@
         {
             "name": "get_device_by_id",
             "label": "Get Device By Id",
-            "description": "Get a single device by ID.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "device_id",
@@ -8875,14 +8872,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single device by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_devices",
             "label": "Get Devices",
-            "description": "Get a paginated list of devices (discovered assets).",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -8913,14 +8910,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of devices (discovered assets).",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_email_configs",
             "label": "Get Email Configs",
-            "description": "Get email configurations (mailboxes).",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -8951,14 +8948,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get email configurations (mailboxes).",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_escalation_policies",
             "label": "Get Escalation Policies",
-            "description": "Get a paginated list of escalation policies.",
-            "category": "Investigate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "page",
@@ -8989,14 +8986,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of escalation policies.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_escalation_policy_by_id",
             "label": "Get Escalation Policy By Id",
-            "description": "Get a single escalation policy by ID.",
-            "category": "Investigate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "policy_id",
@@ -9021,7 +9018,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single escalation policy by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get a paginated list of groups",
@@ -9209,9 +9209,6 @@
         {
             "name": "get_offboarding_request_by_id",
             "label": "Get Offboarding Request By Id",
-            "description": "Get a single offboarding request by ID.",
-            "category": "Investigate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "offboarding_request_id",
@@ -9236,14 +9233,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single offboarding request by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_offboarding_requests",
             "label": "Get Offboarding Requests",
-            "description": "Get a paginated list of employee offboarding requests.",
-            "category": "Investigate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "page",
@@ -9280,14 +9277,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of employee offboarding requests.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_onboarding_request_by_id",
             "label": "Get Onboarding Request By Id",
-            "description": "Get a single onboarding request by ID.",
-            "category": "Investigate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "onboarding_request_id",
@@ -9312,14 +9309,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single onboarding request by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_onboarding_requests",
             "label": "Get Onboarding Requests",
-            "description": "Get a paginated list of employee onboarding requests.",
-            "category": "Investigate",
-            "subCategory": "Employee Lifecycle",
             "inParameters": [
                 {
                     "name": "page",
@@ -9356,14 +9353,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of employee onboarding requests.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_oncall_schedule_by_id",
             "label": "Get Oncall Schedule By Id",
-            "description": "Get a single on-call schedule by ID.",
-            "category": "Investigate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -9388,14 +9385,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single on-call schedule by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_oncall_schedules",
             "label": "Get Oncall Schedules",
-            "description": "Get a paginated list of on-call schedules.",
-            "category": "Investigate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "page",
@@ -9426,14 +9423,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of on-call schedules.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_oncall_shifts",
             "label": "Get Oncall Shifts",
-            "description": "Get shifts for an on-call schedule.",
-            "category": "Investigate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -9458,7 +9455,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get shifts for an on-call schedule.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Pm Project By Id",
@@ -9587,9 +9587,6 @@
         {
             "name": "get_problem_activities",
             "label": "Get Problem Activities",
-            "description": "Get activities for a problem.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -9614,14 +9611,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get activities for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_problem_by_id",
             "label": "Get Problem By Id",
-            "description": "Get a single problem by ID.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -9652,14 +9649,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single problem by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_problem_form_by_id",
             "label": "Get Problem Form By Id",
-            "description": "Get a single problem form by ID.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "form_id",
@@ -9684,7 +9681,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single problem form by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get problem form fields",
@@ -9707,9 +9707,6 @@
         {
             "name": "get_problem_forms",
             "label": "Get Problem Forms",
-            "description": "Get problem forms.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "page",
@@ -9740,14 +9737,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get problem forms.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_problem_notes",
             "label": "Get Problem Notes",
-            "description": "Get notes for a problem.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -9772,14 +9769,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get notes for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_problem_relationships",
             "label": "Get Problem Relationships",
-            "description": "Get relationships for a problem.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -9804,7 +9801,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get relationships for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get problem tasks",
@@ -9858,9 +9858,6 @@
         {
             "name": "get_problem_time_entries",
             "label": "Get Problem Time Entries",
-            "description": "Get time entries for a problem.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -9885,14 +9882,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get time entries for a problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_problems",
             "label": "Get Problems",
-            "description": "Get a paginated list of problems.",
-            "category": "Investigate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "page",
@@ -9935,7 +9932,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of problems.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get a paginated list of products",
@@ -9979,9 +9979,6 @@
         {
             "name": "get_project_milestones",
             "label": "Get Project Milestones",
-            "description": "Get milestones for a project.",
-            "category": "Investigate",
-            "subCategory": "Projects",
             "inParameters": [
                 {
                     "name": "project_id",
@@ -10006,14 +10003,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get milestones for a project.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_purchase_order_by_id",
             "label": "Get Purchase Order By Id",
-            "description": "Get a single purchase order by ID.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "purchase_order_id",
@@ -10038,14 +10035,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single purchase order by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_purchase_orders",
             "label": "Get Purchase Orders",
-            "description": "Get a paginated list of purchase orders.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -10076,7 +10073,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of purchase orders.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Release By Id",
@@ -10179,9 +10179,6 @@
         {
             "name": "get_release_relationships",
             "label": "Get Release Relationships",
-            "description": "Get relationships for a release.",
-            "category": "Investigate",
-            "subCategory": "Releases",
             "inParameters": [
                 {
                     "name": "release_id",
@@ -10206,7 +10203,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get relationships for a release.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get release tasks",
@@ -10571,9 +10571,6 @@
         {
             "name": "get_scheduled_maintenances",
             "label": "Get Scheduled Maintenances",
-            "description": "Get scheduled maintenance windows.",
-            "category": "Investigate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "page",
@@ -10604,7 +10601,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get scheduled maintenance windows.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Service Catalog Categories",
@@ -10958,9 +10958,6 @@
         {
             "name": "get_software",
             "label": "Get Software",
-            "description": "Get a paginated list of software.",
-            "category": "Investigate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "page",
@@ -10991,14 +10988,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of software.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_software_by_id",
             "label": "Get Software By Id",
-            "description": "Get a single software by ID.",
-            "category": "Investigate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "software_id",
@@ -11023,14 +11020,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single software by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_software_installations",
             "label": "Get Software Installations",
-            "description": "Get installations for a software application.",
-            "category": "Investigate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -11067,14 +11064,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get installations for a software application.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_software_licenses",
             "label": "Get Software Licenses",
-            "description": "Get licenses for a software application.",
-            "category": "Investigate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -11099,14 +11096,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get licenses for a software application.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_software_users",
             "label": "Get Software Users",
-            "description": "Get users for a software application.",
-            "category": "Investigate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -11143,7 +11140,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get users for a software application.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get Solution Article By Id",
@@ -11383,9 +11383,6 @@
         {
             "name": "get_status_page_components",
             "label": "Get Status Page Components",
-            "description": "Get status page components.",
-            "category": "Investigate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "page",
@@ -11416,14 +11413,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get status page components.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_status_page_incidents",
             "label": "Get Status Page Incidents",
-            "description": "Get status page incidents.",
-            "category": "Investigate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "page",
@@ -11454,14 +11451,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get status page incidents.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_status_page_maintenances",
             "label": "Get Status Page Maintenances",
-            "description": "Get status page scheduled maintenances.",
-            "category": "Investigate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "page",
@@ -11492,14 +11489,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get status page scheduled maintenances.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_activities",
             "label": "Get Ticket Activities",
-            "description": "Get activities (audit trail) for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11536,14 +11533,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get activities (audit trail) for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_attachments",
             "label": "Get Ticket Attachments",
-            "description": "Get attachments for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11568,7 +11565,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get attachments for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Retrieve a single ticket by ID with optional embedded resources",
@@ -11614,9 +11614,6 @@
         {
             "name": "get_ticket_conversations",
             "label": "Get Ticket Conversations",
-            "description": "Get conversations for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11653,14 +11650,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get conversations for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_form_by_id",
             "label": "Get Ticket Form By Id",
-            "description": "Get a single ticket form by ID.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "form_id",
@@ -11685,7 +11682,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single ticket form by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Get ticket form fields",
@@ -11708,9 +11708,6 @@
         {
             "name": "get_ticket_forms",
             "label": "Get Ticket Forms",
-            "description": "Get ticket forms.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "page",
@@ -11741,14 +11738,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get ticket forms.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_relationships",
             "label": "Get Ticket Relationships",
-            "description": "Get relationships for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11773,14 +11770,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get relationships for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_tasks",
             "label": "Get Ticket Tasks",
-            "description": "Get tasks for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11805,14 +11802,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get tasks for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_time_entries",
             "label": "Get Ticket Time Entries",
-            "description": "Get time entries for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11849,14 +11846,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get time entries for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_ticket_watchers",
             "label": "Get Ticket Watchers",
-            "description": "Get watchers for a ticket.",
-            "category": "Investigate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -11881,7 +11878,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get watchers for a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Retrieve a paginated list of tickets with optional filtering",
@@ -12109,9 +12109,6 @@
         {
             "name": "get_workspace_by_id",
             "label": "Get Workspace By Id",
-            "description": "Get a single workspace by ID.",
-            "category": "Investigate",
-            "subCategory": "Workspaces",
             "inParameters": [
                 {
                     "name": "workspace_id",
@@ -12136,14 +12133,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a single workspace by ID.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "get_workspaces",
             "label": "Get Workspaces",
-            "description": "Get a paginated list of workspaces.",
-            "category": "Investigate",
-            "subCategory": "Workspaces",
             "inParameters": [
                 {
                     "name": "page",
@@ -12174,14 +12171,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Get a paginated list of workspaces.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "merge_requesters",
             "label": "Merge Requesters",
-            "description": "Merge requesters.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "primary_requester_id",
@@ -12212,14 +12209,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Merge requesters.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "merge_tickets",
             "label": "Merge Tickets",
-            "description": "Merge multiple tickets into one.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "primary_ticket_id",
@@ -12250,7 +12247,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Merge multiple tickets into one.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Move a release to a different workspace",
@@ -12296,9 +12296,6 @@
         {
             "name": "move_ticket_to_workspace",
             "label": "Move Ticket To Workspace",
-            "description": "Move a ticket to a different workspace.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -12329,7 +12326,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Move a ticket to a different workspace.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Place a service catalog request",
@@ -12395,9 +12395,6 @@
         {
             "name": "reactivate_agent",
             "label": "Reactivate Agent",
-            "description": "Reactivate an agent.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "agent_id",
@@ -12422,7 +12419,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Reactivate an agent.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Reject Request",
@@ -12488,9 +12488,6 @@
         {
             "name": "remove_software_user",
             "label": "Remove Software User",
-            "description": "Remove a user from a software application.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -12521,14 +12518,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Remove a user from a software application.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "remove_ticket_watcher",
             "label": "Remove Ticket Watcher",
-            "description": "Remove a watcher from a ticket.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -12559,7 +12556,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Remove a watcher from a ticket.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Resolve a ticket (sets status to Resolved)",
@@ -12605,9 +12605,6 @@
         {
             "name": "restore_asset",
             "label": "Restore Asset",
-            "description": "Restore a trashed asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -12632,7 +12629,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Restore a trashed asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Restore a deleted release",
@@ -12769,9 +12769,6 @@
         {
             "name": "restore_ticket",
             "label": "Restore Ticket",
-            "description": "Restore a deleted ticket from trash.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -12796,14 +12793,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Restore a deleted ticket from trash.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "search_agents",
             "label": "Search Agents",
-            "description": "Search agents.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "query",
@@ -12840,14 +12837,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Search agents.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "search_assets",
             "label": "Search Assets",
-            "description": "Search assets using advanced query.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "query",
@@ -12884,14 +12881,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Search assets using advanced query.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "search_requesters",
             "label": "Search Requesters",
-            "description": "Search requesters.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "query",
@@ -12928,14 +12925,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Search requesters.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "search_solutions",
             "label": "Search Solutions",
-            "description": "Search solution articles.",
-            "category": "Remediate",
-            "subCategory": "Solutions",
             "inParameters": [
                 {
                     "name": "query",
@@ -12972,7 +12969,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Search solution articles.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Search tickets using Freshservice's advanced query syntax",
@@ -13089,9 +13089,6 @@
         {
             "name": "split_ticket",
             "label": "Split Ticket",
-            "description": "Split a ticket into multiple tickets.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -13122,7 +13119,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Split a ticket into multiple tickets.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Test connection to Freshservice API and verify API key validity",
@@ -13188,9 +13188,6 @@
         {
             "name": "update_agent",
             "label": "Update Agent",
-            "description": "Update an existing agent.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "agent_id",
@@ -13317,14 +13314,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing agent.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_agent_role",
             "label": "Update Agent Role",
-            "description": "Update an existing agent role.",
-            "category": "Remediate",
-            "subCategory": "Agents",
             "inParameters": [
                 {
                     "name": "role_id",
@@ -13367,14 +13364,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing agent role.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_alert",
             "label": "Update Alert",
-            "description": "Update an existing alert.",
-            "category": "Remediate",
-            "subCategory": "Alerts",
             "inParameters": [
                 {
                     "name": "alert_id",
@@ -13423,7 +13420,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing alert.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Announcement",
@@ -13448,9 +13448,6 @@
         {
             "name": "update_asset",
             "label": "Update Asset",
-            "description": "Update an existing asset.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "display_id",
@@ -13541,14 +13538,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing asset.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_asset_type",
             "label": "Update Asset Type",
-            "description": "Update an existing asset type.",
-            "category": "Remediate",
-            "subCategory": "Assets",
             "inParameters": [
                 {
                     "name": "asset_type_id",
@@ -13591,7 +13588,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing asset type.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Cab",
@@ -13738,9 +13738,6 @@
         {
             "name": "update_canned_response",
             "label": "Update Canned Response",
-            "description": "Update an existing canned response.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "canned_response_id",
@@ -13783,7 +13780,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing canned response.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Change",
@@ -13808,9 +13808,6 @@
         {
             "name": "update_change_task",
             "label": "Update Change Task",
-            "description": "Update a change task.",
-            "category": "Remediate",
-            "subCategory": "Changes",
             "inParameters": [
                 {
                     "name": "change_id",
@@ -13877,14 +13874,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a change task.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_contract",
             "label": "Update Contract",
-            "description": "Update an existing contract.",
-            "category": "Remediate",
-            "subCategory": "Contracts",
             "inParameters": [
                 {
                     "name": "contract_id",
@@ -13975,14 +13972,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing contract.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_custom_object_record",
             "label": "Update Custom Object Record",
-            "description": "Update an existing custom object record.",
-            "category": "Remediate",
-            "subCategory": "Custom Objects",
             "inParameters": [
                 {
                     "name": "object_id",
@@ -14019,7 +14016,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing custom object record.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Delegation",
@@ -14115,9 +14115,6 @@
         {
             "name": "update_escalation_policy",
             "label": "Update Escalation Policy",
-            "description": "Update an existing escalation policy.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "policy_id",
@@ -14160,7 +14157,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing escalation policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update an existing group",
@@ -14236,9 +14236,6 @@
         {
             "name": "update_location",
             "label": "Update Location",
-            "description": "Update an existing location.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "location_id",
@@ -14293,14 +14290,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing location.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_oncall_schedule",
             "label": "Update Oncall Schedule",
-            "description": "Update an existing on-call schedule.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -14343,14 +14340,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing on-call schedule.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_oncall_shift",
             "label": "Update Oncall Shift",
-            "description": "Update an existing on-call shift.",
-            "category": "Remediate",
-            "subCategory": "On-Call",
             "inParameters": [
                 {
                     "name": "schedule_id",
@@ -14411,7 +14408,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing on-call shift.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Pm Project",
@@ -14456,9 +14456,6 @@
         {
             "name": "update_problem",
             "label": "Update Problem",
-            "description": "Update an existing problem.",
-            "category": "Remediate",
-            "subCategory": "Problems",
             "inParameters": [
                 {
                     "name": "problem_id",
@@ -14531,7 +14528,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing problem.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update an existing product",
@@ -14607,9 +14607,6 @@
         {
             "name": "update_purchase_order",
             "label": "Update Purchase Order",
-            "description": "Update an existing purchase order.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "purchase_order_id",
@@ -14694,7 +14691,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing purchase order.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Release",
@@ -14719,9 +14719,6 @@
         {
             "name": "update_requester",
             "label": "Update Requester",
-            "description": "Update an existing requester.",
-            "category": "Remediate",
-            "subCategory": "Requesters",
             "inParameters": [
                 {
                     "name": "requester_id",
@@ -14818,7 +14815,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing requester.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update an existing requester group",
@@ -15168,9 +15168,6 @@
         {
             "name": "update_sla_policy",
             "label": "Update Sla Policy",
-            "description": "Update an existing SLA policy.",
-            "category": "Remediate",
-            "subCategory": "General",
             "inParameters": [
                 {
                     "name": "sla_policy_id",
@@ -15219,14 +15216,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing SLA policy.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_software",
             "label": "Update Software",
-            "description": "Update an existing software.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "software_id",
@@ -15287,14 +15284,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing software.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_software_license",
             "label": "Update Software License",
-            "description": "Update a software license.",
-            "category": "Remediate",
-            "subCategory": "Software",
             "inParameters": [
                 {
                     "name": "application_id",
@@ -15343,7 +15340,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a software license.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update Solution Article",
@@ -15408,9 +15408,6 @@
         {
             "name": "update_status_page_incident",
             "label": "Update Status Page Incident",
-            "description": "Update a status page incident.",
-            "category": "Remediate",
-            "subCategory": "Status Page",
             "inParameters": [
                 {
                     "name": "incident_id",
@@ -15459,7 +15456,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a status page incident.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "desc": "Update an existing ticket",
@@ -15638,9 +15638,6 @@
         {
             "name": "update_ticket_conversation",
             "label": "Update Ticket Conversation",
-            "description": "Update a ticket conversation.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -15677,14 +15674,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a ticket conversation.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_ticket_task",
             "label": "Update Ticket Task",
-            "description": "Update a ticket task.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -15757,14 +15754,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a ticket task.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_ticket_time_entry",
             "label": "Update Ticket Time Entry",
-            "description": "Update a ticket time entry.",
-            "category": "Remediate",
-            "subCategory": "Tickets",
             "inParameters": [
                 {
                     "name": "ticket_id",
@@ -15819,14 +15816,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update a ticket time entry.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_vendor",
             "label": "Update Vendor",
-            "description": "Update an existing vendor.",
-            "category": "Remediate",
-            "subCategory": "Vendors",
             "inParameters": [
                 {
                     "name": "vendor_id",
@@ -15881,14 +15878,14 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing vendor.",
+            "type": "Investigate",
+            "sampleOutput": ""
         },
         {
             "name": "update_workspace",
             "label": "Update Workspace",
-            "description": "Update an existing workspace.",
-            "category": "Remediate",
-            "subCategory": "Workspaces",
             "inParameters": [
                 {
                     "name": "workspace_id",
@@ -15925,7 +15922,10 @@
                     "type": "String",
                     "description": "Error message if status is error"
                 }
-            }
+            },
+            "desc": "Update an existing workspace.",
+            "type": "Investigate",
+            "sampleOutput": ""
         }
     ]
 }
