@@ -100,15 +100,7 @@
                         "description": "The unique identifier for a product",
                         "type": "array",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "label": {
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "string"
-                                }
-                            }
+                            "type": "string"
                         }
                     },
                     "isSecret": {
@@ -189,15 +181,7 @@
                                     "values": {
                                         "type": "array",
                                         "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "label": {
-                                                    "type": "string"
-                                                },
-                                                "value": {
-                                                    "type": "string"
-                                                }
-                                            }
+                                            "type": "string"
                                         }
                                     },
                                     "isSecret": {
@@ -254,15 +238,7 @@
                                     "values": {
                                         "type": "array",
                                         "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "label": {
-                                                    "type": "string"
-                                                },
-                                                "value": {
-                                                    "type": "string"
-                                                }
-                                            }
+                                            "type": "string"
                                         }
                                     },
                                     "isSecret": {

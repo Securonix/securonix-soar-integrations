@@ -36,8 +36,8 @@
             "desc": "Verify SSL certificate when connecting to Vectra API",
             "type": "Boolean",
             "values": [
-                {"label": "True", "value": "true"},
-                {"label": "False", "value": "false"}
+                "true",
+                "false"
             ],
             "isSecret": false,
             "optional": true,
@@ -88,12 +88,12 @@
                     "desc": "Filter by detection category (command, botnet, reconnaissance, lateral, exfiltration, info)",
                     "type": "String",
                     "values": [
-                        {"label": "Command & Control", "value": "command"},
-                        {"label": "Botnet", "value": "botnet"},
-                        {"label": "Reconnaissance", "value": "reconnaissance"},
-                        {"label": "Lateral Movement", "value": "lateral"},
-                        {"label": "Exfiltration", "value": "exfiltration"},
-                        {"label": "Info", "value": "info"}
+                        "command",
+                        "botnet",
+                        "reconnaissance",
+                        "lateral",
+                        "exfiltration",
+                        "info"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -105,8 +105,8 @@
                     "desc": "Filter by detection state (active, closed)",
                     "type": "String",
                     "values": [
-                        {"label": "Active", "value": "active"},
-                        {"label": "Closed", "value": "closed"}
+                        "active",
+                        "closed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -138,8 +138,8 @@
                     "desc": "Filter for detections targeting key assets",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -151,8 +151,8 @@
                     "desc": "Filter for triaged detections",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -204,9 +204,9 @@
                     "desc": "Response tier (small, regular, detailed)",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -330,8 +330,8 @@
                     "desc": "Filter by account state (active, closed)",
                     "type": "String",
                     "values": [
-                        {"label": "Active", "value": "active"},
-                        {"label": "Closed", "value": "closed"}
+                        "active",
+                        "closed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -373,9 +373,9 @@
                     "desc": "Response tier (small, regular, detailed)",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -499,8 +499,8 @@
                     "desc": "Filter by host state (active, closed)",
                     "type": "String",
                     "values": [
-                        {"label": "Active", "value": "active"},
-                        {"label": "Closed", "value": "closed"}
+                        "active",
+                        "closed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -542,9 +542,9 @@
                     "desc": "Response tier (small, regular, detailed)",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -617,9 +617,9 @@
                     "desc": "Response tier (small, regular, detailed)",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -682,8 +682,8 @@
                     "desc": "Filter by entity type (host, account)",
                     "type": "String",
                     "values": [
-                        {"label": "Host", "value": "host"},
-                        {"label": "Account", "value": "account"}
+                        "host",
+                        "account"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -756,8 +756,8 @@
                     "desc": "Entity type (host or account)",
                     "type": "String",
                     "values": [
-                        {"label": "Host", "value": "host"},
-                        {"label": "Account", "value": "account"}
+                        "host",
+                        "account"
                     ],
                     "isSecret": false,
                     "optional": false,
@@ -830,11 +830,11 @@
                     "desc": "Filter by detection category",
                     "type": "String",
                     "values": [
-                        {"label": "Command & Control", "value": "command"},
-                        {"label": "Botnet", "value": "botnet"},
-                        {"label": "Reconnaissance", "value": "reconnaissance"},
-                        {"label": "Lateral Movement", "value": "lateral"},
-                        {"label": "Exfiltration", "value": "exfiltration"}
+                        "command",
+                        "botnet",
+                        "reconnaissance",
+                        "lateral",
+                        "exfiltration"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -866,8 +866,8 @@
                     "desc": "Filter for detections targeting key assets",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -960,12 +960,12 @@
                     "desc": "Status for workflow automation",
                     "type": "String",
                     "values": [
-                        {"label": "Open", "value": "open"},
-                        {"label": "Acknowledged", "value": "acknowledged"},
-                        {"label": "Escalated", "value": "escalated"},
-                        {"label": "Paused", "value": "paused"},
-                        {"label": "Closed", "value": "closed"},
-                        {"label": "Expired", "value": "expired"}
+                        "open",
+                        "acknowledged",
+                        "escalated",
+                        "paused",
+                        "closed",
+                        "expired"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1018,8 +1018,8 @@
                     "desc": "Reason for closing the account",
                     "type": "String",
                     "values": [
-                        {"label": "Remediated", "value": "remediated"},
-                        {"label": "Benign", "value": "benign"}
+                        "remediated",
+                        "benign"
                     ],
                     "isSecret": false,
                     "optional": false,
@@ -1072,8 +1072,8 @@
                     "desc": "Set to true to mark as key asset, false to remove flag",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": false,
@@ -1186,9 +1186,9 @@
                     "desc": "Filter by status",
                     "type": "String",
                     "values": [
-                        {"label": "All", "value": "all"},
-                        {"label": "Active", "value": "active"},
-                        {"label": "Inactive", "value": "inactive"}
+                        "all",
+                        "active",
+                        "inactive"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1210,10 +1210,10 @@
                     "desc": "Filter by severity",
                     "type": "String",
                     "values": [
-                        {"label": "Low", "value": "low"},
-                        {"label": "Medium", "value": "medium"},
-                        {"label": "High", "value": "high"},
-                        {"label": "Critical", "value": "critical"}
+                        "low",
+                        "medium",
+                        "high",
+                        "critical"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1225,9 +1225,9 @@
                     "desc": "Response tier",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1239,10 +1239,10 @@
                     "desc": "Filter by resolution",
                     "type": "String",
                     "values": [
-                        {"label": "Open", "value": "open"},
-                        {"label": "In Progress", "value": "in_progress"},
-                        {"label": "Remediated", "value": "remediated"},
-                        {"label": "Risk Accepted", "value": "risk_accepted"}
+                        "open",
+                        "in_progress",
+                        "remediated",
+                        "risk_accepted"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1619,8 +1619,8 @@
                     "desc": "Filter by resolved status (true/false)",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1754,8 +1754,8 @@
                     "desc": "Include INFO detections",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1767,8 +1767,8 @@
                     "desc": "Include triaged detections",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1810,8 +1810,8 @@
                     "desc": "Include process context",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1863,12 +1863,12 @@
                     "desc": "Filter by investigation status",
                     "type": "String",
                     "values": [
-                        {"label": "Open", "value": "open"},
-                        {"label": "Acknowledged", "value": "acknowledged"},
-                        {"label": "Escalated", "value": "escalated"},
-                        {"label": "Paused", "value": "paused"},
-                        {"label": "Closed", "value": "closed"},
-                        {"label": "Expired", "value": "expired"}
+                        "open",
+                        "acknowledged",
+                        "escalated",
+                        "paused",
+                        "closed",
+                        "expired"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1880,9 +1880,9 @@
                     "desc": "Response tier",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1894,8 +1894,8 @@
                     "desc": "Filter by unresolved priority",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -1948,8 +1948,8 @@
                     "desc": "Flag to mark/unmark detection as fixed",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2001,12 +2001,12 @@
                     "desc": "Status for workflow automation",
                     "type": "String",
                     "values": [
-                        {"label": "Open", "value": "open"},
-                        {"label": "Acknowledged", "value": "acknowledged"},
-                        {"label": "Escalated", "value": "escalated"},
-                        {"label": "Paused", "value": "paused"},
-                        {"label": "Closed", "value": "closed"},
-                        {"label": "Expired", "value": "expired"}
+                        "open",
+                        "acknowledged",
+                        "escalated",
+                        "paused",
+                        "closed",
+                        "expired"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2069,8 +2069,8 @@
                     "desc": "Flag to mark/unmark entity as fixed",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2112,12 +2112,12 @@
                     "desc": "Status for workflow automation",
                     "type": "String",
                     "values": [
-                        {"label": "Open", "value": "open"},
-                        {"label": "Acknowledged", "value": "acknowledged"},
-                        {"label": "Escalated", "value": "escalated"},
-                        {"label": "Paused", "value": "paused"},
-                        {"label": "Closed", "value": "closed"},
-                        {"label": "Expired", "value": "expired"}
+                        "open",
+                        "acknowledged",
+                        "escalated",
+                        "paused",
+                        "closed",
+                        "expired"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2454,8 +2454,8 @@
                     "desc": "Whether the rule is enabled",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2538,8 +2538,8 @@
                     "desc": "Whether the rule is enabled",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2795,8 +2795,8 @@
                     "desc": "Whether the assignment is resolved",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2960,9 +2960,9 @@
                     "desc": "Response tier",
                     "type": "String",
                     "values": [
-                        {"label": "Small", "value": "small"},
-                        {"label": "Regular", "value": "regular"},
-                        {"label": "Detailed", "value": "detailed"}
+                        "small",
+                        "regular",
+                        "detailed"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -2974,8 +2974,8 @@
                     "desc": "Filter by unresolved priority",
                     "type": "Boolean",
                     "values": [
-                        {"label": "True", "value": "true"},
-                        {"label": "False", "value": "false"}
+                        "true",
+                        "false"
                     ],
                     "isSecret": false,
                     "optional": true,
@@ -3016,5 +3016,4 @@
             ]
         }
     ]
-
 }
