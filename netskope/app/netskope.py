@@ -84,6 +84,12 @@ def _make_request(config: dict, method: str, endpoint: str, json_body=None, para
             if resp.status_code in (401, 403):
                 raise Exception("Authentication failed. Verify tenant_hostname and api_token.")
             if resp.status_code == 404:
+                logging.getLogger(__name__).error(
+                    "Netskope API 404: method=%s url=%s response_body=%s",
+                    method,
+                    resp.url,
+                    (resp.text or "")[:2000],
+                )
                 raise Exception("Resource not found.")
             if resp.status_code == 422:
                 error_detail = ""
@@ -464,7 +470,7 @@ class Netskope():
             values = _parse_ioc_values(params.get("values"), "values")
 
             append_result = _make_request(
-                config, "POST",
+                config, "PATCH",
                 f"/api/v2/profiles/destinations/{profile_id}/values",
                 json_body={"operation": {"op": "append", "values": values}},
             )
@@ -501,7 +507,7 @@ class Netskope():
             values = _parse_ioc_values(params.get("values"), "values")
 
             remove_result = _make_request(
-                config, "POST",
+                config, "PATCH",
                 f"/api/v2/profiles/destinations/{profile_id}/values",
                 json_body={"operation": {"op": "remove", "values": values}},
             )

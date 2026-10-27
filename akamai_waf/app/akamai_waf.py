@@ -22,7 +22,7 @@ class AkamaiWaf():
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
         self.logger.info("executing block_ip action")
-        session = self.get_session(client_token, client_secret, access_token)
+        session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
         data, error = self._get_network_list(network_list_id, host, session)
         if error:
             return error
@@ -64,7 +64,7 @@ class AkamaiWaf():
         network_list_id = request.parameters['network_list_id']
         ip_addresses = request.parameters['ip_addresses']
         self.logger.info("executing unblock_ip action")
-        session = self.get_session(client_token, client_secret, access_token)
+        session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
         data, error = self._get_network_list(network_list_id, host, session)
         if error:
             return error
@@ -146,7 +146,7 @@ class AkamaiWaf():
         if ip_address:
             params["clientIP"] = ip_address
 
-        response = self.get_session(client_token, client_secret, access_token).get(url, params=params)
+        response = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token).get(url, params=params)
 
         if response.status_code != 200:
             return self._handle_error(response)

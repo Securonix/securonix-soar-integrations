@@ -1,0 +1,11 @@
+<svg width="500" height="140" viewBox="0 0 500 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="140" fill="#ffffff"/>
+  <g stroke="#00bceb" stroke-width="7" stroke-linecap="round" fill="none">
+    <path d="M34 78 v-16"/>
+    <path d="M50 86 v-32"/>
+    <path d="M66 78 v-16"/>
+    <path d="M82 90 v-40"/>
+    <path d="M98 78 v-16"/>
+  </g>
+  <text x="124" y="86" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#0d274d">Umbrella Enforcement</text>
+</svg>
