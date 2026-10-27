@@ -1,0 +1,16 @@
+{
+  "name": "imperva_waf",
+  "type": "python",
+  "clazz": "app.imperva_waf",
+  "label": "Imperva Cloud WAF",
+  "native": false,
+  "testUrl": "",
+  "category": "Network Security",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "Imperva Cloud WAF (Incapsula) integration for web application firewall response and investigation. Block or unblock IPs, allowlist IPs, block countries, and add security (Incap) rules on a protected site; list sites, get site status, and retrieve account audit-trail events. Authentication is via the Imperva API ID / API key pair."
+}
