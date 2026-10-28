@@ -1,0 +1,16 @@
+{
+    "name": "forcepoint_smc",
+    "type": "python",
+    "clazz": "ForcepointSmc",
+    "label": "Forcepoint SMC",
+    "native": false,
+    "testUrl": "",
+    "category": "Security Management",
+    "functions": [],
+    "isLicensed": true,
+    "pathToLogo": "forcepoint_smc/logo.svg",
+    "encodedLogo": "",
+    "connectionParameters": [],
+    "isMultiAuthentication": false,
+    "desc": "Forcepoint Security Management Center (SMC) connector for Securonix SOAR"
+}
