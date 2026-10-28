@@ -1,0 +1,531 @@
+{
+  "connectionParameters": [
+    {
+      "label": "API ID",
+      "name": "api_id",
+      "desc": "Imperva Cloud WAF API ID (sent as the x-API-Id header)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": false,
+      "encrypted": false
+    },
+    {
+      "label": "API Key",
+      "name": "api_key",
+      "desc": "Imperva Cloud WAF API key (sent as the x-API-Key header)",
+      "type": "String",
+      "values": [],
+      "isSecret": true,
+      "optional": false,
+      "encrypted": true
+    },
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "Imperva provisioning API base URL (default: https://my.imperva.com/api/prov/v1)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "Imperva Cloud WAF (Incapsula) integration for web application firewall response and investigation. Block or unblock IPs, allowlist IPs, block countries, and add security (Incap) rules on a protected site; list sites, get site status, and retrieve account audit-trail events. Authentication is via the Imperva API ID / API key pair.",
+  "functions": [
+    {
+      "label": "Block IP",
+      "name": "block_ip",
+      "type": "Containment",
+      "desc": "Add IP address(es) to a site's blacklisted IPs ACL to block them.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IPs",
+          "name": "ips",
+          "desc": "Comma-separated list of IP addresses to block",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "API response",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Unblock IP",
+      "name": "unblock_ip",
+      "type": "Containment",
+      "desc": "Set the site's blacklisted IPs ACL to the provided list (pass the remaining IPs to remove one; an empty list clears all blacklisted IPs).",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IPs",
+          "name": "ips",
+          "desc": "Comma-separated list of IPs that should remain blacklisted (empty clears the blacklist)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "API response",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Allowlist IP",
+      "name": "allowlist_ip",
+      "type": "Containment",
+      "desc": "Set a site's whitelisted IPs ACL.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "IPs",
+          "name": "ips",
+          "desc": "Comma-separated list of IP addresses to allowlist",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "API response",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Block Country",
+      "name": "block_country",
+      "type": "Containment",
+      "desc": "Set a site's blacklisted countries ACL.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Countries",
+          "name": "countries",
+          "desc": "Comma-separated list of two-letter country codes (and/or continent codes) to block",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "API response",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Add Security Rule",
+      "name": "add_security_rule",
+      "type": "Containment",
+      "desc": "Add a security rule (IncapRule) to a site, e.g. to block an IP by filter.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Name",
+          "name": "name",
+          "desc": "Name of the security rule",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Action",
+          "name": "action",
+          "desc": "Rule action",
+          "type": "String",
+          "values": [
+            "RULE_ACTION_ALERT",
+            "RULE_ACTION_BLOCK",
+            "RULE_ACTION_BLOCK_IP",
+            "RULE_ACTION_BLOCK_USER",
+            "RULE_ACTION_CAPTCHA",
+            "RULE_ACTION_REDIRECT",
+            "RULE_ACTION_REWRITE_URL",
+            "RULE_ACTION_REWRITE_HEADER",
+            "RULE_ACTION_REWRITE_COOKIE",
+            "RULE_ACTION_DELETE_HEADER",
+            "RULE_ACTION_DELETE_COOKIE",
+            "RULE_ACTION_FORWARD_TO_DC",
+            "RULE_ACTION_RETRY",
+            "RULE_ACTION_INTRUSIVE_HTML"
+          ],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Filter",
+          "name": "filter",
+          "desc": "The rule trigger filter (IncapRules syntax; up to 400 characters)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "API response (includes the created rule ID)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "List Sites",
+      "name": "list_sites",
+      "type": "Investigate",
+      "desc": "List the sites in the account.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Account ID",
+          "name": "account_id",
+          "desc": "Numeric identifier of the account (defaults to the authenticated account)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of objects to return per page (default 50)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Number",
+          "name": "page_num",
+          "desc": "Page to return, starting from 0 (default 0)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "List of sites",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Site Status",
+      "name": "get_site_status",
+      "type": "Investigate",
+      "desc": "Get the status and configuration of a site.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Site ID",
+          "name": "site_id",
+          "desc": "Numeric identifier of the site to operate on",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Tests",
+          "name": "tests",
+          "desc": "Comma-separated list of tests to run before returning status: domain_validation, services, dns",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Site status and configuration",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Audit Events",
+      "name": "get_audit_events",
+      "type": "Investigate",
+      "desc": "Retrieve account audit-trail events.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Account ID",
+          "name": "account_id",
+          "desc": "Numeric identifier of the account (defaults to the authenticated account)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Start",
+          "name": "start",
+          "desc": "Start time in milliseconds since 1970",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "End",
+          "name": "end",
+          "desc": "End time in milliseconds since 1970",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Size",
+          "name": "page_size",
+          "desc": "Number of objects to return per page (default 50, max 100)",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Page Number",
+          "name": "page_num",
+          "desc": "Page to return, starting from 0",
+          "type": "Number",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status (success/error)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Results",
+          "name": "results",
+          "desc": "Audit-trail events",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}
