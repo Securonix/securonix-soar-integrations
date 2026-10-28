@@ -11,6 +11,24 @@ class AkamaiWaf():
     def __init__(self) -> None:
         self.logger = logging.getLogger()
 
+    @staticmethod
+    def _normalize_ips(ip_addresses):
+        """
+        Normalize the ip_addresses parameter into a clean list of IP strings.
+
+        The SOAR framework may pass this as a single string ("10.1.1.1"), a
+        comma-separated string ("10.1.1.1, 10.1.1.2"), or an actual list.
+        Using set() directly on a plain string would iterate its characters,
+        so coerce to a list first.
+        """
+        if ip_addresses is None:
+            return []
+        if isinstance(ip_addresses, str):
+            return [ip.strip() for ip in ip_addresses.split(",") if ip.strip()]
+        if isinstance(ip_addresses, (list, tuple, set)):
+            return [str(ip).strip() for ip in ip_addresses if str(ip).strip()]
+        return [str(ip_addresses).strip()]
+
     # ---------------------------
     # P1 ACTION: Block IP
     # ---------------------------
@@ -28,7 +46,7 @@ class AkamaiWaf():
             return error
 
         existing_ips = set(data.get("list", []))
-        new_ips = set(ip_addresses)
+        new_ips = set(self._normalize_ips(ip_addresses))
         updated_ips = list(existing_ips.union(new_ips))
         # If no change needed
         if existing_ips == set(updated_ips):
@@ -70,7 +88,7 @@ class AkamaiWaf():
             return error
 
         existing_ips = set(data.get("list", []))
-        remove_ips = set(ip_addresses)
+        remove_ips = set(self._normalize_ips(ip_addresses))
         updated_ips = list(existing_ips - remove_ips)
         # If nothing to remove
         if existing_ips == set(updated_ips):
@@ -197,7 +215,8 @@ class AkamaiWaf():
             raise Exception(str(e))
 
 
-    def get_session(self, client_token, client_secret, access_token):
+    @staticmethod
+    def get_session(client_token, client_secret, access_token):
         session = requests.Session()
         session.auth = EdgeGridAuth(
                 client_token=client_token,
