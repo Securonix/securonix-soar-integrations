@@ -24,9 +24,10 @@ def _headers(client, uri):
     request_id = str(uuid.uuid4())
     timestamp = str(int(time.time() * 1000))
     data_to_sign = f"{timestamp}:{request_id}:{uri}:{client['app_key']}"
+    secret_key_bytes = base64.b64decode(client["secret_key"])
     signature = base64.b64encode(
         hmac.new(
-            client["secret_key"].encode(),
+            secret_key_bytes,
             data_to_sign.encode(),
             hashlib.sha1
         ).digest()
@@ -44,7 +45,8 @@ def _post(client, uri, payload):
     url = f"{client['base_url']}{uri}"
     response = requests.post(url, headers=_headers(client, uri), json=payload, timeout=30)
     if response.status_code >= 300:
-        raise Exception(response.text)
+        error_body = response.text or "(empty response body)"
+        raise Exception(f"HTTP {response.status_code}: {error_body}")
     return response.json()
 
 
