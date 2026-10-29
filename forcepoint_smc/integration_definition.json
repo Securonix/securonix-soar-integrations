@@ -1,0 +1,846 @@
+{
+    "desc": "Forcepoint Security Management Center (SMC) connector for Securonix SOAR. Provides API access to manage hosts, networks, services, policies, and perform security operations.",
+    "connectionParameters": [
+        {
+            "label": "API Host",
+            "name": "api_host",
+            "desc": "Forcepoint SMC server hostname or IP address (e.g., smc.example.com or 192.168.1.100)",
+            "type": "String",
+            "values": [],
+            "isSecret": false,
+            "optional": false,
+            "encrypted": false
+        },
+        {
+            "label": "API Port",
+            "name": "api_port",
+            "desc": "Forcepoint SMC API port (default: 8082)",
+            "type": "Number",
+            "values": [],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        },
+        {
+            "label": "API Key",
+            "name": "api_key",
+            "desc": "Forcepoint SMC API authentication key with appropriate permissions",
+            "type": "String",
+            "values": [],
+            "isSecret": true,
+            "optional": false,
+            "encrypted": true
+        },
+        {
+            "label": "Verify SSL",
+            "name": "verify_ssl",
+            "desc": "Enable TLS certificate verification (default: true)",
+            "type": "String",
+            "values": ["true", "false"],
+            "isSecret": false,
+            "optional": true,
+            "encrypted": false
+        }
+    ],
+    "functions": [
+        {
+            "label": "Test Connection",
+            "name": "test_connection",
+            "desc": "Test Forcepoint SMC API connection",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Connection successful - Forcepoint SMC API is accessible\"}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Hosts",
+            "name": "get_hosts",
+            "desc": "Retrieve a list of all hosts from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"hosts\":[{\"name\":\"web-server\",\"uid\":\"12345\",\"ipaddr\":\"192.168.1.10\",\"type\":\"host\"}],\"count\":1}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Hosts",
+                    "name": "hosts",
+                    "desc": "List of hosts",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of hosts",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Create Host",
+            "name": "create_host",
+            "desc": "Create a new host in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Host 'web-server' created successfully\",\"uid\":\"12345\",\"name\":\"web-server\"}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Host name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP Address",
+                    "name": "ipaddr",
+                    "desc": "Host IP address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Host type (default: host)",
+                    "type": "String",
+                    "values": ["host", "network", "router"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Host UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Host name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Update Host",
+            "name": "update_host",
+            "desc": "Update an existing host in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Host '12345' updated successfully\",\"uid\":\"12345\"}",
+            "inParameters": [
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Host UID to update",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "New host name (optional)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "IP Address",
+                    "name": "ipaddr",
+                    "desc": "New IP address (optional)",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Updated host UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Delete Host",
+            "name": "delete_host",
+            "desc": "Delete a host from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Host '12345' deleted successfully\",\"uid\":\"12345\"}",
+            "inParameters": [
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Host UID to delete",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Deleted host UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Networks",
+            "name": "get_networks",
+            "desc": "Retrieve a list of all networks from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"networks\":[{\"name\":\"internal\",\"uid\":\"12345\",\"subnet\":\"192.168.0.0\",\"cidr\":\"16\",\"type\":\"network\"}],\"count\":1}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Networks",
+                    "name": "networks",
+                    "desc": "List of networks",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of networks",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Create Network",
+            "name": "create_network",
+            "desc": "Create a new network in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Network 'internal' created successfully\",\"uid\":\"12345\",\"name\":\"internal\"}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Network name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Subnet",
+                    "name": "subnet",
+                    "desc": "Network subnet address",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "CIDR",
+                    "name": "cidr",
+                    "desc": "Network CIDR notation (optional)",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Network UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Network name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Services",
+            "name": "get_services",
+            "desc": "Retrieve a list of all services from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"services\":[{\"name\":\"http\",\"uid\":\"12345\",\"protocol\":\"tcp\",\"port\":\"80\",\"type\":\"service\"}],\"count\":1}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Services",
+                    "name": "services",
+                    "desc": "List of services",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of services",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Create Service",
+            "name": "create_service",
+            "desc": "Create a new service in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Service 'custom-service' created successfully\",\"uid\":\"12345\",\"name\":\"custom-service\"}",
+            "inParameters": [
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Service name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Protocol",
+                    "name": "protocol",
+                    "desc": "Service protocol (default: tcp)",
+                    "type": "String",
+                    "values": ["tcp", "udp", "icmp"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                },
+                {
+                    "label": "Port",
+                    "name": "port",
+                    "desc": "Service port",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Service UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Name",
+                    "name": "name",
+                    "desc": "Service name",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Policies",
+            "name": "get_policies",
+            "desc": "Retrieve a list of all policies from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"policies\":[{\"name\":\"default-policy\",\"uid\":\"12345\",\"type\":\"security\",\"engine_count\":2}],\"count\":1}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Policies",
+                    "name": "policies",
+                    "desc": "List of policies",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of policies",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get Policy Rules",
+            "name": "get_policy_rules",
+            "desc": "Retrieve rules for a specific policy",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"rules\":[{\"name\":\"allow-web\",\"uid\":\"12345\",\"source\":\"any\",\"destination\":\"web-servers\",\"service\":\"http\",\"action\":\"accept\",\"enabled\":true}],\"count\":1}",
+            "inParameters": [
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Policy UID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Rules",
+                    "name": "rules",
+                    "desc": "List of policy rules",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of rules",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Search Unused Elements",
+            "name": "search_unused_elements",
+            "desc": "Search for unused elements in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"unused_elements\":[{\"name\":\"old-host\",\"uid\":\"12345\",\"type\":\"host\"}],\"count\":1}",
+            "inParameters": [
+                {
+                    "label": "Type",
+                    "name": "type",
+                    "desc": "Element type to search (default: all)",
+                    "type": "String",
+                    "values": ["all", "host", "network", "service", "user", "tag"],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Unused Elements",
+                    "name": "unused_elements",
+                    "desc": "List of unused elements",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of unused elements",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Search Duplicate IPs",
+            "name": "search_duplicate_ips",
+            "desc": "Search for duplicate IP addresses in Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"duplicates\":[{\"ip\":\"192.168.1.10\",\"count\":2,\"elements\":[\"host1\", \"host2\"]}],\"count\":1}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Duplicates",
+                    "name": "duplicates",
+                    "desc": "List of duplicate IPs",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Count",
+                    "name": "count",
+                    "desc": "Number of duplicate IPs",
+                    "type": "Number",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Get System Status",
+            "name": "get_system_status",
+            "desc": "Retrieve system status from Forcepoint SMC",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"status\":{\"uptime\":123456,\"version\":\"7.0.0\",\"engines_connected\":2}}",
+            "inParameters": [],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "System status object",
+                    "type": "Object",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        },
+        {
+            "label": "Deploy Policy",
+            "name": "deploy_policy",
+            "desc": "Deploy a policy to engines",
+            "type": "Investigate",
+            "sampleOutput": "{\"status\":\"SUCCESS\",\"message\":\"Policy '12345' deployment initiated successfully\",\"deployment_id\":\"abc123\",\"status\":\"in_progress\"}",
+            "inParameters": [
+                {
+                    "label": "UID",
+                    "name": "uid",
+                    "desc": "Policy UID to deploy",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Engine UIDs",
+                    "name": "engine_uids",
+                    "desc": "List of engine UIDs to deploy to (default: all)",
+                    "type": "Array",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": true,
+                    "encrypted": false
+                }
+            ],
+            "outParameters": [
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Operation status",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Message",
+                    "name": "message",
+                    "desc": "Status message",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Deployment ID",
+                    "name": "deployment_id",
+                    "desc": "Deployment job ID",
+                    "type": "String",
+                    "values": [],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                },
+                {
+                    "label": "Status",
+                    "name": "status",
+                    "desc": "Deployment status",
+                    "type": "String",
+                    "values": ["in_progress", "completed", "failed"],
+                    "isSecret": false,
+                    "optional": false,
+                    "encrypted": false
+                }
+            ]
+        }
+    ]
+
+}
