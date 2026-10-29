@@ -87,7 +87,7 @@
           "label": "Block Sender",
           "name": "block_sender",
           "type": "EmailSecurity",
-          "desc": "Block a malicious sender in Mimecast",
+          "desc": "Block a sender for a specific recipient using Mimecast Managed Senders",
           "sampleOutput": "",
           "inParameters": [
               {
@@ -99,13 +99,84 @@
                   "isSecret": false,
                   "optional": false,
                   "encrypted": false
+              },
+              {
+                  "label": "Recipient Email",
+                  "name": "recipient_email",
+                  "desc": "Email address of the recipient for whom the sender is blocked",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
               }
           ],
           "outParameters": [
               {
-                  "label": "Status",
-                  "name": "status",
-                  "desc": "Status of the action",
+                  "label": "Result",
+                  "name": "result",
+                  "desc": "Result of the block sender action",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      },
+      {
+          "label": "Unblock Sender",
+          "name": "unblock_sender",
+          "type": "EmailSecurity",
+          "desc": "Permit a sender for a specific recipient using Mimecast Managed Senders. Note: this creates a permit override for the sender/recipient pair and does not delete the original block policy entry.",
+          "sampleOutput": "",
+          "inParameters": [
+              {
+                  "label": "Sender Email",
+                  "name": "sender_email",
+                  "desc": "Email address of the sender to unblock",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              },
+              {
+                  "label": "Recipient Email",
+                  "name": "recipient_email",
+                  "desc": "Email address of the recipient for whom the sender is permitted",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ],
+          "outParameters": [
+              {
+                  "label": "Result",
+                  "name": "result",
+                  "desc": "Result of the unblock sender action",
+                  "type": "String",
+                  "values": [],
+                  "isSecret": false,
+                  "optional": false,
+                  "encrypted": false
+              }
+          ]
+      },
+      {
+          "label": "List Blocked Senders",
+          "name": "list_blocked_senders",
+          "type": "EmailSecurity",
+          "desc": "List blocked sender policies in Mimecast. Requires Gateway | Policies | Read permission. Returns policies, not individual managed sender entries.",
+          "sampleOutput": "",
+          "inParameters": [],
+          "outParameters": [
+              {
+                  "label": "Policies",
+                  "name": "policies",
+                  "desc": "List of blocked sender policies",
                   "type": "String",
                   "values": [],
                   "isSecret": false,
