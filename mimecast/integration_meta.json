@@ -1,7 +1,7 @@
 {
     "name": "mimecast",
     "type": "python",
-    "clazz": "",
+    "clazz": "app.mimecast",
     "label": "Mimecast",
     "native": false,
     "testUrl": "",
