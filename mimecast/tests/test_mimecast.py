@@ -1,134 +1,87 @@
-
-from app.aws_waf import AwsWaf
+from unittest.mock import patch, MagicMock
+from app.mimecast import Mimecast
 from app.model.request_body import RequestBody
 from pykson import Pykson
-import json
+
 pykson = Pykson()
-integration_class = mimecast()
+integration_class = Mimecast()
 
-
-def test_get_threats(mock_post):
-    mock_post.return_value = {
-        "data": [
-            {"id": "threat1"},
-            {"id": "threat2"}
-        ]
-    }
-
-    req = """
-    {
-        "connectionParameters": {
-            "base_url": "https://us-api.mimecast.com",
-            "access_key": "samplevalue",
-            "secret_key": "samplevalue",
-            "app_id": "samplevalue",
-            "app_key": "samplevalue"
-        },
-        "parameters": {
-            "limit": 2
-        }
-    }
-    """
-
-    req = pykson.from_json(req, RequestBody, True)
-    resp = integration_class.get_threats(req)
-
-    assert resp is not None
-    assert resp["status"] == "success"
-    assert len(resp["threats"]) == 2
-
-def test_block_sender(mock_post):
-    mock_post.return_value = {"status": "ok"}
-
-    req = """
-    {
-        "connectionParameters": {
-            "base_url": "https://us-api.mimecast.com",
-            "access_key": "samplevalue",
-            "secret_key": "samplevalue",
-            "app_id": "samplevalue",
-            "app_key": "samplevalue"
-        },
-        "parameters": {
-            "sender_email": "malicious@example.com"
-        }
-    }
-    """
-
-    req = pykson.from_json(req, RequestBody, True)
-    resp = integration_class.block_sender(req)
-
-    assert resp is not None
-    assert resp["status"] == "success"
-
-def test_remove_message(mock_post):
-    mock_post.return_value = {"status": "ok"}
-
-    req = """
-    {
-        "connectionParameters": {
-            "base_url": "https://us-api.mimecast.com",
-            "access_key": "samplevalue",
-            "secret_key": "samplevalue",
-            "app_id": "samplevalue",
-            "app_key": "samplevalue"
-        },
-        "parameters": {
-            "message_id": "sample-message-id"
-        }
-    }
-    """
-
-    req = pykson.from_json(req, RequestBody, True)
-    resp = integration_class.remove_message(req)
-
-    assert resp is not None
-    assert resp["status"] == "success"
-
-
-def test_get_url_reputation(mock_post):
-    mock_post.return_value = {
-        "data": [
-            {
-                "url": "http://malicious.example.com",
-                "verdict": "malicious"
-            }
-        ]
-    }
-
-    req = """
-    {
-        "connectionParameters": {
-            "base_url": "https://us-api.mimecast.com",
-            "access_key": "samplevalue",
-            "secret_key": "samplevalue",
-            "app_id": "samplevalue",
-            "app_key": "samplevalue"
-        },
-        "parameters": {
-            "url": "http://malicious.example.com"
-        }
-    }
-    """
-
-    req = pykson.from_json(req, RequestBody, True)
-    resp = integration_class.get_url_reputation(req)
-
-    assert resp is not None
-    assert resp["status"] == "success"
-
-def test_mimecast_test_connection(mock_post):
-    mock_post.return_value = {"data": []}
-
-    conn_params = {
+CONN = {
+    "connectionParameters": {
         "base_url": "https://us-api.mimecast.com",
         "access_key": "samplevalue",
         "secret_key": "samplevalue",
         "app_id": "samplevalue",
         "app_key": "samplevalue"
     }
+}
 
-    resp = integration_class.test_connection(conn_params)
 
-    assert resp is not None
+def make_req(parameters: dict) -> RequestBody:
+    import json
+    body = {**CONN, "parameters": parameters}
+    return pykson.from_json(json.dumps(body), RequestBody, True)
+
+
+def mock_response(json_data, status_code=200):
+    mock = MagicMock()
+    mock.status_code = status_code
+    mock.json.return_value = json_data
+    return mock
+
+
+@patch("app.mimecast.requests.post")
+def test_get_threats(mock_post):
+    mock_post.return_value = mock_response({"data": [{"id": "threat1"}, {"id": "threat2"}]})
+    resp = integration_class.get_threats(make_req({"limit": 2}))
+    assert resp["status"] == "success"
+    assert len(resp["threats"]) == 2
+
+
+@patch("app.mimecast.requests.post")
+def test_block_sender(mock_post):
+    mock_post.return_value = mock_response({"data": [{"result": "blocked"}]})
+    resp = integration_class.block_sender(make_req({
+        "sender_email": "malicious@example.com",
+        "recipient_email": "user@example.com"
+    }))
+    assert resp["status"] == "success"
+
+
+@patch("app.mimecast.requests.post")
+def test_unblock_sender(mock_post):
+    mock_post.return_value = mock_response({"data": [{"result": "permitted"}]})
+    resp = integration_class.unblock_sender(make_req({
+        "sender_email": "malicious@example.com",
+        "recipient_email": "user@example.com"
+    }))
+    assert resp["status"] == "success"
+
+
+@patch("app.mimecast.requests.post")
+def test_list_blocked_senders(mock_post):
+    mock_post.return_value = mock_response({"data": [{"id": "policy1"}]})
+    resp = integration_class.list_blocked_senders(make_req({}))
+    assert resp["status"] == "success"
+    assert len(resp["policies"]) == 1
+
+
+@patch("app.mimecast.requests.post")
+def test_remove_message(mock_post):
+    mock_post.return_value = mock_response({"data": []})
+    resp = integration_class.remove_message(make_req({"message_id": "sample-message-id"}))
+    assert resp["status"] == "success"
+
+
+@patch("app.mimecast.requests.post")
+def test_get_url_reputation(mock_post):
+    mock_post.return_value = mock_response({"data": [{"url": "http://malicious.example.com", "verdict": "malicious"}]})
+    resp = integration_class.get_url_reputation(make_req({"url": "http://malicious.example.com"}))
+    assert resp["status"] == "success"
+
+
+@patch("app.mimecast.requests.post")
+def test_mimecast_test_connection(mock_post):
+    mock_post.return_value = mock_response({"data": []})
+    resp = integration_class.test_connection(CONN["connectionParameters"])
     assert resp["status"] == "success"
