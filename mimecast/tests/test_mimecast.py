@@ -10,7 +10,7 @@ CONN = {
     "connectionParameters": {
         "base_url": "https://us-api.mimecast.com",
         "access_key": "samplevalue",
-        "secret_key": "samplevalue",
+        "secret_key": "c2FtcGxldmFsdWU=",
         "app_id": "samplevalue",
         "app_key": "samplevalue"
     }
@@ -32,7 +32,9 @@ def mock_response(json_data, status_code=200):
 
 @patch("app.mimecast.requests.post")
 def test_get_threats(mock_post):
-    mock_post.return_value = mock_response({"data": [{"id": "threat1"}, {"id": "threat2"}]})
+    mock_post.return_value = mock_response({
+        "data": [{"clickLogs": [{"id": "threat1"}, {"id": "threat2"}]}]
+    })
     resp = integration_class.get_threats(make_req({"limit": 2}))
     assert resp["status"] == "success"
     assert len(resp["threats"]) == 2
