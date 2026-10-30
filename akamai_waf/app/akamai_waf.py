@@ -6,10 +6,29 @@ import requests
 import json
 from akamai.edgegrid import EdgeGridAuth
 
+logger = logging.getLogger()
+
+
 class AkamaiWaf():
 
     def __init__(self) -> None:
         self.logger = logging.getLogger()
+
+    @staticmethod
+    def _require_conn(connection_params, name):
+        """Return a required connection parameter or raise a clear error."""
+        value = connection_params.get(name) if connection_params else None
+        if value is None or (isinstance(value, str) and not value.strip()):
+            raise Exception(f"Missing required connection parameter: {name}")
+        return value.strip() if isinstance(value, str) else value
+
+    @staticmethod
+    def _require_param(parameters, name):
+        """Return a required action parameter or raise a clear error."""
+        value = parameters.get(name) if parameters else None
+        if value is None or (isinstance(value, str) and not value.strip()):
+            raise Exception(f"Missing required parameter: {name}")
+        return value.strip() if isinstance(value, str) else value
 
     @staticmethod
     def _normalize_ips(ip_addresses):
@@ -33,87 +52,97 @@ class AkamaiWaf():
     # P1 ACTION: Block IP
     # ---------------------------
     def block_ip(self, request: RequestBody) -> ResponseBody:
-        host = request.connectionParameters['host']
-        client_token = request.connectionParameters['client_token']
-        client_secret = request.connectionParameters['client_secret']
-        access_token = request.connectionParameters['access_token']
-        network_list_id = request.parameters['network_list_id']
-        ip_addresses = request.parameters['ip_addresses']
-        self.logger.info("executing block_ip action")
-        session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
-        data, error = self._get_network_list(network_list_id, host, session)
-        if error:
-            return error
+        logger.info("executing block_ip action")
+        try:
+            host = AkamaiWaf._require_conn(request.connectionParameters, 'host')
+            client_token = AkamaiWaf._require_conn(request.connectionParameters, 'client_token')
+            client_secret = AkamaiWaf._require_conn(request.connectionParameters, 'client_secret')
+            access_token = AkamaiWaf._require_conn(request.connectionParameters, 'access_token')
+            network_list_id = AkamaiWaf._require_param(request.parameters, 'network_list_id')
+            ip_addresses = request.parameters.get('ip_addresses')
 
-        existing_ips = set(data.get("list", []))
-        new_ips = set(self._normalize_ips(ip_addresses))
-        updated_ips = list(existing_ips.union(new_ips))
-        # If no change needed
-        if existing_ips == set(updated_ips):
+            session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
+            data, error = self._get_network_list(network_list_id, host, session)
+            if error:
+                return error
+
+            existing_ips = set(data.get("list", []))
+            new_ips = set(self._normalize_ips(ip_addresses))
+            updated_ips = list(existing_ips.union(new_ips))
+            # If no change needed
+            if existing_ips == set(updated_ips):
+                return {
+                    "status": "success",
+                    "message": "IP(s) already present in network list",
+                    "network_list_id": network_list_id,
+                    "total_ips": len(existing_ips)
+                }
+
+            payload = {
+                "name": data.get("name"),
+                "type": data.get("type"),
+                "list": updated_ips,
+                "description": data.get("description", "")
+            }
+            update_response, error = self._update_network_list(host, network_list_id, payload, session)
+            if error:
+                return error
+
             return {
                 "status": "success",
-                "message": "IP(s) already present in network list",
+                "message": "IP(s) successfully added",
                 "network_list_id": network_list_id,
-                "total_ips": len(existing_ips)
+                "total_ips": len(updated_ips)
             }
-
-        payload = {
-            "name": data.get("name"),
-            "type": data.get("type"),
-            "list": updated_ips,
-            "description": data.get("description", "")
-        }
-        update_response, error = self._update_network_list(host, network_list_id, payload, session)
-        if error:
-            return error
-
-        return {
-            "status": "success",
-            "message": "IP(s) successfully added",
-            "network_list_id": network_list_id,
-            "total_ips": len(updated_ips)
-        }
+        except Exception as e:
+            logger.error("Exception in block_ip", exc_info=e)
+            return {"status": "error", "message": str(e)}
 
     def unblock_ip(self, request: RequestBody) -> ResponseBody:
-        host = request.connectionParameters['host']
-        client_token = request.connectionParameters['client_token']
-        client_secret = request.connectionParameters['client_secret']
-        access_token = request.connectionParameters['access_token']
-        network_list_id = request.parameters['network_list_id']
-        ip_addresses = request.parameters['ip_addresses']
-        self.logger.info("executing unblock_ip action")
-        session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
-        data, error = self._get_network_list(network_list_id, host, session)
-        if error:
-            return error
+        logger.info("executing unblock_ip action")
+        try:
+            host = AkamaiWaf._require_conn(request.connectionParameters, 'host')
+            client_token = AkamaiWaf._require_conn(request.connectionParameters, 'client_token')
+            client_secret = AkamaiWaf._require_conn(request.connectionParameters, 'client_secret')
+            access_token = AkamaiWaf._require_conn(request.connectionParameters, 'access_token')
+            network_list_id = AkamaiWaf._require_param(request.parameters, 'network_list_id')
+            ip_addresses = request.parameters.get('ip_addresses')
 
-        existing_ips = set(data.get("list", []))
-        remove_ips = set(self._normalize_ips(ip_addresses))
-        updated_ips = list(existing_ips - remove_ips)
-        # If nothing to remove
-        if existing_ips == set(updated_ips):
+            session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
+            data, error = self._get_network_list(network_list_id, host, session)
+            if error:
+                return error
+
+            existing_ips = set(data.get("list", []))
+            remove_ips = set(self._normalize_ips(ip_addresses))
+            updated_ips = list(existing_ips - remove_ips)
+            # If nothing to remove
+            if existing_ips == set(updated_ips):
+                return {
+                    "status": "success",
+                    "message": "No matching IP(s) found in network list",
+                    "network_list_id": network_list_id,
+                    "total_ips": len(existing_ips)
+                }
+            payload = {
+                "name": data.get("name"),
+                "type": data.get("type"),
+                "list": updated_ips,
+                "description": data.get("description", "")
+            }
+            update_response, error = self._update_network_list(host, network_list_id, payload, session)
+            if error:
+                return error
+
             return {
                 "status": "success",
-                "message": "No matching IP(s) found in network list",
+                "message": "IP(s) successfully removed",
                 "network_list_id": network_list_id,
-                "total_ips": len(existing_ips)
+                "total_ips": len(updated_ips)
             }
-        payload = {
-            "name": data.get("name"),
-            "type": data.get("type"),
-            "list": updated_ips,
-            "description": data.get("description", "")
-        }
-        update_response, error = self._update_network_list(host, network_list_id, payload, session)
-        if error:
-            return error
-
-        return {
-            "status": "success",
-            "message": "IP(s) successfully removed",
-            "network_list_id": network_list_id,
-            "total_ips": len(updated_ips)
-        }
+        except Exception as e:
+            logger.error("Exception in unblock_ip", exc_info=e)
+            return {"status": "error", "message": str(e)}
     
     def get_security_events( self, request: RequestBody ):
         """
@@ -126,56 +155,64 @@ class AkamaiWaf():
         :param ip_address: Optional IP filter
         :param limit: Max records to return
         """
-        self.logger.info("executing get_security_events action")
-        host = request.connectionParameters['host']
-        client_token = request.connectionParameters['client_token']
-        client_secret = request.connectionParameters['client_secret']
-        access_token = request.connectionParameters['access_token']
+        logger.info("executing get_security_events action")
+        try:
+            host = AkamaiWaf._require_conn(request.connectionParameters, 'host')
+            client_token = AkamaiWaf._require_conn(request.connectionParameters, 'client_token')
+            client_secret = AkamaiWaf._require_conn(request.connectionParameters, 'client_secret')
+            access_token = AkamaiWaf._require_conn(request.connectionParameters, 'access_token')
 
-        config_id = request.parameters["config_id"]
+            config_id = AkamaiWaf._require_param(request.parameters, 'config_id')
 
-        # Optional filters
-        offset = request.parameters.get("offset")
-        start_time = request.parameters['start_time']
-        end_time = request.parameters['end_time']
-        limit = request.parameters.get("limit", 100)
-        
-        url = f"{host}/siem/v1/configs/{config_id}"
+            # Optional filters
+            offset = request.parameters.get("offset")
+            start_time = request.parameters.get('start_time')
+            end_time = request.parameters.get('end_time')
+            limit = request.parameters.get("limit", 100)
+            policy_id = request.parameters.get("policy_id")
+            attack_type = request.parameters.get("attack_type")
+            ip_address = request.parameters.get("ip_address")
 
-        params = {
-            "limit": limit
-        }
+            url = f"{host}/siem/v1/configs/{config_id}"
 
-        if offset:
-            params["offset"] = offset
+            params = {
+                "limit": limit
+            }
 
-        if start_time:
-            params["from"] = start_time
+            if offset:
+                params["offset"] = offset
 
-        if end_time:
-            params["to"] = end_time
+            if start_time:
+                params["from"] = start_time
 
-        if policy_id:
-            params["policyId"] = policy_id
+            if end_time:
+                params["to"] = end_time
 
-        if attack_type:
-            params["attackGroup"] = attack_type
+            if policy_id:
+                params["policyId"] = policy_id
 
-        if ip_address:
-            params["clientIP"] = ip_address
+            if attack_type:
+                params["attackGroup"] = attack_type
 
-        response = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token).get(url, params=params)
+            if ip_address:
+                params["clientIP"] = ip_address
 
-        if response.status_code != 200:
-            return self._handle_error(response)
+            session = self.get_session(client_token=client_token, client_secret=client_secret, access_token=access_token)
+            response = session.get(url, params=params)
 
-        data = response.json()
+            if response.status_code != 200:
+                return self._handle_error(response)
 
-        return {
-            "status": "success",
-            "event_count": len(data.get("events", [])),
-            "events": data.get("events", [])
-        }
+            data = response.json()
+
+            return {
+                "status": "success",
+                "event_count": len(data.get("events", [])),
+                "events": data.get("events", [])
+            }
+        except Exception as e:
+            logger.error("Exception in get_security_events", exc_info=e)
+            return {"status": "error", "message": str(e)}
 
 
     def test_connection(self, connection_parameters: dict):
@@ -211,7 +248,7 @@ class AkamaiWaf():
             else:
                 raise Exception(f"Akamai API returned unexpected status {response.status_code}: {response.text}")
         except Exception as e:
-            self.logger.error("Exception while testing connection parameters", exc_info=e)
+            logger.error("Exception while testing connection parameters", exc_info=e)
             raise Exception(str(e))
 
 
@@ -230,25 +267,28 @@ class AkamaiWaf():
         return session
         
 
-    def _get_network_list(self, network_list_id, host, session):
+    @staticmethod
+    def _get_network_list(network_list_id, host, session):
         url = f"{host}/network-list/v2/network-lists/{network_list_id}"
         response = session.get(url)
         if response.status_code != 200:
-            return None, self._handle_error(response)
+            return None, AkamaiWaf._handle_error(response)
         return response.json(), None
     
 
-    def _update_network_list(self, host, network_list_id, payload, session):
+    @staticmethod
+    def _update_network_list(host, network_list_id, payload, session):
         url = f"{host}/network-list/v2/network-lists/{network_list_id}"
         response = session.put(url, data=json.dumps(payload))
 
         if response.status_code not in [200, 201]:
-            return None, self._handle_error(response)
+            return None, AkamaiWaf._handle_error(response)
 
         return response.json(), None
     
     
-    def _handle_error(self, response):
+    @staticmethod
+    def _handle_error(response):
         return {
             "status": "error",
             "message": f"API request failed with status {response.status_code}",
