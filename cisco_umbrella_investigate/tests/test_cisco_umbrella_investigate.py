@@ -3,7 +3,7 @@ import os
 import requests
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
 
-from app.cisco_umbrella_investigate import Cisco_Umbrella_Investigate
+from app.cisco_umbrella_investigate import CiscoUmbrellaInvestigate
 from app.model.request_body import RequestBody
 from pykson import Pykson
 import pytest
@@ -17,7 +17,7 @@ import json
 @pytest.fixture
 def integration():
     """Create a fresh integration instance for each test."""
-    return Cisco_Umbrella_Investigate()
+    return CiscoUmbrellaInvestigate()
 
 
 @pytest.fixture
@@ -187,7 +187,7 @@ class TestHTTPRequests:
     """Test HTTP request handling."""
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_success(self, mock_token, mock_get, integration, auth_token_response):
         """Test successful GET request."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -209,7 +209,7 @@ class TestHTTPRequests:
         assert response == {"test": "data"}
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_401_retries(self, mock_token, mock_get, integration, auth_token_response):
         """Test 401 triggers token refresh and retry."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -237,7 +237,7 @@ class TestHTTPRequests:
         assert mock_get.call_count == 2
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_403(self, mock_token, mock_get, integration, auth_token_response):
         """Test 403 forbidden response."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -251,7 +251,7 @@ class TestHTTPRequests:
             integration._request("GET", "/test", {}, "key", "secret")
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_429_rate_limit(self, mock_token, mock_get, integration, auth_token_response):
         """Test 429 rate limiting with Retry-After."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -266,7 +266,7 @@ class TestHTTPRequests:
             integration._request("GET", "/test", {}, "key", "secret")
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_404(self, mock_token, mock_get, integration, auth_token_response):
         """Test 404 not found response."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -282,7 +282,7 @@ class TestHTTPRequests:
         assert response == {}
     
     @patch('requests.Session.get')
-    @patch.object(Cisco_Umbrella_Investigate, '_get_access_token')
+    @patch.object(CiscoUmbrellaInvestigate, '_get_access_token')
     def test_request_204_no_content(self, mock_token, mock_get, integration, auth_token_response):
         """Test 204 No Content response."""
         mock_token.return_value = auth_token_response["access_token"]
@@ -304,7 +304,7 @@ class TestHTTPRequests:
 class TestDomainCategorization:
     """Test umbrella_domain_categorization action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful domain categorization."""
         mock_request.return_value = (200, {
@@ -345,7 +345,7 @@ class TestDomainCategorization:
 class TestDomainSearch:
     """Test umbrella_domain_search action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful domain search."""
         mock_request.return_value = (200, ["malware.com", "phishing.com", "bad.com"])
@@ -367,7 +367,7 @@ class TestDomainSearch:
 class TestDomainCoOccurrences:
     """Test umbrella_domain_co_occurrences action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful co-occurrence lookup."""
         mock_request.return_value = (200, {
@@ -391,7 +391,7 @@ class TestDomainCoOccurrences:
 class TestDomainRelated:
     """Test umbrella_domain_related action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful related domains lookup."""
         mock_request.return_value = (200, ["www.cisco.com", "developer.cisco.com"])
@@ -405,7 +405,7 @@ class TestDomainRelated:
         assert response.status == "SUCCESS"
         assert response.output["count"] == 2
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_related(self, mock_request, integration):
         """Test related domains with empty response."""
         mock_request.return_value = (200, [])
@@ -427,7 +427,7 @@ class TestDomainRelated:
 class TestDomainSecurity:
     """Test umbrella_domain_security action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful security lookup."""
         mock_request.return_value = (200, {
@@ -444,7 +444,7 @@ class TestDomainSecurity:
         assert response.status == "SUCCESS"
         assert "security" in response.output
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_security(self, mock_request, integration):
         """Test security lookup with empty response."""
         mock_request.return_value = (200, {})
@@ -465,7 +465,7 @@ class TestDomainSecurity:
 class TestDomainRiskScore:
     """Test umbrella_get_domain_risk_score action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful risk score lookup."""
         mock_request.return_value = (200, {"risk_score": 15, "verdict": "benign"})
@@ -479,7 +479,7 @@ class TestDomainRiskScore:
         assert response.status == "SUCCESS"
         assert response.output["riskScore"] == 15
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_risk_score_value_dict(self, mock_request, integration):
         """Test risk score with value dict."""
         mock_request.return_value = (200, {"risk_score": {"value": 42}, "verdict": "malicious"})
@@ -500,7 +500,7 @@ class TestDomainRiskScore:
 class TestPassiveDNS:
     """Test umbrella_list_resource_record action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success_name_query(self, mock_request, integration):
         """Test successful passive DNS lookup by name."""
         mock_request.return_value = (200, [{
@@ -521,7 +521,7 @@ class TestPassiveDNS:
         assert response.output["count"] == 1
         assert response.output["records"][0]["recordName"] == "cisco.com"
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_passive_dns_empty(self, mock_request, integration):
         """Test passive DNS with empty response."""
         mock_request.return_value = (200, [])
@@ -543,7 +543,7 @@ class TestPassiveDNS:
 class TestSubdomainEnumeration:
     """Test umbrella_list_domain_subdomain action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful subdomain enumeration."""
         mock_request.return_value = (200, {
@@ -561,7 +561,7 @@ class TestSubdomainEnumeration:
         assert response.status == "SUCCESS"
         assert response.output["count"] == 3
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_subdomains(self, mock_request, integration):
         """Test subdomain enumeration with empty response."""
         mock_request.return_value = (200, {})
@@ -583,7 +583,7 @@ class TestSubdomainEnumeration:
 class TestDomainWhois:
     """Test umbrella_get_whois_for_domain action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful WHOIS lookup."""
         mock_request.return_value = (200, {
@@ -601,7 +601,7 @@ class TestDomainWhois:
         assert response.status == "SUCCESS"
         assert "whois" in response.output
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_whois(self, mock_request, integration):
         """Test WHOIS with empty response."""
         mock_request.return_value = (200, {})
@@ -615,7 +615,7 @@ class TestDomainWhois:
         assert response.status == "SUCCESS"
         assert response.output["whois"] == {}
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_whois_str_response(self, mock_request, integration):
         """Test WHOIS with string response."""
         mock_request.return_value = (200, "WHOIS data unavailable")
@@ -637,7 +637,7 @@ class TestDomainWhois:
 class TestDomainWhoisHistory:
     """Test umbrella_get_domain_whois_history action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful WHOIS history lookup."""
         mock_request.return_value = (200, [{
@@ -654,7 +654,7 @@ class TestDomainWhoisHistory:
         assert response.status == "SUCCESS"
         assert response.output["count"] == 1
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_history(self, mock_request, integration):
         """Test WHOIS history with empty response."""
         mock_request.return_value = (200, [])
@@ -676,7 +676,7 @@ class TestDomainWhoisHistory:
 class TestEmailWhois:
     """Test umbrella_get_email_whois action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful email WHOIS lookup."""
         mock_request.return_value = (200, ["cisco.com", "ciscosystems.com"])
@@ -690,7 +690,7 @@ class TestEmailWhois:
         assert response.status == "SUCCESS"
         assert response.output["count"] == 2
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_email_results(self, mock_request, integration):
         """Test email WHOIS with empty results."""
         mock_request.return_value = (200, [])
@@ -712,7 +712,7 @@ class TestEmailWhois:
 class TestDomainTimeline:
     """Test umbrella_get_domain_timeline action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful domain timeline lookup."""
         mock_request.return_value = (200, [{
@@ -731,7 +731,7 @@ class TestDomainTimeline:
         assert response.output["indicatorType"] == "domain"
         assert response.output["count"] == 1
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_timeline(self, mock_request, integration):
         """Test timeline with empty response."""
         mock_request.return_value = (200, [])
@@ -753,7 +753,7 @@ class TestDomainTimeline:
 class TestURLTimeline:
     """Test umbrella_get_url_timeline action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful URL timeline lookup."""
         mock_request.return_value = (200, [{
@@ -778,7 +778,7 @@ class TestURLTimeline:
 class TestIPTimeline:
     """Test umbrella_get_ip_timeline action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful IP timeline lookup."""
         mock_request.return_value = (200, [{
@@ -803,7 +803,7 @@ class TestIPTimeline:
 class TestIPBGP:
     """Test umbrella_get_ip_bgp action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful BGP lookup."""
         mock_request.return_value = (200, {
@@ -823,7 +823,7 @@ class TestIPBGP:
         assert response.output["asn"] == "15169"
         assert response.output["cidr"] == "8.8.8.0/24"
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_bgp_empty(self, mock_request, integration):
         """Test BGP lookup with empty response."""
         mock_request.return_value = (200, {})
@@ -844,7 +844,7 @@ class TestIPBGP:
 class TestASNBGP:
     """Test umbrella_get_asn_bgp action."""
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success(self, mock_request, integration):
         """Test successful ASN prefix lookup."""
         mock_request.return_value = (200, {
@@ -861,7 +861,7 @@ class TestASNBGP:
         assert response.output["asn"] == "AS15169"
         assert response.output["count"] == 2
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_success_as_prefix(self, mock_request, integration):
         """Test ASN with AS prefix works."""
         mock_request.return_value = (200, {"prefixes": ["8.8.8.0/24"]})
@@ -875,7 +875,7 @@ class TestASNBGP:
         assert response.status == "SUCCESS"
         assert response.output["asn"] == "AS15169"
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_empty_prefixes(self, mock_request, integration):
         """Test ASN with empty prefixes response."""
         mock_request.return_value = (200, {"prefixes": []})
@@ -890,7 +890,7 @@ class TestASNBGP:
         assert response.output["count"] == 0
         assert response.output["prefixes"] == []
     
-    @patch.object(Cisco_Umbrella_Investigate, '_request')
+    @patch.object(CiscoUmbrellaInvestigate, '_request')
     def test_asn_prefixes_as_dict(self, mock_request, integration):
         """Test ASN response with prefixes as dict."""
         mock_request.return_value = (200, {"prefixes": {"8.8.8.0/24": True}})
