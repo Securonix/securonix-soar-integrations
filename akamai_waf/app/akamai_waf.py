@@ -67,6 +67,25 @@ def _get_network_list(network_list_id, host, session):
     return response.json(), None
 
 
+def _build_update_payload(data, updated_ips):
+    """
+    Build the body for Akamai's "Update a network list" (PUT) call.
+
+    Akamai requires the syncPoint returned by the preceding GET; without it the
+    update is rejected (409). description must be 1-255 chars if sent, so it is
+    only included when the list already has one.
+    """
+    payload = {
+        "name": data.get("name"),
+        "type": data.get("type"),
+        "list": updated_ips,
+        "syncPoint": data.get("syncPoint", 0),
+    }
+    if data.get("description"):
+        payload["description"] = data["description"]
+    return payload
+
+
 def _update_network_list(host, network_list_id, payload, session):
     url = f"{host}/network-list/v2/network-lists/{network_list_id}"
     response = session.put(url, data=json.dumps(payload))
@@ -110,12 +129,7 @@ class AkamaiWaf():
                     "total_ips": len(existing_ips)
                 }
 
-            payload = {
-                "name": data.get("name"),
-                "type": data.get("type"),
-                "list": updated_ips,
-                "description": data.get("description", "")
-            }
+            payload = _build_update_payload(data, updated_ips)
             update_response, error = _update_network_list(host, network_list_id, payload, session)
             if error:
                 return error
@@ -156,12 +170,7 @@ class AkamaiWaf():
                     "network_list_id": network_list_id,
                     "total_ips": len(existing_ips)
                 }
-            payload = {
-                "name": data.get("name"),
-                "type": data.get("type"),
-                "list": updated_ips,
-                "description": data.get("description", "")
-            }
+            payload = _build_update_payload(data, updated_ips)
             update_response, error = _update_network_list(host, network_list_id, payload, session)
             if error:
                 return error

@@ -287,3 +287,48 @@ def test_handle_error():
     assert error_result["status"] == "error"
     assert "404" in error_result["message"]
     assert error_result["status_code"] == 404
+
+def _put_body(mock_session):
+    return json.loads(mock_session.return_value.put.call_args.kwargs["data"])
+
+@patch('app.akamai_waf.requests.Session')
+def test_block_ip_sends_sync_point(mock_session):
+    get_resp = Mock()
+    get_resp.status_code = 200
+    get_resp.json.return_value = {"list": ["1.1.1.1"], "name": "test", "type": "IP",
+                                  "description": "blocklist", "syncPoint": 7}
+    put_resp = Mock()
+    put_resp.status_code = 200
+    put_resp.json.return_value = {"syncPoint": 8}
+    mock_session.return_value.get.return_value = get_resp
+    mock_session.return_value.put.return_value = put_resp
+
+    req = '{"connectionParameters": {"host": "https://test.com", "client_token": "token", "client_secret": "secret", "access_token": "access"}, "parameters": {"network_list_id": "123", "ip_addresses": ["10.1.1.1"]}}'
+    resp = integration_class.block_ip(pykson.from_json(req, RequestBody, True))
+
+    assert resp["status"] == "success"
+    body = _put_body(mock_session)
+    assert body["syncPoint"] == 7
+    assert set(body["list"]) == {"1.1.1.1", "10.1.1.1"}
+    assert body["description"] == "blocklist"
+
+@patch('app.akamai_waf.requests.Session')
+def test_unblock_ip_sends_sync_point_and_omits_empty_description(mock_session):
+    get_resp = Mock()
+    get_resp.status_code = 200
+    get_resp.json.return_value = {"list": ["1.1.1.1", "10.1.1.1"], "name": "test", "type": "IP",
+                                  "syncPoint": 3}
+    put_resp = Mock()
+    put_resp.status_code = 200
+    put_resp.json.return_value = {"syncPoint": 4}
+    mock_session.return_value.get.return_value = get_resp
+    mock_session.return_value.put.return_value = put_resp
+
+    req = '{"connectionParameters": {"host": "https://test.com", "client_token": "token", "client_secret": "secret", "access_token": "access"}, "parameters": {"network_list_id": "123", "ip_addresses": ["10.1.1.1"]}}'
+    resp = integration_class.unblock_ip(pykson.from_json(req, RequestBody, True))
+
+    assert resp["status"] == "success"
+    body = _put_body(mock_session)
+    assert body["syncPoint"] == 3
+    assert body["list"] == ["1.1.1.1"]
+    assert "description" not in body
