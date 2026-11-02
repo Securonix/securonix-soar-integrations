@@ -229,13 +229,13 @@ class Cisco_Umbrella_Investigate:
                 return ResponseBody(
                     status="FAILURE", errorCode="INVALID_CREDENTIALS", httpCode=0,
                     message="API key (Bearer token) is required", response={}, input={}, output={}, incrementals=False
-                )
+                ).to_dict()
             base_url = self._get_base_url(connectionParameters)
             if not base_url.startswith("https://"):
                 return ResponseBody(
                     status="FAILURE", errorCode="INVALID_CONFIG", httpCode=0,
                     message="Base URL must use HTTPS protocol", response={}, input={}, output={}, incrementals=False
-                )
+                ).to_dict()
             # Test Investigate endpoint with a benign domain
             try:
                 status_code, raw_response = self._request(
@@ -246,36 +246,36 @@ class Cisco_Umbrella_Investigate:
                         status="SUCCESS", errorCode="", httpCode=200,
                         message="Connection successful - Cisco Umbrella Investigate API is accessible",
                         response={}, input={}, output={}, incrementals=False
-                    )
+                    ).to_dict()
                 elif status_code == 403:
                     return ResponseBody(
                         status="FAILURE", errorCode="INSUFFICIENT_PERMISSIONS", httpCode=0,
                         message="API token does not have Investigate permissions",
                         response={}, input={}, output={}, incrementals=False
-                    )
+                    ).to_dict()
                 elif status_code == 401:
                     return ResponseBody(
                         status="FAILURE", errorCode="INVALID_CREDENTIALS", httpCode=0,
                         message="Invalid API token",
                         response={}, input={}, output={}, incrementals=False
-                    )
+                    ).to_dict()
                 else:
                     return ResponseBody(
                         status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
                         message=f"Cisco Investigate API test failed with status {status_code}",
                         response={}, input={}, output={}, incrementals=False
-                    )
+                    ).to_dict()
             except ConnectionError as e:
                 return ResponseBody(
                     status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
                     message=str(e), response={}, input={}, output={}, incrementals=False
-                )
+                ).to_dict()
         except Exception as e:
             return ResponseBody(
                 status="FAILURE", errorCode="INTERNAL_ERROR", httpCode=0,
                 message=f"Unexpected error during connection test: {str(e)}",
                 response={}, input={}, output={}, incrementals=False
-            )
+            ).to_dict()
     # ============================================================================
     # Action 1: Domain Categorization
     # ============================================================================
@@ -303,13 +303,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "securityCategories": security_categories, "contentCategories": content_categories},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 2: Domain Search
@@ -342,13 +342,13 @@ class Cisco_Umbrella_Investigate:
                 message=f"Found {len(results)} matching domains",
                 response={}, input={"expression": expression, "limit": limit},
                 output={"results": results, "count": len(results)}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"expression": expression}, output={}, incrementals=False)
+                message=str(e), response={}, input={"expression": expression}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"expression": expression}, output={}, incrementals=False)
+                message=str(e), response={}, input={"expression": expression}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 3: Domain Co-occurrences
     # ============================================================================
@@ -372,13 +372,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "coOccurrences": co_occurrences, "count": len(co_occurrences)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 4: Related Domains
@@ -407,13 +407,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "relatedDomains": related_domains, "count": len(related_domains)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 5: Domain Security
     # ============================================================================
@@ -432,13 +432,13 @@ class Cisco_Umbrella_Investigate:
                 message=f"Successfully retrieved security info for {validated_domain}",
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "security": security}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 6: Domain Risk Score
@@ -463,13 +463,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "riskScore": int(risk_score) if isinstance(risk_score, (int, float)) else 0},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 7: Passive DNS
     # ============================================================================
@@ -510,13 +510,13 @@ class Cisco_Umbrella_Investigate:
                 message=f"Found {len(records)} passive DNS records",
                 response={}, input={"query": query, "query_type": query_type},
                 output={"query": query, "records": records, "count": len(records)}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"query": query}, output={}, incrementals=False)
+                message=str(e), response={}, input={"query": query}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"query": query}, output={}, incrementals=False)
+                message=str(e), response={}, input={"query": query}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 8: Subdomain Enumeration
     # ============================================================================
@@ -547,13 +547,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain, "limit": limit},
                 output={"domain": validated_domain, "subdomains": subdomains, "count": len(subdomains)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 9: Domain WHOIS
@@ -573,13 +573,13 @@ class Cisco_Umbrella_Investigate:
                 message=f"Successfully retrieved WHOIS for {validated_domain}",
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "whois": whois_info}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 10: Domain WHOIS History
     # ============================================================================
@@ -608,13 +608,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"domain": validated_domain, "history": history_records, "count": len(history_records)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 11: Email WHOIS
@@ -637,13 +637,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"email": email},
                 output={"email": validated_email, "domains": domains, "count": len(domains)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"email": email}, output={}, incrementals=False)
+                message=str(e), response={}, input={"email": email}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"email": email}, output={}, incrementals=False)
+                message=str(e), response={}, input={"email": email}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 12: Domain Timeline
     # ============================================================================
@@ -671,13 +671,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"domain": domain},
                 output={"indicator": validated_domain, "indicatorType": "domain", "timeline": timeline, "count": len(timeline)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False)
+                message=str(e), response={}, input={"domain": domain}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 13: URL Timeline
@@ -706,13 +706,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"url": url},
                 output={"indicator": validated_url, "indicatorType": "url", "timeline": timeline, "count": len(timeline)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"url": url}, output={}, incrementals=False)
+                message=str(e), response={}, input={"url": url}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"url": url}, output={}, incrementals=False)
+                message=str(e), response={}, input={"url": url}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 14: IP Timeline
     # ============================================================================
@@ -740,13 +740,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"ip": ip},
                 output={"indicator": validated_ip, "indicatorType": "ip", "timeline": timeline, "count": len(timeline)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False)
+                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False)
+                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 15: IP BGP Lookup
@@ -772,13 +772,13 @@ class Cisco_Umbrella_Investigate:
                     "rir": bgp_info.get("rir", ""),
                     "description": bgp_info.get("description", bgp_info.get("as_description", ""))
                 }, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False)
+                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False)
+                message=str(e), response={}, input={"ip": ip}, output={}, incrementals=False).to_dict()
     # ============================================================================
     # Action 16: ASN BGP Prefixes
     # ============================================================================
@@ -802,13 +802,13 @@ class Cisco_Umbrella_Investigate:
                 response={}, input={"asn": asn},
                 output={"asn": f"AS{validated_asn}", "prefixes": prefixes, "count": len(prefixes)},
                 incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False)
+                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False)
+                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 17: ASN Info (New)
@@ -836,18 +836,18 @@ class Cisco_Umbrella_Investigate:
                             "description": info.get("description", ""),
                             "rir": info.get("rir", "")
                         }, incrementals=False
-                    )
+                    ).to_dict()
             return ResponseBody(
                 status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
                 message="Invalid ASN information response",
                 response={}, input={"asn": asn}, output={}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False)
+                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False)
+                message=str(e), response={}, input={"asn": asn}, output={}, incrementals=False).to_dict()
 
     # ============================================================================
     # Action 18: Find ASN for Prefix (New)
@@ -880,15 +880,15 @@ class Cisco_Umbrella_Investigate:
                             "asnDescription": info.get("description", ""),
                             "rir": info.get("rir", "")
                         }, incrementals=False
-                    )
+                    ).to_dict()
             return ResponseBody(
                 status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
                 message="Invalid prefix ASN response",
                 response={}, input={"prefix": prefix}, output={}, incrementals=False
-            )
+            ).to_dict()
         except ValueError as e:
             return ResponseBody(status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={"prefix": prefix}, output={}, incrementals=False)
+                message=str(e), response={}, input={"prefix": prefix}, output={}, incrementals=False).to_dict()
         except ConnectionError as e:
             return ResponseBody(status="FAILURE", errorCode="CISCO_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={"prefix": prefix}, output={}, incrementals=False)
+                message=str(e), response={}, input={"prefix": prefix}, output={}, incrementals=False).to_dict()
