@@ -1,5 +1,4 @@
 from app.model.request_body import RequestBody
-from app.model.response_body import ResponseBody
 import logging
 import requests
 import time
@@ -201,15 +200,15 @@ class ForcepointSmc:
     # ============================================================================
     # Test Connection
     # ============================================================================
-    def test_connection(self, connectionParameters: Dict[str, Any]) -> ResponseBody:
+    def test_connection(self, connectionParameters: Dict[str, Any]) -> Dict[str, Any]:
         """Test Forcepoint SMC connection."""
         try:
             api_key = connectionParameters.get("api_key")
             if not api_key or not api_key.strip():
-                return ResponseBody(
-                    status="FAILURE", errorCode="INVALID_CREDENTIALS", httpCode=0,
-                    message="API key is required", response={}, input={}, output={}, incrementals=False
-                )
+                return {
+                    "status": "FAILURE", "errorCode": "INVALID_CREDENTIALS", "httpCode": 0,
+                    "message": "API key is required", "response": {}, "input": {}, "output": {}, "incrementals": False
+                }
             
             api_host = self._get_api_host(connectionParameters)
             api_port = self._get_api_port(connectionParameters)
@@ -220,39 +219,39 @@ class ForcepointSmc:
             )
             
             if status_code == 200:
-                return ResponseBody(
-                    status="SUCCESS", errorCode="", httpCode=200,
-                    message=f"Connection successful - Forcepoint SMC API is accessible at {api_host}:{api_port}",
-                    response={}, input={}, output={}, incrementals=False
-                )
+                return {
+                    "status": "SUCCESS", "errorCode": "", "httpCode": 200,
+                    "message": f"Connection successful - Forcepoint SMC API is accessible at {api_host}:{api_port}",
+                    "response": {}, "input": {}, "output": {}, "incrementals": False
+                }
             else:
-                return ResponseBody(
-                    status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                    message=f"Forcepoint SMC API test failed with status {status_code}",
-                    response={}, input={}, output={}, incrementals=False
-                )
+                return {
+                    "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                    "message": f"Forcepoint SMC API test failed with status {status_code}",
+                    "response": {}, "input": {}, "output": {}, "incrementals": False
+                }
                 
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="CONNECTION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "CONNECTION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except Exception as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="INTERNAL_ERROR", httpCode=0,
-                message=f"Unexpected error during connection test: {str(e)}",
-                response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "INTERNAL_ERROR", "httpCode": 0,
+                "message": f"Unexpected error during connection test: {str(e)}",
+                "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 1: Get Hosts
     # ============================================================================
-    def get_hosts(self, request: RequestBody) -> ResponseBody:
+    def get_hosts(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve a list of all hosts from SMC."""
         api_key = request.connectionParameters.get("api_key")
         try:
@@ -271,22 +270,22 @@ class ForcepointSmc:
                             "type": host.get("type", "")
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Retrieved {len(hosts)} hosts",
-                response={}, input={}, output={"hosts": hosts, "count": len(hosts)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Retrieved {len(hosts)} hosts",
+                "response": {}, "input": {}, "output": {"hosts": hosts, "count": len(hosts)},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 2: Create Host
     # ============================================================================
-    def create_host(self, request: RequestBody) -> ResponseBody:
+    def create_host(self, request: RequestBody) -> Dict[str, Any]:
         """Create a new host in SMC."""
         api_key = request.connectionParameters.get("api_key")
         name = request.parameters.get("name")
@@ -312,28 +311,28 @@ class ForcepointSmc:
                 "POST", "/api/hosts", request.connectionParameters, api_key, {}, data
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Host '{validated_name}' created successfully",
-                response={}, input={"name": name, "ipaddr": ipaddr, "type": host_type},
-                output={"uid": raw_response.get("uid", ""), "name": validated_name},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Host '{validated_name}' created successfully",
+                "response": {}, "input": {"name": name, "ipaddr": ipaddr, "type": host_type},
+                "output": {"uid": raw_response.get("uid", ""), "name": validated_name},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 3: Update Host
     # ============================================================================
-    def update_host(self, request: RequestBody) -> ResponseBody:
+    def update_host(self, request: RequestBody) -> Dict[str, Any]:
         """Update an existing host in SMC."""
         api_key = request.connectionParameters.get("api_key")
         uid = request.parameters.get("uid")
@@ -357,28 +356,28 @@ class ForcepointSmc:
                 "PUT", f"/api/hosts/{uid}", request.connectionParameters, api_key, {}, data
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Host '{uid}' updated successfully",
-                response={}, input={"uid": uid, "name": name, "ipaddr": ipaddr},
-                output={"uid": uid},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Host '{uid}' updated successfully",
+                "response": {}, "input": {"uid": uid, "name": name, "ipaddr": ipaddr},
+                "output": {"uid": uid},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 4: Delete Host
     # ============================================================================
-    def delete_host(self, request: RequestBody) -> ResponseBody:
+    def delete_host(self, request: RequestBody) -> Dict[str, Any]:
         """Delete a host from SMC."""
         api_key = request.connectionParameters.get("api_key")
         uid = request.parameters.get("uid")
@@ -391,28 +390,28 @@ class ForcepointSmc:
                 "DELETE", f"/api/hosts/{uid}", request.connectionParameters, api_key, {}
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Host '{uid}' deleted successfully",
-                response={}, input={"uid": uid},
-                output={"uid": uid},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Host '{uid}' deleted successfully",
+                "response": {}, "input": {"uid": uid},
+                "output": {"uid": uid},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 5: Get Networks
     # ============================================================================
-    def get_networks(self, request: RequestBody) -> ResponseBody:
+    def get_networks(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve a list of all networks from SMC."""
         api_key = request.connectionParameters.get("api_key")
         
@@ -433,22 +432,22 @@ class ForcepointSmc:
                             "type": network.get("type", "")
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Retrieved {len(networks)} networks",
-                response={}, input={}, output={"networks": networks, "count": len(networks)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Retrieved {len(networks)} networks",
+                "response": {}, "input": {}, "output": {"networks": networks, "count": len(networks)},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 6: Create Network
     # ============================================================================
-    def create_network(self, request: RequestBody) -> ResponseBody:
+    def create_network(self, request: RequestBody) -> Dict[str, Any]:
         """Create a new network in SMC."""
         api_key = request.connectionParameters.get("api_key")
         name = request.parameters.get("name")
@@ -482,28 +481,28 @@ class ForcepointSmc:
                 "POST", "/api/networks", request.connectionParameters, api_key, {}, data
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Network '{validated_name}' created successfully",
-                response={}, input={"name": name, "subnet": subnet, "cidr": cidr},
-                output={"uid": raw_response.get("uid", ""), "name": validated_name},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Network '{validated_name}' created successfully",
+                "response": {}, "input": {"name": name, "subnet": subnet, "cidr": cidr},
+                "output": {"uid": raw_response.get("uid", ""), "name": validated_name},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 7: Get Services
     # ============================================================================
-    def get_services(self, request: RequestBody) -> ResponseBody:
+    def get_services(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve a list of all services from SMC."""
         api_key = request.connectionParameters.get("api_key")
         
@@ -524,22 +523,22 @@ class ForcepointSmc:
                             "type": service.get("type", "")
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Retrieved {len(services)} services",
-                response={}, input={}, output={"services": services, "count": len(services)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Retrieved {len(services)} services",
+                "response": {}, "input": {}, "output": {"services": services, "count": len(services)},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 8: Create Service
     # ============================================================================
-    def create_service(self, request: RequestBody) -> ResponseBody:
+    def create_service(self, request: RequestBody) -> Dict[str, Any]:
         """Create a new service in SMC."""
         api_key = request.connectionParameters.get("api_key")
         name = request.parameters.get("name")
@@ -571,28 +570,28 @@ class ForcepointSmc:
                 "POST", "/api/services", request.connectionParameters, api_key, {}, data
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Service '{validated_name}' created successfully",
-                response={}, input={"name": name, "protocol": protocol, "port": port},
-                output={"uid": raw_response.get("uid", ""), "name": validated_name},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Service '{validated_name}' created successfully",
+                "response": {}, "input": {"name": name, "protocol": protocol, "port": port},
+                "output": {"uid": raw_response.get("uid", ""), "name": validated_name},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 9: Get Policies
     # ============================================================================
-    def get_policies(self, request: RequestBody) -> ResponseBody:
+    def get_policies(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve a list of all policies from SMC."""
         api_key = request.connectionParameters.get("api_key")
         
@@ -612,22 +611,22 @@ class ForcepointSmc:
                             "engine_count": policy.get("engine_count", 0)
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Retrieved {len(policies)} policies",
-                response={}, input={}, output={"policies": policies, "count": len(policies)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Retrieved {len(policies)} policies",
+                "response": {}, "input": {}, "output": {"policies": policies, "count": len(policies)},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 10: Get Policy Rules
     # ============================================================================
-    def get_policy_rules(self, request: RequestBody) -> ResponseBody:
+    def get_policy_rules(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve rules for a specific policy."""
         api_key = request.connectionParameters.get("api_key")
         uid = request.parameters.get("uid")
@@ -654,28 +653,28 @@ class ForcepointSmc:
                             "enabled": rule.get("enabled", True)
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Retrieved {len(rules)} rules for policy '{uid}'",
-                response={}, input={"uid": uid},
-                output={"rules": rules, "count": len(rules)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Retrieved {len(rules)} rules for policy '{uid}'",
+                "response": {}, "input": {"uid": uid},
+                "output": {"rules": rules, "count": len(rules)},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 11: Search Unused Elements
     # ============================================================================
-    def search_unused_elements(self, request: RequestBody) -> ResponseBody:
+    def search_unused_elements(self, request: RequestBody) -> Dict[str, Any]:
         """Search for unused elements in SMC."""
         api_key = request.connectionParameters.get("api_key")
         element_type = request.parameters.get("type", "all")
@@ -702,28 +701,28 @@ class ForcepointSmc:
                             "type": item.get("type", "")
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Found {len(unused)} unused elements",
-                response={}, input={"type": element_type},
-                output={"unused_elements": unused, "count": len(unused)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Found {len(unused)} unused elements",
+                "response": {}, "input": {"type": element_type},
+                "output": {"unused_elements": unused, "count": len(unused)},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 12: Search Duplicate IPs
     # ============================================================================
-    def search_duplicate_ips(self, request: RequestBody) -> ResponseBody:
+    def search_duplicate_ips(self, request: RequestBody) -> Dict[str, Any]:
         """Search for duplicate IP addresses in SMC."""
         api_key = request.connectionParameters.get("api_key")
         
@@ -742,23 +741,23 @@ class ForcepointSmc:
                             "elements": dup.get("elements", [])
                         })
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Found {len(duplicates)} IP addresses with duplicates",
-                response={}, input={},
-                output={"duplicates": duplicates, "count": len(duplicates)},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Found {len(duplicates)} IP addresses with duplicates",
+                "response": {}, "input": {},
+                "output": {"duplicates": duplicates, "count": len(duplicates)},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 13: Get System Status
     # ============================================================================
-    def get_system_status(self, request: RequestBody) -> ResponseBody:
+    def get_system_status(self, request: RequestBody) -> Dict[str, Any]:
         """Retrieve system status from SMC."""
         api_key = request.connectionParameters.get("api_key")
         
@@ -767,23 +766,23 @@ class ForcepointSmc:
                 "GET", "/api/status", request.connectionParameters, api_key, {}
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message="System status retrieved successfully",
-                response={}, input={},
-                output={"status": raw_response},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": "System status retrieved successfully",
+                "response": {}, "input": {},
+                "output": {"status": raw_response},
+                "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
 
     # ============================================================================
     # Action 14: Deploy Policy
     # ============================================================================
-    def deploy_policy(self, request: RequestBody) -> ResponseBody:
+    def deploy_policy(self, request: RequestBody) -> Dict[str, Any]:
         """Deploy a policy to engines."""
         api_key = request.connectionParameters.get("api_key")
         uid = request.parameters.get("uid")
@@ -802,20 +801,20 @@ class ForcepointSmc:
                 "POST", "/api/deploy", request.connectionParameters, api_key, {}, data
             )
             
-            return ResponseBody(
-                status="SUCCESS", errorCode="", httpCode=status_code,
-                message=f"Policy '{uid}' deployment initiated successfully",
-                response={}, input={"uid": uid, "engine_uids": engine_uids},
-                output={"deployment_id": raw_response.get("deployment_id", ""), "status": "in_progress"},
-                incrementals=False
-            )
+            return {
+                "status": "SUCCESS", "errorCode": "", "httpCode": status_code,
+                "message": f"Policy '{uid}' deployment initiated successfully",
+                "response": {}, "input": {"uid": uid, "engine_uids": engine_uids},
+                "output": {"deployment_id": raw_response.get("deployment_id", ""), "status": "in_progress"},
+                "incrementals": False
+            }
         except ValueError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="VALIDATION_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "VALIDATION_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
         except ConnectionError as e:
-            return ResponseBody(
-                status="FAILURE", errorCode="FORCEPOINT_API_ERROR", httpCode=0,
-                message=str(e), response={}, input={}, output={}, incrementals=False
-            )
+            return {
+                "status": "FAILURE", "errorCode": "FORCEPOINT_API_ERROR", "httpCode": 0,
+                "message": str(e), "response": {}, "input": {}, "output": {}, "incrementals": False
+            }
