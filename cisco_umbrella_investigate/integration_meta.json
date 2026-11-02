@@ -1,7 +1,7 @@
 {
-    "name": "Cisco Umbrella Investigate",
+    "name": "cisco_umbrella_investigate",
     "type": "python",
-    "clazz": "",
+    "clazz": "CiscoUmbrellaInvestigate",
     "label": "Cisco Umbrella Investigate",
     "native": false,
     "testUrl": "",

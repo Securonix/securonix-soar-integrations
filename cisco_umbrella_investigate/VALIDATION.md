@@ -15,11 +15,11 @@
 Run this Python script (replace credentials):
 
 ```python
-from app.cisco_umbrella_investigate import Cisco_Umbrella_Investigate
+from app.cisco_umbrella_investigate import CiscoUmbrellaInvestigate
 from app.model.request_body import RequestBody
 import json
 
-integration = Cisco_Umbrella_Investigate()
+integration = CiscoUmbrellaInvestigate()
 
 # Replace with YOUR credentials
 params = {

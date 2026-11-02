@@ -10,7 +10,7 @@ import ipaddress
 from typing import Dict, Any, Optional, Tuple
 
 
-class Cisco_Umbrella_Investigate:
+class CiscoUmbrellaInvestigate:
     """
     Cisco Umbrella Investigate connector for Securonix SOAR.
     Uses direct Bearer token authentication (no OAuth flow).
