@@ -14,6 +14,20 @@ def _require_conn(connection_params, name):
     return value.strip() if isinstance(value, str) else value
 
 
+def _base_url(host):
+    """
+    Normalize the Akamai host into a base URL.
+
+    The host is often saved without a scheme (e.g. "akab-xxx.luna.akamaiapis.net").
+    requests needs a scheme, so default to https:// and drop any trailing slash.
+    Used by test_connection and every action so they always build URLs the same way.
+    """
+    host = host.strip().rstrip("/")
+    if not host.lower().startswith(("http://", "https://")):
+        host = f"https://{host}"
+    return host
+
+
 def _require_param(parameters, name):
     """Return a required action parameter or raise a clear error."""
     value = parameters.get(name) if parameters else None
@@ -105,7 +119,7 @@ class AkamaiWaf():
     def block_ip(self, request: RequestBody) -> ResponseBody:
         self.logger.info("executing block_ip action")
         try:
-            host = _require_conn(request.connectionParameters, 'host')
+            host = _base_url(_require_conn(request.connectionParameters, 'host'))
             client_token = _require_conn(request.connectionParameters, 'client_token')
             client_secret = _require_conn(request.connectionParameters, 'client_secret')
             access_token = _require_conn(request.connectionParameters, 'access_token')
@@ -147,7 +161,7 @@ class AkamaiWaf():
     def unblock_ip(self, request: RequestBody) -> ResponseBody:
         self.logger.info("executing unblock_ip action")
         try:
-            host = _require_conn(request.connectionParameters, 'host')
+            host = _base_url(_require_conn(request.connectionParameters, 'host'))
             client_token = _require_conn(request.connectionParameters, 'client_token')
             client_secret = _require_conn(request.connectionParameters, 'client_secret')
             access_token = _require_conn(request.connectionParameters, 'access_token')
@@ -198,7 +212,7 @@ class AkamaiWaf():
         """
         self.logger.info("executing get_security_events action")
         try:
-            host = _require_conn(request.connectionParameters, 'host')
+            host = _base_url(_require_conn(request.connectionParameters, 'host'))
             client_token = _require_conn(request.connectionParameters, 'client_token')
             client_secret = _require_conn(request.connectionParameters, 'client_secret')
             access_token = _require_conn(request.connectionParameters, 'access_token')
@@ -265,10 +279,7 @@ class AkamaiWaf():
 
         try:
             session = _get_session(client_token, client_secret, access_token)
-            if host.startswith("https://"):
-                base_url = host
-            else:
-                base_url = f"https://{host}"
+            base_url = _base_url(host)
 
             # Test endpoint for WAF/AppSec
             url = f"{base_url}/appsec/v1/configs"
