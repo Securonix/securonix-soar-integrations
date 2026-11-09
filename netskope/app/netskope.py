@@ -118,6 +118,14 @@ def _make_request(config: dict, method: str, endpoint: str, json_body=None, para
                     error_detail = str(err.get("error", "") or err.get("message", ""))
                 except Exception:
                     pass
+                logging.getLogger(__name__).error(
+                    "Netskope API %s error: method=%s url=%s request_body=%s response_body=%s",
+                    resp.status_code,
+                    method,
+                    url,
+                    json_body,
+                    (resp.text or "")[:2000],
+                )
                 raise Exception(
                     f"Request failed (HTTP {resp.status_code}): {error_detail}"
                     if error_detail else f"Request failed (HTTP {resp.status_code})."
@@ -225,8 +233,11 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
+            self.logger.info("get_alerts input: query_params=%s", query_params)
             data = _make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
-            return {"status": "success", "alerts": data.get("result", data.get("data", []))}
+            result = {"status": "success", "alerts": data.get("result", data.get("data", []))}
+            self.logger.info("get_alerts output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in get_alerts", exc_info=e)
             raise Exception(str(e))
@@ -276,8 +287,11 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
+            self.logger.info("get_events input: event_type=%s query_params=%s", event_type, query_params)
             data = _make_request(config, "GET", f"/api/v2/events/datasearch/{event_type}", params=query_params)
-            return {"status": "success", "events": data.get("result", data.get("data", []))}
+            result = {"status": "success", "events": data.get("result", data.get("data", []))}
+            self.logger.info("get_events output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in get_events", exc_info=e)
             raise Exception(str(e))
@@ -321,8 +335,11 @@ class Netskope():
             else:
                 query_params["limit"] = 100
 
+            self.logger.info("get_incidents input: query_params=%s", query_params)
             data = _make_request(config, "GET", "/api/v2/events/datasearch/incident", params=query_params)
-            return {"status": "success", "incidents": data.get("result", data.get("data", []))}
+            result = {"status": "success", "incidents": data.get("result", data.get("data", []))}
+            self.logger.info("get_incidents output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in get_incidents", exc_info=e)
             raise Exception(str(e))
@@ -340,11 +357,14 @@ class Netskope():
 
             query_params = {"query": f"alert_id eq {alert_id}", "limit": 1}
 
+            self.logger.info("get_alert_details input: alert_id=%s", alert_id)
             data = _make_request(config, "GET", "/api/v2/events/datasearch/alert", params=query_params)
             results = data.get("result", data.get("data", []))
             if not results:
                 raise Exception(f"Alert not found for alert_id: {alert_id}")
-            return {"status": "success", "alert": results[0] if isinstance(results, list) else results}
+            result = {"status": "success", "alert": results[0] if isinstance(results, list) else results}
+            self.logger.info("get_alert_details output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in get_alert_details", exc_info=e)
             raise Exception(str(e))
@@ -374,7 +394,10 @@ class Netskope():
             if url_type not in VALID_URL_TYPES:
                 raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
 
-            return _append_urllist_and_deploy(config, list_id, urls, url_type)
+            self.logger.info("block_url input: list_id=%s url_type=%s urls=%s", list_id, url_type, urls)
+            result = _append_urllist_and_deploy(config, list_id, urls, url_type)
+            self.logger.info("block_url output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in block_url", exc_info=e)
             raise Exception(str(e))
@@ -408,7 +431,10 @@ class Netskope():
             if url_type not in VALID_URL_TYPES:
                 raise Exception(f"type must be one of: {', '.join(sorted(VALID_URL_TYPES))}")
 
-            return _append_urllist_and_deploy(config, list_id, domains, url_type)
+            self.logger.info("block_domain input: list_id=%s url_type=%s domains=%s", list_id, url_type, domains)
+            result = _append_urllist_and_deploy(config, list_id, domains, url_type)
+            self.logger.info("block_domain output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in block_domain", exc_info=e)
             raise Exception(str(e))
@@ -443,7 +469,10 @@ class Netskope():
             if invalid:
                 raise Exception(f"Invalid IP/CIDR value(s): {', '.join(invalid)}")
 
-            return _append_urllist_and_deploy(config, list_id, ips, "exact")
+            self.logger.info("block_ip input: list_id=%s ips=%s", list_id, ips)
+            result = _append_urllist_and_deploy(config, list_id, ips, "exact")
+            self.logger.info("block_ip output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in block_ip", exc_info=e)
             raise Exception(str(e))
@@ -469,6 +498,12 @@ class Netskope():
 
             values = _parse_ioc_values(params.get("values"), "values")
 
+            self.logger.info(
+                "add_destination_profile_values input: profile_id=%s values=%s",
+                profile_id,
+                values,
+            )
+
             append_result = _make_request(
                 config, "PATCH",
                 f"/api/v2/profiles/destinations/{profile_id}/values",
@@ -484,13 +519,15 @@ class Netskope():
                 json_body={"ids": [profile_id]},
             )
             _confirm_deploy(deploy_result, profile_id)
-            return {
+            result = {
                 "status": "success",
                 "profile_id": profile_id,
                 "values_added": values,
                 "readback": append_result,
                 "deploy_result": deploy_result,
             }
+            self.logger.info("add_destination_profile_values output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in add_destination_profile_values", exc_info=e)
             raise Exception(str(e))
@@ -505,6 +542,12 @@ class Netskope():
                 raise Exception("profile_id is required.")
 
             values = _parse_ioc_values(params.get("values"), "values")
+
+            self.logger.info(
+                "remove_destination_profile_values input: profile_id=%s values=%s",
+                profile_id,
+                values,
+            )
 
             remove_result = _make_request(
                 config, "PATCH",
@@ -521,13 +564,15 @@ class Netskope():
                 json_body={"ids": [profile_id]},
             )
             _confirm_deploy(deploy_result, profile_id)
-            return {
+            result = {
                 "status": "success",
                 "profile_id": profile_id,
                 "values_removed": values,
                 "readback": remove_result,
                 "deploy_result": deploy_result,
             }
+            self.logger.info("remove_destination_profile_values output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in remove_destination_profile_values", exc_info=e)
             raise Exception(str(e))
@@ -541,13 +586,16 @@ class Netskope():
             if not profile_id:
                 raise Exception("profile_id is required.")
 
+            self.logger.info("deploy_destination_profile input: profile_id=%s", profile_id)
             result = _make_request(
                 config, "POST",
                 "/api/v2/profiles/destinations/deploy",
                 json_body={"ids": [profile_id]},
             )
             _confirm_deploy(result, profile_id)
-            return {"status": "success", "profile_id": profile_id, "deploy_result": result}
+            response = {"status": "success", "profile_id": profile_id, "deploy_result": result}
+            self.logger.info("deploy_destination_profile output: %s", response)
+            return response
         except Exception as e:
             self.logger.error("Error in deploy_destination_profile", exc_info=e)
             raise Exception(str(e))
@@ -584,17 +632,20 @@ class Netskope():
             if invalid:
                 raise Exception(f"Invalid hash value(s): {', '.join(invalid)}")
 
+            self.logger.info("block_file_hash input: file_hash_list_name=%s hash_type=%s hashes=%s", file_hash_list_name, hash_type, hashes)
             data = _make_request(
                 config, "POST", "/api/v1/updateFileHashList",
                 params={"name": file_hash_list_name},
                 json_body={"list": ",".join(hashes)},
             )
-            return {
+            result = {
                 "status": "success",
                 "file_hash_list": file_hash_list_name,
                 "hashes_added": hashes,
                 "result": data,
             }
+            self.logger.info("block_file_hash output: %s", result)
+            return result
         except Exception as e:
             self.logger.error("Error in block_file_hash", exc_info=e)
             raise Exception(str(e))
