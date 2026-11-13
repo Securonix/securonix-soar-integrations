@@ -1,0 +1,526 @@
+{
+  "connectionParameters": [
+    {
+      "label": "Base URL",
+      "name": "base_url",
+      "desc": "TAXII 2.1 server base URL (default: https://attack-taxii.mitre.org)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Request Timeout",
+      "name": "timeout",
+      "desc": "Request timeout in seconds (default: 30)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Verify SSL",
+      "name": "verify_ssl",
+      "desc": "Verify SSL certificates (default: true)",
+      "type": "String",
+      "values": ["true", "false"],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    },
+    {
+      "label": "Proxy",
+      "name": "proxy",
+      "desc": "Proxy URL for outbound requests (optional)",
+      "type": "String",
+      "values": [],
+      "isSecret": false,
+      "optional": true,
+      "encrypted": false
+    }
+  ],
+  "isMultiAuthentication": false,
+  "desc": "MITRE ATT&CK enrichment connector. Provides read-only lookups of techniques, mitigations, groups, software, and tactics via the public TAXII 2.1 API.",
+  "functions": [
+    {
+      "label": "Search Techniques",
+      "name": "search_techniques",
+      "type": "Enrichment",
+      "desc": "Search ATT&CK techniques by ID, name, description, or tactic across a domain",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Query",
+          "name": "query",
+          "desc": "Search string matched against technique ID, name, description, and tactic names",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain to search (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Limit",
+          "name": "limit",
+          "desc": "Maximum number of results to return (default: 50)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Techniques",
+          "name": "techniques",
+          "desc": "List of matching technique objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of techniques returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Technique Details",
+      "name": "get_technique_details",
+      "type": "Enrichment",
+      "desc": "Retrieve full details for a specific ATT&CK technique by ID",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Technique ID",
+          "name": "technique_id",
+          "desc": "ATT&CK technique ID (e.g. T1059 or T1059.001)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Technique",
+          "name": "technique",
+          "desc": "Full technique detail object",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Mitigations for Technique",
+      "name": "get_mitigations_for_technique",
+      "type": "Enrichment",
+      "desc": "Retrieve all mitigations associated with an ATT&CK technique",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Technique ID",
+          "name": "technique_id",
+          "desc": "ATT&CK technique ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Mitigations",
+          "name": "mitigations",
+          "desc": "List of mitigation objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of mitigations returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Groups for Technique",
+      "name": "get_groups_for_technique",
+      "type": "Enrichment",
+      "desc": "Retrieve threat groups known to use a specific ATT&CK technique",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Technique ID",
+          "name": "technique_id",
+          "desc": "ATT&CK technique ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Groups",
+          "name": "groups",
+          "desc": "List of threat group objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of groups returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Software for Technique",
+      "name": "get_software_for_technique",
+      "type": "Enrichment",
+      "desc": "Retrieve malware and tools associated with an ATT&CK technique",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Technique ID",
+          "name": "technique_id",
+          "desc": "ATT&CK technique ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Software",
+          "name": "software",
+          "desc": "List of malware and tool objects",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of software entries returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Group Details",
+      "name": "get_group_details",
+      "type": "Enrichment",
+      "desc": "Retrieve group metadata and all techniques used by a threat group",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Group ID",
+          "name": "group_id",
+          "desc": "ATT&CK group ID (e.g. G0016)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain (default: enterprise-attack)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Group",
+          "name": "group",
+          "desc": "Group metadata object",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Techniques Used",
+          "name": "techniques_used",
+          "desc": "List of techniques used by the group",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Techniques Count",
+          "name": "techniques_count",
+          "desc": "Number of techniques used by the group",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Get Tactics by Domain",
+      "name": "get_tactics_by_domain",
+      "type": "Enrichment",
+      "desc": "Retrieve all tactics for an ATT&CK domain with associated technique IDs",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "ATT&CK domain to retrieve tactics for",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Tactics",
+          "name": "tactics",
+          "desc": "List of tactic objects with technique IDs",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Count",
+          "name": "count",
+          "desc": "Number of tactics returned",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    },
+    {
+      "label": "Refresh Dataset",
+      "name": "refresh_dataset",
+      "type": "Enrichment",
+      "desc": "Refresh the in-memory ATT&CK dataset cache for one or all domains. Also serves as a connectivity and data availability verification tool.",
+      "sampleOutput": "",
+      "inParameters": [
+        {
+          "label": "Domain",
+          "name": "domain",
+          "desc": "Domain to refresh (optional — omit to refresh all three domains)",
+          "type": "String",
+          "values": ["enterprise-attack", "mobile-attack", "ics-attack"],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        }
+      ],
+      "outParameters": [
+        {
+          "label": "Status",
+          "name": "status",
+          "desc": "Operation status",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Refreshed Domains",
+          "name": "refreshed_domains",
+          "desc": "List of domains that were refreshed",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "Object Counts",
+          "name": "object_counts",
+          "desc": "Number of STIX objects fetched per domain",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": false,
+          "encrypted": false
+        }
+      ]
+    }
+  ]
+}

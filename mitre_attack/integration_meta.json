@@ -1,0 +1,16 @@
+{
+  "name": "mitre_attack",
+  "type": "python",
+  "clazz": "app.mitre_attack",
+  "label": "MITRE ATT&CK",
+  "native": false,
+  "testUrl": "",
+  "category": "Threat Intelligence",
+  "functions": [],
+  "isLicensed": true,
+  "pathToLogo": "",
+  "encodedLogo": "",
+  "connectionParameters": [],
+  "isMultiAuthentication": false,
+  "desc": "MITRE ATT&CK enrichment connector. Provides read-only lookups of techniques, mitigations, groups, software, and tactics via the public TAXII 2.1 API."
+}
