@@ -137,11 +137,171 @@
         {
           "label": "Results",
           "name": "results",
-          "desc": "User details",
+          "desc": "Full user details object",
           "type": "String",
           "values": [],
           "isSecret": false,
           "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "User ID",
+          "name": "id",
+          "desc": "Unique Zoom user identifier",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "First Name",
+          "name": "first_name",
+          "desc": "User's first name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Last Name",
+          "name": "last_name",
+          "desc": "User's last name",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Email",
+          "name": "email",
+          "desc": "User's email address",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Type",
+          "name": "type",
+          "desc": "User type (1=Basic, 2=Licensed, 3=On-Prem)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Role Name",
+          "name": "role_name",
+          "desc": "User's role name (e.g. Member, Admin, Owner)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "User Status",
+          "name": "user_status",
+          "desc": "User account status (active, inactive, pending)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Timezone",
+          "name": "timezone",
+          "desc": "User's timezone",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Department",
+          "name": "dept",
+          "desc": "User's department",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Job Title",
+          "name": "job_title",
+          "desc": "User's job title",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Location",
+          "name": "location",
+          "desc": "User's location",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Account ID",
+          "name": "account_id",
+          "desc": "Zoom account ID the user belongs to",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Created At",
+          "name": "created_at",
+          "desc": "Timestamp when the user account was created",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Last Login Time",
+          "name": "last_login_time",
+          "desc": "Timestamp of the user's last login",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Verified",
+          "name": "verified",
+          "desc": "Whether the user's email is verified (1=verified, 0=not verified)",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "PMI",
+          "name": "pmi",
+          "desc": "User's Personal Meeting ID",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
           "encrypted": false
         }
       ]
@@ -219,11 +379,121 @@
         {
           "label": "Results",
           "name": "results",
-          "desc": "User permissions",
+          "desc": "Full permissions object",
           "type": "String",
           "values": [],
           "isSecret": false,
           "optional": false,
+          "encrypted": false
+        },
+        {
+          "label": "User Management",
+          "name": "user_management",
+          "desc": "User management permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Role Management",
+          "name": "role_management",
+          "desc": "Role management permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Meeting Management",
+          "name": "meeting_management",
+          "desc": "Meeting management permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Recording Management",
+          "name": "recording_management",
+          "desc": "Recording management permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Report",
+          "name": "report",
+          "desc": "Report access permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Dashboard",
+          "name": "dashboard",
+          "desc": "Dashboard access permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Zoom Phone",
+          "name": "zoom_phone",
+          "desc": "Zoom Phone permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Zoom Rooms",
+          "name": "zoom_rooms",
+          "desc": "Zoom Rooms permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Webinar",
+          "name": "webinar",
+          "desc": "Webinar permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Recording",
+          "name": "recording",
+          "desc": "Recording permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
+          "encrypted": false
+        },
+        {
+          "label": "Large Meeting",
+          "name": "large_meeting",
+          "desc": "Large meeting permission enabled",
+          "type": "String",
+          "values": [],
+          "isSecret": false,
+          "optional": true,
           "encrypted": false
         }
       ]
