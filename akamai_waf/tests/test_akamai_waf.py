@@ -332,3 +332,29 @@ def test_unblock_ip_sends_sync_point_and_omits_empty_description(mock_session):
     assert body["syncPoint"] == 3
     assert body["list"] == ["1.1.1.1"]
     assert "description" not in body
+
+@patch('app.akamai_waf.requests.Session')
+def test_block_ip_host_without_scheme(mock_session):
+    """Host saved without https:// (as in UAT) must still produce a valid URL."""
+    get_resp = Mock()
+    get_resp.status_code = 200
+    get_resp.json.return_value = {"list": [], "name": "test", "type": "IP", "syncPoint": 1}
+    put_resp = Mock()
+    put_resp.status_code = 200
+    put_resp.json.return_value = {"syncPoint": 2}
+    mock_session.return_value.get.return_value = get_resp
+    mock_session.return_value.put.return_value = put_resp
+
+    req = '{"connectionParameters": {"host": "akab-xxx.luna.akamaiapis.net/", "client_token": "token", "client_secret": "secret", "access_token": "access"}, "parameters": {"network_list_id": "254626_IPBLOCKLISTCOLFONDOS", "ip_addresses": ["10.1.1.1"]}}'
+    resp = integration_class.block_ip(pykson.from_json(req, RequestBody, True))
+
+    assert resp["status"] == "success"
+    expected = "https://akab-xxx.luna.akamaiapis.net/network-list/v2/network-lists/254626_IPBLOCKLISTCOLFONDOS"
+    assert mock_session.return_value.get.call_args.args[0] == expected
+    assert mock_session.return_value.put.call_args.args[0] == expected
+
+def test_base_url():
+    from app.akamai_waf import _base_url
+    assert _base_url("akab-xxx.luna.akamaiapis.net") == "https://akab-xxx.luna.akamaiapis.net"
+    assert _base_url("https://akab-xxx.luna.akamaiapis.net/") == "https://akab-xxx.luna.akamaiapis.net"
+    assert _base_url("  akab-xxx.luna.akamaiapis.net  ") == "https://akab-xxx.luna.akamaiapis.net"
