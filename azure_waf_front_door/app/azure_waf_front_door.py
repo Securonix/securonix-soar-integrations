@@ -134,13 +134,18 @@ def _next_available_priority(custom_rules: list) -> int:
     return next(p for p in range(1, 1001) if p not in used)
 
 
+def _set_rule_enabled_state(rule: dict, enabled: bool) -> None:
+    rule.pop("state", None)
+    rule["enabledState"] = "Enabled" if enabled else "Disabled"
+
+
 def _build_soar_rule(rule_name: str, match_value: list, priority: int = 10) -> dict:
     return {
         "name": rule_name,
         "priority": priority,
         "ruleType": "MatchRule",
         "action": "Block",
-        "state": "Enabled",
+        "enabledState": "Enabled",
         "matchConditions": [
             {
                 "matchVariable": "RemoteAddr",
@@ -191,7 +196,7 @@ def _build_soar_url_rule(rule_name: str, match_value: list, priority: int = 10) 
         "priority": priority,
         "ruleType": "MatchRule",
         "action": "Block",
-        "state": "Enabled",
+        "enabledState": "Enabled",
         "matchConditions": [
             {
                 "matchVariable": "RequestUri",
@@ -276,7 +281,7 @@ def _request(method: str, url: str, token: str, timeout: int,
         except requests.exceptions.Timeout:
             raise Exception("Connection to Azure Management API timed out.")
 
-        if resp.status_code in (200, 201):
+        if resp.status_code in (200, 201, 202):
             return resp.json() if resp.content else {}
 
         if resp.status_code == 401:
@@ -431,8 +436,13 @@ class AzureWafFrontDoor:
                         "(expected ruleType=MatchRule, action=Block, RemoteAddr+IPMatch condition). "
                         "Use a different rule_name to avoid modifying customer-created rules."
                     )
-                soar_rule["state"] = "Enabled"
                 cond = _find_ip_match_condition(soar_rule)
+                if (
+                    soar_rule.get("enabledState") == "Enabled"
+                    and ip_address in cond["matchValue"]
+                ):
+                    return {"status": "success", "rule": soar_rule, "already_present": True}
+                _set_rule_enabled_state(soar_rule, True)
                 if ip_address not in cond["matchValue"]:
                     cond["matchValue"].append(ip_address)
 
@@ -466,7 +476,8 @@ class AzureWafFrontDoor:
 
             cond["matchValue"].remove(ip_address)
             if not cond["matchValue"]:
-                soar_rule["state"] = "Disabled"
+                custom_rules.remove(soar_rule)
+                soar_rule = None
 
             _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": soar_rule, "removed_ip": ip_address}
@@ -490,7 +501,7 @@ class AzureWafFrontDoor:
 
             if (
                 soar_rule is None
-                or soar_rule.get("state") != "Enabled"
+                or soar_rule.get("enabledState") != "Enabled"
                 or soar_rule.get("action") != "Block"
             ):
                 return {"status": "success", "ip": ip_address, "blocked": False, "rule_name": rule_name}
@@ -515,7 +526,7 @@ class AzureWafFrontDoor:
             custom_rules = policy.get("properties", {}).get("customRules", {}).get("rules", [])
             soar_rule = _find_soar_rule(custom_rules, rule_name)
 
-            if soar_rule is None or soar_rule.get("state") != "Enabled":
+            if soar_rule is None or soar_rule.get("enabledState") != "Enabled":
                 return {"status": "success", "rule_name": rule_name, "blocked_ips": [], "total_count": 0}
 
             cond = _find_ip_match_condition(soar_rule)
@@ -542,7 +553,7 @@ class AzureWafFrontDoor:
             if rule is None:
                 raise Exception(f"Custom rule '{rule_name}' not found in policy '{policy_name}'.")
 
-            rule["state"] = "Enabled"
+            _set_rule_enabled_state(rule, True)
             _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": rule}
         except Exception:
@@ -565,7 +576,7 @@ class AzureWafFrontDoor:
             if rule is None:
                 raise Exception(f"Custom rule '{rule_name}' not found in policy '{policy_name}'.")
 
-            rule["state"] = "Disabled"
+            _set_rule_enabled_state(rule, False)
             _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": rule}
         except Exception:
@@ -598,8 +609,13 @@ class AzureWafFrontDoor:
                         "(expected ruleType=MatchRule, action=Block, RequestUri+BeginsWith condition). "
                         "Use a different rule_name to avoid modifying customer-created rules."
                     )
-                soar_rule["state"] = "Enabled"
                 cond = _find_url_match_condition(soar_rule)
+                if (
+                    soar_rule.get("enabledState") == "Enabled"
+                    and url_path in cond["matchValue"]
+                ):
+                    return {"status": "success", "rule": soar_rule, "blocked_url": url_path, "already_present": True}
+                _set_rule_enabled_state(soar_rule, True)
                 if url_path not in cond["matchValue"]:
                     cond["matchValue"].append(url_path)
 
@@ -633,7 +649,8 @@ class AzureWafFrontDoor:
 
             cond["matchValue"].remove(url_path)
             if not cond["matchValue"]:
-                soar_rule["state"] = "Disabled"
+                custom_rules.remove(soar_rule)
+                soar_rule = None
 
             _request_with_refresh("PUT", _policy_url(base_url, sub_id, rg, policy_name), tenant_id, client_id, client_secret, timeout, verify_ssl, proxies, json=policy)
             return {"status": "success", "rule": soar_rule, "unblocked_url": url_path}
