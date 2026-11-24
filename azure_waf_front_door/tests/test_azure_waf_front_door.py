@@ -7,6 +7,7 @@ from app.azure_waf_front_door import (
     _find_ip_match_condition, _build_soar_rule, _is_soar_ip_block_rule,
     _next_available_priority, _TokenExpiredError, DEFAULT_RULE_NAME, DEFAULT_URL_RULE_NAME,
     MAX_RETRIES, _normalize_url, _find_url_match_condition, _build_soar_url_rule,
+    _set_rule_enabled_state,
 )
 from app.model.request_body import RequestBody
 
@@ -32,21 +33,21 @@ def _fresh_policy():
     }
 
 
-def _policy_with_rule(ips=None, state="Enabled", action="Block"):
+def _policy_with_rule(ips=None, enabled=True, action="Block"):
     p = _fresh_policy()
     if ips is not None:
         rule = _build_soar_rule(DEFAULT_RULE_NAME, list(ips))
-        rule["state"] = state
+        _set_rule_enabled_state(rule, enabled)
         rule["action"] = action
         p["properties"]["customRules"]["rules"] = [rule]
     return p
 
 
-def _policy_with_url_rule(paths=None, state="Enabled", action="Block"):
+def _policy_with_url_rule(paths=None, enabled=True, action="Block"):
     p = _fresh_policy()
     if paths is not None:
         rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, list(paths))
-        rule["state"] = state
+        _set_rule_enabled_state(rule, enabled)
         rule["action"] = action
         p["properties"]["customRules"]["rules"] = [rule]
     return p
@@ -159,6 +160,11 @@ class TestBuildSoarRule:
         assert "matchValues" not in cond
         assert cond["matchVariable"] == "RemoteAddr"
 
+    def test_uses_enabled_state_not_state(self):
+        rule = _build_soar_rule(DEFAULT_RULE_NAME, ["1.2.3.4"])
+        assert rule["enabledState"] == "Enabled"
+        assert "state" not in rule
+
     def test_build_soar_url_rule_uses_match_value(self):
         rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, ["/admin"])
         cond = rule["matchConditions"][0]
@@ -166,6 +172,30 @@ class TestBuildSoarRule:
         assert "matchValues" not in cond
         assert cond["matchVariable"] == "RequestUri"
         assert cond["operator"] == "BeginsWith"
+
+    def test_url_rule_uses_enabled_state_not_state(self):
+        rule = _build_soar_url_rule(DEFAULT_URL_RULE_NAME, ["/admin"])
+        assert rule["enabledState"] == "Enabled"
+        assert "state" not in rule
+
+
+class TestSetRuleEnabledState:
+    def test_sets_enabled(self):
+        rule = {}
+        _set_rule_enabled_state(rule, True)
+        assert rule["enabledState"] == "Enabled"
+        assert "state" not in rule
+
+    def test_sets_disabled(self):
+        rule = {}
+        _set_rule_enabled_state(rule, False)
+        assert rule["enabledState"] == "Disabled"
+
+    def test_removes_stale_state_key(self):
+        rule = {"state": "Enabled"}
+        _set_rule_enabled_state(rule, True)
+        assert "state" not in rule
+        assert rule["enabledState"] == "Enabled"
 
 
 # ── Token ─────────────────────────────────────────────────────────────────────
@@ -214,6 +244,20 @@ class TestRequest:
         with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, {"value": []})):
             assert _mod._request("GET", "http://x", "tok", 30, True, None) == {"value": []}
 
+    def test_201(self):
+        with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(201, {"created": True})):
+            assert _mod._request("PUT", "http://x", "tok", 30, True, None) == {"created": True}
+
+    def test_202_accepted(self):
+        with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(202, {"status": "Accepted"})):
+            assert _mod._request("PUT", "http://x", "tok", 30, True, None) == {"status": "Accepted"}
+
+    def test_400_raises(self):
+        err = {"error": {"message": "state is not a valid property"}}
+        with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(400, err)):
+            with pytest.raises(Exception, match="state is not a valid property"):
+                _mod._request("PUT", "http://x", "tok", 30, True, None)
+
     def test_404_raises(self):
         with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(404)):
             with pytest.raises(Exception, match="Resource not found"):
@@ -244,6 +288,12 @@ class TestRequest:
             with pytest.raises(Exception, match="server error"):
                 _mod._request("GET", "http://x", "tok", 30, True, None)
         assert mock_sleep.call_count == MAX_RETRIES - 1
+
+    def test_503_retries(self):
+        with patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(503)), \
+             patch("app.azure_waf_front_door.time.sleep"):
+            with pytest.raises(Exception, match="server error"):
+                _mod._request("GET", "http://x", "tok", 30, True, None)
 
 
 # ── _request_with_refresh ─────────────────────────────────────────────────────
@@ -417,32 +467,47 @@ class TestAddIpToBlockList:
             )
         assert result["status"] == "success"
 
-    def test_deduplicates_ip(self):
+    def test_deduplicates_ip_no_put(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
-             patch("app.azure_waf_front_door.requests.request", side_effect=[
-                 _make_resp(200, _policy_with_rule(["10.0.0.1"])),
-                 _make_resp(200, {}),
-             ]) as mock_req:
-            connector.add_ip_to_block_list(
+             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"]))) as mock_req:
+            result = connector.add_ip_to_block_list(
                 _make_request(params={"policy_name": "Policy1", "ip_address": "10.0.0.1"})
             )
-        put_body = mock_req.call_args[1]["json"]
-        ips = put_body["properties"]["customRules"]["rules"][0]["matchConditions"][0]["matchValue"]
-        assert ips.count("10.0.0.1") == 1
+        assert result["status"] == "success"
+        assert result.get("already_present") is True
+        # Only the GET was issued — no PUT
+        assert mock_req.call_count == 1
 
     def test_re_enables_disabled_rule(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_front_door.requests.request", side_effect=[
-                 _make_resp(200, _policy_with_rule([], state="Disabled")),
+                 _make_resp(200, _policy_with_rule([], enabled=False)),
                  _make_resp(200, {}),
              ]) as mock_req:
             connector.add_ip_to_block_list(
                 _make_request(params={"policy_name": "Policy1", "ip_address": "10.0.0.1"})
             )
         put_body = mock_req.call_args[1]["json"]
-        assert put_body["properties"]["customRules"]["rules"][0]["state"] == "Enabled"
+        rule = put_body["properties"]["customRules"]["rules"][0]
+        assert rule["enabledState"] == "Enabled"
+        assert "state" not in rule
+
+    def test_payload_uses_enabled_state_not_state(self):
+        connector = AzureWafFrontDoor()
+        with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf_front_door.requests.request", side_effect=[
+                 _make_resp(200, _fresh_policy()),
+                 _make_resp(200, {}),
+             ]) as mock_req:
+            connector.add_ip_to_block_list(
+                _make_request(params={"policy_name": "Policy1", "ip_address": "10.0.0.1"})
+            )
+        put_body = mock_req.call_args[1]["json"]
+        rule = put_body["properties"]["customRules"]["rules"][0]
+        assert "enabledState" in rule
+        assert "state" not in rule
 
     def test_incompatible_rule_raises(self):
         connector = AzureWafFrontDoor()
@@ -485,17 +550,19 @@ class TestRemoveIpFromBlockList:
             )
         assert result["removed_ip"] == "10.0.0.1"
 
-    def test_last_ip_disables_rule(self):
+    def test_last_ip_removes_rule(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_front_door.requests.request", side_effect=[
                  _make_resp(200, _policy_with_rule(["10.0.0.1"])),
                  _make_resp(200, {}),
-             ]):
+             ]) as mock_req:
             result = connector.remove_ip_from_block_list(
                 _make_request(params={"policy_name": "Policy1", "ip_address": "10.0.0.1"})
             )
-        assert result["rule"]["state"] == "Disabled"
+        assert result["rule"] is None
+        put_body = mock_req.call_args[1]["json"]
+        assert put_body["properties"]["customRules"]["rules"] == []
 
     def test_rule_not_found_raises(self):
         connector = AzureWafFrontDoor()
@@ -543,7 +610,7 @@ class TestCheckIpInBlockList:
     def test_disabled_rule_returns_not_blocked(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
-             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"], state="Disabled"))):
+             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_rule(["10.0.0.1"], enabled=False))):
             result = connector.check_ip_in_block_list(
                 _make_request(params={"policy_name": "Policy1", "ip_address": "10.0.0.1"})
             )
@@ -576,7 +643,7 @@ class TestGetBlockedIps:
     def test_disabled_rule_returns_empty(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
-             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_rule(["1.1.1.1"], state="Disabled"))):
+             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_rule(["1.1.1.1"], enabled=False))):
             result = connector.get_blocked_ips(_make_request(params={"policy_name": "Policy1"}))
         assert result["blocked_ips"] == []
 
@@ -598,13 +665,14 @@ class TestEnableCustomRule:
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_front_door.requests.request", side_effect=[
-                 _make_resp(200, _policy_with_rule(["1.1.1.1"], state="Disabled")),
+                 _make_resp(200, _policy_with_rule(["1.1.1.1"], enabled=False)),
                  _make_resp(200, {}),
              ]):
             result = connector.enable_custom_rule(
                 _make_request(params={"policy_name": "Policy1", "rule_name": DEFAULT_RULE_NAME})
             )
-        assert result["rule"]["state"] == "Enabled"
+        assert result["rule"]["enabledState"] == "Enabled"
+        assert "state" not in result["rule"]
 
     def test_rule_not_found_raises(self):
         connector = AzureWafFrontDoor()
@@ -630,7 +698,8 @@ class TestDisableCustomRule:
             result = connector.disable_custom_rule(
                 _make_request(params={"policy_name": "Policy1", "rule_name": DEFAULT_RULE_NAME})
             )
-        assert result["rule"]["state"] == "Disabled"
+        assert result["rule"]["enabledState"] == "Disabled"
+        assert "state" not in result["rule"]
 
     def test_rule_not_found_raises(self):
         connector = AzureWafFrontDoor()
@@ -709,32 +778,47 @@ class TestBlockUrl:
             )
         assert result["status"] == "success"
 
-    def test_deduplicates_url(self):
+    def test_deduplicates_url_no_put(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
-             patch("app.azure_waf_front_door.requests.request", side_effect=[
-                 _make_resp(200, _policy_with_url_rule(["/admin"])),
-                 _make_resp(200, {}),
-             ]) as mock_req:
-            connector.block_url(
+             patch("app.azure_waf_front_door.requests.request", return_value=_make_resp(200, _policy_with_url_rule(["/admin"]))) as mock_req:
+            result = connector.block_url(
                 _make_request(params={"policy_name": "Policy1", "url": "/admin"})
             )
-        put_body = mock_req.call_args[1]["json"]
-        values = put_body["properties"]["customRules"]["rules"][0]["matchConditions"][0]["matchValue"]
-        assert values.count("/admin") == 1
+        assert result["status"] == "success"
+        assert result.get("already_present") is True
+        # Only the GET was issued — no PUT
+        assert mock_req.call_count == 1
 
     def test_re_enables_disabled_rule(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_front_door.requests.request", side_effect=[
-                 _make_resp(200, _policy_with_url_rule([], state="Disabled")),
+                 _make_resp(200, _policy_with_url_rule([], enabled=False)),
                  _make_resp(200, {}),
              ]) as mock_req:
             connector.block_url(
                 _make_request(params={"policy_name": "Policy1", "url": "/admin"})
             )
         put_body = mock_req.call_args[1]["json"]
-        assert put_body["properties"]["customRules"]["rules"][0]["state"] == "Enabled"
+        rule = put_body["properties"]["customRules"]["rules"][0]
+        assert rule["enabledState"] == "Enabled"
+        assert "state" not in rule
+
+    def test_payload_uses_enabled_state_not_state(self):
+        connector = AzureWafFrontDoor()
+        with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
+             patch("app.azure_waf_front_door.requests.request", side_effect=[
+                 _make_resp(200, _fresh_policy()),
+                 _make_resp(200, {}),
+             ]) as mock_req:
+            connector.block_url(
+                _make_request(params={"policy_name": "Policy1", "url": "/admin"})
+            )
+        put_body = mock_req.call_args[1]["json"]
+        rule = put_body["properties"]["customRules"]["rules"][0]
+        assert "enabledState" in rule
+        assert "state" not in rule
 
     def test_incompatible_rule_raises(self):
         connector = AzureWafFrontDoor()
@@ -775,17 +859,19 @@ class TestUnblockUrl:
             )
         assert result["unblocked_url"] == "/admin"
 
-    def test_last_url_disables_rule(self):
+    def test_last_url_removes_rule(self):
         connector = AzureWafFrontDoor()
         with patch("app.azure_waf_front_door.requests.post", return_value=_make_resp(200, TOKEN_RESP)), \
              patch("app.azure_waf_front_door.requests.request", side_effect=[
                  _make_resp(200, _policy_with_url_rule(["/admin"])),
                  _make_resp(200, {}),
-             ]):
+             ]) as mock_req:
             result = connector.unblock_url(
                 _make_request(params={"policy_name": "Policy1", "url": "/admin"})
             )
-        assert result["rule"]["state"] == "Disabled"
+        assert result["rule"] is None
+        put_body = mock_req.call_args[1]["json"]
+        assert put_body["properties"]["customRules"]["rules"] == []
 
     def test_rule_not_found_raises(self):
         connector = AzureWafFrontDoor()
